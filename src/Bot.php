@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace FondBot;
 
 use FondBot\Channels\Abstracts\Driver;
+use FondBot\Channels\Manager as ChannelManager;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Launcher;
 use FondBot\Database\Entities\Channel;
@@ -18,11 +19,11 @@ class Bot
     {
         $request = request();
 
-        /** @var Driver $driver */
-        $driver = new $channel->driver($request, $channel->name, $channel->parameters);
+        /** @var ChannelManager $manager */
+        $manager = resolve(ChannelManager::class);
 
-        // Initialise driver
-        $driver->init();
+        /** @var Driver $driver */
+        $driver = $manager->driver($request, $channel);
 
         // Verify request
         $driver->verifyRequest();

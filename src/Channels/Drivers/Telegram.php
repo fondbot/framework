@@ -56,6 +56,20 @@ class Telegram extends Driver
         }
     }
 
+    /**
+     * Initialize webhook in the external service
+     *
+     * @param string $url
+     */
+    public function installWebhook(string $url): void
+    {
+        $this->http->post('setWebhook', [
+            'form_params' => [
+                'url' => $url,
+            ],
+        ]);
+    }
+
     public function participant(): Participant
     {
         $from = $this->request->json('message.from');

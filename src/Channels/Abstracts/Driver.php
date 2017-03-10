@@ -74,6 +74,13 @@ abstract class Driver
      */
     abstract public function verifyRequest(): void;
 
+    /**
+     * Initialize webhook in the external service
+     *
+     * @param string $url
+     */
+    abstract public function installWebhook(string $url): void;
+
     abstract public function participant(): Participant;
 
     abstract public function message(): Message;

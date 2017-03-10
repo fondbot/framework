@@ -46,6 +46,7 @@ class ServiceProvider extends BaseServiceProvider
             $this->commands([
                 \FondBot\Console\CreateChannel::class,
                 \FondBot\Console\ListChannels::class,
+                \FondBot\Console\WebhookInstall::class,
                 \FondBot\Console\CreateStory::class,
                 \FondBot\Console\Install::class,
             ]);
