@@ -19,11 +19,6 @@ final class Channel extends AbstractEntity
 
     protected $table = 'channels';
 
-    protected $visible = [
-        'name',
-        'is_enabled',
-    ];
-
     protected $casts = [
         'parameters' => 'array',
     ];

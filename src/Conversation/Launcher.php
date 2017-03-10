@@ -51,8 +51,12 @@ class Launcher
         $participant = $this->driver->participant();
 
         // Store Participant in database
-        $this->participants()->store($this->channel, $participant->getIdentifier(), $participant->getName(),
-            $participant->getUsername());
+        $this->participants()->store(
+            $this->channel,
+            $participant->getIdentifier(),
+            $participant->getName(),
+            $participant->getUsername()
+        );
 
         // Retrieve Story
         $story = $this->retrieveStory($this->driver->message());

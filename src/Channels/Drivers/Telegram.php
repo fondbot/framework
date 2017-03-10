@@ -46,6 +46,14 @@ class Telegram extends Driver
         if ($data === null) {
             throw new InvalidChannelRequest('Request is empty');
         }
+
+        if (
+            $this->request->json('message') === null ||
+            $this->request->json('message.from') === null ||
+            $this->request->json('message.text') === null
+        ) {
+            throw new InvalidChannelRequest('Invalid payload');
+        }
     }
 
     public function participant(): Participant

@@ -3,18 +3,23 @@ declare(strict_types=1);
 
 namespace FondBot\Http\Controllers;
 
+use FondBot\Bot;
 use FondBot\Database\Entities\Channel;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 
 class WebhookController extends Controller
 {
 
-    use ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function handle(Channel $channel)
+    public function handle(Channel $channel, Bot $bot)
     {
-        dd($channel);
+        $bot->process($channel);
+
+        return 'OK';
     }
 
 }

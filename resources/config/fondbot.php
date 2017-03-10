@@ -7,4 +7,9 @@ return [
      */
     'namespace' => 'App\Bot',
 
+    // Define your Stories here
+    'stories' => [
+
+    ],
+
 ];
