@@ -61,11 +61,11 @@ abstract class Driver
     abstract public function init(): void;
 
     /**
-     * Route URI signature
+     * Configuration parameters
      *
-     * @return string
+     * @return array
      */
-    abstract public function route(): string;
+    abstract public function config(): array;
 
     /**
      * Verify incoming request data

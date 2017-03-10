@@ -23,13 +23,15 @@ class Telegram extends Driver
     }
 
     /**
-     * Route URI signature
+     * Configuration parameters
      *
-     * @return string
+     * @return array
      */
-    public function route(): string
+    public function config(): array
     {
-        return '/{token}';
+        return [
+            'token',
+        ];
     }
 
     /**
@@ -59,7 +61,7 @@ class Telegram extends Driver
 
     public function message(): Message
     {
-        $text = $this->request->json('message')['text'];
+        $text = $this->request->json('message.text');
 
         return Message::create($text);
     }

@@ -16,10 +16,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property Channel $channel
  */
-class Participant extends AbstractEntity
+final class Participant extends AbstractEntity
 {
 
-    protected $connection = 'default';
     protected $table = 'participants';
 
     protected $visible = [

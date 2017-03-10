@@ -7,12 +7,12 @@ use FondBot\Database\Entities\Channel;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 
-class ChannelController extends Controller
+class WebhookController extends Controller
 {
 
     use ValidatesRequests;
 
-    public function webhook(Channel $channel)
+    public function handle(Channel $channel)
     {
         dd($channel);
     }

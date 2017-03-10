@@ -19,6 +19,8 @@ class ServiceProvider extends BaseServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
+                \FondBot\Console\CreateChannel::class,
+                \FondBot\Console\ListChannels::class,
                 \FondBot\Console\CreateStory::class,
                 \FondBot\Console\Install::class,
             ]);

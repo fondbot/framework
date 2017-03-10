@@ -14,10 +14,9 @@ use FondBot\Entities\AbstractEntity;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class Channel extends AbstractEntity
+final class Channel extends AbstractEntity
 {
 
-    protected $connection = 'default';
     protected $table = 'channels';
 
     protected $visible = [
@@ -27,6 +26,13 @@ class Channel extends AbstractEntity
 
     protected $casts = [
         'parameters' => 'array',
+    ];
+
+    protected $fillable = [
+        'name',
+        'driver',
+        'parameters',
+        'is_enabled',
     ];
 
 }
