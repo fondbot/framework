@@ -4,25 +4,23 @@ declare(strict_types=1);
 namespace FondBot\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 
-class CreateStory extends Command
+class CreateInteraction extends Command
 {
 
-    protected $signature = 'fondbot:create-story {name}';
-    protected $description = 'Create new Story';
+    protected $signature = 'fondbot:create-interaction {name}';
+    protected $description = 'Create new story interaction';
 
     public function handle()
     {
-        $stub = file_get_contents(__DIR__ . '/../../resources/stubs/Story.stub');
+        $stub = file_get_contents(__DIR__ . '/../../resources/stubs/Interaction.stub');
         $stub = str_replace(
-            ['{namespace}', '{className}', '{name}'],
-            [$this->namespace(), $this->className(), $this->name()],
+            ['{namespace}', '{className}'],
+            [$this->namespace(), $this->className()],
             $stub
         );
 
-        $path = base_path($this->directory());
-
+        $path = base_path($this->directory() . '/Interactions');
         if (!@mkdir($path, 0755, true) && !is_dir($path)) {
             return;
         }
@@ -36,24 +34,19 @@ class CreateStory extends Command
 
         file_put_contents($path, $stub);
 
-        $this->info('Story has been successfully created.');
+        $this->info('Interaction has been successfully created.');
     }
 
     private function namespace(): string
     {
-        return config('fondbot.namespace');
-    }
-
-    private function name(): string
-    {
-        return Str::lower(trim($this->argument('name')));
+        return config('fondbot.namespace') . '\\Interactions';
     }
 
     private function className(): string
     {
         $name = trim($this->argument('name'));
-        if (!ends_with($name, 'Story')) {
-            $name .= 'Story';
+        if (!ends_with($name, 'Interaction')) {
+            $name .= 'Interaction';
         }
 
         return $name;
@@ -79,7 +72,7 @@ class CreateStory extends Command
             return $namespace === $applicationNamespace;
         });
 
-        $directory = str_replace($applicationNamespace, '', $this->namespace());
+        $directory = str_replace($applicationNamespace, '', config('fondbot.namespace'));
 
         return $baseDirectory . $directory;
     }

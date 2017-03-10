@@ -1,0 +1,56 @@
+<?php
+declare(strict_types=1);
+namespace {namespace};
+
+use FondBot\Channels\Objects\Message;
+use FondBot\Conversation\Abstracts\Interaction;
+use FondBot\Conversation\Abstracts\Keyboard;
+
+class {className} extends Interaction
+{
+
+    /**
+     * Do something before running Interaction
+     */
+    public function before(): void
+    {
+
+    }
+
+    /**
+     * Do something after running Interaction
+     */
+    public function after(): void
+    {
+
+    }
+
+    /**
+     * Message to be sent to Participant
+     *
+     * @return Message
+     */
+    public function message(): Message
+    {
+        return Message::create('Hello!');
+    }
+
+    /**
+     * Keyboard to be shown to Participant
+     *
+     * @return Keyboard|null
+     */
+    public function keyboard(): ?Keyboard
+    {
+        return null;
+    }
+
+    /**
+     * Process reply
+     */
+    protected function process(): void
+    {
+
+    }
+
+}

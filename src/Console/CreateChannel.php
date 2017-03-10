@@ -13,7 +13,7 @@ class CreateChannel extends Command
 {
 
     protected $signature = 'fondbot:create-channel';
-    protected $description = 'Create new Channel';
+    protected $description = 'Create new channel';
 
     public function handle()
     {
