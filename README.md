@@ -1,6 +1,6 @@
 # FondBot
 
-FondBot is a framework for creating chat bots.
+FondBot is a Laravel framework library for creating chat bots.
 
 ## Installation
 
@@ -15,7 +15,7 @@ FondBot is a framework for creating chat bots.
     composer require fondbot/fondbot
  
 4. Add `FondBot\Providers\ServiceProvider` class to `providers` array in `config/app.php`.
-    
+   
     'providers' => [
         ...
         FondBot\Providers\ServiceProvider::class,
