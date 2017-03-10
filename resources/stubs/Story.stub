@@ -1,0 +1,24 @@
+<?php
+declare(strict_types=1);
+namespace {namespace}\Stories;
+
+use FondBot\Conversation\Abstracts\Story;
+
+class {className} extends Story
+{
+
+    protected $name = '{name}';
+
+    public function activations(): array
+    {
+        return [
+            '/{name}',
+        ];
+    }
+
+    protected function start(): void
+    {
+
+    }
+
+}
