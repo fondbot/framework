@@ -4,6 +4,7 @@ namespace FondBot\Database\Entities;
 
 use Carbon\Carbon;
 use FondBot\Entities\AbstractEntity;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property int $id
@@ -14,7 +15,7 @@ use FondBot\Entities\AbstractEntity;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
- * @property-read Participant[] $participants
+ * @property-read Participant[]|Collection $participants
  */
 final class Channel extends AbstractEntity
 {
