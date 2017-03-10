@@ -30,7 +30,6 @@ final class Participant extends AbstractEntity
     ];
 
     protected $fillable = [
-        'channel_id',
         'identifier',
         'name',
         'username',

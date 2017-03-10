@@ -13,6 +13,8 @@ use FondBot\Entities\AbstractEntity;
  * @property bool $is_enabled
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * @property-read Participant[] $participants
  */
 final class Channel extends AbstractEntity
 {
@@ -29,5 +31,10 @@ final class Channel extends AbstractEntity
         'parameters',
         'is_enabled',
     ];
+
+    public function participants()
+    {
+        return $this->hasMany(Participant::class);
+    }
 
 }

@@ -6,7 +6,6 @@ use FondBot\Channels\Abstracts\Driver;
 use FondBot\Conversation\Abstracts\Story;
 use FondBot\Conversation\Traits\RetrievesStories;
 use FondBot\Database\Entities\Channel;
-use FondBot\Database\Repositories\ParticipantRepository;
 use FondBot\Traits\Loggable;
 
 class Launcher
@@ -51,12 +50,11 @@ class Launcher
         $participant = $this->driver->participant();
 
         // Store Participant in database
-        $this->participants()->store(
-            $this->channel,
-            $participant->getIdentifier(),
-            $participant->getName(),
-            $participant->getUsername()
-        );
+        $this->channel->participants()->updateOrCreate([
+            'identifier' => $participant->getIdentifier(),
+            'name' => $participant->getName(),
+            'username' => $participant->getUsername(),
+        ], ['identifier' => $participant->getIdentifier()]);
 
         // Retrieve Story
         $story = $this->retrieveStory($this->driver->message());
@@ -72,11 +70,6 @@ class Launcher
         $this->context->save();
 
         $story->run($this->context);
-    }
-
-    private function participants(): ParticipantRepository
-    {
-        return app(ParticipantRepository::class);
     }
 
 }
