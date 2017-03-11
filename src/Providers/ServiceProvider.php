@@ -45,6 +45,7 @@ class ServiceProvider extends BaseServiceProvider
 
             $this->commands([
                 \FondBot\Console\CreateChannel::class,
+                \FondBot\Console\DeleteChannel::class,
                 \FondBot\Console\ListChannels::class,
                 \FondBot\Console\CreateStory::class,
                 \FondBot\Console\CreateInteraction::class,
