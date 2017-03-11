@@ -3,8 +3,8 @@ declare(strict_types=1);
 namespace {namespace};
 
 use FondBot\Channels\Objects\Message;
-use FondBot\Conversation\Abstracts\Interaction;
-use FondBot\Conversation\Abstracts\Keyboard;
+use FondBot\Conversation\Interaction;
+use FondBot\Conversation\Keyboard;
 
 class {className} extends Interaction
 {

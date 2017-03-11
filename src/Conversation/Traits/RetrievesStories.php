@@ -3,8 +3,8 @@
 namespace FondBot\Conversation\Traits;
 
 use FondBot\Channels\Objects\Message;
-use FondBot\Conversation\Abstracts\Story;
 use FondBot\Conversation\Context;
+use FondBot\Conversation\Story;
 
 trait RetrievesStories
 {

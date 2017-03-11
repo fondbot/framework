@@ -1,8 +1,7 @@
 <?php declare(strict_types=1);
 
-namespace FondBot\Conversation\Abstracts;
+namespace FondBot\Conversation;
 
-use FondBot\Conversation\Context;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Traits\Loggable;
 

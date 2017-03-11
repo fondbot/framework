@@ -3,7 +3,6 @@
 namespace FondBot\Conversation;
 
 use FondBot\Channels\Abstracts\Driver;
-use FondBot\Conversation\Abstracts\Story;
 use FondBot\Conversation\Traits\RetrievesStories;
 use FondBot\Database\Entities\Channel;
 use FondBot\Traits\Loggable;

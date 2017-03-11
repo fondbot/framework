@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace {namespace};
 
-use FondBot\Conversation\Abstracts\Story;
+use FondBot\Conversation\Story;
 
 class {className} extends Story
 {

@@ -2,8 +2,8 @@
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Conversation\Abstracts\Interaction;
 use FondBot\Conversation\Context;
+use FondBot\Conversation\Interaction;
 use InvalidArgumentException;
 
 trait Transitions

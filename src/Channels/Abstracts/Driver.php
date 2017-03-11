@@ -5,7 +5,7 @@ namespace FondBot\Channels\Abstracts;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Channels\Objects\Message;
 use FondBot\Channels\Objects\Participant;
-use FondBot\Conversation\Abstracts\Keyboard;
+use FondBot\Conversation\Keyboard;
 use FondBot\Traits\Loggable;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;

@@ -2,7 +2,7 @@
 
 namespace FondBot\Conversation\Keyboards;
 
-use FondBot\Conversation\Abstracts\Keyboard;
+use FondBot\Conversation\Keyboard;
 
 class ReplyKeyboard extends Keyboard
 {

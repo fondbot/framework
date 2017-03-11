@@ -5,8 +5,6 @@ namespace FondBot\Conversation;
 use FondBot\Channels\Abstracts\Driver;
 use FondBot\Channels\Objects\Message;
 use FondBot\Channels\Objects\Participant;
-use FondBot\Conversation\Abstracts\Interaction;
-use FondBot\Conversation\Abstracts\Story;
 use Illuminate\Contracts\Support\Arrayable;
 
 class Context implements Arrayable

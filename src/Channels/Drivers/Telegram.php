@@ -7,7 +7,7 @@ use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Channels\Objects\Message;
 use FondBot\Channels\Objects\Participant;
 use FondBot\Channels\Request;
-use FondBot\Conversation\Abstracts\Keyboard;
+use FondBot\Conversation\Keyboard;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
