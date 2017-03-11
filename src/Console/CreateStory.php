@@ -16,7 +16,7 @@ class CreateStory extends Command
     {
         $creator->createStory($this->argument('name'));
 
-        $this->info('Story has been successfully created.');
+        $this->info('Story has been created.');
     }
 
 }

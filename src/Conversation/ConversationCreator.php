@@ -9,6 +9,12 @@ use Illuminate\Support\Str;
 class ConversationCreator
 {
 
+    /**
+     * Create new story
+     *
+     * @param string $name
+     * @throws Exception
+     */
     public function createStory(string $name): void
     {
         $contents = file_get_contents(__DIR__ . '/../../resources/stubs/Story.stub');
@@ -25,6 +31,34 @@ class ConversationCreator
         $this->write($path, $contents);
     }
 
+    /**
+     * Create new interaction
+     *
+     * @param string $name
+     * @throws Exception
+     */
+    public function createInteraction(string $name): void
+    {
+        $contents = file_get_contents(__DIR__ . '/../../resources/stubs/Interaction.stub');
+
+        $className = $this->className($name, 'Interaction');
+
+        // Replace stub placeholders
+        $this->replacePlaceholder($contents, 'namespace', $this->botNamespace('Interactions'));
+        $this->replacePlaceholder($contents, 'className', $className);
+
+        $path = $this->botDirectory('Interactions') . '/' . $this->filename($className);
+
+        $this->write($path, $contents);
+    }
+
+    /**
+     * Replace placeholder
+     *
+     * @param string $input
+     * @param string $key
+     * @param string $value
+     */
     private function replacePlaceholder(string &$input, string $key, string $value): void
     {
         $input = str_replace('{' . $key . '}', $value, $input);
@@ -107,21 +141,38 @@ class ConversationCreator
     /**
      * Get bot namespace
      *
+     * @param string|null $additional
+     *
      * @return string
      */
-    private function botNamespace(): string
+    private function botNamespace(string $additional = null): string
     {
-        return $this->applicationNamespace() . config('fondbot.namespace');
+        $namespace = $this->applicationNamespace() . config('fondbot.namespace');
+
+        if ($additional !== null) {
+            $namespace .= '\\' . $additional;
+        }
+
+        return $namespace;
     }
 
     /**
      * Creates bot directory if not exists and returns its path
      *
+     * @param string|null $additional
+     *
+     * @return string
+     *
      * @throws Exception
      */
-    private function botDirectory(): string
+    private function botDirectory(string $additional = null): string
     {
         $path = $this->applicationDirectory() . config('fondbot.namespace');
+
+        if ($additional !== null) {
+            $path .= '/' . $additional;
+        }
+
         $path = base_path($path);
 
         if (!@mkdir($path, 0755, true) && !is_dir($path)) {
