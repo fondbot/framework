@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace FondBot;
 
 use FondBot\Channels\Abstracts\Driver;
-use FondBot\Channels\Manager as ChannelManager;
+use FondBot\Channels\ChannelManager;
 use FondBot\Conversation\Context;
-use FondBot\Conversation\Launcher;
+use FondBot\Conversation\ConversationManager;
 use FondBot\Database\Entities\Channel;
 use FondBot\Traits\Loggable;
 
@@ -31,8 +31,8 @@ class Bot
         // Resolve context
         $context = Context::instance($driver);
 
-        /** @var Launcher $conversation */
-        $conversation = Launcher::instance($driver, $channel, $context, config('fondbot.stories'));
+        /** @var ConversationManager $conversation */
+        $conversation = ConversationManager::instance($driver, $channel, $context, config('fondbot.stories'));
 
         // Start conversation
         $conversation->start();

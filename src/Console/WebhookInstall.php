@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace FondBot\Console;
 
-use FondBot\Channels\Manager;
+use FondBot\Channels\ChannelManager;
 use FondBot\Database\Services\ChannelService;
 use Illuminate\Console\Command;
 
@@ -13,7 +13,7 @@ class WebhookInstall extends Command
     protected $signature = 'fondbot:install-webhook';
     protected $description = 'Install Channel webhook';
 
-    public function handle(Manager $manager)
+    public function handle(ChannelManager $manager)
     {
         $channel = $this->choice('Channel', $this->channels());
         $channel = $this->service()->findByName($channel);

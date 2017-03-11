@@ -8,10 +8,10 @@ use FondBot\Conversation\Traits\RetrievesStories;
 use FondBot\Database\Entities\Channel;
 use FondBot\Traits\Loggable;
 
-class Launcher
+class ConversationManager
 {
 
-    /** @var Launcher|null */
+    /** @var ConversationManager|null */
     private static $instance;
 
     /** @var Driver */
@@ -36,7 +36,12 @@ class Launcher
         $this->stories = $stories;
     }
 
-    public static function instance(Driver $driver, Channel $channel, Context $context, array $stories): Launcher
+    public static function instance(
+        Driver $driver,
+        Channel $channel,
+        Context $context,
+        array $stories
+    ): ConversationManager
     {
         if (self::$instance === null) {
             self::$instance = new static($driver, $channel, $context, $stories);

@@ -7,7 +7,7 @@ use FondBot\Channels\Abstracts\Driver;
 use FondBot\Database\Entities\Channel;
 use Illuminate\Http\Request;
 
-class Manager
+class ChannelManager
 {
 
     private $drivers = [

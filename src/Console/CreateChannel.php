@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace FondBot\Console;
 
 use FondBot\Channels\Abstracts\Driver;
-use FondBot\Channels\Manager;
+use FondBot\Channels\ChannelManager;
 use FondBot\Database\Services\ChannelService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
@@ -34,7 +34,7 @@ class CreateChannel extends Command
 
     private function driver(): string
     {
-        $drivers = app(Manager::class)->supportedDrivers();
+        $drivers = app(ChannelManager::class)->supportedDrivers();
         $selected = $this->choice('Driver', array_keys($drivers));
 
         return $drivers[$selected];

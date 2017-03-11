@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace FondBot\Console;
 
-use FondBot\Channels\Manager;
+use FondBot\Channels\ChannelManager;
 use FondBot\Database\Entities\Channel;
 use FondBot\Database\Services\ChannelService;
 use FondBot\Nifty\Emoji;
@@ -57,7 +57,7 @@ class ListChannels extends Command
 
     private function driver(string $class): string
     {
-        $drivers = resolve(Manager::class)->supportedDrivers();
+        $drivers = resolve(ChannelManager::class)->supportedDrivers();
         return collect($drivers)->search(function ($value) use ($class) {
             return $value === $class;
         });
