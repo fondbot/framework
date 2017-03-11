@@ -5,7 +5,7 @@ namespace FondBot\Console;
 
 use FondBot\Channels\Abstracts\Driver;
 use FondBot\Channels\Manager;
-use FondBot\Database\Entities\Channel;
+use FondBot\Database\Services\ChannelService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
@@ -15,14 +15,14 @@ class CreateChannel extends Command
     protected $signature = 'fondbot:create-channel';
     protected $description = 'Create new channel';
 
-    public function handle()
+    public function handle(ChannelService $service)
     {
         $name = $this->ask('Name (e.g. telegram-1)');
         $driver = $this->driver();
         $parameters = $this->parameters($driver);
         $enabled = $this->enabled();
 
-        Channel::create([
+        $service->create([
             'name' => $name,
             'driver' => $driver,
             'parameters' => $parameters,

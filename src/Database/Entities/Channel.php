@@ -1,9 +1,9 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace FondBot\Database\Entities;
 
 use Carbon\Carbon;
-use FondBot\Entities\AbstractEntity;
 use Illuminate\Database\Eloquent\Collection;
 
 /**

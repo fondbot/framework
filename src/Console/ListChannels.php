@@ -5,6 +5,7 @@ namespace FondBot\Console;
 
 use FondBot\Channels\Manager;
 use FondBot\Database\Entities\Channel;
+use FondBot\Database\Services\ChannelService;
 use FondBot\Nifty\Emoji;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
@@ -45,13 +46,13 @@ class ListChannels extends Command
      */
     private function channels(): Collection
     {
-        $channels = Channel::query();
-
+        /** @var ChannelService $service */
+        $service = resolve(ChannelService::class);
         if ($this->option('enabled')) {
-            $channels->where('is_enabled', true);
+            return $service->findEnabled();
         }
 
-        return $channels->get();
+        return $service->all();
     }
 
     private function driver(string $class): string

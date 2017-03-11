@@ -16,6 +16,7 @@ class Manager
 
     /**
      * Get driver instance
+     *
      * @param Request $request
      * @param Channel $channel
      *

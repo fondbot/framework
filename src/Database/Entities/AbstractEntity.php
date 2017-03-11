@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FondBot\Entities;
+namespace FondBot\Database\Entities;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;

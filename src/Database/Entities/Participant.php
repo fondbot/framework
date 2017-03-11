@@ -3,7 +3,6 @@
 namespace FondBot\Database\Entities;
 
 use Carbon\Carbon;
-use FondBot\Entities\AbstractEntity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**

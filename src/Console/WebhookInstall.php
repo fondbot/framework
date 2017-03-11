@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace FondBot\Console;
 
 use FondBot\Channels\Manager;
-use FondBot\Database\Entities\Channel;
+use FondBot\Database\Services\ChannelService;
 use Illuminate\Console\Command;
 
 class WebhookInstall extends Command
@@ -16,7 +16,7 @@ class WebhookInstall extends Command
     public function handle(Manager $manager)
     {
         $channel = $this->choice('Channel', $this->channels());
-        $channel = Channel::where('name', $channel)->first();
+        $channel = $this->service()->findByName($channel);
 
         $url = route('fondbot.webhook', $channel);
 
@@ -28,13 +28,19 @@ class WebhookInstall extends Command
 
     private function channels(): array
     {
-        $channels = Channel::where('is_enabled', true)->get();
+        /** @var ChannelService $service */
+        $channels = $this->service()->findEnabled();
         if ($channels->count() === 0) {
             $this->error('You have no enabled channels.');
             exit;
         }
 
         return $channels->pluck('name', 'id')->toArray();
+    }
+
+    private function service(): ChannelService
+    {
+        return resolve(ChannelService::class);
     }
 
 }
