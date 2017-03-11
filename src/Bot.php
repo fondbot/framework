@@ -7,6 +7,7 @@ use FondBot\Channels\Abstracts\Driver;
 use FondBot\Channels\ChannelManager;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\ConversationManager;
+use FondBot\Conversation\StoryManager;
 use FondBot\Database\Entities\Channel;
 use FondBot\Traits\Loggable;
 
@@ -15,15 +16,26 @@ class Bot
 
     use Loggable;
 
+    private $channelManager;
+    private $conversationManager;
+    private $storyManager;
+
+    public function __construct(
+        ChannelManager $channelManager,
+        ConversationManager $conversationManager,
+        StoryManager $storyManager
+    ) {
+        $this->channelManager = $channelManager;
+        $this->conversationManager = $conversationManager;
+        $this->storyManager = $storyManager;
+    }
+
     public function process(Channel $channel): void
     {
         $request = request();
 
-        /** @var ChannelManager $manager */
-        $manager = resolve(ChannelManager::class);
-
         /** @var Driver $driver */
-        $driver = $manager->driver($request, $channel);
+        $driver = $this->channelManager->driver($request, $channel);
 
         // Verify request
         $driver->verifyRequest();
@@ -31,11 +43,11 @@ class Bot
         // Resolve context
         $context = Context::instance($driver);
 
-        /** @var ConversationManager $conversation */
-        $conversation = ConversationManager::instance($driver, $channel, $context, config('fondbot.stories'));
+        // Find story
+        $story = $this->storyManager->find($context, $driver->message());
 
-        // Start conversation
-        $conversation->start();
+        // Start context
+        $this->conversationManager->start($context, $driver, $channel, $story);
     }
 
 }

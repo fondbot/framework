@@ -20,15 +20,8 @@ final class Participant extends AbstractEntity
 
     protected $table = 'participants';
 
-    protected $visible = [
-        'identifier',
-        'name',
-        'username',
-        'created_at',
-        'updated_at',
-    ];
-
     protected $fillable = [
+        'channel_id',
         'identifier',
         'name',
         'username',

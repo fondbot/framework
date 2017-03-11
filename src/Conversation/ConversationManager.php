@@ -3,77 +3,47 @@
 namespace FondBot\Conversation;
 
 use FondBot\Channels\Abstracts\Driver;
-use FondBot\Conversation\Traits\RetrievesStories;
 use FondBot\Database\Entities\Channel;
+use FondBot\Database\Services\ParticipantService;
 use FondBot\Traits\Loggable;
 
 class ConversationManager
 {
 
-    /** @var ConversationManager|null */
-    private static $instance;
+    use Loggable;
 
-    /** @var Driver */
-    protected $driver;
+    private $participantService;
 
-    /** @var Channel */
-    protected $channel;
-
-    /** @var Context */
-    protected $context;
-
-    /** @var Story[] */
-    protected $stories = [];
-
-    use Loggable, RetrievesStories;
-
-    public function __construct(Driver $driver, Channel $channel, Context $context, array $stories)
+    public function __construct(ParticipantService $participantService)
     {
-        $this->driver = $driver;
-        $this->channel = $channel;
-        $this->context = $context;
-        $this->stories = $stories;
+        $this->participantService = $participantService;
     }
 
-    public static function instance(
+    public function start(
+        Context $context,
         Driver $driver,
         Channel $channel,
-        Context $context,
-        array $stories
-    ): ConversationManager
-    {
-        if (self::$instance === null) {
-            self::$instance = new static($driver, $channel, $context, $stories);
-        }
-
-        return self::$instance;
-    }
-
-    public function start(): void
-    {
-        $participant = $this->driver->participant();
+        ?Story $story
+    ): void {
+        $participant = $driver->participant();
 
         // Store Participant in database
-        $this->channel->participants()->updateOrCreate([
+        $this->participantService->createOrUpdate([
+            'channel_id' => $channel->id,
             'identifier' => $participant->getIdentifier(),
             'name' => $participant->getName(),
             'username' => $participant->getUsername(),
-        ], ['identifier' => $participant->getIdentifier()]);
-
-        // Retrieve Story
-        $story = $this->retrieveStory($this->driver->message());
-
-        $this->debug('find', ['story' => $story]);
+        ], ['channel_id' => $channel->id, $participant]);
 
         // No story found
         if ($story === null) {
             return;
         }
 
-        $this->context->setStory($story);
-        $this->context->save();
+        $context->setStory($story);
+        $context->save();
 
-        $story->run($this->context);
+        $story->run($context);
     }
 
 }
