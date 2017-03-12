@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace FondBot\Channels\Drivers;
 
@@ -17,9 +18,11 @@ class Telegram extends Driver
     public function init(): void
     {
         // Set up http client
-        $this->http = new Client([
-            'base_uri' => 'https://api.telegram.org/bot' . $this->parameter('token') . '/',
-        ]);
+        if ($this->http === null) {
+            $this->http = new Client([
+                'base_uri' => 'https://api.telegram.org/bot' . $this->parameter('token') . '/',
+            ]);
+        }
     }
 
     /**
@@ -41,12 +44,6 @@ class Telegram extends Driver
      */
     public function verifyRequest(): void
     {
-        $data = $this->request->json();
-
-        if ($data === null) {
-            throw new InvalidChannelRequest('Request is empty');
-        }
-
         if (
             $this->request->json('message') === null ||
             $this->request->json('message.from') === null ||
@@ -90,8 +87,6 @@ class Telegram extends Driver
 
     public function reply(Participant $participant, Message $message, Keyboard $keyboard = null): void
     {
-        $this->debug('reply', ['participant' => $participant, 'message' => $message, 'keyboard' => $keyboard]);
-
         $parameters = [
             'chat_id' => $participant->getIdentifier(),
             'text' => $message->getText(),
@@ -111,8 +106,6 @@ class Telegram extends Driver
         }
 
         $request = Request::create($parameters);
-
-        $this->debug('reply.request', $request->toArray());
 
         try {
             $this->http->post('sendMessage', $request->toArray());

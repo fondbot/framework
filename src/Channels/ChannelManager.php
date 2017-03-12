@@ -11,7 +11,7 @@ class ChannelManager
 {
 
     private $drivers = [
-        'Telegram' => \FondBot\Channels\Drivers\Telegram::class,
+        'Telegram' => Drivers\Telegram::class,
     ];
 
     /**

@@ -27,11 +27,12 @@ abstract class Driver
     /** @var Client */
     protected $http;
 
-    public function __construct(Request $request, string $name = '', array $parameters = [])
+    public function __construct(Request $request, string $name = '', array $parameters = [], Client $http = null)
     {
         $this->request = $request;
         $this->name = $name;
         $this->parameters = $parameters;
+        $this->http = $http;
     }
 
     /**
