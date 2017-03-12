@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace FondBot;
 
@@ -10,10 +10,10 @@ use FondBot\Conversation\ConversationManager;
 use FondBot\Conversation\StoryManager;
 use FondBot\Database\Entities\Channel;
 use FondBot\Traits\Loggable;
+use Illuminate\Http\Request;
 
 class Bot
 {
-
     use Loggable;
 
     private $channelManager;
@@ -30,15 +30,15 @@ class Bot
         $this->storyManager = $storyManager;
     }
 
-    public function process(Channel $channel): void
+    public function process(Request $request, Channel $channel)
     {
-        $request = request();
-
         /** @var Driver $driver */
         $driver = $this->channelManager->driver($request, $channel);
 
         // Verify request
-        $driver->verifyRequest();
+        if ($driver->isInvalidRequest()) {
+            return $driver->handleInvalidRequest();
+        }
 
         // Resolve context
         $context = Context::instance($driver);
@@ -48,6 +48,7 @@ class Bot
 
         // Start context
         $this->conversationManager->start($context, $driver, $channel, $story);
-    }
 
+        return 'OK';
+    }
 }

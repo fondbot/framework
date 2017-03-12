@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace FondBot\Channels\Drivers;
 
@@ -10,6 +10,7 @@ use FondBot\Channels\Request;
 use FondBot\Conversation\Keyboard;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Symfony\Component\HttpFoundation\Response;
 
 class Telegram extends Driver
 {
@@ -56,6 +57,42 @@ class Telegram extends Driver
         }
     }
 
+
+    /**
+     * Verify incoming request data
+     *
+     * @throws InvalidChannelRequest
+     */
+    public function isInvalidRequest(): bool
+    {
+        $data = $this->request->json();
+
+        if ($data === null) {
+            $this->error('Request is empty');
+
+            // Maybe we should fire event
+
+            return true;
+        }
+
+        if (
+            $this->request->json('message') === null ||
+            $this->request->json('message.from') === null ||
+            $this->request->json('message.text') === null
+        ) {
+            $this->error('Invalid payload');
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function handleInvalidRequest(): Response
+    {
+        return response('OK');
+    }
+
     /**
      * Initialize webhook in the external service
      *
@@ -94,7 +131,7 @@ class Telegram extends Driver
 
         $parameters = [
             'chat_id' => $participant->getIdentifier(),
-            'text' => $message->getText(),
+            'text'    => $message->getText(),
         ];
 
         if ($keyboard !== null) {
@@ -105,7 +142,7 @@ class Telegram extends Driver
             }
 
             $parameters['reply_markup'] = json_encode([
-                'keyboard' => [$buttons],
+                'keyboard'        => [$buttons],
                 'resize_keyboard' => true,
             ]);
         }
@@ -120,5 +157,4 @@ class Telegram extends Driver
             $this->error(get_class($exception), [$exception->getMessage()]);
         }
     }
-
 }
