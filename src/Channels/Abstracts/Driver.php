@@ -9,6 +9,7 @@ use FondBot\Conversation\Keyboard;
 use FondBot\Traits\Loggable;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class Driver
 {
@@ -72,7 +73,9 @@ abstract class Driver
      *
      * @throws InvalidChannelRequest
      */
-    abstract public function verifyRequest(): void;
+    abstract public function isInvalidRequest(): bool;
+
+    abstract public function handleInvalidRequest(): Response;
 
     /**
      * Initialize webhook in the external service
