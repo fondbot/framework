@@ -12,10 +12,15 @@ class ConversationManager
 
     use Loggable;
 
+    private $contextManager;
     private $participantService;
 
-    public function __construct(ParticipantService $participantService)
+    public function __construct(
+        ContextManager $contextManager,
+        ParticipantService $participantService
+    )
     {
+        $this->contextManager = $contextManager;
         $this->participantService = $participantService;
     }
 
@@ -41,7 +46,7 @@ class ConversationManager
         }
 
         $context->setStory($story);
-        $context->save();
+        $this->contextManager->save($context);
 
         $story->run($context);
     }

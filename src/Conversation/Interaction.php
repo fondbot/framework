@@ -68,10 +68,13 @@ abstract class Interaction
 
             // Update interaction in context
             $this->context->setInteraction($this);
-            $this->context->save();
+
+            /** @var ContextManager $contextManager */
+            $contextManager = resolve(ContextManager::class);
+            $contextManager->save($this->context);
 
             // Compose message
-            $channel = $context->getChannel();
+            $channel = $context->getDriver();
             $channel->reply($channel->participant(), $this->message(), $this->keyboard());
         }
 

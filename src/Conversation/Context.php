@@ -1,9 +1,9 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
 use FondBot\Channels\Abstracts\Driver;
-use FondBot\Channels\Objects\Message;
 use FondBot\Channels\Objects\Participant;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -11,13 +11,10 @@ class Context implements Arrayable
 {
 
     /** @var Driver */
-    private $channel;
+    private $driver;
 
     /** @var Participant */
     private $participant;
-
-    /** @var Message */
-    private $message;
 
     /** @var Story|null */
     private $story;
@@ -29,55 +26,22 @@ class Context implements Arrayable
     private $values;
 
     public function __construct(
-        Driver $channel,
+        Driver $driver,
         Participant $participant,
-        Message $message,
         ?Story $story,
         ?Interaction $interaction,
         array $values = []
     ) {
-        $this->channel = $channel;
+        $this->driver = $driver;
         $this->participant = $participant;
-        $this->message = $message;
         $this->story = $story;
         $this->interaction = $interaction;
         $this->values = $values;
     }
 
-    public static function instance(Driver $channel): Context
+    public function getDriver(): Driver
     {
-        $key = self::key($channel->name(), $channel->participant());
-
-        $value = cache($key);
-
-        logger('Context.instance', ['value' => $value]);
-
-        $story = $value['story'] !== null ? app($value['story']) : null;
-        $interaction = $value['interaction'] !== null ? app($value['interaction']) : null;
-
-        return new static(
-            $channel,
-            $channel->participant(),
-            $channel->message(),
-            $story,
-            $interaction,
-            $value['values'] ?? []
-        );
-    }
-
-    public function setChannel(Driver $channel): void
-    {
-        $this->channel = $channel;
-    }
-
-    public function getChannel(): Driver
-    {
-        return $this->channel;
-    }
-
-    public function getMessage(): Message
-    {
-        return $this->message;
+        return $this->driver;
     }
 
     public function setStory(Story $story): void
@@ -106,42 +70,6 @@ class Context implements Arrayable
     }
 
     /**
-     * @param string $key
-     * @return mixed|null
-     */
-    public function getValue(string $key)
-    {
-        return $this->values[$key] ?? null;
-    }
-
-    public function setValue(string $key, $value): void
-    {
-        $this->values[$key] = $value;
-    }
-
-    public function save(): void
-    {
-        $key = self::key($this->channel->name(), $this->channel->participant());
-
-        $value = [
-            'story' => $this->getStory() !== null ? get_class($this->getStory()) : null,
-            'interaction' => $this->getInteraction() !== null ? get_class($this->getInteraction()) : null,
-            'values' => $this->values,
-        ];
-
-        logger('Context.save', $value);
-
-        cache()->put($key, $value);
-    }
-
-    public function clear(): void
-    {
-        logger('Context.clear');
-
-        cache()->forget(self::key($this->channel->name(), $this->channel->participant()));
-    }
-
-    /**
      * Get the instance as an array.
      *
      * @return array
@@ -149,17 +77,12 @@ class Context implements Arrayable
     public function toArray(): array
     {
         return [
-            'channel' => $this->channel,
+            'channel' => $this->driver,
             'participant' => $this->participant,
             'story' => $this->story,
             'interaction' => $this->interaction,
             'values' => $this->values,
         ];
-    }
-
-    private static function key(string $channel, Participant $participant): string
-    {
-        return 'context.' . $channel . '.' . $participant->getIdentifier();
     }
 
 }
