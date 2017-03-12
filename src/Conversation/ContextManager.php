@@ -58,7 +58,7 @@ class ContextManager
      */
     private function key(Driver $driver): string
     {
-        return 'context.' . $driver->name() . '.' . $driver->participant()->getIdentifier();
+        return 'context.' . $driver->getName() . '.' . $driver->participant()->getIdentifier();
     }
 
 }

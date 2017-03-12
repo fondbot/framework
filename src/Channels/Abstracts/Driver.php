@@ -36,11 +36,11 @@ abstract class Driver
     }
 
     /**
-     * Get channel's name
+     * Get current instance name
      *
      * @return string
      */
-    public function name(): string
+    public function getName(): string
     {
         return $this->name;
     }
