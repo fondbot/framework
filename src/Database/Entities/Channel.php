@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * @property-read Participant[]|Collection $participants
  */
-final class Channel extends AbstractEntity
+class Channel extends AbstractEntity
 {
 
     protected $table = 'channels';

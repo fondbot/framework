@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property Channel $channel
  */
-final class Participant extends AbstractEntity
+class Participant extends AbstractEntity
 {
 
     protected $table = 'participants';
