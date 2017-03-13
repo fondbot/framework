@@ -25,7 +25,6 @@ class ContextManager
 
         return new Context(
             $driver,
-            $driver->getParticipant(),
             $story,
             $interaction,
             $value['values'] ?? []
