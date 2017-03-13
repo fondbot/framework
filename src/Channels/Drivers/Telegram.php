@@ -20,7 +20,7 @@ class Telegram extends Driver
         // Set up http client
         if ($this->http === null) {
             $this->http = new Client([
-                'base_uri' => 'https://api.telegram.org/bot' . $this->parameter('token') . '/',
+                'base_uri' => 'https://api.telegram.org/bot' . $this->getParameter('token') . '/',
             ]);
         }
     }
@@ -30,7 +30,7 @@ class Telegram extends Driver
      *
      * @return array
      */
-    public function config(): array
+    public function getConfig(): array
     {
         return [
             'token',
@@ -67,7 +67,7 @@ class Telegram extends Driver
         ]);
     }
 
-    public function participant(): Participant
+    public function getParticipant(): Participant
     {
         $from = $this->request->json('message.from');
 
@@ -78,7 +78,7 @@ class Telegram extends Driver
         );
     }
 
-    public function message(): Message
+    public function getMessage(): Message
     {
         $text = $this->request->json('message.text');
 

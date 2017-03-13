@@ -38,7 +38,7 @@ class Bot
         $request = request();
 
         /** @var Driver $driver */
-        $driver = $this->channelManager->driver($request, $channel);
+        $driver = $this->channelManager->createDriver($request, $channel);
 
         // Verify request
         $driver->verifyRequest();
@@ -47,7 +47,7 @@ class Bot
         $context = $this->contextManager->resolve($driver);
 
         // Find story
-        $story = $this->storyManager->find($context, $driver->message());
+        $story = $this->storyManager->find($context, $driver->getMessage());
 
         // Start context
         $this->conversationManager->start($context, $driver, $channel, $story);

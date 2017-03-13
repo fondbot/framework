@@ -30,9 +30,9 @@ class BotTest extends TestCase
         $message = $this->mock(Message::class);
         $story = $this->mock(Story::class);
 
-        $driver->shouldReceive('message')->andReturn($message);
+        $driver->shouldReceive('getMessage')->andReturn($message);
 
-        $channelManager->shouldReceive('driver')->with(request(), $channel)->andReturn($driver)->once();
+        $channelManager->shouldReceive('createDriver')->with(request(), $channel)->andReturn($driver)->once();
         $driver->shouldReceive('verifyRequest')->once();
 
         $contextManager->shouldReceive('resolve')->with($driver)->andReturn($context)->once();

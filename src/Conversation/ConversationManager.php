@@ -30,7 +30,7 @@ class ConversationManager
         Channel $channel,
         ?Story $story
     ): void {
-        $participant = $driver->participant();
+        $participant = $driver->getParticipant();
 
         // Store Participant in database
         $this->participantService->createOrUpdate([

@@ -15,7 +15,7 @@ class ChannelManager
     ];
 
     /**
-     * Get driver instance
+     * Create driver instance
      *
      * @param Request $request
      * @param Channel $channel
@@ -23,7 +23,7 @@ class ChannelManager
      * @param bool $initialise
      * @return Driver
      */
-    public function driver(Request $request, Channel $channel, bool $initialise = true): Driver
+    public function createDriver(Request $request, Channel $channel, bool $initialise = true): Driver
     {
         /** @var Driver $driver */
         $driver = new $channel->driver($request, $channel->name, $channel->parameters);

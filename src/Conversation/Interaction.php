@@ -75,7 +75,7 @@ abstract class Interaction
 
             // Compose message
             $channel = $context->getDriver();
-            $channel->reply($channel->participant(), $this->message(), $this->keyboard());
+            $channel->reply($channel->getParticipant(), $this->message(), $this->keyboard());
         }
 
         // Perform actions before running interaction

@@ -47,7 +47,7 @@ class CreateChannel extends Command
 
         $parameters = [];
 
-        foreach ($driver->config() as $parameter) {
+        foreach ($driver->getConfig() as $parameter) {
             $parameters[$parameter] = $this->ask(Str::ucfirst($parameter));
         }
 

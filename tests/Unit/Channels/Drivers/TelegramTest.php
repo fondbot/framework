@@ -15,6 +15,7 @@ use Tests\TestCase;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
+ * @property string channelName
  * @property Telegram telegram
  */
 class TelegramTest extends TestCase
@@ -25,20 +26,26 @@ class TelegramTest extends TestCase
         parent::setUp();
 
         $this->guzzle = $this->mock(Client::class);
+        $this->channelName = $this->faker()->name;
 
         $this->telegram = new Telegram(
             request(),
-            $this->faker()->name,
+            $this->channelName,
             ['token' => str_random()],
             $this->guzzle
         );
     }
 
-    public function test_config()
+    public function test_getChannelName()
+    {
+        $this->assertEquals($this->channelName, $this->telegram->getChannelName());
+    }
+
+    public function test_getConfig()
     {
         $expected = ['token'];
 
-        $this->assertEquals($expected, $this->telegram->config());
+        $this->assertEquals($expected, $this->telegram->getConfig());
     }
 
     /**
@@ -105,7 +112,7 @@ class TelegramTest extends TestCase
             ]
         ]));
 
-        $this->assertInstanceOf(Participant::class, $this->telegram->participant());
+        $this->assertInstanceOf(Participant::class, $this->telegram->getParticipant());
     }
 
     public function test_message()
@@ -116,7 +123,7 @@ class TelegramTest extends TestCase
             ]
         ]));
 
-        $this->assertInstanceOf(Message::class, $this->telegram->message());
+        $this->assertInstanceOf(Message::class, $this->telegram->getMessage());
     }
 
     public function test_reply_with_keyboard()

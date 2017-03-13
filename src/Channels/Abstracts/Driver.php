@@ -19,7 +19,7 @@ abstract class Driver
     protected $request;
 
     /** @var string */
-    private $name;
+    private $channelName;
 
     /** @var array */
     protected $parameters;
@@ -27,22 +27,22 @@ abstract class Driver
     /** @var Client */
     protected $http;
 
-    public function __construct(Request $request, string $name = '', array $parameters = [], Client $http = null)
+    public function __construct(Request $request, string $channelName, array $parameters = [], Client $http = null)
     {
         $this->request = $request;
-        $this->name = $name;
+        $this->channelName = $channelName;
         $this->parameters = $parameters;
         $this->http = $http;
     }
 
     /**
-     * Get current instance name
+     * Get channel name
      *
      * @return string
      */
-    public function getName(): string
+    public function getChannelName(): string
     {
-        return $this->name;
+        return $this->channelName;
     }
 
     /**
@@ -51,7 +51,7 @@ abstract class Driver
      * @param string $name
      * @return string
      */
-    protected function parameter(string $name): string
+    protected function getParameter(string $name): string
     {
         return $this->parameters[$name] ?? '';
     }
@@ -66,7 +66,7 @@ abstract class Driver
      *
      * @return array
      */
-    abstract public function config(): array;
+    abstract public function getConfig(): array;
 
     /**
      * Verify incoming request data
@@ -82,10 +82,27 @@ abstract class Driver
      */
     abstract public function installWebhook(string $url): void;
 
-    abstract public function participant(): Participant;
+    /**
+     * Get current participant
+     *
+     * @return Participant
+     */
+    abstract public function getParticipant(): Participant;
 
-    abstract public function message(): Message;
+    /**
+     * Get message sent by participant
+     *
+     * @return Message
+     */
+    abstract public function getMessage(): Message;
 
+    /**
+     * Send reply to participant
+     *
+     * @param Participant $participant
+     * @param Message $message
+     * @param Keyboard|null $keyboard
+     */
     abstract public function reply(Participant $participant, Message $message, Keyboard $keyboard = null): void;
 
 }

@@ -25,7 +25,7 @@ class ContextManager
 
         return new Context(
             $driver,
-            $driver->participant(),
+            $driver->getParticipant(),
             $story,
             $interaction,
             $value['values'] ?? []
@@ -58,7 +58,7 @@ class ContextManager
      */
     private function key(Driver $driver): string
     {
-        return 'context.' . $driver->getName() . '.' . $driver->participant()->getIdentifier();
+        return 'context.' . $driver->getChannelName() . '.' . $driver->getParticipant()->getIdentifier();
     }
 
 }

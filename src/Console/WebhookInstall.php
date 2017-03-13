@@ -20,7 +20,7 @@ class WebhookInstall extends Command
 
         $url = route('fondbot.webhook', $channel);
 
-        $driver = $manager->driver(request(), $channel);
+        $driver = $manager->createDriver(request(), $channel);
         $driver->installWebhook($url);
 
         $this->info('Webhook successfully installed.');
