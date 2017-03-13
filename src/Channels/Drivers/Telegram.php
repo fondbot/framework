@@ -44,11 +44,7 @@ class Telegram extends Driver
      */
     public function verifyRequest(): void
     {
-        if (
-            $this->request->json('message') === null ||
-            $this->request->json('message.from') === null ||
-            $this->request->json('message.text') === null
-        ) {
+        if (!isset($this->request['message'], $this->request['message']['from'], $this->request['message']['text'])) {
             throw new InvalidChannelRequest('Invalid payload');
         }
     }
@@ -69,7 +65,7 @@ class Telegram extends Driver
 
     public function getParticipant(): Participant
     {
-        $from = $this->request->json('message.from');
+        $from = $this->request['message']['from'];
 
         return Participant::create(
             (string)$from['id'],
@@ -80,7 +76,7 @@ class Telegram extends Driver
 
     public function getMessage(): Message
     {
-        $text = $this->request->json('message.text');
+        $text = $this->request['message']['text'];
 
         return Message::create($text);
     }

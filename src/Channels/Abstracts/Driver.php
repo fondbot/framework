@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace FondBot\Channels\Abstracts;
 
@@ -8,14 +9,13 @@ use FondBot\Channels\Objects\Participant;
 use FondBot\Conversation\Keyboard;
 use FondBot\Traits\Loggable;
 use GuzzleHttp\Client;
-use Illuminate\Http\Request;
 
 abstract class Driver
 {
 
     use Loggable;
 
-    /** @var Request */
+    /** @var array */
     protected $request;
 
     /** @var string */
@@ -27,12 +27,21 @@ abstract class Driver
     /** @var Client */
     protected $http;
 
-    public function __construct(Request $request, string $channelName, array $parameters = [], Client $http = null)
+    public function __construct(string $channelName, array $parameters = [], Client $http = null)
     {
-        $this->request = $request;
         $this->channelName = $channelName;
         $this->parameters = $parameters;
         $this->http = $http;
+    }
+
+    /**
+     * Set request
+     *
+     * @param array $request
+     */
+    public function setRequest(array $request): void
+    {
+        $this->request = $request;
     }
 
     /**

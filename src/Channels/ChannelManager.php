@@ -5,7 +5,6 @@ namespace FondBot\Channels;
 
 use FondBot\Channels\Abstracts\Driver;
 use FondBot\Database\Entities\Channel;
-use Illuminate\Http\Request;
 
 class ChannelManager
 {
@@ -17,16 +16,17 @@ class ChannelManager
     /**
      * Create driver instance
      *
-     * @param Request $request
+     * @param array $request
      * @param Channel $channel
      *
      * @param bool $initialise
      * @return Driver
      */
-    public function createDriver(Request $request, Channel $channel, bool $initialise = true): Driver
+    public function createDriver(array $request, Channel $channel, bool $initialise = true): Driver
     {
         /** @var Driver $driver */
-        $driver = new $channel->driver($request, $channel->name, $channel->parameters);
+        $driver = new $channel->driver($channel->name, $channel->parameters);
+        $driver->setRequest($request);
         if ($initialise) {
             $driver->init();
         }

@@ -11,7 +11,6 @@ use FondBot\Conversation\StoryManager;
 use FondBot\Database\Entities\Channel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Http\Request;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
@@ -20,13 +19,13 @@ class StartConversation implements ShouldQueue
 
     use InteractsWithQueue, Queueable, SerializesModels;
 
-    private $request;
     private $channel;
+    private $request;
 
-    public function __construct(Request $request, Channel $channel)
+    public function __construct(Channel $channel, array $request)
     {
-        $this->request = $request;
         $this->channel = $channel;
+        $this->request = $request;
     }
 
     public function handle(

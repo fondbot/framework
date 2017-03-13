@@ -23,7 +23,12 @@ class Bot
 
     public function process(Channel $channel): void
     {
-        $request = request();
+        /** @var array $request */
+        if (request()->isJson()) {
+            $request = request()->json()->all();
+        } else {
+            $request = request()->all();
+        }
 
         /** @var Driver $driver */
         $driver = $this->channelManager->createDriver($request, $channel);
@@ -32,7 +37,7 @@ class Bot
         $driver->verifyRequest();
 
         // Send job to start conversation
-        $job = (new StartConversation($request, $channel))
+        $job = (new StartConversation($channel, $request))
             ->onQueue('fondbot-webhook-requests');
 
         dispatch($job);

@@ -22,7 +22,7 @@ class BotTest extends TestCase
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
 
-        $channelManager->shouldReceive('createDriver')->with(request(), $channel)->andReturn($driver)->once();
+        $channelManager->shouldReceive('createDriver')->with([], $channel)->andReturn($driver)->once();
         $driver->shouldReceive('verifyRequest')->once();
 
         $bot = new Bot($channelManager);

@@ -20,7 +20,7 @@ class StartConversationTest extends TestCase
 
     public function test()
     {
-        $request = request();
+        $request = [];
         $channel = $this->mock(Channel::class);
 
         $channelManager = $this->mock(ChannelManager::class);
@@ -38,7 +38,7 @@ class StartConversationTest extends TestCase
         $storyManager->shouldReceive('find')->with($context, $message)->andReturn($story)->once();
         $conversationManager->shouldReceive('start')->with($context, $driver, $channel, $story)->once();
 
-        $job = new StartConversation($request, $channel);
+        $job = new StartConversation($channel, $request);
         $job->handle($channelManager, $contextManager, $storyManager, $conversationManager);
     }
 

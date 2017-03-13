@@ -29,7 +29,7 @@ class ChannelManagerTest extends TestCase
             'parameters' => ['token' => str_random()],
         ]);
 
-        $driver = $this->manager->createDriver(request(), $channel, true);
+        $driver = $this->manager->createDriver([], $channel, true);
 
         $this->assertInstanceOf(Telegram::class, $driver);
     }

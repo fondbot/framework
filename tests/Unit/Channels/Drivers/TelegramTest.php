@@ -29,7 +29,6 @@ class TelegramTest extends TestCase
         $this->channelName = $this->faker()->name;
 
         $this->telegram = new Telegram(
-            request(),
             $this->channelName,
             ['token' => str_random()],
             $this->guzzle
@@ -63,14 +62,14 @@ class TelegramTest extends TestCase
      */
     public function test_verifyRequest_empty_message_from()
     {
-        request()->setJson(collect(['message' => ['text' => $this->faker()->word]]));
+        $this->telegram->setRequest(['message' => ['text' => $this->faker()->word]]);
 
         $this->telegram->verifyRequest();
     }
 
     public function test_verifyRequest()
     {
-        request()->setJson(collect(['message' => ['from' => $this->faker()->name, 'text' => $this->faker()->word]]));
+        $this->telegram->setRequest(['message' => ['from' => $this->faker()->name, 'text' => $this->faker()->word]]);
 
         $this->telegram->verifyRequest();
     }
@@ -101,7 +100,7 @@ class TelegramTest extends TestCase
 
     public function test_participant()
     {
-        request()->setJson(collect([
+        $this->telegram->setRequest([
             'message' => [
                 'from' => [
                     'id' => str_random(),
@@ -110,18 +109,18 @@ class TelegramTest extends TestCase
                     'username' => $this->faker()->userName,
                 ],
             ]
-        ]));
+        ]);
 
         $this->assertInstanceOf(Participant::class, $this->telegram->getParticipant());
     }
 
     public function test_message()
     {
-        request()->setJson(collect([
+        $this->telegram->setRequest([
             'message' => [
                 'text' => $this->faker()->text,
             ]
-        ]));
+        ]);
 
         $this->assertInstanceOf(Message::class, $this->telegram->getMessage());
     }
