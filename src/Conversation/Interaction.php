@@ -9,10 +9,10 @@ use FondBot\Traits\Loggable;
 abstract class Interaction
 {
 
+    use Loggable, Transitions;
+
     /** @var Context */
     protected $context;
-
-    use Loggable, Transitions;
 
     /**
      * Do something before running Interaction
@@ -51,21 +51,16 @@ abstract class Interaction
 
     public function run(Context $context): void
     {
-        $this->debug('run');
-
         $this->context = $context;
 
         // Perform actions before running interaction
         $this->before();
 
-        // Process reply if current Interaction in Context
-        // Generate reply if not
+        // Process reply if current interaction in context
+        // Reply to participant if not
         if ($context->getInteraction() instanceof $this) {
-            $this->debug('process');
             $this->process();
         } else {
-            $this->debug('reply');
-
             // Update interaction in context
             $this->context->setInteraction($this);
 
@@ -73,9 +68,9 @@ abstract class Interaction
             $contextManager = resolve(ContextManager::class);
             $contextManager->save($this->context);
 
-            // Compose message
-            $channel = $context->getDriver();
-            $channel->reply($channel->getParticipant(), $this->message(), $this->keyboard());
+            // Send reply to participant
+            $driver = $context->getDriver();
+            $driver->reply($driver->getParticipant(), $this->message(), $this->keyboard());
         }
 
         // Perform actions before running interaction

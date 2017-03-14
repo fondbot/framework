@@ -22,7 +22,11 @@ abstract class TestCase extends BaseTestCase
      */
     protected function mock(string $class)
     {
-        return Mockery::mock($class);
+        $instance = Mockery::mock($class);
+
+        $this->app->instance($class, $instance);
+
+        return $instance;
     }
 
     /**

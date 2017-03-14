@@ -26,7 +26,7 @@ trait Transitions
         }
 
         /** @var Interaction $instance */
-        $instance = app($interaction);
+        $instance = resolve($interaction);
 
         if (!$instance instanceof Interaction) {
             throw new InvalidArgumentException($interaction . ' is not a valid "Interaction".');
