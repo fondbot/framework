@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Participant extends AbstractEntity
 {
-
     protected $table = 'participants';
 
     protected $fillable = [
@@ -31,5 +30,4 @@ class Participant extends AbstractEntity
     {
         return $this->belongsTo(Channel::class);
     }
-
 }

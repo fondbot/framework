@@ -12,7 +12,6 @@ use Illuminate\Routing\Controller;
 
 class WebhookController extends Controller
 {
-
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function handle(Channel $channel, Bot $bot)
@@ -21,5 +20,4 @@ class WebhookController extends Controller
 
         return 'OK';
     }
-
 }

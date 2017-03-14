@@ -59,5 +59,4 @@ class ContextManager
     {
         return 'context.' . $driver->getChannelName() . '.' . $driver->getParticipant()->getIdentifier();
     }
-
 }

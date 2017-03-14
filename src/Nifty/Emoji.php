@@ -4,5 +4,4 @@ namespace FondBot\Nifty;
 
 class Emoji extends \Spatie\Emoji\Emoji
 {
-
 }

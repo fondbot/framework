@@ -11,7 +11,6 @@ use FondBot\Traits\Loggable;
 
 class Bot
 {
-
     use Loggable;
 
     private $channelManager;
@@ -42,5 +41,4 @@ class Bot
 
         dispatch($job);
     }
-
 }

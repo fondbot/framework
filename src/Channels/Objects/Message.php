@@ -26,5 +26,4 @@ class Message
     {
         return $this->text;
     }
-
 }

@@ -15,7 +15,6 @@ use Tests\TestCase;
 
 class ConversationManagerTest extends TestCase
 {
-
     public function test_start()
     {
         $contextManager = $this->mock(ContextManager::class);
@@ -53,5 +52,4 @@ class ConversationManagerTest extends TestCase
         $manager = new ConversationManager($contextManager, $participantService);
         $manager->start($context, $driver, $channel, $story);
     }
-
 }

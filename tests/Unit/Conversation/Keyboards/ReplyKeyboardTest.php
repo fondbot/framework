@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 class ReplyKeyboardTest extends TestCase
 {
-
     public function test_create()
     {
         $buttons = [
@@ -23,5 +22,4 @@ class ReplyKeyboardTest extends TestCase
         $this->assertSame($buttons, $keyboard->getButtons());
         $this->assertEquals('Click me', $keyboard->getButtons()[0]->getValue());
     }
-
 }

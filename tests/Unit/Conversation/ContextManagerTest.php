@@ -17,7 +17,6 @@ use Tests\TestCase;
  */
 class ContextManagerTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -76,5 +75,4 @@ class ContextManagerTest extends TestCase
 
         $this->manager->save($context);
     }
-
 }

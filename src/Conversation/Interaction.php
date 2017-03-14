@@ -8,7 +8,6 @@ use FondBot\Traits\Loggable;
 
 abstract class Interaction
 {
-
     use Loggable, Transitions;
 
     /** @var Context */
@@ -19,7 +18,6 @@ abstract class Interaction
      */
     public function before(): void
     {
-
     }
 
     /**
@@ -27,7 +25,6 @@ abstract class Interaction
      */
     public function after(): void
     {
-
     }
 
     /**
@@ -76,5 +73,4 @@ abstract class Interaction
         // Perform actions before running interaction
         $this->after();
     }
-
 }

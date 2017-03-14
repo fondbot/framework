@@ -4,7 +4,6 @@ namespace FondBot\Traits;
 
 trait Loggable
 {
-
     protected function debug(string $message, array $context = []): void
     {
         $class = get_class($this);
@@ -16,5 +15,4 @@ trait Loggable
         $class = get_class($this);
         logger()->error($class . '.' . $message, $context);
     }
-
 }

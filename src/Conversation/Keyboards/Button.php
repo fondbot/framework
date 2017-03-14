@@ -25,5 +25,4 @@ class Button
     {
         $this->value = $value;
     }
-
 }

@@ -13,7 +13,6 @@ use Tests\TestCase;
  */
 class ChannelManagerTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -42,5 +41,4 @@ class ChannelManagerTest extends TestCase
 
         $this->assertEquals($expected, $this->manager->supportedDrivers());
     }
-
 }

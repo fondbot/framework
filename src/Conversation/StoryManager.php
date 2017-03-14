@@ -59,5 +59,4 @@ class StoryManager
     {
         return config('fondbot.stories');
     }
-
 }

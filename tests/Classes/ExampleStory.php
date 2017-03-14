@@ -24,5 +24,4 @@ class ExampleStory extends Story
     {
         $this->jump(ExampleInteraction::class);
     }
-
 }

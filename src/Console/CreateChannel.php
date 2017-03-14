@@ -11,7 +11,6 @@ use Illuminate\Support\Str;
 
 class CreateChannel extends Command
 {
-
     protected $signature = 'fondbot:channel:create';
     protected $description = 'Create a new channel';
 
@@ -58,5 +57,4 @@ class CreateChannel extends Command
     {
         return $this->choice('Enable new channel?', ['Yes', 'No'], 1) === 'Yes';
     }
-
 }

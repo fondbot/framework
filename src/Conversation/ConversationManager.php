@@ -10,7 +10,6 @@ use FondBot\Traits\Loggable;
 
 class ConversationManager
 {
-
     use Loggable;
 
     private $contextManager;
@@ -53,5 +52,4 @@ class ConversationManager
 
         $story->run($context);
     }
-
 }

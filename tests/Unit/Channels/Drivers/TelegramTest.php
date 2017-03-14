@@ -20,7 +20,6 @@ use Tests\TestCase;
  */
 class TelegramTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -195,5 +194,4 @@ class TelegramTest extends TestCase
 
         $this->telegram->reply($participant, $message);
     }
-
 }
