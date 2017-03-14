@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace FondBot\Database\Entities;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -12,8 +11,8 @@ use Illuminate\Database\Eloquent\Collection;
  * @property string $name
  * @property array $parameters
  * @property bool $is_enabled
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  *
  * @property-read Participant[]|Collection $participants
  */
