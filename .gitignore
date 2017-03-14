@@ -1,3 +1,4 @@
 /tests/Coverage
 /vendor/
 _ide_helper.php
+composer.lock
