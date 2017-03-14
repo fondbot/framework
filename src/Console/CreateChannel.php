@@ -12,8 +12,8 @@ use Illuminate\Support\Str;
 class CreateChannel extends Command
 {
 
-    protected $signature = 'fondbot:create-channel';
-    protected $description = 'Create new channel';
+    protected $signature = 'fondbot:channel:create';
+    protected $description = 'Create a new channel';
 
     public function handle(ChannelService $service)
     {

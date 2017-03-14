@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 class ListChannels extends Command
 {
 
-    protected $signature = 'fondbot:channels 
+    protected $signature = 'fondbot:channel:list 
                            {--enabled : Display only enabled}';
     protected $description = 'List all channels';
 

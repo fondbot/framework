@@ -9,8 +9,8 @@ use Illuminate\Console\Command;
 class CreateInteraction extends Command
 {
 
-    protected $signature = 'fondbot:create-interaction {name}';
-    protected $description = 'Create new story interaction';
+    protected $signature = 'fondbot:interaction:make {name}';
+    protected $description = 'Create a new interaction class';
 
     public function handle(ConversationCreator $creator)
     {
