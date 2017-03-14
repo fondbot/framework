@@ -3,6 +3,8 @@ language: php
 php:
   - 7.1
 
+sudo: false
+
 cache:
   directories:
   - vendor
@@ -10,6 +12,6 @@ cache:
 
 before_script:
   - composer self-update
-  - composer install --no-interaction
+  - COMPOSER_DISCARD_CHANGES=1 composer install --dev --prefer-source --no-interaction
 script:
   - composer test
