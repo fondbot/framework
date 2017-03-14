@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Console;
@@ -7,7 +8,6 @@ use Illuminate\Console\Command;
 
 class Install extends Command
 {
-
     protected $signature = 'fondbot:install 
                             {--fresh-migrations : Refresh database} 
                             {--force : Force FondBot installation}';
@@ -29,7 +29,7 @@ class Install extends Command
             return;
         }
 
-        if (!$this->confirm('This command will erase some of your files and install fresh copy of FondBot. Are you sure?')) {
+        if (! $this->confirm('This command will erase some of your files and install fresh copy of FondBot. Are you sure?')) {
             exit;
         }
     }
@@ -47,5 +47,4 @@ class Install extends Command
             $this->callSilent('migrate', ['--force' => true, '--seed' => true]);
         }
     }
-
 }

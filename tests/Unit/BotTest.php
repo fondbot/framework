@@ -1,19 +1,19 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Unit;
 
 use Bus;
 use FondBot\Bot;
-use FondBot\Channels\ChannelManager;
-use FondBot\Channels\Driver;
-use FondBot\Database\Entities\Channel;
-use FondBot\Jobs\StartConversation;
 use Tests\TestCase;
+use FondBot\Channels\Driver;
+use FondBot\Jobs\StartConversation;
+use FondBot\Channels\ChannelManager;
+use FondBot\Database\Entities\Channel;
 
 class BotTest extends TestCase
 {
-
     public function test()
     {
         Bus::fake();
@@ -30,5 +30,4 @@ class BotTest extends TestCase
 
         Bus::assertDispatched(StartConversation::class);
     }
-
 }

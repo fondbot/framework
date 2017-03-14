@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace FondBot\Conversation\Keyboards;
 
 class Button
 {
-
     /** @var string */
     private $value;
 
@@ -25,5 +26,4 @@ class Button
     {
         $this->value = $value;
     }
-
 }

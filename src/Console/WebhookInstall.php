@@ -1,15 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Console;
 
+use Illuminate\Console\Command;
 use FondBot\Channels\ChannelManager;
 use FondBot\Database\Services\ChannelService;
-use Illuminate\Console\Command;
 
 class WebhookInstall extends Command
 {
-
     protected $signature = 'fondbot:install-webhook';
     protected $description = 'Install Channel webhook';
 
@@ -42,5 +42,4 @@ class WebhookInstall extends Command
     {
         return resolve(ChannelService::class);
     }
-
 }

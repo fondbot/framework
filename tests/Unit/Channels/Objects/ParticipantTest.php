@@ -1,14 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Objects;
 
-use FondBot\Channels\Objects\Participant;
 use Tests\TestCase;
+use FondBot\Channels\Objects\Participant;
 
 class ParticipantTest extends TestCase
 {
-
     public function test_create()
     {
         $id = $this->faker()->uuid;
@@ -21,5 +21,4 @@ class ParticipantTest extends TestCase
         $this->assertEquals($name, $participant->getName());
         $this->assertEquals($username, $participant->getUsername());
     }
-
 }

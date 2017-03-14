@@ -1,14 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Conversation\Traits\Transitions;
 use FondBot\Traits\Loggable;
+use FondBot\Conversation\Traits\Transitions;
 
 abstract class Story
 {
-
     use Loggable, Transitions;
 
     /** @var string */
@@ -21,7 +21,7 @@ abstract class Story
     protected $context;
 
     /**
-     * Story activations
+     * Story activations.
      *
      * @return array
      */
@@ -37,11 +37,11 @@ abstract class Story
         // Process interaction from context
         if ($interaction !== null) {
             $interaction->run($context);
+
             return;
         }
 
         // Run story
         $this->start();
     }
-
 }

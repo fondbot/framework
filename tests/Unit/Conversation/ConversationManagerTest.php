@@ -1,21 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Channels\Driver;
-use FondBot\Channels\Objects\Participant;
-use FondBot\Conversation\Context;
-use FondBot\Conversation\ContextManager;
-use FondBot\Conversation\ConversationManager;
-use FondBot\Conversation\Story;
-use FondBot\Database\Entities\Channel;
-use FondBot\Database\Services\ParticipantService;
 use Tests\TestCase;
+use FondBot\Channels\Driver;
+use FondBot\Conversation\Story;
+use FondBot\Conversation\Context;
+use FondBot\Database\Entities\Channel;
+use FondBot\Conversation\ContextManager;
+use FondBot\Channels\Objects\Participant;
+use FondBot\Conversation\ConversationManager;
+use FondBot\Database\Services\ParticipantService;
 
 class ConversationManagerTest extends TestCase
 {
-
     public function test_start()
     {
         $contextManager = $this->mock(ContextManager::class);
@@ -53,5 +53,4 @@ class ConversationManagerTest extends TestCase
         $manager = new ConversationManager($contextManager, $participantService);
         $manager->start($context, $driver, $channel, $story);
     }
-
 }

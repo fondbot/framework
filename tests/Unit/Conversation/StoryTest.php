@@ -1,20 +1,20 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
+use Tests\TestCase;
+use Tests\Classes\ExampleStory;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Interaction;
 use Tests\Classes\ExampleInteraction;
-use Tests\Classes\ExampleStory;
-use Tests\TestCase;
 
 /**
  * @property ExampleStory story
  */
 class StoryTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -43,6 +43,4 @@ class StoryTest extends TestCase
 
         $this->story->run($context);
     }
-
-
 }

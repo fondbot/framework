@@ -1,22 +1,22 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Jobs;
 
-use FondBot\Channels\ChannelManager;
 use FondBot\Channels\Driver;
-use FondBot\Conversation\ContextManager;
-use FondBot\Conversation\ConversationManager;
+use Illuminate\Bus\Queueable;
+use FondBot\Channels\ChannelManager;
 use FondBot\Conversation\StoryManager;
 use FondBot\Database\Entities\Channel;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use FondBot\Conversation\ContextManager;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use FondBot\Conversation\ConversationManager;
 
 class StartConversation implements ShouldQueue
 {
-
     use InteractsWithQueue, Queueable, SerializesModels;
 
     private $channel;
@@ -48,9 +48,7 @@ class StartConversation implements ShouldQueue
             return;
         }
 
-
         // Start Conversation
         $conversationManager->start($context, $driver, $this->channel, $story);
     }
-
 }

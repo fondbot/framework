@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Conversation;
@@ -7,9 +8,8 @@ use FondBot\Channels\Objects\Message;
 
 class StoryManager
 {
-
     /**
-     * Find story
+     * Find story.
      *
      * @param Context $context
      * @param Message $message
@@ -30,7 +30,7 @@ class StoryManager
     }
 
     /**
-     * Find story by message
+     * Find story by message.
      *
      * @param Message $message
      *
@@ -46,12 +46,10 @@ class StoryManager
                 return $story;
             }
         }
-
-        return null;
     }
 
     /**
-     * Get stories
+     * Get stories.
      *
      * @return array
      */
@@ -59,5 +57,4 @@ class StoryManager
     {
         return config('fondbot.stories');
     }
-
 }

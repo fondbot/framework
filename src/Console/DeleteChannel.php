@@ -1,14 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Console;
 
-use FondBot\Database\Services\ChannelService;
 use Illuminate\Console\Command;
+use FondBot\Database\Services\ChannelService;
 
 class DeleteChannel extends Command
 {
-
     protected $signature = 'fondbot:channel:delete';
     protected $description = 'Delete existing channel';
 
@@ -17,7 +17,7 @@ class DeleteChannel extends Command
         $channels = $service->all()->pluck('name', 'id')->toArray();
         $channel = $this->choice('Channel', $channels);
 
-        if (!$this->confirm('Are you sure?')) {
+        if (! $this->confirm('Are you sure?')) {
             return;
         }
 
@@ -25,5 +25,4 @@ class DeleteChannel extends Command
 
         $this->info('Channel has been deleted.');
     }
-
 }

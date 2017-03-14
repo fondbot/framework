@@ -1,32 +1,32 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Channels\Drivers;
 
+use GuzzleHttp\Client;
 use FondBot\Channels\Driver;
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
-use FondBot\Channels\Objects\Message;
-use FondBot\Channels\Objects\Participant;
 use FondBot\Channels\Request;
 use FondBot\Conversation\Keyboard;
-use GuzzleHttp\Client;
+use FondBot\Channels\Objects\Message;
+use FondBot\Channels\Objects\Participant;
 use GuzzleHttp\Exception\RequestException;
+use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 class Telegram extends Driver
 {
-
     public function init(): void
     {
         // Set up http client
         if ($this->http === null) {
             $this->http = new Client([
-                'base_uri' => 'https://api.telegram.org/bot' . $this->getParameter('token') . '/',
+                'base_uri' => 'https://api.telegram.org/bot'.$this->getParameter('token').'/',
             ]);
         }
     }
 
     /**
-     * Configuration parameters
+     * Configuration parameters.
      *
      * @return array
      */
@@ -38,19 +38,19 @@ class Telegram extends Driver
     }
 
     /**
-     * Verify incoming request data
+     * Verify incoming request data.
      *
      * @throws InvalidChannelRequest
      */
     public function verifyRequest(): void
     {
-        if (!isset($this->request['message'], $this->request['message']['from'], $this->request['message']['text'])) {
+        if (! isset($this->request['message'], $this->request['message']['from'], $this->request['message']['text'])) {
             throw new InvalidChannelRequest('Invalid payload');
         }
     }
 
     /**
-     * Initialize webhook in the external service
+     * Initialize webhook in the external service.
      *
      * @param string $url
      */
@@ -68,8 +68,8 @@ class Telegram extends Driver
         $from = $this->request['message']['from'];
 
         return Participant::create(
-            (string)$from['id'],
-            $from['first_name'] . ' ' . $from['last_name'],
+            (string) $from['id'],
+            $from['first_name'].' '.$from['last_name'],
             $from['username']
         );
     }
@@ -109,5 +109,4 @@ class Telegram extends Driver
             $this->error(get_class($exception), [$exception->getMessage()]);
         }
     }
-
 }

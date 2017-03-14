@@ -1,13 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
+use Tests\TestCase;
 use FondBot\Channels\Driver;
+use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Interaction;
-use FondBot\Conversation\Story;
-use Tests\TestCase;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface driver
@@ -18,7 +19,6 @@ use Tests\TestCase;
  */
 class ContextTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -79,5 +79,4 @@ class ContextTest extends TestCase
         $this->assertSame($values, $this->context->getValues());
         $this->assertNotSame($this->values, $this->context->getValues());
     }
-
 }

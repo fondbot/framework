@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Conversation;
@@ -8,16 +9,15 @@ use Illuminate\Support\Str;
 
 class ConversationCreator
 {
-
     /**
-     * Create new story
+     * Create new story.
      *
      * @param string $name
      * @throws Exception
      */
     public function createStory(string $name): void
     {
-        $contents = file_get_contents(__DIR__ . '/../../resources/stubs/Story.stub');
+        $contents = file_get_contents(__DIR__.'/../../resources/stubs/Story.stub');
 
         $className = $this->className($name, 'Story');
 
@@ -26,20 +26,20 @@ class ConversationCreator
         $this->replacePlaceholder($contents, 'className', $className);
         $this->replacePlaceholder($contents, 'name', $this->formatName($name));
 
-        $path = $this->botDirectory() . '/' . $this->filename($className);
+        $path = $this->botDirectory().'/'.$this->filename($className);
 
         $this->write($path, $contents);
     }
 
     /**
-     * Create new interaction
+     * Create new interaction.
      *
      * @param string $name
      * @throws Exception
      */
     public function createInteraction(string $name): void
     {
-        $contents = file_get_contents(__DIR__ . '/../../resources/stubs/Interaction.stub');
+        $contents = file_get_contents(__DIR__.'/../../resources/stubs/Interaction.stub');
 
         $className = $this->className($name, 'Interaction');
 
@@ -47,13 +47,13 @@ class ConversationCreator
         $this->replacePlaceholder($contents, 'namespace', $this->botNamespace('Interactions'));
         $this->replacePlaceholder($contents, 'className', $className);
 
-        $path = $this->botDirectory('Interactions') . '/' . $this->filename($className);
+        $path = $this->botDirectory('Interactions').'/'.$this->filename($className);
 
         $this->write($path, $contents);
     }
 
     /**
-     * Replace placeholder
+     * Replace placeholder.
      *
      * @param string $input
      * @param string $key
@@ -61,11 +61,11 @@ class ConversationCreator
      */
     private function replacePlaceholder(string &$input, string $key, string $value): void
     {
-        $input = str_replace('{' . $key . '}', $value, $input);
+        $input = str_replace('{'.$key.'}', $value, $input);
     }
 
     /**
-     * Get filename
+     * Get filename.
      *
      * @param string $name
      *
@@ -73,11 +73,11 @@ class ConversationCreator
      */
     private function filename(string $name): string
     {
-        return $name . '.php';
+        return $name.'.php';
     }
 
     /**
-     * Get formatted name
+     * Get formatted name.
      *
      * @param string $name
      * @return string
@@ -88,7 +88,7 @@ class ConversationCreator
     }
 
     /**
-     * Get name of class
+     * Get name of class.
      *
      * @param string $name
      * @param string $postfix
@@ -97,7 +97,7 @@ class ConversationCreator
     private function className(string $name, string $postfix): string
     {
         $name = trim($name);
-        if (!ends_with($name, $postfix)) {
+        if (! ends_with($name, $postfix)) {
             $name .= $postfix;
         }
 
@@ -105,7 +105,7 @@ class ConversationCreator
     }
 
     /**
-     * Get application namespace
+     * Get application namespace.
      *
      * @return string
      */
@@ -120,7 +120,7 @@ class ConversationCreator
     }
 
     /**
-     * Get application directory
+     * Get application directory.
      *
      * @return string
      */
@@ -139,7 +139,7 @@ class ConversationCreator
     }
 
     /**
-     * Get bot namespace
+     * Get bot namespace.
      *
      * @param string|null $additional
      *
@@ -147,17 +147,17 @@ class ConversationCreator
      */
     private function botNamespace(string $additional = null): string
     {
-        $namespace = $this->applicationNamespace() . config('fondbot.namespace');
+        $namespace = $this->applicationNamespace().config('fondbot.namespace');
 
         if ($additional !== null) {
-            $namespace .= '\\' . $additional;
+            $namespace .= '\\'.$additional;
         }
 
         return $namespace;
     }
 
     /**
-     * Creates bot directory if not exists and returns its path
+     * Creates bot directory if not exists and returns its path.
      *
      * @param string|null $additional
      *
@@ -167,15 +167,15 @@ class ConversationCreator
      */
     private function botDirectory(string $additional = null): string
     {
-        $path = $this->applicationDirectory() . config('fondbot.namespace');
+        $path = $this->applicationDirectory().config('fondbot.namespace');
 
         if ($additional !== null) {
-            $path .= '/' . $additional;
+            $path .= '/'.$additional;
         }
 
         $path = base_path($path);
 
-        if (!@mkdir($path, 0755, true) && !is_dir($path)) {
+        if (! @mkdir($path, 0755, true) && ! is_dir($path)) {
             throw new Exception('Could not create Bot directory.');
         }
 
@@ -183,7 +183,7 @@ class ConversationCreator
     }
 
     /**
-     * Write contents to file
+     * Write contents to file.
      *
      * @param string $path
      * @param string $contents
@@ -197,5 +197,4 @@ class ConversationCreator
 
         file_put_contents($path, $contents);
     }
-
 }

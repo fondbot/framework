@@ -1,14 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
 use Cache;
+use Tests\TestCase;
 use FondBot\Channels\Driver;
-use FondBot\Channels\Objects\Participant;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\ContextManager;
-use Tests\TestCase;
+use FondBot\Channels\Objects\Participant;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface driver
@@ -17,7 +18,6 @@ use Tests\TestCase;
  */
 class ContextManagerTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -34,7 +34,7 @@ class ContextManagerTest extends TestCase
         $this->driver->shouldReceive('getParticipant')->andReturn($this->participant);
         $this->participant->shouldReceive('getIdentifier')->andReturn($participantId = $this->faker()->uuid);
 
-        $key = 'context.' . $channelName . '.' . $participantId;
+        $key = 'context.'.$channelName.'.'.$participantId;
 
         Cache::shouldReceive('get')->with($key, null)->andReturn([
             'story' => null,
@@ -66,7 +66,7 @@ class ContextManagerTest extends TestCase
         $context->shouldReceive('getInteraction')->andReturn(null);
         $context->shouldReceive('getValues')->andReturn($values = ['key1' => 'value1']);
 
-        $key = 'context.' . $channelName . '.' . $participantId;
+        $key = 'context.'.$channelName.'.'.$participantId;
 
         Cache::shouldReceive('put')->with($key, [
             'story' => null,
@@ -76,5 +76,4 @@ class ContextManagerTest extends TestCase
 
         $this->manager->save($context);
     }
-
 }

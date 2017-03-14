@@ -1,11 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Channels\Objects;
 
 class Participant
 {
-
     /** @var string */
     private $identifier;
 
@@ -54,5 +54,4 @@ class Participant
     {
         $this->username = $username;
     }
-
 }

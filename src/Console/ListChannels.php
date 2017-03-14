@@ -1,18 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Console;
 
-use FondBot\Channels\ChannelManager;
-use FondBot\Database\Entities\Channel;
-use FondBot\Database\Services\ChannelService;
 use FondBot\Nifty\Emoji;
 use Illuminate\Console\Command;
+use FondBot\Channels\ChannelManager;
+use FondBot\Database\Entities\Channel;
 use Illuminate\Database\Eloquent\Collection;
+use FondBot\Database\Services\ChannelService;
 
 class ListChannels extends Command
 {
-
     protected $signature = 'fondbot:channel:list 
                            {--enabled : Display only enabled}';
     protected $description = 'List all channels';
@@ -21,6 +21,7 @@ class ListChannels extends Command
     {
         if ($this->channels()->count() === 0) {
             $this->info('No channels.');
+
             return;
         }
 
@@ -58,9 +59,9 @@ class ListChannels extends Command
     private function driver(string $class): string
     {
         $drivers = resolve(ChannelManager::class)->supportedDrivers();
+
         return collect($drivers)->search(function ($value) use ($class) {
             return $value === $class;
         });
     }
-
 }

@@ -1,21 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Channels\Driver;
-use FondBot\Channels\Objects\Participant;
-use FondBot\Conversation\Context;
-use FondBot\Conversation\ContextManager;
-use Tests\Classes\ExampleInteraction;
 use Tests\TestCase;
+use FondBot\Channels\Driver;
+use FondBot\Conversation\Context;
+use Tests\Classes\ExampleInteraction;
+use FondBot\Conversation\ContextManager;
+use FondBot\Channels\Objects\Participant;
 
 /**
  * @property ExampleInteraction interaction
  */
 class InteractionTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -47,5 +47,4 @@ class InteractionTest extends TestCase
 
         $this->interaction->run($context);
     }
-
 }

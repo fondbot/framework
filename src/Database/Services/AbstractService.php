@@ -1,15 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Database\Services;
 
 use Exception;
-use FondBot\Database\Entities\AbstractEntity;
 use Illuminate\Database\Eloquent\Collection;
+use FondBot\Database\Entities\AbstractEntity;
 
 abstract class AbstractService
 {
-
     protected $entity;
 
     public function __construct(AbstractEntity $entity)
@@ -18,7 +18,7 @@ abstract class AbstractService
     }
 
     /**
-     * Get all records from database
+     * Get all records from database.
      *
      * @return Collection
      */
@@ -28,7 +28,7 @@ abstract class AbstractService
     }
 
     /**
-     * Find record by id
+     * Find record by id.
      *
      * @param int $id
      * @return AbstractEntity|null
@@ -39,7 +39,7 @@ abstract class AbstractService
     }
 
     /**
-     * Create new record
+     * Create new record.
      *
      * @param array $attributes
      * @return AbstractEntity
@@ -53,7 +53,7 @@ abstract class AbstractService
     }
 
     /**
-     * Create new Entity or update current with attributes found by values
+     * Create new Entity or update current with attributes found by values.
      *
      * @param array $attributes
      * @param array $values
@@ -65,7 +65,7 @@ abstract class AbstractService
     }
 
     /**
-     * Update record
+     * Update record.
      *
      * @param AbstractEntity $entity
      * @param array $attributes
@@ -81,7 +81,7 @@ abstract class AbstractService
     }
 
     /**
-     * Delete record
+     * Delete record.
      *
      * @param AbstractEntity $entity
      * @throws Exception
@@ -90,6 +90,4 @@ abstract class AbstractService
     {
         $entity->delete();
     }
-
-
 }

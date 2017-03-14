@@ -1,19 +1,19 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Unit\Channels;
 
+use Tests\TestCase;
 use FondBot\Channels\ChannelManager;
 use FondBot\Channels\Drivers\Telegram;
 use FondBot\Database\Entities\Channel;
-use Tests\TestCase;
 
 /**
  * @property ChannelManager manager
  */
 class ChannelManagerTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -42,5 +42,4 @@ class ChannelManagerTest extends TestCase
 
         $this->assertEquals($expected, $this->manager->supportedDrivers());
     }
-
 }

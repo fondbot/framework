@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace FondBot\Channels;
 
@@ -6,7 +8,6 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class Request implements Arrayable
 {
-
     /** @var array */
     protected $parameters;
 
@@ -26,5 +27,4 @@ class Request implements Arrayable
             'form_params' => $this->parameters,
         ];
     }
-
 }
