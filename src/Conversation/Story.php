@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
@@ -32,7 +33,6 @@ abstract class Story
     {
         $this->context = $context;
         $interaction = $context->getInteraction();
-        $this->debug('run');
 
         // Process interaction from context
         if ($interaction !== null) {

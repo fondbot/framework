@@ -21,10 +21,6 @@ trait Transitions
      */
     protected function jump(string $interaction): void
     {
-        if ($this->context === null) {
-            throw new InvalidArgumentException('Context cannot be `null`');
-        }
-
         /** @var Interaction $instance */
         $instance = resolve($interaction);
 
