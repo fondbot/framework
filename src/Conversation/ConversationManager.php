@@ -18,17 +18,24 @@ class ConversationManager
     public function __construct(
         ContextManager $contextManager,
         ParticipantService $participantService
-    )
-    {
+    ) {
         $this->contextManager = $contextManager;
         $this->participantService = $participantService;
     }
 
+    /**
+     * Start or continue conversation
+     *
+     * @param Context $context
+     * @param Driver $driver
+     * @param Channel $channel
+     * @param Story $story
+     */
     public function start(
         Context $context,
         Driver $driver,
         Channel $channel,
-        ?Story $story
+        Story $story
     ): void {
         $participant = $driver->getParticipant();
 
@@ -38,12 +45,7 @@ class ConversationManager
             'identifier' => $participant->getIdentifier(),
             'name' => $participant->getName(),
             'username' => $participant->getUsername(),
-        ], ['channel_id' => $channel->id, $participant]);
-
-        // No story found
-        if ($story === null) {
-            return;
-        }
+        ], ['channel_id' => $channel->id, 'identifier' => $participant->getIdentifier()]);
 
         $context->setStory($story);
         $this->contextManager->save($context);

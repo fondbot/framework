@@ -43,6 +43,13 @@ class StartConversation implements ShouldQueue
         // Find story
         $story = $storyManager->find($context, $driver->getMessage());
 
+        // No story found
+        if ($story === null) {
+            return;
+        }
+
+
+
         // Start Conversation
         $conversationManager->start($context, $driver, $this->channel, $story);
     }

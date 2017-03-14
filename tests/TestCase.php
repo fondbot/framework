@@ -25,4 +25,14 @@ abstract class TestCase extends BaseTestCase
         return Mockery::mock($class);
     }
 
+    /**
+     * @param Mockery\MockInterface|Mockery\Mock $entity
+     * @param string $attribute
+     * @param $value
+     */
+    protected function shouldReturnAttribute(Mockery\MockInterface $entity, string $attribute, $value)
+    {
+        $entity->shouldReceive('getAttribute')->with($attribute)->andReturn($value);
+    }
+
 }
