@@ -49,7 +49,6 @@ class StartConversation implements ShouldQueue
         }
 
 
-
         // Start Conversation
         $conversationManager->start($context, $driver, $this->channel, $story);
     }

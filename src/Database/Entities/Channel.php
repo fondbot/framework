@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace FondBot\Database\Entities;
 
-use Illuminate\Database\Eloquent\Collection;
-
 /**
  * @property int $id
  * @property string $driver
@@ -14,7 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  *
- * @property-read Participant[]|Collection $participants
+ * @property-read Participant[]|\Illuminate\Database\Eloquent\Collection $participants
  */
 class Channel extends AbstractEntity
 {

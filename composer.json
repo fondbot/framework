@@ -1,43 +1,43 @@
 {
-  "name": "fondbot/fondbot",
-  "description": "Laravel framework library for creating Bots.",
-  "type": "library",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Vladimir Yuldashev",
-      "email": "misterio92@gmail.com"
-    }
-  ],
-  "require": {
-    "php": ">=7.1",
-    "guzzlehttp/guzzle": "^6.2",
-    "laravel/framework": "^5.4",
-    "spatie/emoji": "^1.0"
-  },
-  "require-dev": {
-    "fzaninotto/faker": "^1.6",
-    "laravel/laravel": "^5.4",
-    "mockery/mockery": "^0.9.9",
-    "phpunit/phpunit": "^5"
-  },
-  "autoload": {
-    "psr-4": {
-      "FondBot\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\": "tests/"
-    }
-  },
-  "scripts": {
-    "test": "vendor/bin/phpunit --stop-on-failure"
-  },
-  "config": {
-    "preferred-install": "dist",
-    "sort-packages": true
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "name": "fondbot/fondbot",
+    "description": "Laravel framework library for creating Bots.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vladimir Yuldashev",
+            "email": "misterio92@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "^6.2",
+        "laravel/framework": "^5.4",
+        "spatie/emoji": "^1.0"
+    },
+    "require-dev": {
+        "fzaninotto/faker": "^1.6",
+        "laravel/laravel": "^5.4",
+        "mockery/mockery": "^0.9.9",
+        "phpunit/phpunit": "^5"
+    },
+    "autoload": {
+        "psr-4": {
+            "FondBot\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --stop-on-failure"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
