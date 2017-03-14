@@ -135,9 +135,9 @@ class TelegramTest extends TestCase
 
         $participant->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
         $message->shouldReceive('getText')->andReturn($text = $this->faker()->text);
-        $keyboard->shouldReceive('buttons')->andReturn([$button1, $button2]);
-        $button1->shouldReceive('value')->andReturn($button1Text = $this->faker()->word);
-        $button2->shouldReceive('value')->andReturn($button2Text = $this->faker()->word);
+        $keyboard->shouldReceive('getButtons')->andReturn([$button1, $button2]);
+        $button1->shouldReceive('getValue')->andReturn($button1Text = $this->faker()->word);
+        $button2->shouldReceive('getValue')->andReturn($button2Text = $this->faker()->word);
 
         $replyMarkup = json_encode([
             'keyboard' => [

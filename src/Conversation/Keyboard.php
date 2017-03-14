@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
@@ -15,22 +16,27 @@ abstract class Keyboard
     /** @var array */
     protected $buttons = [];
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
     public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    public function setButtons(array $buttons): void
-    {
-        $this->buttons = $buttons;
-    }
-
     /**
      * @return Button[]|array
      */
-    public function buttons(): array
+    public function getButtons(): array
     {
         return $this->buttons;
+    }
+
+    public function setButtons(array $buttons): void
+    {
+        $this->buttons = $buttons;
     }
 
 }

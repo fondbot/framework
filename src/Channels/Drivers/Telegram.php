@@ -91,8 +91,8 @@ class Telegram extends Driver
         if ($keyboard !== null) {
             $buttons = [];
 
-            foreach ($keyboard->buttons() as $button) {
-                $buttons[] = ['text' => $button->value()];
+            foreach ($keyboard->getButtons() as $button) {
+                $buttons[] = ['text' => $button->getValue()];
             }
 
             $parameters['reply_markup'] = json_encode([
