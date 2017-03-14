@@ -38,7 +38,7 @@ class StoryManager
      */
     private function findByMessage(Message $message): ?Story
     {
-        foreach ($this->stories() as $story) {
+        foreach ($this->getStories() as $story) {
             $story = resolve($story);
 
             /** @var Story $story */
@@ -55,7 +55,7 @@ class StoryManager
      *
      * @return array
      */
-    private function stories(): array
+    private function getStories(): array
     {
         return config('fondbot.stories');
     }
