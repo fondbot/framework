@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 class ParticipantTest extends TestCase
 {
-
     public function test_create()
     {
         $id = $this->faker()->uuid;
@@ -21,5 +20,4 @@ class ParticipantTest extends TestCase
         $this->assertEquals($name, $participant->getName());
         $this->assertEquals($username, $participant->getUsername());
     }
-
 }

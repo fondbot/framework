@@ -9,7 +9,6 @@ use Route;
 
 class ServiceProvider extends BaseServiceProvider
 {
-
     public function register()
     {
         $this->console();
@@ -54,5 +53,4 @@ class ServiceProvider extends BaseServiceProvider
             ]);
         }
     }
-
 }

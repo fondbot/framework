@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ChannelService extends AbstractService
 {
-
     public function __construct(Channel $entity)
     {
         parent::__construct($entity);
@@ -39,5 +38,4 @@ class ChannelService extends AbstractService
             ->where('name', $name)
             ->first();
     }
-
 }

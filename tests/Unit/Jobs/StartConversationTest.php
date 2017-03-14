@@ -17,7 +17,6 @@ use Tests\TestCase;
 
 class StartConversationTest extends TestCase
 {
-
     public function test()
     {
         $request = [];
@@ -41,5 +40,4 @@ class StartConversationTest extends TestCase
         $job = new StartConversation($channel, $request);
         $job->handle($channelManager, $contextManager, $storyManager, $conversationManager);
     }
-
 }

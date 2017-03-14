@@ -8,7 +8,6 @@ use Illuminate\Console\Command;
 
 class CreateStory extends Command
 {
-
     protected $signature = 'fondbot:story:make {name}';
     protected $description = 'Create a new story class';
 
@@ -18,5 +17,4 @@ class CreateStory extends Command
 
         $this->info('Story has been created.');
     }
-
 }

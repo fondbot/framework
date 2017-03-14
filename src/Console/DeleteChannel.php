@@ -8,7 +8,6 @@ use Illuminate\Console\Command;
 
 class DeleteChannel extends Command
 {
-
     protected $signature = 'fondbot:channel:delete';
     protected $description = 'Delete existing channel';
 
@@ -25,5 +24,4 @@ class DeleteChannel extends Command
 
         $this->info('Channel has been deleted.');
     }
-
 }

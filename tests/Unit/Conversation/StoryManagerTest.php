@@ -16,7 +16,6 @@ use Tests\TestCase;
  */
 class StoryManagerTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -72,6 +71,4 @@ class StoryManagerTest extends TestCase
         $result = $this->manager->find($context, $message);
         $this->assertInstanceOf(ExampleStory::class, $result);
     }
-
-
 }

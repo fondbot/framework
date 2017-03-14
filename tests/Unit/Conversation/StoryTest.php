@@ -14,7 +14,6 @@ use Tests\TestCase;
  */
 class StoryTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -43,6 +42,4 @@ class StoryTest extends TestCase
 
         $this->story->run($context);
     }
-
-
 }

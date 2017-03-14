@@ -14,7 +14,6 @@ use GuzzleHttp\Exception\RequestException;
 
 class Telegram extends Driver
 {
-
     public function init(): void
     {
         // Set up http client
@@ -109,5 +108,4 @@ class Telegram extends Driver
             $this->error(get_class($exception), [$exception->getMessage()]);
         }
     }
-
 }

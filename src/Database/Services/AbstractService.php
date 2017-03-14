@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 abstract class AbstractService
 {
-
     protected $entity;
 
     public function __construct(AbstractEntity $entity)
@@ -90,6 +89,4 @@ abstract class AbstractService
     {
         $entity->delete();
     }
-
-
 }

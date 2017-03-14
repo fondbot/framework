@@ -9,7 +9,6 @@ use Illuminate\Console\Command;
 
 class WebhookInstall extends Command
 {
-
     protected $signature = 'fondbot:install-webhook';
     protected $description = 'Install Channel webhook';
 
@@ -42,5 +41,4 @@ class WebhookInstall extends Command
     {
         return resolve(ChannelService::class);
     }
-
 }

@@ -31,5 +31,4 @@ trait Transitions
         // Run interaction
         $instance->run($this->context);
     }
-
 }

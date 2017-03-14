@@ -197,5 +197,4 @@ class ConversationCreator
 
         file_put_contents($path, $contents);
     }
-
 }

@@ -8,7 +8,6 @@ use FondBot\Traits\Loggable;
 
 abstract class Story
 {
-
     use Loggable, Transitions;
 
     /** @var string */
@@ -43,5 +42,4 @@ abstract class Story
         // Run story
         $this->start();
     }
-
 }

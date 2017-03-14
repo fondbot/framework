@@ -7,7 +7,6 @@ use FondBot\Conversation\Keyboard;
 
 class ReplyKeyboard extends Keyboard
 {
-
     public static function create(array $buttons): ReplyKeyboard
     {
         $instance = new ReplyKeyboard;
@@ -16,5 +15,4 @@ class ReplyKeyboard extends Keyboard
 
         return $instance;
     }
-
 }

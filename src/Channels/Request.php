@@ -26,5 +26,4 @@ class Request implements Arrayable
             'form_params' => $this->parameters,
         ];
     }
-
 }

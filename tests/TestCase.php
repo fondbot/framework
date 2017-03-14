@@ -8,7 +8,6 @@ use Mockery;
 
 abstract class TestCase extends BaseTestCase
 {
-
     use CreatesApplication;
 
     protected function faker(): Generator
@@ -38,5 +37,4 @@ abstract class TestCase extends BaseTestCase
     {
         $entity->shouldReceive('getAttribute')->with($attribute)->andReturn($value);
     }
-
 }

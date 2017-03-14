@@ -16,7 +16,6 @@ use Illuminate\Queue\SerializesModels;
 
 class StartConversation implements ShouldQueue
 {
-
     use InteractsWithQueue, Queueable, SerializesModels;
 
     private $channel;
@@ -52,5 +51,4 @@ class StartConversation implements ShouldQueue
         // Start Conversation
         $conversationManager->start($context, $driver, $this->channel, $story);
     }
-
 }

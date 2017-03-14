@@ -7,7 +7,6 @@ use FondBot\Conversation\Keyboards\Button;
 
 abstract class Keyboard
 {
-
     const TYPE_REPLY = 'reply';
 
     /** @var string */
@@ -38,5 +37,4 @@ abstract class Keyboard
     {
         $this->buttons = $buttons;
     }
-
 }

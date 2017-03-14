@@ -10,5 +10,4 @@ use Illuminate\Database\Eloquent\Model;
  */
 abstract class AbstractEntity extends Model
 {
-
 }

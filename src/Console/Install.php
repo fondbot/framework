@@ -7,7 +7,6 @@ use Illuminate\Console\Command;
 
 class Install extends Command
 {
-
     protected $signature = 'fondbot:install 
                             {--fresh-migrations : Refresh database} 
                             {--force : Force FondBot installation}';
@@ -47,5 +46,4 @@ class Install extends Command
             $this->callSilent('migrate', ['--force' => true, '--seed' => true]);
         }
     }
-
 }

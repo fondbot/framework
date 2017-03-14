@@ -54,5 +54,4 @@ class Participant
     {
         $this->username = $username;
     }
-
 }

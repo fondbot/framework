@@ -12,7 +12,6 @@ use GuzzleHttp\Client;
 
 abstract class Driver
 {
-
     use Loggable;
 
     /** @var array */
@@ -113,5 +112,4 @@ abstract class Driver
      * @param Keyboard|null $keyboard
      */
     abstract public function reply(Participant $participant, Message $message, Keyboard $keyboard = null): void;
-
 }

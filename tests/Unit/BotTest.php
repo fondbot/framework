@@ -13,7 +13,6 @@ use Tests\TestCase;
 
 class BotTest extends TestCase
 {
-
     public function test()
     {
         Bus::fake();
@@ -30,5 +29,4 @@ class BotTest extends TestCase
 
         Bus::assertDispatched(StartConversation::class);
     }
-
 }

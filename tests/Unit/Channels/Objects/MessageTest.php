@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 class MessageTest extends TestCase
 {
-
     public function test_create()
     {
         $text = 'Hello user!';
@@ -17,5 +16,4 @@ class MessageTest extends TestCase
 
         $this->assertEquals($text, $message->getText());
     }
-
 }

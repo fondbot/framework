@@ -7,7 +7,6 @@ use FondBot\Database\Entities\Channel;
 
 class ChannelManager
 {
-
     private $drivers = [
         'Telegram' => Drivers\Telegram::class,
     ];
@@ -42,5 +41,4 @@ class ChannelManager
     {
         return $this->drivers;
     }
-
 }

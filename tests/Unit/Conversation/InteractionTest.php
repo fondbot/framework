@@ -15,7 +15,6 @@ use Tests\TestCase;
  */
 class InteractionTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -47,5 +46,4 @@ class InteractionTest extends TestCase
 
         $this->interaction->run($context);
     }
-
 }

@@ -18,7 +18,6 @@ use Tests\TestCase;
  */
 class ContextTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -79,5 +78,4 @@ class ContextTest extends TestCase
         $this->assertSame($values, $this->context->getValues());
         $this->assertNotSame($this->values, $this->context->getValues());
     }
-
 }
