@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FondBot\Channels\Abstracts;
+namespace FondBot\Channels;
 
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Channels\Objects\Message;

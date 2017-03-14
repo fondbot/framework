@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use FondBot\Channels\Abstracts\Driver;
 use FondBot\Database\Entities\Channel;
 
 class ChannelManager

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Channels\Abstracts\Driver;
+use FondBot\Channels\Driver;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\Story;

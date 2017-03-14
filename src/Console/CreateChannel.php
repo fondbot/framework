@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace FondBot\Console;
 
-use FondBot\Channels\Abstracts\Driver;
 use FondBot\Channels\ChannelManager;
+use FondBot\Channels\Driver;
 use FondBot\Database\Services\ChannelService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;

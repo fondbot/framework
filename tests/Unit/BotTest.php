@@ -5,8 +5,8 @@ namespace Tests\Unit;
 
 use Bus;
 use FondBot\Bot;
-use FondBot\Channels\Abstracts\Driver;
 use FondBot\Channels\ChannelManager;
+use FondBot\Channels\Driver;
 use FondBot\Database\Entities\Channel;
 use FondBot\Jobs\StartConversation;
 use Tests\TestCase;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Drivers;
 
-use FondBot\Channels\Abstracts\Driver;
+use FondBot\Channels\Driver;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Channels\Objects\Message;
 use FondBot\Channels\Objects\Participant;

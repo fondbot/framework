@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Jobs;
 
-use FondBot\Channels\Abstracts\Driver;
 use FondBot\Channels\ChannelManager;
+use FondBot\Channels\Driver;
 use FondBot\Channels\Objects\Message;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\ContextManager;

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Channels\Abstracts\Driver;
 use FondBot\Channels\ChannelManager;
+use FondBot\Channels\Driver;
 use FondBot\Database\Entities\Channel;
 use FondBot\Jobs\StartConversation;
 use FondBot\Traits\Loggable;

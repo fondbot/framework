@@ -1,8 +1,9 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Channels\Abstracts\Driver;
+use FondBot\Channels\Driver;
 use FondBot\Database\Entities\Channel;
 use FondBot\Database\Services\ParticipantService;
 use FondBot\Traits\Loggable;

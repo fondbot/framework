@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Channels\Abstracts\Driver;
+use FondBot\Channels\Driver;
 
 class Context
 {
