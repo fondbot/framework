@@ -23,6 +23,7 @@
 
             <exclude>
                 <directory suffix=".php">./src/Console</directory>
+                <file>./src/Conversation/ConversationCreator.php</file>
             </exclude>
         </whitelist>
     </filter>
