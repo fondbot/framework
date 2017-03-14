@@ -1,22 +1,22 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
 use Config;
-use FondBot\Channels\Objects\Message;
-use FondBot\Conversation\Context;
-use FondBot\Conversation\Story;
-use FondBot\Conversation\StoryManager;
-use Tests\Classes\ExampleStory;
 use Tests\TestCase;
+use FondBot\Conversation\Story;
+use Tests\Classes\ExampleStory;
+use FondBot\Conversation\Context;
+use FondBot\Channels\Objects\Message;
+use FondBot\Conversation\StoryManager;
 
 /**
  * @property StoryManager manager
  */
 class StoryManagerTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -54,7 +54,6 @@ class StoryManagerTest extends TestCase
         $this->assertNull($result);
     }
 
-
     public function test_find_no_story_in_context_activation_found()
     {
         Config::set('fondbot', [
@@ -72,6 +71,4 @@ class StoryManagerTest extends TestCase
         $result = $this->manager->find($context, $message);
         $this->assertInstanceOf(ExampleStory::class, $result);
     }
-
-
 }

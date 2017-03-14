@@ -1,18 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Classes;
 
+use FondBot\Conversation\Keyboard;
 use FondBot\Channels\Objects\Message;
 use FondBot\Conversation\Interaction;
-use FondBot\Conversation\Keyboard;
 
 class ExampleInteraction extends Interaction
 {
-
-
     /**
-     * Message to be sent to Participant
+     * Message to be sent to Participant.
      *
      * @return Message
      */
@@ -22,21 +21,18 @@ class ExampleInteraction extends Interaction
     }
 
     /**
-     * Keyboard to be shown to Participant
+     * Keyboard to be shown to Participant.
      *
      * @return Keyboard|null
      */
     public function keyboard(): ?Keyboard
     {
-        return null;
     }
 
     /**
-     * Process reply
+     * Process reply.
      */
     protected function process(): void
     {
-
     }
-
 }

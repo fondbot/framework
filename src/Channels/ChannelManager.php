@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Channels;
@@ -7,13 +8,12 @@ use FondBot\Database\Entities\Channel;
 
 class ChannelManager
 {
-
     private $drivers = [
         'Telegram' => Drivers\Telegram::class,
     ];
 
     /**
-     * Create driver instance
+     * Create driver instance.
      *
      * @param array $request
      * @param Channel $channel
@@ -34,7 +34,7 @@ class ChannelManager
     }
 
     /**
-     * List of supported drivers
+     * List of supported drivers.
      *
      * @return array
      */
@@ -42,5 +42,4 @@ class ChannelManager
     {
         return $this->drivers;
     }
-
 }

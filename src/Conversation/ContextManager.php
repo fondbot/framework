@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Conversation;
@@ -7,9 +8,8 @@ use FondBot\Channels\Driver;
 
 class ContextManager
 {
-
     /**
-     * Resolve context instance
+     * Resolve context instance.
      *
      * @param Driver $driver
      * @return Context
@@ -32,7 +32,7 @@ class ContextManager
     }
 
     /**
-     * Save updated context
+     * Save updated context.
      *
      * @param Context $context
      */
@@ -50,14 +50,13 @@ class ContextManager
     }
 
     /**
-     * Get key of current context in storage (Cache, Memory, etc.)
+     * Get key of current context in storage (Cache, Memory, etc.).
      *
      * @param Driver $driver
      * @return string
      */
     private function key(Driver $driver): string
     {
-        return 'context.' . $driver->getChannelName() . '.' . $driver->getParticipant()->getIdentifier();
+        return 'context.'.$driver->getChannelName().'.'.$driver->getParticipant()->getIdentifier();
     }
-
 }

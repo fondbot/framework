@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Classes;
@@ -7,9 +8,8 @@ use FondBot\Conversation\Story;
 
 class ExampleStory extends Story
 {
-
     /**
-     * Story activations
+     * Story activations.
      *
      * @return array
      */
@@ -24,5 +24,4 @@ class ExampleStory extends Story
     {
         $this->jump(ExampleInteraction::class);
     }
-
 }

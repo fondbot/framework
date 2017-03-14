@@ -1,14 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Console;
 
-use FondBot\Conversation\ConversationCreator;
 use Illuminate\Console\Command;
+use FondBot\Conversation\ConversationCreator;
 
 class CreateInteraction extends Command
 {
-
     protected $signature = 'fondbot:interaction:make {name}';
     protected $description = 'Create a new interaction class';
 
@@ -18,5 +18,4 @@ class CreateInteraction extends Command
 
         $this->info('Interaction has been created.');
     }
-
 }

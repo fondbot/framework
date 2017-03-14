@@ -1,51 +1,50 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Traits\Loggable;
 use FondBot\Channels\Objects\Message;
 use FondBot\Conversation\Traits\Transitions;
-use FondBot\Traits\Loggable;
 
 abstract class Interaction
 {
-
     use Loggable, Transitions;
 
     /** @var Context */
     protected $context;
 
     /**
-     * Do something before running Interaction
+     * Do something before running Interaction.
      */
     public function before(): void
     {
-
     }
 
     /**
-     * Do something after running Interaction
+     * Do something after running Interaction.
      */
     public function after(): void
     {
-
     }
 
     /**
-     * Message to be sent to Participant
+     * Message to be sent to Participant.
      *
      * @return Message
      */
     abstract public function message(): Message;
 
     /**
-     * Keyboard to be shown to Participant
+     * Keyboard to be shown to Participant.
      *
      * @return Keyboard|null
      */
     abstract public function keyboard(): ?Keyboard;
 
     /**
-     * Process reply
+     * Process reply.
      */
     abstract protected function process(): void;
 
@@ -76,5 +75,4 @@ abstract class Interaction
         // Perform actions before running interaction
         $this->after();
     }
-
 }

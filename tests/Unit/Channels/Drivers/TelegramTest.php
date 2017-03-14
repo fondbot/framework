@@ -1,17 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
-use FondBot\Channels\Drivers\Telegram;
-use FondBot\Channels\Objects\Message;
-use FondBot\Channels\Objects\Participant;
-use FondBot\Conversation\Keyboard;
-use FondBot\Conversation\Keyboards\Button;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use Psr\Http\Message\RequestInterface;
 use Tests\TestCase;
+use GuzzleHttp\Client;
+use FondBot\Conversation\Keyboard;
+use FondBot\Channels\Objects\Message;
+use FondBot\Channels\Drivers\Telegram;
+use Psr\Http\Message\RequestInterface;
+use FondBot\Channels\Objects\Participant;
+use FondBot\Conversation\Keyboards\Button;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -20,7 +21,6 @@ use Tests\TestCase;
  */
 class TelegramTest extends TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -108,7 +108,7 @@ class TelegramTest extends TestCase
                     'last_name' => $this->faker()->lastName,
                     'username' => $this->faker()->userName,
                 ],
-            ]
+            ],
         ]);
 
         $this->assertInstanceOf(Participant::class, $this->telegram->getParticipant());
@@ -119,7 +119,7 @@ class TelegramTest extends TestCase
         $this->telegram->setRequest([
             'message' => [
                 'text' => $this->faker()->text,
-            ]
+            ],
         ]);
 
         $this->assertInstanceOf(Message::class, $this->telegram->getMessage());
@@ -142,9 +142,9 @@ class TelegramTest extends TestCase
         $replyMarkup = json_encode([
             'keyboard' => [
                 [
-                    (object)['text' => $button1Text],
-                    (object)['text' => $button2Text],
-                ]
+                    (object) ['text' => $button1Text],
+                    (object) ['text' => $button2Text],
+                ],
             ],
             'resize_keyboard' => true,
         ]);
@@ -195,5 +195,4 @@ class TelegramTest extends TestCase
 
         $this->telegram->reply($participant, $message);
     }
-
 }

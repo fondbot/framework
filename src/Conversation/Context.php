@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Conversation;
@@ -7,7 +8,6 @@ use FondBot\Channels\Driver;
 
 class Context
 {
-
     /** @var Driver */
     private $driver;
 
@@ -66,5 +66,4 @@ class Context
     {
         $this->values = $values;
     }
-
 }

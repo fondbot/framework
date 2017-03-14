@@ -1,17 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Channels\ChannelManager;
 use FondBot\Channels\Driver;
-use FondBot\Database\Entities\Channel;
-use FondBot\Jobs\StartConversation;
 use FondBot\Traits\Loggable;
+use FondBot\Jobs\StartConversation;
+use FondBot\Channels\ChannelManager;
+use FondBot\Database\Entities\Channel;
 
 class Bot
 {
-
     use Loggable;
 
     private $channelManager;
@@ -23,7 +23,7 @@ class Bot
 
     public function process(Channel $channel): void
     {
-        /** @var array $request */
+        /* @var array $request */
         if (request()->isJson()) {
             $request = request()->json()->all();
         } else {
@@ -42,5 +42,4 @@ class Bot
 
         dispatch($job);
     }
-
 }

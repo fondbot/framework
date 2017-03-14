@@ -1,18 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
+use GuzzleHttp\Client;
+use FondBot\Traits\Loggable;
+use FondBot\Conversation\Keyboard;
 use FondBot\Channels\Objects\Message;
 use FondBot\Channels\Objects\Participant;
-use FondBot\Conversation\Keyboard;
-use FondBot\Traits\Loggable;
-use GuzzleHttp\Client;
+use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 abstract class Driver
 {
-
     use Loggable;
 
     /** @var array */
@@ -35,7 +35,7 @@ abstract class Driver
     }
 
     /**
-     * Set request
+     * Set request.
      *
      * @param array $request
      */
@@ -45,7 +45,7 @@ abstract class Driver
     }
 
     /**
-     * Get channel name
+     * Get channel name.
      *
      * @return string
      */
@@ -55,7 +55,7 @@ abstract class Driver
     }
 
     /**
-     * Get parameter value
+     * Get parameter value.
      *
      * @param string $name
      * @return string
@@ -66,52 +66,51 @@ abstract class Driver
     }
 
     /**
-     * Initialize Channel instance
+     * Initialize Channel instance.
      */
     abstract public function init(): void;
 
     /**
-     * Configuration parameters
+     * Configuration parameters.
      *
      * @return array
      */
     abstract public function getConfig(): array;
 
     /**
-     * Verify incoming request data
+     * Verify incoming request data.
      *
      * @throws InvalidChannelRequest
      */
     abstract public function verifyRequest(): void;
 
     /**
-     * Initialize webhook in the external service
+     * Initialize webhook in the external service.
      *
      * @param string $url
      */
     abstract public function installWebhook(string $url): void;
 
     /**
-     * Get current participant
+     * Get current participant.
      *
      * @return Participant
      */
     abstract public function getParticipant(): Participant;
 
     /**
-     * Get message sent by participant
+     * Get message sent by participant.
      *
      * @return Message
      */
     abstract public function getMessage(): Message;
 
     /**
-     * Send reply to participant
+     * Send reply to participant.
      *
      * @param Participant $participant
      * @param Message $message
      * @param Keyboard|null $keyboard
      */
     abstract public function reply(Participant $participant, Message $message, Keyboard $keyboard = null): void;
-
 }

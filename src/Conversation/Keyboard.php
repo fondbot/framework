@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Conversation;
@@ -7,7 +8,6 @@ use FondBot\Conversation\Keyboards\Button;
 
 abstract class Keyboard
 {
-
     const TYPE_REPLY = 'reply';
 
     /** @var string */
@@ -38,5 +38,4 @@ abstract class Keyboard
     {
         $this->buttons = $buttons;
     }
-
 }

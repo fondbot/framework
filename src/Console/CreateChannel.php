@@ -1,17 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Console;
 
-use FondBot\Channels\ChannelManager;
-use FondBot\Channels\Driver;
-use FondBot\Database\Services\ChannelService;
-use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use FondBot\Channels\Driver;
+use Illuminate\Console\Command;
+use FondBot\Channels\ChannelManager;
+use FondBot\Database\Services\ChannelService;
 
 class CreateChannel extends Command
 {
-
     protected $signature = 'fondbot:channel:create';
     protected $description = 'Create a new channel';
 
@@ -58,5 +58,4 @@ class CreateChannel extends Command
     {
         return $this->choice('Enable new channel?', ['Yes', 'No'], 1) === 'Yes';
     }
-
 }

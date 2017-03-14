@@ -1,15 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Providers;
 
+use Route;
 use FondBot\Database\Entities\Channel;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Route;
 
 class ServiceProvider extends BaseServiceProvider
 {
-
     public function register()
     {
         $this->console();
@@ -24,13 +24,13 @@ class ServiceProvider extends BaseServiceProvider
     {
         Route::model('channel', Channel::class);
 
-        if (!$this->app->routesAreCached()) {
+        if (! $this->app->routesAreCached()) {
             Route::group([
                 'prefix' => 'fondbot',
                 'namespace' => 'FondBot\Http\Controllers',
                 'middleware' => ['bindings'],
             ], function () {
-                require __DIR__ . '/../../resources/routes/channels.php';
+                require __DIR__.'/../../resources/routes/channels.php';
             });
         }
     }
@@ -38,9 +38,9 @@ class ServiceProvider extends BaseServiceProvider
     private function console(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(__DIR__ . '/../../resources/migrations');
+            $this->loadMigrationsFrom(__DIR__.'/../../resources/migrations');
             $this->publishes([
-                __DIR__ . '/../../resources/config/fondbot.php' => config_path('fondbot.php'),
+                __DIR__.'/../../resources/config/fondbot.php' => config_path('fondbot.php'),
             ], 'fondbot');
 
             $this->commands([
@@ -54,5 +54,4 @@ class ServiceProvider extends BaseServiceProvider
             ]);
         }
     }
-
 }

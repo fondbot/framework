@@ -1,16 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
 use FondBot\Channels\Driver;
+use FondBot\Traits\Loggable;
 use FondBot\Database\Entities\Channel;
 use FondBot\Database\Services\ParticipantService;
-use FondBot\Traits\Loggable;
 
 class ConversationManager
 {
-
     use Loggable;
 
     private $contextManager;
@@ -25,7 +25,7 @@ class ConversationManager
     }
 
     /**
-     * Start or continue conversation
+     * Start or continue conversation.
      *
      * @param Context $context
      * @param Driver $driver
@@ -53,5 +53,4 @@ class ConversationManager
 
         $story->run($context);
     }
-
 }

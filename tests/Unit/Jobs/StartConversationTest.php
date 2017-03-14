@@ -1,23 +1,23 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Unit\Jobs;
 
-use FondBot\Channels\ChannelManager;
+use Tests\TestCase;
 use FondBot\Channels\Driver;
-use FondBot\Channels\Objects\Message;
-use FondBot\Conversation\Context;
-use FondBot\Conversation\ContextManager;
-use FondBot\Conversation\ConversationManager;
 use FondBot\Conversation\Story;
+use FondBot\Conversation\Context;
+use FondBot\Jobs\StartConversation;
+use FondBot\Channels\ChannelManager;
+use FondBot\Channels\Objects\Message;
 use FondBot\Conversation\StoryManager;
 use FondBot\Database\Entities\Channel;
-use FondBot\Jobs\StartConversation;
-use Tests\TestCase;
+use FondBot\Conversation\ContextManager;
+use FondBot\Conversation\ConversationManager;
 
 class StartConversationTest extends TestCase
 {
-
     public function test()
     {
         $request = [];
@@ -41,5 +41,4 @@ class StartConversationTest extends TestCase
         $job = new StartConversation($channel, $request);
         $job->handle($channelManager, $contextManager, $storyManager, $conversationManager);
     }
-
 }

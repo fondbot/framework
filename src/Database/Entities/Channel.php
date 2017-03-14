@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Database\Entities;
@@ -16,7 +17,6 @@ namespace FondBot\Database\Entities;
  */
 class Channel extends AbstractEntity
 {
-
     protected $table = 'channels';
 
     protected $casts = [
@@ -34,5 +34,4 @@ class Channel extends AbstractEntity
     {
         return $this->hasMany(Participant::class);
     }
-
 }

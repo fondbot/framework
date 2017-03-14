@@ -1,22 +1,22 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Database\Services;
 
-use FondBot\Database\Entities\AbstractEntity;
 use FondBot\Database\Entities\Channel;
 use Illuminate\Database\Eloquent\Collection;
+use FondBot\Database\Entities\AbstractEntity;
 
 class ChannelService extends AbstractService
 {
-
     public function __construct(Channel $entity)
     {
         parent::__construct($entity);
     }
 
     /**
-     * Find all enabled channels
+     * Find all enabled channels.
      *
      * @return Collection
      */
@@ -28,7 +28,7 @@ class ChannelService extends AbstractService
     }
 
     /**
-     * Find channel by name
+     * Find channel by name.
      *
      * @param string $name
      * @return AbstractEntity|Channel|null
@@ -39,5 +39,4 @@ class ChannelService extends AbstractService
             ->where('name', $name)
             ->first();
     }
-
 }
