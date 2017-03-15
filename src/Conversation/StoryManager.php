@@ -46,6 +46,8 @@ class StoryManager
                 return $story;
             }
         }
+
+        return null;
     }
 
     /**
