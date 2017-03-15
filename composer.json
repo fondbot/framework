@@ -3,6 +3,8 @@
     "description": "Laravel framework library for creating Bots.",
     "type": "library",
     "license": "MIT",
+    "homepage": "https://fondbot",
+
     "authors": [
         {
             "name": "Vladimir Yuldashev",
