@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Providers;
 
-use Route;
 use FondBot\Database\Entities\Channel;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Route;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -46,6 +46,8 @@ class ServiceProvider extends BaseServiceProvider
             $this->commands([
                 \FondBot\Console\CreateChannel::class,
                 \FondBot\Console\DeleteChannel::class,
+                \FondBot\Console\EnableChannel::class,
+                \FondBot\Console\DisableChannel::class,
                 \FondBot\Console\ListChannels::class,
                 \FondBot\Console\CreateStory::class,
                 \FondBot\Console\CreateInteraction::class,

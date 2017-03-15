@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Database\Services;
 
+use FondBot\Database\Entities\AbstractEntity;
 use FondBot\Database\Entities\Channel;
 use Illuminate\Database\Eloquent\Collection;
-use FondBot\Database\Entities\AbstractEntity;
 
 class ChannelService extends AbstractService
 {
@@ -28,6 +28,18 @@ class ChannelService extends AbstractService
     }
 
     /**
+     * Find all disabled channels.
+     *
+     * @return Collection
+     */
+    public function findDisabled(): Collection
+    {
+        return $this->entity->newQuery()
+            ->where('is_enabled', false)
+            ->get();
+    }
+
+    /**
      * Find channel by name.
      *
      * @param string $name
@@ -39,4 +51,29 @@ class ChannelService extends AbstractService
             ->where('name', $name)
             ->first();
     }
+
+    /**
+     * Enable channel.
+     *
+     * @param Channel $channel
+     */
+    public function enable(Channel $channel): void
+    {
+        $this->update($channel, [
+            'is_enabled' => true,
+        ]);
+    }
+
+    /**
+     * Disable channel.
+     *
+     * @param Channel $channel
+     */
+    public function disable(Channel $channel): void
+    {
+        $this->update($channel, [
+            'is_enabled' => false,
+        ]);
+    }
+
 }
