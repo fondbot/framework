@@ -10,8 +10,8 @@ use FondBot\Database\Services\ChannelService;
 
 class WebhookInstall extends Command
 {
-    protected $signature = 'fondbot:install-webhook';
-    protected $description = 'Install Channel webhook';
+    protected $signature = 'fondbot:channel:install-webhook';
+    protected $description = 'Install webhook';
 
     public function handle(ChannelManager $manager)
     {
