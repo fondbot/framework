@@ -38,7 +38,7 @@ class Bot
 
         // Send job to start conversation
         $job = (new StartConversation($channel, $request))
-            ->onQueue('fondbot-webhook-requests');
+            ->onQueue('fondbot');
 
         dispatch($job);
     }
