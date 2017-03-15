@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Providers;
 
+use Route;
 use FondBot\Database\Entities\Channel;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Route;
 
 class ServiceProvider extends BaseServiceProvider
 {
