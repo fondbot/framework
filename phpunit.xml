@@ -35,6 +35,7 @@
              lowUpperBound="30"
              highLowerBound="90"
         />
+        <log type="coverage-clover" target="clover.xml"/>
     </logging>
     <php>
         <env name="APP_ENV" value="testing"/>
