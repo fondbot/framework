@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Database\Services;
 
-use FondBot\Database\Entities\AbstractEntity;
 use FondBot\Database\Entities\Channel;
 use Illuminate\Database\Eloquent\Collection;
+use FondBot\Database\Entities\AbstractEntity;
 
 class ChannelService extends AbstractService
 {
@@ -75,5 +75,4 @@ class ChannelService extends AbstractService
             'is_enabled' => false,
         ]);
     }
-
 }

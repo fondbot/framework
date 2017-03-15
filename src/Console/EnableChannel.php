@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Console;
 
-use FondBot\Database\Services\ChannelService;
 use Illuminate\Console\Command;
+use FondBot\Database\Services\ChannelService;
 
 class EnableChannel extends Command
 {
@@ -16,14 +16,15 @@ class EnableChannel extends Command
     {
         $channels = $service->findDisabled()->pluck('name', 'id')->toArray();
 
-        if(count($channels) === 0) {
+        if (count($channels) === 0) {
             $this->error('No disabled channels.');
+
             return;
         }
 
         $channel = $this->choice('Channel', $channels);
 
-        if(!$this->confirm('Are you sure?')) {
+        if (! $this->confirm('Are you sure?')) {
             return;
         }
 
@@ -31,5 +32,4 @@ class EnableChannel extends Command
 
         $this->info('Channel enabled.');
     }
-
 }
