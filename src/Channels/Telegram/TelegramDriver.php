@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Channels\Drivers;
+namespace FondBot\Channels\Telegram;
 
-use GuzzleHttp\Client;
 use FondBot\Channels\Driver;
-use FondBot\Channels\Sender;
-use FondBot\Channels\Message;
-use FondBot\Channels\Request;
-use FondBot\Channels\Receiver;
-use FondBot\Conversation\Keyboard;
-use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
+use FondBot\Channels\Message;
+use FondBot\Channels\Receiver;
+use FondBot\Channels\Request;
+use FondBot\Channels\Sender;
+use FondBot\Conversation\Keyboard;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
-class Telegram extends Driver
+class TelegramDriver extends Driver
 {
     private $guzzle;
 
