@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Telegram;
 
-use FondBot\Channels\Driver;
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
-use FondBot\Channels\Message;
-use FondBot\Channels\Receiver;
-use FondBot\Channels\Request;
-use FondBot\Channels\Sender;
-use FondBot\Contracts\Channels\WebhookInstallation;
-use FondBot\Conversation\Keyboard;
 use GuzzleHttp\Client;
+use FondBot\Channels\Driver;
+use FondBot\Channels\Sender;
+use FondBot\Channels\Message;
+use FondBot\Channels\Request;
+use FondBot\Channels\Receiver;
+use FondBot\Conversation\Keyboard;
 use GuzzleHttp\Exception\RequestException;
+use FondBot\Contracts\Channels\WebhookInstallation;
+use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 class TelegramDriver extends Driver implements WebhookInstallation
 {
@@ -45,7 +45,7 @@ class TelegramDriver extends Driver implements WebhookInstallation
     {
         if (
             $this->getRequest('message') === null ||
-            !isset(
+            ! isset(
                 $this->getRequest('message')['from'],
                 $this->getRequest('message')['text']
             )
@@ -78,7 +78,7 @@ class TelegramDriver extends Driver implements WebhookInstallation
         $from = $this->getRequest('message')['from'];
 
         return Sender::create(
-            (string)$from['id'],
+            (string) $from['id'],
             $from['first_name'].' '.$from['last_name'],
             $from['username']
         );

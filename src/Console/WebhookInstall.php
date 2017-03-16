@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Console;
 
-use FondBot\Contracts\Channels\WebhookInstallation;
 use Illuminate\Console\Command;
 use FondBot\Channels\ChannelManager;
+use FondBot\Contracts\Channels\WebhookInstallation;
 use FondBot\Contracts\Database\Services\ChannelService;
 
 class WebhookInstall extends Command
@@ -23,8 +23,9 @@ class WebhookInstall extends Command
 
         $driver = $manager->createDriver([], $channel);
 
-        if(!$driver instanceof WebhookInstallation) {
+        if (! $driver instanceof WebhookInstallation) {
             $this->error('Driver does support automatic webhook installation.');
+
             return;
         }
 

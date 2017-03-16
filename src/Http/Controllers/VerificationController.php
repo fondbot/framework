@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace FondBot\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use FondBot\Bot;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use FondBot\Bot;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use FondBot\Contracts\Database\Entities\Channel;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class VerificationController extends Controller
 {
@@ -19,6 +19,7 @@ class VerificationController extends Controller
     public function handle(Request $request, Channel $channel, Bot $bot)
     {
         $bot->setRequest($request);
+
         return $bot->verify($channel);
     }
 }
