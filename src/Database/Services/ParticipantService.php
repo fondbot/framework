@@ -6,8 +6,8 @@ namespace FondBot\Database\Services;
 
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
-use FondBot\Contracts\Database\Services\ParticipantService as ParticipantServiceContract;
 use FondBot\Contracts\Database\Traits\BaseServiceMethods;
+use FondBot\Contracts\Database\Services\ParticipantService as ParticipantServiceContract;
 
 class ParticipantService implements ParticipantServiceContract
 {
@@ -19,7 +19,7 @@ class ParticipantService implements ParticipantServiceContract
     }
 
     /**
-     * Find participant by channel id and identifier
+     * Find participant by channel id and identifier.
      *
      * @param Channel $channel
      * @param string $identifier

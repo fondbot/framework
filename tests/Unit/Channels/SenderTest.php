@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels;
 
-use FondBot\Channels\Sender;
 use Tests\TestCase;
+use FondBot\Channels\Sender;
 
 class SenderTest extends TestCase
 {

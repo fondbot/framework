@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Channels\ChannelManager;
 use FondBot\Channels\Driver;
-use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Jobs\StartConversation;
 use FondBot\Traits\Loggable;
+use FondBot\Jobs\StartConversation;
+use FondBot\Channels\ChannelManager;
+use FondBot\Contracts\Database\Entities\Channel;
 
 class Bot
 {

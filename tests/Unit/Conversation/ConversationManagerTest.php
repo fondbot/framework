@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
+use Tests\TestCase;
 use FondBot\Channels\Driver;
 use FondBot\Channels\Sender;
-use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\ConversationManager;
-use FondBot\Conversation\Story;
+use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Services\ParticipantService;
-use Tests\TestCase;
 
 class ConversationManagerTest extends TestCase
 {

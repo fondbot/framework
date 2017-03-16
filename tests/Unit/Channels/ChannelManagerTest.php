@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels;
 
+use Tests\TestCase;
 use FondBot\Channels\ChannelManager;
 use FondBot\Channels\Drivers\Telegram;
 use FondBot\Contracts\Database\Entities\Channel;
-use Tests\TestCase;
 
 /**
  * @property ChannelManager manager

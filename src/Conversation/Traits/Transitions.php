@@ -9,7 +9,6 @@ use FondBot\Conversation\Interaction;
 
 trait Transitions
 {
-
     /**
      * Jump to another interaction.
      *

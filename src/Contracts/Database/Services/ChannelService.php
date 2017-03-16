@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Contracts\Database\Services;
 
-use FondBot\Contracts\Database\Entities\Channel;
 use Illuminate\Database\Eloquent\Collection;
+use FondBot\Contracts\Database\Entities\Channel;
 
 interface ChannelService
 {

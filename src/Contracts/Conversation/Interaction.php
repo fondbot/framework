@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Contracts\Conversation;
@@ -8,7 +9,6 @@ use FondBot\Conversation\Keyboard;
 
 interface Interaction
 {
-
     /**
      * Get current context instance.
      *

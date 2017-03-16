@@ -1,16 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Listeners;
 
+use FondBot\Contracts\Events\MessageSent;
 use FondBot\Contracts\Database\Services\ChannelService;
 use FondBot\Contracts\Database\Services\MessageService;
 use FondBot\Contracts\Database\Services\ParticipantService;
-use FondBot\Contracts\Events\MessageSent;
 
 class MessageSentListener
 {
-
     /** @var \FondBot\Database\Services\ChannelService */
     private $channelService;
 

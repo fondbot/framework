@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace FondBot\Console;
 
-use FondBot\Channels\ChannelManager;
-use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Contracts\Database\Services\ChannelService;
 use FondBot\Nifty\Emoji;
 use Illuminate\Console\Command;
+use FondBot\Channels\ChannelManager;
 use Illuminate\Database\Eloquent\Collection;
+use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Database\Services\ChannelService;
 
 class ListChannels extends Command
 {

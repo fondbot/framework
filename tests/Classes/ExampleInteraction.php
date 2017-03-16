@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Classes;
 
-use FondBot\Conversation\Interaction;
 use FondBot\Conversation\Keyboard;
+use FondBot\Conversation\Interaction;
 
 class ExampleInteraction extends Interaction
 {
