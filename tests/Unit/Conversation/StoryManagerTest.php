@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Config;
-use FondBot\Channels\Message;
-use FondBot\Conversation\Context;
-use FondBot\Conversation\Story;
-use FondBot\Conversation\StoryManager;
-use Tests\Classes\ExampleStory;
 use Tests\TestCase;
+use FondBot\Channels\Message;
+use FondBot\Conversation\Story;
+use Tests\Classes\ExampleStory;
+use FondBot\Conversation\Context;
+use FondBot\Conversation\StoryManager;
 
 /**
  * @property StoryManager manager

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Channels\Driver;
+use FondBot\Traits\Loggable;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Services\ParticipantService as ParticipantServiceContract;
-use FondBot\Traits\Loggable;
 
 class ConversationManager
 {
@@ -15,7 +15,7 @@ class ConversationManager
 
     private $contextManager;
 
-    /** @var ParticipantServiceContract|\FondBot\Database\Services\ParticipantService  */
+    /** @var ParticipantServiceContract|\FondBot\Database\Services\ParticipantService */
     private $participantService;
 
     public function __construct(

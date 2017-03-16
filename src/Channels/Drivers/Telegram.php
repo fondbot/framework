@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Drivers;
 
-use FondBot\Channels\Driver;
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
-use FondBot\Channels\Message;
-use FondBot\Channels\Receiver;
-use FondBot\Channels\Sender;
-use FondBot\Channels\Request;
-use FondBot\Conversation\Keyboard;
 use GuzzleHttp\Client;
+use FondBot\Channels\Driver;
+use FondBot\Channels\Sender;
+use FondBot\Channels\Message;
+use FondBot\Channels\Request;
+use FondBot\Channels\Receiver;
+use FondBot\Conversation\Keyboard;
 use GuzzleHttp\Exception\RequestException;
+use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 class Telegram extends Driver
 {
@@ -45,7 +45,7 @@ class Telegram extends Driver
      */
     public function verifyRequest(): void
     {
-        if (!isset($this->request['message'], $this->request['message']['from'], $this->request['message']['text'])) {
+        if (! isset($this->request['message'], $this->request['message']['from'], $this->request['message']['text'])) {
             throw new InvalidChannelRequest('Invalid payload');
         }
     }
@@ -74,7 +74,7 @@ class Telegram extends Driver
         $from = $this->request['message']['from'];
 
         return Sender::create(
-            (string)$from['id'],
+            (string) $from['id'],
             $from['first_name'].' '.$from['last_name'],
             $from['username']
         );

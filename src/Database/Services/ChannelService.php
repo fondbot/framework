@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace FondBot\Database\Services;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Database\Traits\BaseServiceMethods;
 use FondBot\Contracts\Database\Entities\Channel as ChannelContract;
 use FondBot\Contracts\Database\Services\ChannelService as ChannelServiceContract;
-use FondBot\Contracts\Database\Traits\BaseServiceMethods;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class ChannelService implements ChannelServiceContract
 {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Contracts\Database\Services;
@@ -9,7 +10,7 @@ use FondBot\Contracts\Database\Entities\Participant;
 interface ParticipantService
 {
     /**
-     * Find participant by channel id and identifier
+     * Find participant by channel id and identifier.
      *
      * @param Channel $channel
      * @param string $identifier

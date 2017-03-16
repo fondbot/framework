@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
+use Tests\TestCase;
 use FondBot\Channels\Driver;
 use FondBot\Channels\Sender;
+use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\ContextManager;
-use Illuminate\Cache\Repository;
-use Tests\TestCase;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface driver

@@ -1,14 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Contracts\Database\Traits;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 trait BaseServiceMethods
 {
-
     /** @var Model|\Eloquent */
     protected $entity;
 

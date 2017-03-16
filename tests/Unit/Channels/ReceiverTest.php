@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels;
 
-use FondBot\Channels\Receiver;
 use Tests\TestCase;
+use FondBot\Channels\Receiver;
 
 class ReceiverTest extends TestCase
 {

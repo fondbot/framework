@@ -1,14 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Listeners;
 
-use FondBot\Contracts\Database\Services\MessageService;
 use FondBot\Contracts\Events\MessageReceived;
+use FondBot\Contracts\Database\Services\MessageService;
 
 class MessageReceivedListener
 {
-
     /** @var \FondBot\Database\Services\MessageService */
     private $messageService;
 

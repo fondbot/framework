@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace FondBot\Providers;
 
 use Event;
+use Route;
+use FondBot\Contracts\Events\MessageSent;
+use FondBot\Listeners\MessageSentListener;
+use FondBot\Contracts\Events\MessageReceived;
+use FondBot\Listeners\MessageReceivedListener;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Services\ChannelService;
 use FondBot\Contracts\Database\Services\MessageService;
 use FondBot\Contracts\Database\Services\ParticipantService;
-use FondBot\Contracts\Events\MessageReceived;
-use FondBot\Contracts\Events\MessageSent;
-use FondBot\Listeners\MessageReceivedListener;
-use FondBot\Listeners\MessageSentListener;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Route;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -56,7 +56,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         Route::model('channel', Channel::class);
 
-        if (!$this->app->routesAreCached()) {
+        if (! $this->app->routesAreCached()) {
             Route::group([
                 'prefix' => 'fondbot',
                 'namespace' => 'FondBot\Http\Controllers',

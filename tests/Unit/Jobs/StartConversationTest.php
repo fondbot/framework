@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Jobs;
 
-use FondBot\Channels\ChannelManager;
+use Tests\TestCase;
 use FondBot\Channels\Driver;
-use FondBot\Channels\Message;
 use FondBot\Channels\Sender;
+use FondBot\Channels\Message;
+use FondBot\Conversation\Story;
+use FondBot\Conversation\Context;
+use FondBot\Jobs\StartConversation;
+use FondBot\Channels\ChannelManager;
+use FondBot\Conversation\StoryManager;
+use FondBot\Conversation\ContextManager;
+use FondBot\Contracts\Events\MessageReceived;
+use FondBot\Conversation\ConversationManager;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Services\ParticipantService;
-use FondBot\Contracts\Events\MessageReceived;
-use FondBot\Conversation\Context;
-use FondBot\Conversation\ContextManager;
-use FondBot\Conversation\ConversationManager;
-use FondBot\Conversation\Story;
-use FondBot\Conversation\StoryManager;
-use FondBot\Jobs\StartConversation;
-use Tests\TestCase;
 
 class StartConversationTest extends TestCase
 {
