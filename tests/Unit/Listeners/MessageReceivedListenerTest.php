@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners;
 
+use Tests\TestCase;
+use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Contracts\Database\Entities\Participant;
 use FondBot\Contracts\Database\Services\MessageService;
-use FondBot\Contracts\Events\MessageReceived;
-use Tests\TestCase;
 
 class MessageReceivedListenerTest extends TestCase
 {
-
     public function test()
     {
         Participant::unguard();
@@ -27,5 +26,4 @@ class MessageReceivedListenerTest extends TestCase
 
         event(new MessageReceived($participant, $text));
     }
-
 }

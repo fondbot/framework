@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Providers;
 
-use Illuminate\Contracts\Events\Dispatcher;
 use Route;
 use FondBot\Contracts\Events\MessageSent;
 use FondBot\Listeners\MessageSentListener;
+use Illuminate\Contracts\Events\Dispatcher;
 use FondBot\Channels\ChannelServiceProvider;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Listeners\MessageReceivedListener;
