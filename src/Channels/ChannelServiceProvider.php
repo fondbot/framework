@@ -9,7 +9,7 @@ use FondBot\Providers\ServiceProvider;
 class ChannelServiceProvider extends ServiceProvider
 {
     /**
-     * Default drivers
+     * Default drivers.
      *
      * @var array
      */

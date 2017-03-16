@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
-use FondBot\Channels\Drivers\Telegram;
+use Tests\TestCase;
+use GuzzleHttp\Client;
+use FondBot\Channels\Sender;
 use FondBot\Channels\Message;
 use FondBot\Channels\Receiver;
-use FondBot\Channels\Sender;
-use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboard;
-use FondBot\Conversation\Keyboards\Button;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use FondBot\Channels\Drivers\Telegram;
 use Psr\Http\Message\RequestInterface;
-use Tests\TestCase;
+use FondBot\Conversation\Keyboards\Button;
+use GuzzleHttp\Exception\RequestException;
+use FondBot\Contracts\Database\Entities\Channel;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -144,8 +144,8 @@ class TelegramTest extends TestCase
         $replyMarkup = json_encode([
             'keyboard' => [
                 [
-                    (object)['text' => $button1Text],
-                    (object)['text' => $button2Text],
+                    (object) ['text' => $button1Text],
+                    (object) ['text' => $button2Text],
                 ],
             ],
             'resize_keyboard' => true,
