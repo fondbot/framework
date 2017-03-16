@@ -10,11 +10,12 @@ use FondBot\Channels\Message;
 use FondBot\Channels\Receiver;
 use FondBot\Channels\Request;
 use FondBot\Channels\Sender;
+use FondBot\Contracts\Channels\WebhookInstallation;
 use FondBot\Conversation\Keyboard;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
-class TelegramDriver extends Driver
+class TelegramDriver extends Driver implements WebhookInstallation
 {
     private $guzzle;
 
