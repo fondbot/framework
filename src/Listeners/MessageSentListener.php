@@ -11,13 +11,9 @@ use FondBot\Contracts\Database\Services\ParticipantService;
 
 class MessageSentListener
 {
-    /** @var \FondBot\Database\Services\ChannelService */
+
     private $channelService;
-
-    /** @var \FondBot\Database\Services\ParticipantService */
     private $participantService;
-
-    /** @var \FondBot\Database\Services\MessageService */
     private $messageService;
 
     public function __construct(

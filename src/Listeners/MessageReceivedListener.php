@@ -9,7 +9,6 @@ use FondBot\Contracts\Database\Services\MessageService;
 
 class MessageReceivedListener
 {
-    /** @var \FondBot\Database\Services\MessageService */
     private $messageService;
 
     public function __construct(MessageService $messageService)

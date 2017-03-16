@@ -7,6 +7,13 @@ namespace FondBot\Contracts\Database\Services;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
 
+/**
+ * Interface ParticipantService
+ *
+ * @mixin \FondBot\Contracts\Database\Traits\BaseServiceMethods
+ *
+ * @package FondBot\Contracts\Database\Services
+ */
 interface ParticipantService
 {
     /**

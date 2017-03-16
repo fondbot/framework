@@ -14,8 +14,6 @@ class ConversationManager
     use Loggable;
 
     private $contextManager;
-
-    /** @var ParticipantServiceContract|\FondBot\Database\Services\ParticipantService */
     private $participantService;
 
     public function __construct(

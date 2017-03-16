@@ -15,9 +15,6 @@ class CreateChannel extends Command
     protected $signature = 'fondbot:channel:create';
     protected $description = 'Create a new channel';
 
-    /**
-     * @param ChannelService|\FondBot\Database\Services\ChannelService $service
-     */
     public function handle(ChannelService $service)
     {
         $name = $this->ask('Name (e.g. telegram-1)');

@@ -42,12 +42,8 @@ class ListChannels extends Command
         $this->table(array_keys($rows[0]), $rows);
     }
 
-    /**
-     * @return Channel[]|Collection
-     */
     private function channels(): Collection
     {
-        /** @var ChannelService|\FondBot\Database\Services\ChannelService $service */
         $service = resolve(ChannelService::class);
         if ($this->option('enabled')) {
             return $service->findEnabled();
