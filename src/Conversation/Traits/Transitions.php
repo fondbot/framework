@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Traits;
 
 use InvalidArgumentException;
-use FondBot\Conversation\Context;
 use FondBot\Conversation\Interaction;
 
 trait Transitions
 {
-    /** @var Context */
-    protected $context;
 
     /**
      * Jump to another interaction.
@@ -30,6 +27,7 @@ trait Transitions
         }
 
         // Run interaction
-        $instance->run($this->context);
+        $instance->setContext($this->context);
+        $instance->run();
     }
 }

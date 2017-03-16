@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Drivers;
 
-use GuzzleHttp\Client;
 use FondBot\Channels\Driver;
+use FondBot\Channels\Exceptions\InvalidChannelRequest;
+use FondBot\Channels\Message;
+use FondBot\Channels\Receiver;
+use FondBot\Channels\Sender;
 use FondBot\Channels\Request;
 use FondBot\Conversation\Keyboard;
-use FondBot\Channels\Objects\Message;
-use FondBot\Channels\Objects\Participant;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 class Telegram extends Driver
 {
@@ -44,7 +45,7 @@ class Telegram extends Driver
      */
     public function verifyRequest(): void
     {
-        if (! isset($this->request['message'], $this->request['message']['from'], $this->request['message']['text'])) {
+        if (!isset($this->request['message'], $this->request['message']['from'], $this->request['message']['text'])) {
             throw new InvalidChannelRequest('Invalid payload');
         }
     }
@@ -63,17 +64,27 @@ class Telegram extends Driver
         ]);
     }
 
-    public function getParticipant(): Participant
+    /**
+     * Get message sender.
+     *
+     * @return Sender
+     */
+    public function getSender(): Sender
     {
         $from = $this->request['message']['from'];
 
-        return Participant::create(
-            (string) $from['id'],
+        return Sender::create(
+            (string)$from['id'],
             $from['first_name'].' '.$from['last_name'],
             $from['username']
         );
     }
 
+    /**
+     * Get message received from sender.
+     *
+     * @return Message
+     */
     public function getMessage(): Message
     {
         $text = $this->request['message']['text'];
@@ -81,11 +92,18 @@ class Telegram extends Driver
         return Message::create($text);
     }
 
-    public function reply(Participant $participant, Message $message, Keyboard $keyboard = null): void
+    /**
+     * Send reply to participant.
+     *
+     * @param Receiver $receiver
+     * @param string $text
+     * @param Keyboard|null $keyboard
+     */
+    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void
     {
         $parameters = [
-            'chat_id' => $participant->getIdentifier(),
-            'text' => $message->getText(),
+            'chat_id' => $receiver->getIdentifier(),
+            'text' => $text,
         ];
 
         if ($keyboard !== null) {

@@ -4,75 +4,110 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Traits\Loggable;
-use FondBot\Channels\Objects\Message;
+use FondBot\Channels\Receiver;
+use FondBot\Contracts\Conversation\Interaction as InteractionContract;
+use FondBot\Contracts\Events\MessageSent;
 use FondBot\Conversation\Traits\Transitions;
+use Illuminate\Contracts\Events\Dispatcher;
 
-abstract class Interaction
+abstract class Interaction implements InteractionContract
 {
-    use Loggable, Transitions;
+    use Transitions;
 
     /** @var Context */
-    protected $context;
+    private $context;
 
     /**
-     * Do something before running Interaction.
+     * Set context.
+     *
+     * @param Context $context
      */
-    public function before(): void
+    public function setContext(Context $context): void
     {
+        $this->context = $context;
     }
 
     /**
-     * Do something after running Interaction.
+     * Get current context instance.
+     *
+     * @return Context
      */
-    public function after(): void
+    public function getContext(): Context
     {
+        return $this->context;
     }
 
-    /**
-     * Message to be sent to Participant.
-     *
-     * @return Message
-     */
-    abstract public function message(): Message;
+    public function getReceiver(): Receiver
+    {
+        $sender = $this->getContext()->getDriver()->getSender();
 
-    /**
-     * Keyboard to be shown to Participant.
-     *
-     * @return Keyboard|null
-     */
-    abstract public function keyboard(): ?Keyboard;
+        return Receiver::create($sender->getIdentifier(), $sender->getName(), $sender->getUsername());
+    }
 
     /**
      * Process reply.
      */
     abstract protected function process(): void;
 
-    public function run(Context $context): void
+    /**
+     * Run interaction.
+     */
+    public function run(): void
     {
-        $this->context = $context;
-
         // Perform actions before running interaction
         $this->before();
 
         // Process reply if current interaction in context
         // Reply to participant if not
-        if ($context->getInteraction() instanceof $this) {
+        if ($this->context->getInteraction() instanceof $this) {
             $this->process();
         } else {
-            // Update interaction in context
+            // Update context information
             $this->context->setInteraction($this);
+            $this->getContextManager()->save($this->context);
 
-            /** @var ContextManager $contextManager */
-            $contextManager = resolve(ContextManager::class);
-            $contextManager->save($this->context);
+            // Send message to participant
+            $this->context->getDriver()->sendMessage(
+                $this->getReceiver(),
+                $this->text(),
+                $this->keyboard()
+            );
 
-            // Send reply to participant
-            $driver = $context->getDriver();
-            $driver->reply($driver->getParticipant(), $this->message(), $this->keyboard());
+            // Fire event that message was sent
+            $this->getEventDispatcher()->dispatch(
+                new MessageSent(
+                    $this->context,
+                    $this->getReceiver(),
+                    $this->text()
+                )
+            );
         }
 
         // Perform actions before running interaction
         $this->after();
+    }
+
+    /**
+     * Do something before running Interaction.
+     */
+    protected function before(): void
+    {
+    }
+
+    /**
+     * Do something after running Interaction.
+     */
+    protected function after(): void
+    {
+    }
+
+    private function getContextManager(): ContextManager
+    {
+        return resolve(ContextManager::class);
+    }
+
+    private function getEventDispatcher(): Dispatcher
+    {
+        return resolve(Dispatcher::class);
     }
 }

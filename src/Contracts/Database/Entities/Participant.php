@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Database\Entities;
+namespace FondBot\Contracts\Database\Entities;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * @property int $id
  * @property int $channel_id
  * @property string $identifier
  * @property string $name
@@ -15,8 +17,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Carbon\Carbon $updated_at
  *
  * @property Channel $channel
+ *
+ * @mixin \Eloquent
  */
-class Participant extends AbstractEntity
+class Participant extends Model
 {
     protected $table = 'participants';
 

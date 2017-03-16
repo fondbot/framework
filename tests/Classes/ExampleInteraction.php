@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Classes;
 
-use FondBot\Conversation\Keyboard;
-use FondBot\Channels\Objects\Message;
 use FondBot\Conversation\Interaction;
+use FondBot\Conversation\Keyboard;
 
 class ExampleInteraction extends Interaction
 {
     /**
-     * Message to be sent to Participant.
+     * Message text to be sent to Participant.
      *
-     * @return Message
+     * @return string
      */
-    public function message(): Message
+    public function text(): string
     {
-        return Message::create('example');
+        return 'example';
     }
 
     /**

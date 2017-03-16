@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use Cache;
-use Tests\TestCase;
 use FondBot\Channels\Driver;
+use FondBot\Channels\Sender;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\ContextManager;
-use FondBot\Channels\Objects\Participant;
+use Illuminate\Cache\Repository;
+use Tests\TestCase;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface driver
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface participant
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $sender
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface cache
  * @property ContextManager manager
  */
 class ContextManagerTest extends TestCase
@@ -23,20 +24,21 @@ class ContextManagerTest extends TestCase
         parent::setUp();
 
         $this->driver = $this->mock(Driver::class);
-        $this->participant = $this->mock(Participant::class);
+        $this->sender = $this->mock(Sender::class);
+        $this->cache = $this->mock(Repository::class);
 
-        $this->manager = new ContextManager;
+        $this->manager = new ContextManager($this->cache);
     }
 
     public function test_resolve()
     {
         $this->driver->shouldReceive('getChannelName')->andReturn($channelName = $this->faker()->word);
-        $this->driver->shouldReceive('getParticipant')->andReturn($this->participant);
-        $this->participant->shouldReceive('getIdentifier')->andReturn($participantId = $this->faker()->uuid);
+        $this->driver->shouldReceive('getSender')->andReturn($this->sender);
+        $this->sender->shouldReceive('getIdentifier')->andReturn($senderId = $this->faker()->uuid);
 
-        $key = 'context.'.$channelName.'.'.$participantId;
+        $key = 'context.'.$channelName.'.'.$senderId;
 
-        Cache::shouldReceive('get')->with($key, null)->andReturn([
+        $this->cache->shouldReceive('get')->with($key)->andReturn([
             'story' => null,
             'interaction' => null,
             'values' => $values = [
@@ -57,8 +59,8 @@ class ContextManagerTest extends TestCase
     public function test_save()
     {
         $this->driver->shouldReceive('getChannelName')->andReturn($channelName = $this->faker()->word);
-        $this->driver->shouldReceive('getParticipant')->andReturn($this->participant);
-        $this->participant->shouldReceive('getIdentifier')->andReturn($participantId = $this->faker()->uuid);
+        $this->driver->shouldReceive('getSender')->andReturn($this->sender);
+        $this->sender->shouldReceive('getIdentifier')->andReturn($senderId = $this->faker()->uuid);
 
         $context = $this->mock(Context::class);
         $context->shouldReceive('getDriver')->andReturn($this->driver);
@@ -66,9 +68,9 @@ class ContextManagerTest extends TestCase
         $context->shouldReceive('getInteraction')->andReturn(null);
         $context->shouldReceive('getValues')->andReturn($values = ['key1' => 'value1']);
 
-        $key = 'context.'.$channelName.'.'.$participantId;
+        $key = 'context.'.$channelName.'.'.$senderId;
 
-        Cache::shouldReceive('put')->with($key, [
+        $this->cache->shouldReceive('forever')->with($key, [
             'story' => null,
             'interaction' => null,
             'values' => $values,

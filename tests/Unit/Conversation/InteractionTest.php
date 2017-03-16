@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use Tests\TestCase;
 use FondBot\Channels\Driver;
+use FondBot\Channels\Sender;
+use FondBot\Contracts\Events\MessageSent;
 use FondBot\Conversation\Context;
-use Tests\Classes\ExampleInteraction;
 use FondBot\Conversation\ContextManager;
-use FondBot\Channels\Objects\Participant;
+use Tests\Classes\ExampleInteraction;
+use Tests\TestCase;
 
 /**
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface context
  * @property ExampleInteraction interaction
  */
 class InteractionTest extends TestCase
@@ -20,31 +22,38 @@ class InteractionTest extends TestCase
     {
         parent::setUp();
 
+        $this->context = $this->mock(Context::class);
+
         $this->interaction = new ExampleInteraction;
+        $this->interaction->setContext($this->context);
     }
 
     public function test_run_current_interaction_in_context()
     {
-        $context = $this->mock(Context::class);
-        $context->shouldReceive('getInteraction')->andReturn($this->interaction);
+        $this->context->shouldReceive('getInteraction')->andReturn($this->interaction);
 
-        $this->interaction->run($context);
+        $this->interaction->run();
     }
 
     public function test_run_current_interaction_not_in_context()
     {
-        $context = $this->mock(Context::class);
         $contextManager = $this->mock(ContextManager::class);
         $driver = $this->mock(Driver::class);
-        $participant = $this->mock(Participant::class);
+        $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
 
-        $context->shouldReceive('getInteraction')->andReturnNull();
-        $context->shouldReceive('setInteraction')->with($this->interaction)->once();
-        $contextManager->shouldReceive('save')->with($context);
-        $context->shouldReceive('getDriver')->andReturn($driver);
-        $driver->shouldReceive('getParticipant')->andReturn($participant);
-        $driver->shouldReceive('reply')->once();
+        $this->context->shouldReceive('getInteraction')->andReturnNull();
+        $this->context->shouldReceive('setInteraction')->with($this->interaction)->once();
+        $this->context->shouldReceive('getDriver')->andReturn($driver);
+        $contextManager->shouldReceive('save')->with($this->context);
 
-        $this->interaction->run($context);
+        $driver->shouldReceive('getChannelName')->andReturn($channelName = $this->faker()->userName);
+        $driver->shouldReceive('getSender')->andReturn($sender);
+
+        $driver->shouldReceive('sendMessage')->once();
+
+        $this->expectsEvents(MessageSent::class);
+
+        $this->interaction->setContext($this->context);
+        $this->interaction->run();
     }
 }

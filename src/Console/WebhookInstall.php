@@ -6,7 +6,7 @@ namespace FondBot\Console;
 
 use Illuminate\Console\Command;
 use FondBot\Channels\ChannelManager;
-use FondBot\Database\Services\ChannelService;
+use FondBot\Contracts\Database\Services\ChannelService;
 
 class WebhookInstall extends Command
 {
@@ -20,10 +20,10 @@ class WebhookInstall extends Command
 
         $url = route('fondbot.webhook', $channel);
 
-        $driver = $manager->createDriver(request(), $channel);
+        $driver = $manager->createDriver([], $channel);
         $driver->installWebhook($url);
 
-        $this->info('Webhook successfully installed.');
+        $this->info('Webhook installed.');
     }
 
     private function channels(): array

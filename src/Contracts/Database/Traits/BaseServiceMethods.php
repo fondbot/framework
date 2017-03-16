@@ -1,21 +1,16 @@
 <?php
-
 declare(strict_types=1);
 
-namespace FondBot\Database\Services;
+namespace FondBot\Contracts\Database\Traits;
 
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use FondBot\Database\Entities\AbstractEntity;
+use Illuminate\Database\Eloquent\Model;
 
-abstract class AbstractService
+trait BaseServiceMethods
 {
-    protected $entity;
 
-    public function __construct(AbstractEntity $entity)
-    {
-        $this->entity = $entity;
-    }
+    /** @var Model|\Eloquent */
+    protected $entity;
 
     /**
      * Get all records from database.
@@ -31,9 +26,9 @@ abstract class AbstractService
      * Find record by id.
      *
      * @param int $id
-     * @return AbstractEntity|null
+     * @return Model|null
      */
-    public function findById(int $id): ?AbstractEntity
+    public function findById(int $id): ?Model
     {
         return $this->entity->newQuery()->find($id);
     }
@@ -42,9 +37,9 @@ abstract class AbstractService
      * Create new record.
      *
      * @param array $attributes
-     * @return AbstractEntity
+     * @return Model
      */
-    public function create(array $attributes): AbstractEntity
+    public function create(array $attributes): Model
     {
         $entity = $this->entity->newInstance($attributes);
         $entity->save();
@@ -57,9 +52,9 @@ abstract class AbstractService
      *
      * @param array $attributes
      * @param array $values
-     * @return AbstractEntity|mixed
+     * @return Model|mixed
      */
-    public function createOrUpdate(array $attributes, array $values): AbstractEntity
+    public function createOrUpdate(array $attributes, array $values): Model
     {
         return $this->entity->updateOrCreate($attributes, $values);
     }
@@ -67,12 +62,12 @@ abstract class AbstractService
     /**
      * Update record.
      *
-     * @param AbstractEntity $entity
+     * @param Model $entity
      * @param array $attributes
-     * @return AbstractEntity
+     * @return Model
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function update(AbstractEntity $entity, array $attributes): AbstractEntity
+    public function update(Model $entity, array $attributes): Model
     {
         $entity->fill($attributes);
         $entity->save();
@@ -83,10 +78,9 @@ abstract class AbstractService
     /**
      * Delete record.
      *
-     * @param AbstractEntity $entity
-     * @throws Exception
+     * @param Model $entity
      */
-    public function delete(AbstractEntity $entity): void
+    public function delete(Model $entity): void
     {
         $entity->delete();
     }

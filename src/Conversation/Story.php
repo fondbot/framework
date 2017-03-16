@@ -36,7 +36,8 @@ abstract class Story
 
         // Process interaction from context
         if ($interaction !== null) {
-            $interaction->run($context);
+            $interaction->setContext($context);
+            $interaction->run();
 
             return;
         }

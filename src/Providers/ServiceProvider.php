@@ -4,27 +4,59 @@ declare(strict_types=1);
 
 namespace FondBot\Providers;
 
-use Route;
-use FondBot\Database\Entities\Channel;
+use Event;
+use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Database\Services\ChannelService;
+use FondBot\Contracts\Database\Services\MessageService;
+use FondBot\Contracts\Database\Services\ParticipantService;
+use FondBot\Contracts\Events\MessageReceived;
+use FondBot\Contracts\Events\MessageSent;
+use FondBot\Listeners\MessageReceivedListener;
+use FondBot\Listeners\MessageSentListener;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Route;
 
 class ServiceProvider extends BaseServiceProvider
 {
     public function register()
     {
+        $this->contracts();
         $this->console();
     }
 
     public function boot()
     {
+        $this->events();
         $this->routes();
     }
 
+    /**
+     * Register contracts.
+     */
+    private function contracts(): void
+    {
+        $this->app->bind(ChannelService::class, \FondBot\Database\Services\ChannelService::class);
+        $this->app->bind(ParticipantService::class, \FondBot\Database\Services\ParticipantService::class);
+        $this->app->bind(MessageService::class, \FondBot\Database\Services\MessageService::class);
+    }
+
+    /**
+     * Register events.
+     */
+    private function events(): void
+    {
+        Event::listen(MessageReceived::class, MessageReceivedListener::class);
+        Event::listen(MessageSent::class, MessageSentListener::class);
+    }
+
+    /**
+     * Register routes.
+     */
     private function routes(): void
     {
         Route::model('channel', Channel::class);
 
-        if (! $this->app->routesAreCached()) {
+        if (!$this->app->routesAreCached()) {
             Route::group([
                 'prefix' => 'fondbot',
                 'namespace' => 'FondBot\Http\Controllers',
@@ -35,6 +67,9 @@ class ServiceProvider extends BaseServiceProvider
         }
     }
 
+    /**
+     * Register console commands.
+     */
     private function console(): void
     {
         if ($this->app->runningInConsole()) {

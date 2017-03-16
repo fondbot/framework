@@ -8,13 +8,16 @@ use Illuminate\Support\Str;
 use FondBot\Channels\Driver;
 use Illuminate\Console\Command;
 use FondBot\Channels\ChannelManager;
-use FondBot\Database\Services\ChannelService;
+use FondBot\Contracts\Database\Services\ChannelService;
 
 class CreateChannel extends Command
 {
     protected $signature = 'fondbot:channel:create';
     protected $description = 'Create a new channel';
 
+    /**
+     * @param ChannelService|\FondBot\Database\Services\ChannelService $service
+     */
     public function handle(ChannelService $service)
     {
         $name = $this->ask('Name (e.g. telegram-1)');

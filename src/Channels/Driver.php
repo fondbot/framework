@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use GuzzleHttp\Client;
-use FondBot\Traits\Loggable;
-use FondBot\Conversation\Keyboard;
-use FondBot\Channels\Objects\Message;
-use FondBot\Channels\Objects\Participant;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
+use FondBot\Conversation\Keyboard;
+use FondBot\Traits\Loggable;
+use GuzzleHttp\Client;
 
 abstract class Driver
 {
@@ -92,14 +90,14 @@ abstract class Driver
     abstract public function installWebhook(string $url): void;
 
     /**
-     * Get current participant.
+     * Get message sender.
      *
-     * @return Participant
+     * @return Sender
      */
-    abstract public function getParticipant(): Participant;
+    abstract public function getSender(): Sender;
 
     /**
-     * Get message sent by participant.
+     * Get message received from sender.
      *
      * @return Message
      */
@@ -108,9 +106,9 @@ abstract class Driver
     /**
      * Send reply to participant.
      *
-     * @param Participant $participant
-     * @param Message $message
+     * @param Receiver $receiver
+     * @param string $text
      * @param Keyboard|null $keyboard
      */
-    abstract public function reply(Participant $participant, Message $message, Keyboard $keyboard = null): void;
+    abstract public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void;
 }

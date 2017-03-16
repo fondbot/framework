@@ -1,10 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
-namespace FondBot\Channels\Objects;
+namespace FondBot\Channels;
 
-class Participant
+class Receiver
 {
     /** @var string */
     private $identifier;
@@ -15,7 +14,7 @@ class Participant
     /** @var string */
     private $username;
 
-    public static function create(string $identifier, string $name, string $username): Participant
+    public static function create(string $identifier, string $name, string $username): Receiver
     {
         $instance = new static;
         $instance->setIdentifier($identifier);

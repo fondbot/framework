@@ -5,20 +5,22 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Channels\Driver;
+use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Database\Services\ParticipantService as ParticipantServiceContract;
 use FondBot\Traits\Loggable;
-use FondBot\Database\Entities\Channel;
-use FondBot\Database\Services\ParticipantService;
 
 class ConversationManager
 {
     use Loggable;
 
     private $contextManager;
+
+    /** @var ParticipantServiceContract|\FondBot\Database\Services\ParticipantService  */
     private $participantService;
 
     public function __construct(
         ContextManager $contextManager,
-        ParticipantService $participantService
+        ParticipantServiceContract $participantService
     ) {
         $this->contextManager = $contextManager;
         $this->participantService = $participantService;
@@ -38,15 +40,15 @@ class ConversationManager
         Channel $channel,
         Story $story
     ): void {
-        $participant = $driver->getParticipant();
+        $sender = $driver->getSender();
 
-        // Store Participant in database
+        // Store sender in database as participant
         $this->participantService->createOrUpdate([
             'channel_id' => $channel->id,
-            'identifier' => $participant->getIdentifier(),
-            'name' => $participant->getName(),
-            'username' => $participant->getUsername(),
-        ], ['channel_id' => $channel->id, 'identifier' => $participant->getIdentifier()]);
+            'identifier' => $sender->getIdentifier(),
+            'name' => $sender->getName(),
+            'username' => $sender->getUsername(),
+        ], ['channel_id' => $channel->id, 'identifier' => $sender->getIdentifier()]);
 
         $context->setStory($story);
         $this->contextManager->save($context);

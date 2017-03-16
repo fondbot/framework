@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace FondBot\Database\Services;
 
-use FondBot\Database\Entities\Channel;
+use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Database\Entities\Channel as ChannelContract;
+use FondBot\Contracts\Database\Services\ChannelService as ChannelServiceContract;
+use FondBot\Contracts\Database\Traits\BaseServiceMethods;
 use Illuminate\Database\Eloquent\Collection;
-use FondBot\Database\Entities\AbstractEntity;
+use Illuminate\Database\Eloquent\Model;
 
-class ChannelService extends AbstractService
+class ChannelService implements ChannelServiceContract
 {
+    use BaseServiceMethods;
+
     public function __construct(Channel $entity)
     {
-        parent::__construct($entity);
+        $this->entity = $entity;
     }
 
     /**
@@ -43,9 +48,9 @@ class ChannelService extends AbstractService
      * Find channel by name.
      *
      * @param string $name
-     * @return AbstractEntity|Channel|null
+     * @return ChannelContract|Model|null
      */
-    public function findByName(string $name)
+    public function findByName(string $name): ChannelContract
     {
         return $this->entity
             ->where('name', $name)
@@ -55,9 +60,9 @@ class ChannelService extends AbstractService
     /**
      * Enable channel.
      *
-     * @param Channel $channel
+     * @param ChannelContract $channel
      */
-    public function enable(Channel $channel): void
+    public function enable(ChannelContract $channel): void
     {
         $this->update($channel, [
             'is_enabled' => true,
@@ -67,9 +72,9 @@ class ChannelService extends AbstractService
     /**
      * Disable channel.
      *
-     * @param Channel $channel
+     * @param ChannelContract $channel
      */
-    public function disable(Channel $channel): void
+    public function disable(ChannelContract $channel): void
     {
         $this->update($channel, [
             'is_enabled' => false,

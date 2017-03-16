@@ -28,7 +28,8 @@ class StoryTest extends TestCase
         $context->shouldReceive('getInteraction')->andReturn(null);
 
         $interaction = $this->mock(ExampleInteraction::class);
-        $interaction->shouldReceive('run')->with($context)->once();
+        $interaction->shouldReceive('setContext')->with($context)->once();
+        $interaction->shouldReceive('run')->once();
 
         $this->story->run($context);
     }
@@ -37,9 +38,10 @@ class StoryTest extends TestCase
     {
         $context = $this->mock(Context::class);
         $interaction = $this->mock(Interaction::class);
-        $context->shouldReceive('getInteraction')->andReturn($interaction);
 
-        $interaction->shouldReceive('run')->with($context)->once();
+        $context->shouldReceive('getInteraction')->andReturn($interaction);
+        $interaction->shouldReceive('setContext')->with($context)->once();
+        $interaction->shouldReceive('run')->once();
 
         $this->story->run($context);
     }

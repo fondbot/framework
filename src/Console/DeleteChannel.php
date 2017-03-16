@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace FondBot\Console;
 
 use Illuminate\Console\Command;
-use FondBot\Database\Services\ChannelService;
+use FondBot\Contracts\Database\Services\ChannelService;
 
 class DeleteChannel extends Command
 {
     protected $signature = 'fondbot:channel:delete';
     protected $description = 'Delete existing channel';
 
+    /**
+     * @param ChannelService|\FondBot\Database\Services\ChannelService $service
+     */
     public function handle(ChannelService $service)
     {
         $channels = $service->all()->pluck('name', 'id')->toArray();

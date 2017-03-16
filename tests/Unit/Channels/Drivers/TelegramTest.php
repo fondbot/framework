@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
-use Tests\TestCase;
-use GuzzleHttp\Client;
-use FondBot\Conversation\Keyboard;
-use FondBot\Channels\Objects\Message;
 use FondBot\Channels\Drivers\Telegram;
-use Psr\Http\Message\RequestInterface;
-use FondBot\Channels\Objects\Participant;
+use FondBot\Channels\Message;
+use FondBot\Channels\Receiver;
+use FondBot\Channels\Sender;
+use FondBot\Conversation\Keyboard;
 use FondBot\Conversation\Keyboards\Button;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\RequestInterface;
+use Tests\TestCase;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -98,7 +99,7 @@ class TelegramTest extends TestCase
         $this->telegram->installWebhook($url);
     }
 
-    public function test_participant()
+    public function test_getSender()
     {
         $this->telegram->setRequest([
             'message' => [
@@ -111,10 +112,10 @@ class TelegramTest extends TestCase
             ],
         ]);
 
-        $this->assertInstanceOf(Participant::class, $this->telegram->getParticipant());
+        $this->assertInstanceOf(Sender::class, $this->telegram->getSender());
     }
 
-    public function test_message()
+    public function test_getMessage()
     {
         $this->telegram->setRequest([
             'message' => [
@@ -125,16 +126,16 @@ class TelegramTest extends TestCase
         $this->assertInstanceOf(Message::class, $this->telegram->getMessage());
     }
 
-    public function test_reply_with_keyboard()
+    public function test_sendMessage_with_keyboard()
     {
-        $participant = $this->mock(Participant::class);
-        $message = $this->mock(Message::class);
+        $text = $this->faker()->text;
+
+        $receiver = $this->mock(Receiver::class);
         $keyboard = $this->mock(Keyboard::class);
         $button1 = $this->mock(Button::class);
         $button2 = $this->mock(Button::class);
 
-        $participant->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
-        $message->shouldReceive('getText')->andReturn($text = $this->faker()->text);
+        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
         $keyboard->shouldReceive('getButtons')->andReturn([$button1, $button2]);
         $button1->shouldReceive('getValue')->andReturn($button1Text = $this->faker()->word);
         $button2->shouldReceive('getValue')->andReturn($button2Text = $this->faker()->word);
@@ -157,16 +158,15 @@ class TelegramTest extends TestCase
             ],
         ]);
 
-        $this->telegram->reply($participant, $message, $keyboard);
+        $this->telegram->sendMessage($receiver, $text, $keyboard);
     }
 
-    public function test_reply_without_keyboard()
+    public function test_sendMessage_without_keyboard()
     {
-        $participant = $this->mock(Participant::class);
-        $message = $this->mock(Message::class);
+        $text = $this->faker()->text;
 
-        $participant->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
-        $message->shouldReceive('getText')->andReturn($text = $this->faker()->text);
+        $receiver = $this->mock(Receiver::class);
+        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
 
         $this->guzzle->shouldReceive('post')->with('sendMessage', [
             'form_params' => [
@@ -175,16 +175,14 @@ class TelegramTest extends TestCase
             ],
         ]);
 
-        $this->telegram->reply($participant, $message);
+        $this->telegram->sendMessage($receiver, $text);
     }
 
-    public function test_reply_request_exception()
+    public function test_sendMessage_request_exception()
     {
-        $participant = $this->mock(Participant::class);
-        $message = $this->mock(Message::class);
-
-        $participant->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
-        $message->shouldReceive('getText')->andReturn($text = $this->faker()->text);
+        $text = $this->faker()->text;
+        $receiver = $this->mock(Receiver::class);
+        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
 
         $this->guzzle->shouldReceive('post')->with('sendMessage', [
             'form_params' => [
@@ -193,6 +191,6 @@ class TelegramTest extends TestCase
             ],
         ])->andThrow(new RequestException('Invalid request', $this->mock(RequestInterface::class)));
 
-        $this->telegram->reply($participant, $message);
+        $this->telegram->sendMessage($receiver, $text);
     }
 }

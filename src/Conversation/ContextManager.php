@@ -5,9 +5,17 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Channels\Driver;
+use Illuminate\Contracts\Cache\Repository as Cache;
 
 class ContextManager
 {
+    private $cache;
+
+    public function __construct(Cache $cache)
+    {
+        $this->cache = $cache;
+    }
+
     /**
      * Resolve context instance.
      *
@@ -18,7 +26,7 @@ class ContextManager
     {
         $key = $this->key($driver);
 
-        $value = cache($key);
+        $value = $this->cache->get($key);
 
         $story = $value['story'] !== null ? resolve($value['story']) : null;
         $interaction = $value['interaction'] !== null ? resolve($value['interaction']) : null;
@@ -46,7 +54,7 @@ class ContextManager
             'values' => $context->getValues(),
         ];
 
-        cache()->put($key, $value);
+        $this->cache->forever($key, $value);
     }
 
     /**
@@ -57,6 +65,6 @@ class ContextManager
      */
     private function key(Driver $driver): string
     {
-        return 'context.'.$driver->getChannelName().'.'.$driver->getParticipant()->getIdentifier();
+        return 'context.'.$driver->getChannelName().'.'.$driver->getSender()->getIdentifier();
     }
 }

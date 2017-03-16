@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels;
 
-use Tests\TestCase;
 use FondBot\Channels\ChannelManager;
 use FondBot\Channels\Drivers\Telegram;
-use FondBot\Database\Entities\Channel;
+use FondBot\Contracts\Database\Entities\Channel;
+use Tests\TestCase;
 
 /**
  * @property ChannelManager manager
@@ -21,7 +21,7 @@ class ChannelManagerTest extends TestCase
         $this->manager = new ChannelManager;
     }
 
-    public function test_driver()
+    public function test_createDriver()
     {
         $channel = new Channel([
             'driver' => Telegram::class,

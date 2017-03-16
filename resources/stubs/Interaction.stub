@@ -12,7 +12,7 @@ class {className} extends Interaction
     /**
      * Do something before running Interaction
      */
-    public function before(): void
+    protected function before(): void
     {
 
     }
@@ -20,19 +20,19 @@ class {className} extends Interaction
     /**
      * Do something after running Interaction
      */
-    public function after(): void
+    protected function after(): void
     {
 
     }
 
     /**
-     * Message to be sent to Participant
+     * Message text to be sent to Participant.
      *
-     * @return Message
+     * @return string
      */
-    public function message(): Message
+    public function text(): string
     {
-        return Message::create('Hello!');
+        return 'Hello, ' . $this->getReceiver()->getName() . '!';
     }
 
     /**

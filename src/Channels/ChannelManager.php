@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use FondBot\Database\Entities\Channel;
+use FondBot\Contracts\Database\Entities\Channel;
 
 class ChannelManager
 {

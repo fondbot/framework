@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use Tests\TestCase;
 use FondBot\Channels\Driver;
-use FondBot\Conversation\Story;
+use FondBot\Channels\Sender;
+use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Context;
-use FondBot\Database\Entities\Channel;
 use FondBot\Conversation\ContextManager;
-use FondBot\Channels\Objects\Participant;
 use FondBot\Conversation\ConversationManager;
-use FondBot\Database\Services\ParticipantService;
+use FondBot\Conversation\Story;
+use FondBot\Contracts\Database\Services\ParticipantService;
+use Tests\TestCase;
 
 class ConversationManagerTest extends TestCase
 {
@@ -24,26 +24,17 @@ class ConversationManagerTest extends TestCase
         $driver = $this->mock(Driver::class);
         $channel = $this->mock(Channel::class);
         $story = $this->mock(Story::class);
-        $participant = $this->mock(Participant::class);
+        $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
 
-        $channelId = random_int(1, time());
-        $participantIdentifier = $this->faker()->uuid;
-        $participantName = $this->faker()->name;
-        $participantUsername = $this->faker()->userName;
-
-        $driver->shouldReceive('getParticipant')->andReturn($participant);
-
-        $this->shouldReturnAttribute($channel, 'id', $channelId);
-        $participant->shouldReceive('getIdentifier')->andReturn($participantIdentifier);
-        $participant->shouldReceive('getName')->andReturn($participantName);
-        $participant->shouldReceive('getUsername')->andReturn($participantUsername);
+        $driver->shouldReceive('getSender')->andReturn($sender);
+        $this->shouldReturnAttribute($channel, 'id', $channelId = random_int(1, time()));
 
         $participantService->shouldReceive('createOrUpdate')->with([
             'channel_id' => $channel->id,
-            'identifier' => $participantIdentifier,
-            'name' => $participantName,
-            'username' => $participantUsername,
-        ], ['channel_id' => $channelId, 'identifier' => $participantIdentifier]);
+            'identifier' => $sender->getIdentifier(),
+            'name' => $sender->getName(),
+            'username' => $sender->getUsername(),
+        ], ['channel_id' => $channelId, 'identifier' => $sender->getIdentifier()]);
 
         $context->shouldReceive('setStory')->with($story)->once();
         $contextManager->shouldReceive('save')->with($context)->once();

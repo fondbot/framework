@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Channels\Objects;
+namespace Tests\Unit\Channels;
 
+use FondBot\Channels\Receiver;
 use Tests\TestCase;
-use FondBot\Channels\Objects\Participant;
 
-class ParticipantTest extends TestCase
+class ReceiverTest extends TestCase
 {
     public function test_create()
     {
@@ -15,7 +15,7 @@ class ParticipantTest extends TestCase
         $name = $this->faker()->name;
         $username = $this->faker()->userName;
 
-        $participant = Participant::create($id, $name, $username);
+        $participant = Receiver::create($id, $name, $username);
 
         $this->assertEquals($id, $participant->getIdentifier());
         $this->assertEquals($name, $participant->getName());

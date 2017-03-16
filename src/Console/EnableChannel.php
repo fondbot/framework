@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Console;
 
 use Illuminate\Console\Command;
-use FondBot\Database\Services\ChannelService;
+use FondBot\Contracts\Database\Services\ChannelService;
 
 class EnableChannel extends Command
 {

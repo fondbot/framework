@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace FondBot\Console;
 
+use FondBot\Channels\ChannelManager;
+use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Database\Services\ChannelService;
 use FondBot\Nifty\Emoji;
 use Illuminate\Console\Command;
-use FondBot\Channels\ChannelManager;
-use FondBot\Database\Entities\Channel;
 use Illuminate\Database\Eloquent\Collection;
-use FondBot\Database\Services\ChannelService;
 
 class ListChannels extends Command
 {
@@ -47,7 +47,7 @@ class ListChannels extends Command
      */
     private function channels(): Collection
     {
-        /** @var ChannelService $service */
+        /** @var ChannelService|\FondBot\Database\Services\ChannelService $service */
         $service = resolve(ChannelService::class);
         if ($this->option('enabled')) {
             return $service->findEnabled();
