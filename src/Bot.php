@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Channels\ChannelManager;
 use FondBot\Channels\Driver;
-use FondBot\Contracts\Channels\WebhookVerification;
-use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Jobs\StartConversation;
 use FondBot\Traits\Loggable;
 use Illuminate\Http\Request;
+use FondBot\Jobs\StartConversation;
+use FondBot\Channels\ChannelManager;
+use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Channels\WebhookVerification;
 
 class Bot
 {
@@ -67,7 +67,7 @@ class Bot
         $driver = $this->createDriver($channel);
 
         // Verification is not required
-        if (!$driver instanceof WebhookVerification) {
+        if (! $driver instanceof WebhookVerification) {
             return ['response' => 'OK'];
         }
 

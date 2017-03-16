@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
+use Tests\TestCase;
+use GuzzleHttp\Client;
+use FondBot\Channels\Sender;
 use FondBot\Channels\Message;
 use FondBot\Channels\Receiver;
-use FondBot\Channels\Sender;
+use FondBot\Conversation\Keyboard;
+use Psr\Http\Message\RequestInterface;
+use FondBot\Conversation\Keyboards\Button;
+use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Conversation\Keyboard;
-use FondBot\Conversation\Keyboards\Button;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use Psr\Http\Message\RequestInterface;
-use Tests\TestCase;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
