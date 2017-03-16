@@ -39,6 +39,10 @@ class TelegramDriverTest extends TestCase
         $this->telegram->setRequest([]);
     }
 
+    public function test_getChannel() {
+        $this->assertSame($this->channel, $this->telegram->getChannel());
+    }
+
     public function test_getConfig()
     {
         $expected = ['token'];

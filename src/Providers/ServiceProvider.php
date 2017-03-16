@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Providers;
 
-use Event;
+use Illuminate\Contracts\Events\Dispatcher;
 use Route;
 use FondBot\Contracts\Events\MessageSent;
 use FondBot\Listeners\MessageSentListener;
@@ -23,12 +23,12 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->app->register(ChannelServiceProvider::class);
         $this->contracts();
+        $this->events();
         $this->console();
     }
 
     public function boot()
     {
-        $this->events();
         $this->routes();
     }
 
@@ -47,8 +47,11 @@ class ServiceProvider extends BaseServiceProvider
      */
     private function events(): void
     {
-        Event::listen(MessageReceived::class, MessageReceivedListener::class);
-        Event::listen(MessageSent::class, MessageSentListener::class);
+        /** @var Dispatcher $events */
+        $events = $this->app['events'];
+
+        $events->listen(MessageReceived::class, MessageReceivedListener::class);
+        $events->listen(MessageSent::class, MessageSentListener::class);
     }
 
     /**

@@ -76,16 +76,6 @@ abstract class Driver
     }
 
     /**
-     * Set channel parameters.
-     *
-     * @param array $parameters
-     */
-    public function setParameters(array $parameters): void
-    {
-        $this->parameters = $parameters;
-    }
-
-    /**
      * Configuration parameters.
      *
      * @return array
