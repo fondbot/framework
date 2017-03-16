@@ -9,13 +9,13 @@ class Receiver
     /** @var string */
     private $identifier;
 
-    /** @var string */
+    /** @var string|null */
     private $name;
 
-    /** @var string */
+    /** @var string|null */
     private $username;
 
-    public static function create(string $identifier, string $name, string $username): Receiver
+    public static function create(string $identifier, string $name = null, string $username = null): Receiver
     {
         $instance = new static;
         $instance->setIdentifier($identifier);
@@ -30,27 +30,27 @@ class Receiver
         return $this->identifier;
     }
 
-    public function setIdentifier($id): void
+    public function setIdentifier(string $id): void
     {
         $this->identifier = $id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function setUsername($username): void
+    public function setUsername(string $username): void
     {
         $this->username = $username;
     }

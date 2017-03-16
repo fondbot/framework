@@ -16,8 +16,8 @@ class CreateParticipantsTable extends Migration
             $table->increments('id');
             $table->integer('channel_id', false, true);
             $table->string('identifier');
-            $table->string('name');
-            $table->string('username');
+            $table->string('name')->nullable();
+            $table->string('username')->nullable();
             $table->timestamps();
 
             $table->foreign('channel_id')->references('id')->on('channels');

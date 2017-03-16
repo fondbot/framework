@@ -41,11 +41,13 @@ class StartConversation implements ShouldQueue
         /** @var Driver $driver */
         $driver = $channelManager->createDriver($this->request, $this->channel);
 
-        /** @var ParticipantService $participantService */
-        $participant = $participantService->findByChannelAndIdentifier(
-            $this->channel,
-            $driver->getSender()->getIdentifier()
-        );
+        // Store sender in database as participant
+        $participant = $participantService->createOrUpdate([
+            'channel_id' => $this->channel->id,
+            'identifier' => $driver->getSender()->getIdentifier(),
+            'name' => $driver->getSender()->getName(),
+            'username' => $driver->getSender()->getUsername(),
+        ], ['channel_id' => $this->channel->id, 'identifier' => $driver->getSender()->getIdentifier()]);
 
         // Resolve context
         $context = $contextManager->resolve($driver);
@@ -67,7 +69,7 @@ class StartConversation implements ShouldQueue
         }
 
         // Start Conversation
-        $conversationManager->start($context, $driver, $this->channel, $story);
+        $conversationManager->start($context, $story);
     }
 
     private function events(): Dispatcher

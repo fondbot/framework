@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Channels\Driver;
-use FondBot\Traits\Loggable;
-use FondBot\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
+use FondBot\Channels\Driver;
+use FondBot\Contracts\Channels\WebhookVerification;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Jobs\StartConversation;
+use FondBot\Traits\Loggable;
+use Illuminate\Http\Request;
 
 class Bot
 {
     use Loggable;
 
+    /** @var array */
+    private $request = [];
     private $channelManager;
 
     public function __construct(ChannelManager $channelManager)
@@ -21,25 +25,63 @@ class Bot
         $this->channelManager = $channelManager;
     }
 
+    /**
+     * Set request parameters.
+     *
+     * @param Request $request
+     */
+    public function setRequest(Request $request): void
+    {
+        if ($request->isJson()) {
+            $this->request = $request->json()->all();
+        } else {
+            $this->request = $request->all();
+        }
+    }
+
+    /**
+     * Process webhook request.
+     *
+     * @param Channel $channel
+     */
     public function process(Channel $channel): void
     {
-        /* @var array $request */
-        if (request()->isJson()) {
-            $request = request()->json()->all();
-        } else {
-            $request = request()->all();
-        }
-
-        /** @var Driver $driver */
-        $driver = $this->channelManager->createDriver($request, $channel);
-
         // Verify request
-        $driver->verifyRequest();
+        $this->createDriver($channel)->verifyRequest();
 
         // Send job to start conversation
-        $job = (new StartConversation($channel, $request))
+        $job = (new StartConversation($channel, $this->request))
             ->onQueue('fondbot');
 
         dispatch($job);
+    }
+
+    /**
+     * Verify webhook and respond something based on driver.
+     *
+     * @param Channel $channel
+     * @return mixed
+     */
+    public function verify(Channel $channel)
+    {
+        $driver = $this->createDriver($channel);
+
+        // Verification is not required
+        if (!$driver instanceof WebhookVerification) {
+            return ['response' => 'OK'];
+        }
+
+        return $driver->verifyWebhook();
+    }
+
+    /**
+     * Create driver instance.
+     *
+     * @param Channel $channel
+     * @return Driver
+     */
+    private function createDriver(Channel $channel): Driver
+    {
+        return $this->channelManager->createDriver($this->request, $channel);
     }
 }

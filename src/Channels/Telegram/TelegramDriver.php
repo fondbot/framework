@@ -44,7 +44,7 @@ class TelegramDriver extends Driver
     {
         if (
             $this->getRequest('message') === null ||
-            ! isset(
+            !isset(
                 $this->getRequest('message')['from'],
                 $this->getRequest('message')['text']
             )
@@ -77,7 +77,7 @@ class TelegramDriver extends Driver
         $from = $this->getRequest('message')['from'];
 
         return Sender::create(
-            (string) $from['id'],
+            (string)$from['id'],
             $from['first_name'].' '.$from['last_name'],
             $from['username']
         );
