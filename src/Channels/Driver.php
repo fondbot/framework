@@ -25,7 +25,7 @@ abstract class Driver
     /** @var Client */
     protected $http;
 
-    public function __construct(string $channelName, array $parameters = [], Client $http = null)
+    public function __construct(string $channelName = null, array $parameters = [], Client $http = null)
     {
         $this->channelName = $channelName;
         $this->parameters = $parameters;
