@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners;
 
+use Tests\TestCase;
 use FondBot\Channels\Driver;
 use FondBot\Channels\Receiver;
+use FondBot\Conversation\Context;
+use FondBot\Contracts\Events\MessageSent;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
 use FondBot\Contracts\Database\Services\MessageService;
 use FondBot\Contracts\Database\Services\ParticipantService;
-use FondBot\Contracts\Events\MessageSent;
-use FondBot\Conversation\Context;
-use Tests\TestCase;
 
 class MessageSentListenerTest extends TestCase
 {
-
     public function test()
     {
         Participant::unguard();
@@ -45,5 +44,4 @@ class MessageSentListenerTest extends TestCase
 
         event(new MessageSent($context, $receiver, $text));
     }
-
 }

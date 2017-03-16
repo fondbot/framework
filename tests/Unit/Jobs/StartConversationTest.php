@@ -112,5 +112,4 @@ class StartConversationTest extends TestCase
         $job = new StartConversation($channel, $request);
         $job->handle($channelManager, $contextManager, $storyManager, $conversationManager, $participantService);
     }
-
 }
