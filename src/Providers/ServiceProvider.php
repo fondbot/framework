@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Providers;
 
 use Event;
-use FondBot\Channels\ChannelServiceProvider;
 use Route;
 use FondBot\Contracts\Events\MessageSent;
 use FondBot\Listeners\MessageSentListener;
+use FondBot\Channels\ChannelServiceProvider;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Listeners\MessageReceivedListener;
 use FondBot\Contracts\Database\Entities\Channel;
