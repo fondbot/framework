@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use Tests\TestCase;
 use FondBot\Channels\Driver;
 use FondBot\Channels\Sender;
-use Illuminate\Cache\Repository;
+use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\ContextManager;
+use Illuminate\Cache\Repository;
+use Tests\TestCase;
 
 /**
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface driver
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $sender
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface cache
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
+ * @property Channel $channel
+ * @property Sender $sender
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $cache
  * @property ContextManager manager
  */
 class ContextManagerTest extends TestCase
@@ -24,7 +26,10 @@ class ContextManagerTest extends TestCase
         parent::setUp();
 
         $this->driver = $this->mock(Driver::class);
-        $this->sender = $this->mock(Sender::class);
+        $this->channel = new Channel([
+            'name' => $this->faker()->word,
+        ]);
+        $this->sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
         $this->cache = $this->mock(Repository::class);
 
         $this->manager = new ContextManager($this->cache);
@@ -32,11 +37,10 @@ class ContextManagerTest extends TestCase
 
     public function test_resolve()
     {
-        $this->driver->shouldReceive('getChannelName')->andReturn($channelName = $this->faker()->word);
+        $this->driver->shouldReceive('getChannel')->andReturn($this->channel);
         $this->driver->shouldReceive('getSender')->andReturn($this->sender);
-        $this->sender->shouldReceive('getIdentifier')->andReturn($senderId = $this->faker()->uuid);
 
-        $key = 'context.'.$channelName.'.'.$senderId;
+        $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
 
         $this->cache->shouldReceive('get')->with($key)->andReturn([
             'story' => null,
@@ -58,9 +62,8 @@ class ContextManagerTest extends TestCase
 
     public function test_save()
     {
-        $this->driver->shouldReceive('getChannelName')->andReturn($channelName = $this->faker()->word);
+        $this->driver->shouldReceive('getChannel')->andReturn($this->channel);
         $this->driver->shouldReceive('getSender')->andReturn($this->sender);
-        $this->sender->shouldReceive('getIdentifier')->andReturn($senderId = $this->faker()->uuid);
 
         $context = $this->mock(Context::class);
         $context->shouldReceive('getDriver')->andReturn($this->driver);
@@ -68,7 +71,7 @@ class ContextManagerTest extends TestCase
         $context->shouldReceive('getInteraction')->andReturn(null);
         $context->shouldReceive('getValues')->andReturn($values = ['key1' => 'value1']);
 
-        $key = 'context.'.$channelName.'.'.$senderId;
+        $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
 
         $this->cache->shouldReceive('forever')->with($key, [
             'story' => null,

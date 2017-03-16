@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
-use Tests\TestCase;
-use GuzzleHttp\Client;
-use FondBot\Channels\Sender;
+use FondBot\Channels\Drivers\Telegram;
 use FondBot\Channels\Message;
 use FondBot\Channels\Receiver;
+use FondBot\Channels\Sender;
+use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboard;
-use FondBot\Channels\Drivers\Telegram;
-use Psr\Http\Message\RequestInterface;
 use FondBot\Conversation\Keyboards\Button;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\RequestInterface;
+use Tests\TestCase;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
- * @property string channelName
+ * @property Channel channel
  * @property Telegram telegram
  */
 class TelegramTest extends TestCase
@@ -27,18 +28,15 @@ class TelegramTest extends TestCase
         parent::setUp();
 
         $this->guzzle = $this->mock(Client::class);
-        $this->channelName = $this->faker()->name;
+        $this->channel = new Channel([
+            'driver' => Telegram::class,
+            'name' => $this->faker()->name,
+            'parameters' => ['token' => str_random()],
+        ]);
 
-        $this->telegram = new Telegram(
-            $this->channelName,
-            ['token' => str_random()],
-            $this->guzzle
-        );
-    }
-
-    public function test_getChannelName()
-    {
-        $this->assertEquals($this->channelName, $this->telegram->getChannelName());
+        $this->telegram = new Telegram($this->guzzle);
+        $this->telegram->setChannel($this->channel);
+        $this->telegram->setRequest([]);
     }
 
     public function test_getConfig()
@@ -90,11 +88,14 @@ class TelegramTest extends TestCase
     {
         $url = $this->faker()->url;
 
-        $this->guzzle->shouldReceive('post')->with('setWebhook', [
-            'form_params' => [
-                'url' => $url,
-            ],
-        ]);
+        $this->guzzle->shouldReceive('post')->with(
+            'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/setWebhook',
+            [
+                'form_params' => [
+                    'url' => $url,
+                ],
+            ]
+        );
 
         $this->telegram->installWebhook($url);
     }
@@ -143,20 +144,23 @@ class TelegramTest extends TestCase
         $replyMarkup = json_encode([
             'keyboard' => [
                 [
-                    (object) ['text' => $button1Text],
-                    (object) ['text' => $button2Text],
+                    (object)['text' => $button1Text],
+                    (object)['text' => $button2Text],
                 ],
             ],
             'resize_keyboard' => true,
         ]);
 
-        $this->guzzle->shouldReceive('post')->with('sendMessage', [
-            'form_params' => [
-                'chat_id' => $chatId,
-                'text' => $text,
-                'reply_markup' => $replyMarkup,
-            ],
-        ]);
+        $this->guzzle->shouldReceive('post')->with(
+            'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/sendMessage',
+            [
+                'form_params' => [
+                    'chat_id' => $chatId,
+                    'text' => $text,
+                    'reply_markup' => $replyMarkup,
+                ],
+            ]
+        );
 
         $this->telegram->sendMessage($receiver, $text, $keyboard);
     }
@@ -168,12 +172,15 @@ class TelegramTest extends TestCase
         $receiver = $this->mock(Receiver::class);
         $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
 
-        $this->guzzle->shouldReceive('post')->with('sendMessage', [
-            'form_params' => [
-                'chat_id' => $chatId,
-                'text' => $text,
-            ],
-        ]);
+        $this->guzzle->shouldReceive('post')->with(
+            'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/sendMessage',
+            [
+                'form_params' => [
+                    'chat_id' => $chatId,
+                    'text' => $text,
+                ],
+            ]
+        );
 
         $this->telegram->sendMessage($receiver, $text);
     }
@@ -184,12 +191,7 @@ class TelegramTest extends TestCase
         $receiver = $this->mock(Receiver::class);
         $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
 
-        $this->guzzle->shouldReceive('post')->with('sendMessage', [
-            'form_params' => [
-                'chat_id' => $chatId,
-                'text' => $text,
-            ],
-        ])->andThrow(new RequestException('Invalid request', $this->mock(RequestInterface::class)));
+        $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request', $this->mock(RequestInterface::class)));
 
         $this->telegram->sendMessage($receiver, $text);
     }

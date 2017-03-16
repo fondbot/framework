@@ -18,7 +18,9 @@ class ChannelManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->manager = new ChannelManager;
+        $this->manager = new ChannelManager([
+            'Telegram' => Telegram::class,
+        ]);
     }
 
     public function test_createDriver()
@@ -29,7 +31,7 @@ class ChannelManagerTest extends TestCase
             'parameters' => ['token' => str_random()],
         ]);
 
-        $driver = $this->manager->createDriver([], $channel, true);
+        $driver = $this->manager->createDriver([], $channel);
 
         $this->assertInstanceOf(Telegram::class, $driver);
     }

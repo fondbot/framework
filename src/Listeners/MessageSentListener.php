@@ -5,33 +5,26 @@ declare(strict_types=1);
 namespace FondBot\Listeners;
 
 use FondBot\Contracts\Events\MessageSent;
-use FondBot\Contracts\Database\Services\ChannelService;
 use FondBot\Contracts\Database\Services\MessageService;
 use FondBot\Contracts\Database\Services\ParticipantService;
 
 class MessageSentListener
 {
-    private $channelService;
     private $participantService;
     private $messageService;
 
     public function __construct(
-        ChannelService $channelService,
         ParticipantService $participantService,
         MessageService $messageService
     ) {
-        $this->channelService = $channelService;
         $this->participantService = $participantService;
         $this->messageService = $messageService;
     }
 
     public function handle(MessageSent $event)
     {
-        $channel = $this->channelService->findByName(
-            $event->getContext()->getDriver()->getChannelName()
-        );
         $participant = $this->participantService->findByChannelAndIdentifier(
-            $channel,
+            $event->getContext()->getDriver()->getChannel(),
             $event->getReceiver()->getIdentifier()
         );
 

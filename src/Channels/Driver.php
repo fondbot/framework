@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use GuzzleHttp\Client;
+use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Traits\Loggable;
 use FondBot\Conversation\Keyboard;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
@@ -14,23 +14,13 @@ abstract class Driver
     use Loggable;
 
     /** @var array */
-    protected $request;
+    private $request = [];
 
-    /** @var string */
-    private $channelName;
+    /** @var Channel */
+    private $channel;
 
     /** @var array */
-    protected $parameters;
-
-    /** @var Client */
-    protected $http;
-
-    public function __construct(string $channelName = null, array $parameters = [], Client $http = null)
-    {
-        $this->channelName = $channelName;
-        $this->parameters = $parameters;
-        $this->http = $http;
-    }
+    private $parameters;
 
     /**
      * Set request.
@@ -43,30 +33,57 @@ abstract class Driver
     }
 
     /**
-     * Get channel name.
+     * Get request value.
      *
-     * @return string
+     * @param string $name
+     * @return mixed
      */
-    public function getChannelName(): string
+    public function getRequest(string $name)
     {
-        return $this->channelName;
+        return $this->request[$name] ?? null;
+    }
+
+    /**
+     * Set channel name.
+     *
+     * @param Channel $channel
+     */
+    public function setChannel(Channel $channel): void
+    {
+        $this->channel = $channel;
+        $this->parameters = $channel->parameters;
+    }
+
+    /**
+     * Get channel.
+     *
+     * @return Channel
+     */
+    public function getChannel(): Channel
+    {
+        return $this->channel;
     }
 
     /**
      * Get parameter value.
      *
      * @param string $name
-     * @return string
+     * @return mixed
      */
-    protected function getParameter(string $name): string
+    public function getParameter(string $name)
     {
         return $this->parameters[$name] ?? '';
     }
 
     /**
-     * Initialize Channel instance.
+     * Set channel parameters.
+     *
+     * @param array $parameters
      */
-    abstract public function init(): void;
+    public function setParameters(array $parameters): void
+    {
+        $this->parameters = $parameters;
+    }
 
     /**
      * Configuration parameters.

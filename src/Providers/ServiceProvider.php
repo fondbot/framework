@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Providers;
 
 use Event;
+use FondBot\Channels\ChannelServiceProvider;
 use Route;
 use FondBot\Contracts\Events\MessageSent;
 use FondBot\Listeners\MessageSentListener;
@@ -20,6 +21,7 @@ class ServiceProvider extends BaseServiceProvider
 {
     public function register()
     {
+        $this->app->register(ChannelServiceProvider::class);
         $this->contracts();
         $this->console();
     }

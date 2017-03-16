@@ -65,6 +65,6 @@ class ContextManager
      */
     private function key(Driver $driver): string
     {
-        return 'context.'.$driver->getChannelName().'.'.$driver->getSender()->getIdentifier();
+        return 'context.'.$driver->getChannel()->name.'.'.$driver->getSender()->getIdentifier();
     }
 }

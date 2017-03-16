@@ -8,9 +8,12 @@ use FondBot\Contracts\Database\Entities\Channel;
 
 class ChannelManager
 {
-    private $drivers = [
-        'Telegram' => Drivers\Telegram::class,
-    ];
+    private $drivers;
+
+    public function __construct(array $drivers = [])
+    {
+        $this->drivers = $drivers;
+    }
 
     /**
      * Create driver instance.
@@ -18,17 +21,14 @@ class ChannelManager
      * @param array $request
      * @param Channel $channel
      *
-     * @param bool $initialise
      * @return Driver
      */
-    public function createDriver(array $request, Channel $channel, bool $initialise = true): Driver
+    public function createDriver(array $request, Channel $channel): Driver
     {
         /** @var Driver $driver */
-        $driver = new $channel->driver($channel->name, $channel->parameters);
+        $driver = resolve($channel->driver);
+        $driver->setChannel($channel);
         $driver->setRequest($request);
-        if ($initialise) {
-            $driver->init();
-        }
 
         return $driver;
     }

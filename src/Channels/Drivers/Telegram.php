@@ -4,26 +4,23 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Drivers;
 
-use GuzzleHttp\Client;
 use FondBot\Channels\Driver;
-use FondBot\Channels\Sender;
-use FondBot\Channels\Message;
-use FondBot\Channels\Request;
-use FondBot\Channels\Receiver;
-use FondBot\Conversation\Keyboard;
-use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
+use FondBot\Channels\Message;
+use FondBot\Channels\Receiver;
+use FondBot\Channels\Request;
+use FondBot\Channels\Sender;
+use FondBot\Conversation\Keyboard;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class Telegram extends Driver
 {
-    public function init(): void
+    private $guzzle;
+
+    public function __construct(Client $guzzle)
     {
-        // Set up http client
-        if ($this->http === null) {
-            $this->http = new Client([
-                'base_uri' => 'https://api.telegram.org/bot'.$this->getParameter('token').'/',
-            ]);
-        }
+        $this->guzzle = $guzzle;
     }
 
     /**
@@ -45,7 +42,13 @@ class Telegram extends Driver
      */
     public function verifyRequest(): void
     {
-        if (! isset($this->request['message'], $this->request['message']['from'], $this->request['message']['text'])) {
+        if (
+            $this->getRequest('message') === null ||
+            !isset(
+                $this->getRequest('message')['from'],
+                $this->getRequest('message')['text']
+            )
+        ) {
             throw new InvalidChannelRequest('Invalid payload');
         }
     }
@@ -57,7 +60,7 @@ class Telegram extends Driver
      */
     public function installWebhook(string $url): void
     {
-        $this->http->post('setWebhook', [
+        $this->guzzle->post($this->getBaseUrl().'/setWebhook', [
             'form_params' => [
                 'url' => $url,
             ],
@@ -71,10 +74,10 @@ class Telegram extends Driver
      */
     public function getSender(): Sender
     {
-        $from = $this->request['message']['from'];
+        $from = $this->getRequest('message')['from'];
 
         return Sender::create(
-            (string) $from['id'],
+            (string)$from['id'],
             $from['first_name'].' '.$from['last_name'],
             $from['username']
         );
@@ -87,7 +90,7 @@ class Telegram extends Driver
      */
     public function getMessage(): Message
     {
-        $text = $this->request['message']['text'];
+        $text = $this->getRequest('message')['text'];
 
         return Message::create($text);
     }
@@ -122,9 +125,14 @@ class Telegram extends Driver
         $request = Request::create($parameters);
 
         try {
-            $this->http->post('sendMessage', $request->toArray());
+            $this->guzzle->post($this->getBaseUrl().'/sendMessage', $request->toArray());
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
         }
+    }
+
+    private function getBaseUrl(): string
+    {
+        return 'https://api.telegram.org/bot'.$this->getParameter('token');
     }
 }
