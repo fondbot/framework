@@ -11,7 +11,6 @@ use FondBot\Contracts\Database\Services\ParticipantService;
 
 class MessageSentListener
 {
-
     private $channelService;
     private $participantService;
     private $messageService;

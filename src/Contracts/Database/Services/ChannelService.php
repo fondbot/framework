@@ -8,11 +8,9 @@ use Illuminate\Database\Eloquent\Collection;
 use FondBot\Contracts\Database\Entities\Channel;
 
 /**
- * Interface ChannelService
+ * Interface ChannelService.
  *
  * @mixin \FondBot\Contracts\Database\Traits\BaseServiceMethods
- *
- * @package FondBot\Contracts\Database\Services
  */
 interface ChannelService
 {
@@ -51,5 +49,4 @@ interface ChannelService
      * @param Channel $channel
      */
     public function disable(Channel $channel): void;
-
 }
