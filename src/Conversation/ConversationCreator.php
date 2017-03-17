@@ -13,6 +13,7 @@ class ConversationCreator
      * Create new story.
      *
      * @param string $name
+     *
      * @throws Exception
      */
     public function createStory(string $name): void
@@ -35,6 +36,7 @@ class ConversationCreator
      * Create new interaction.
      *
      * @param string $name
+     *
      * @throws Exception
      */
     public function createInteraction(string $name): void
@@ -61,7 +63,8 @@ class ConversationCreator
      */
     private function replacePlaceholder(string &$input, string $key, string $value): void
     {
-        $input = str_replace('{'.$key.'}', $value, $input);
+        $key = Str::upper($key);
+        $input = str_replace('___'.$key.'___', $value, $input);
     }
 
     /**
@@ -80,6 +83,7 @@ class ConversationCreator
      * Get formatted name.
      *
      * @param string $name
+     *
      * @return string
      */
     private function formatName(string $name): string
@@ -92,12 +96,13 @@ class ConversationCreator
      *
      * @param string $name
      * @param string $postfix
+     *
      * @return string
      */
     private function className(string $name, string $postfix): string
     {
         $name = trim($name);
-        if (! ends_with($name, $postfix)) {
+        if (!ends_with($name, $postfix)) {
             $name .= $postfix;
         }
 
@@ -175,7 +180,7 @@ class ConversationCreator
 
         $path = base_path($path);
 
-        if (! @mkdir($path, 0755, true) && ! is_dir($path)) {
+        if (!@mkdir($path, 0755, true) && !is_dir($path)) {
             throw new Exception('Could not create Bot directory.');
         }
 
@@ -187,6 +192,7 @@ class ConversationCreator
      *
      * @param string $path
      * @param string $contents
+     *
      * @throws Exception
      */
     private function write(string $path, string $contents): void

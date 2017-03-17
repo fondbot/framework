@@ -1,12 +1,13 @@
 <?php
-declare(strict_types=1);
-namespace {namespace};
 
-use FondBot\Channels\Objects\Message;
+declare(strict_types=1);
+
+namespace ___NAMESPACE___;
+
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\Keyboard;
 
-class {className} extends Interaction
+class ___CLASSNAME___ extends Interaction
 {
 
     /**
@@ -32,7 +33,7 @@ class {className} extends Interaction
      */
     public function text(): string
     {
-        return 'Hello, ' . $this->getReceiver()->getName() . '!';
+        return 'Hello, '.$this->getReceiver()->getName().'!';
     }
 
     /**

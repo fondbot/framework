@@ -20,8 +20,14 @@ class ExampleStory extends Story
         ];
     }
 
-    protected function start(): void
+    /**
+     * Interaction class name which will be run when activation is triggered.
+     *
+     * @return string
+     */
+    public function firstInteraction(): string
     {
-        $this->jump(ExampleInteraction::class);
+        return ExampleInteraction::class;
     }
+
 }

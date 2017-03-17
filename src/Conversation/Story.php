@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Traits\Loggable;
 use FondBot\Conversation\Traits\Transitions;
+use FondBot\Traits\Loggable;
 
 abstract class Story
 {
@@ -27,13 +27,36 @@ abstract class Story
      */
     abstract public function activations(): array;
 
-    abstract protected function start(): void;
+    /**
+     * Interaction class name which will be run when activation is triggered.
+     *
+     * @return string
+     */
+    abstract public function firstInteraction(): string;
+
+    /**
+     * Do something before running Story.
+     */
+    protected function before(): void
+    {
+    }
+
+    /**
+     * Do something after running Story.
+     */
+    protected function after(): void
+    {
+
+    }
 
     public function run(Context $context): void
     {
         $this->context = $context;
+
+        $this->before();
         $interaction = $context->getInteraction();
 
+        // Story in already running
         // Process interaction from context
         if ($interaction !== null) {
             $interaction->setContext($context);
@@ -42,7 +65,8 @@ abstract class Story
             return;
         }
 
-        // Run story
-        $this->start();
+        // Run first interaction of story
+        $this->jump($this->firstInteraction());
+        $this->after();
     }
 }
