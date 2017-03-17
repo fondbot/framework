@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Channels\Message;
 use Tests\TestCase;
 use FondBot\Channels\Sender;
+use FondBot\Channels\Message;
 use FondBot\Conversation\Context;
 use Tests\Classes\ExampleInteraction;
 use FondBot\Contracts\Channels\Driver;
