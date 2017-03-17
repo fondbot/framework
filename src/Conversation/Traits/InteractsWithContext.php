@@ -9,7 +9,6 @@ use FondBot\Conversation\ContextManager;
 
 trait InteractsWithContext
 {
-
     /** @var Context */
     private $context;
 
@@ -58,5 +57,4 @@ trait InteractsWithContext
     {
         return resolve(ContextManager::class);
     }
-
 }

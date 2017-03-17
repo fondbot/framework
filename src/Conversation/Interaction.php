@@ -7,8 +7,8 @@ namespace FondBot\Conversation;
 use FondBot\Channels\Receiver;
 use FondBot\Contracts\Events\MessageSent;
 use Illuminate\Contracts\Events\Dispatcher;
-use FondBot\Conversation\Traits\InteractsWithContext;
 use FondBot\Conversation\Traits\Transitions;
+use FondBot\Conversation\Traits\InteractsWithContext;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
 abstract class Interaction implements InteractionContract
