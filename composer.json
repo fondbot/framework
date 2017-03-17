@@ -33,7 +33,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --stop-on-failure",
+        "test": "vendor/bin/phpunit --stop-on-failure --no-coverage",
         "cs": "php-cs-fixer fix --allow-risky=yes"
     },
     "config": {

@@ -81,4 +81,19 @@ class ContextManagerTest extends TestCase
 
         $this->manager->save($context);
     }
+
+    public function test_clear()
+    {
+        $context = $this->mock(Context::class);
+        $context->shouldReceive('getDriver')->andReturn($this->driver);
+
+        $this->driver->shouldReceive('getChannel')->andReturn($this->channel);
+        $this->driver->shouldReceive('getSender')->andReturn($this->sender);
+
+        $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
+
+        $this->cache->shouldReceive('forget')->with($key)->once();
+
+        $this->manager->clear($context);
+    }
 }

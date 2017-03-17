@@ -20,6 +20,7 @@ class ContextManager
      * Resolve context instance.
      *
      * @param Driver $driver
+     *
      * @return Context
      */
     public function resolve(Driver $driver): Context
@@ -58,9 +59,22 @@ class ContextManager
     }
 
     /**
+     * Clear context.
+     *
+     * @param Context $context
+     */
+    public function clear(Context $context): void
+    {
+        $key = $this->key($context->getDriver());
+
+        $this->cache->forget($key);
+    }
+
+    /**
      * Get key of current context in storage (Cache, Memory, etc.).
      *
      * @param Driver $driver
+     *
      * @return string
      */
     private function key(Driver $driver): string

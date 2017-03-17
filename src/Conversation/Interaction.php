@@ -7,35 +7,13 @@ namespace FondBot\Conversation;
 use FondBot\Channels\Receiver;
 use FondBot\Contracts\Events\MessageSent;
 use Illuminate\Contracts\Events\Dispatcher;
+use FondBot\Conversation\Traits\InteractsWithContext;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
 abstract class Interaction implements InteractionContract
 {
-    use Transitions;
-
-    /** @var Context */
-    private $context;
-
-    /**
-     * Set context.
-     *
-     * @param Context $context
-     */
-    public function setContext(Context $context): void
-    {
-        $this->context = $context;
-    }
-
-    /**
-     * Get current context instance.
-     *
-     * @return Context
-     */
-    public function getContext(): Context
-    {
-        return $this->context;
-    }
+    use Transitions, InteractsWithContext;
 
     public function getReceiver(): Receiver
     {
@@ -64,7 +42,7 @@ abstract class Interaction implements InteractionContract
         } else {
             // Update context information
             $this->context->setInteraction($this);
-            $this->getContextManager()->save($this->context);
+            $this->updateContext();
 
             // Send message to participant
             $this->context->getDriver()->sendMessage(
@@ -99,11 +77,6 @@ abstract class Interaction implements InteractionContract
      */
     protected function after(): void
     {
-    }
-
-    private function getContextManager(): ContextManager
-    {
-        return resolve(ContextManager::class);
     }
 
     private function getEventDispatcher(): Dispatcher
