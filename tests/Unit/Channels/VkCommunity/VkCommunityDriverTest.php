@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Unit\Channels\VkCommunity;
 
-use FondBot\Channels\Sender;
+use FondBot\Channels\Message;
 use FondBot\Channels\VkCommunity\VkCommunityDriver;
 use FondBot\Contracts\Database\Entities\Channel;
 use GuzzleHttp\Client;
@@ -103,6 +103,49 @@ class VkCommunityDriverTest extends TestCase
         ]);
 
         $this->vkCommunity->verifyRequest();
+    }
+
+    /*
+     * @group ignore
+     */
+    public function test_getSender()
+    {
+        //
+    }
+
+    /*
+     * @group ignore
+     */
+    public function test_sendMessage()
+    {
+        //
+    }
+
+    public function test_getMessage()
+    {
+        $this->vkCommunity->setRequest([
+            'type'   => 'message_new',
+            'object' => [
+                'body' => $this->faker()->word
+            ]
+        ]);
+
+        $this->assertInstanceOf(Message::class, $this->vkCommunity->getMessage());
+    }
+
+    public function test_isVerificationRequest()
+    {
+        $this->vkCommunity->setRequest(['type' => 'confirmation']);
+
+        $this->assertTrue($this->vkCommunity->isVerificationRequest());
+    }
+
+    public function test_verifyWebhook()
+    {
+        $this->assertEquals(
+            $this->channel->parameters['confirmation_token'],
+            $this->vkCommunity->getParameter('confirmation_token')
+        );
     }
 
 }
