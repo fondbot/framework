@@ -6,14 +6,14 @@ namespace FondBot\Conversation;
 
 use FondBot\Channels\Receiver;
 use FondBot\Contracts\Events\MessageSent;
+use FondBot\Traits\Loggable;
 use Illuminate\Contracts\Events\Dispatcher;
 use FondBot\Conversation\Traits\Transitions;
-use FondBot\Conversation\Traits\InteractsWithContext;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
 abstract class Interaction implements InteractionContract
 {
-    use Transitions, InteractsWithContext;
+    use Transitions, Loggable;
 
     public function getReceiver(): Receiver
     {

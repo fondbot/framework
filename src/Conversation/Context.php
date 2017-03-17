@@ -52,7 +52,7 @@ class Context
         return $this->interaction;
     }
 
-    public function setInteraction(Interaction $interaction): void
+    public function setInteraction(?Interaction $interaction): void
     {
         $this->interaction = $interaction;
     }

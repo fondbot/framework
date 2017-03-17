@@ -9,16 +9,13 @@ use FondBot\Conversation\Traits\Transitions;
 
 abstract class Story
 {
-    use Loggable, Transitions;
+    use Transitions, Loggable;
 
     /** @var string */
     protected $name;
 
     /** @var bool */
     protected $enabled = true;
-
-    /** @var Context */
-    protected $context;
 
     /**
      * Story activations.
