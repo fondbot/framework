@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Jobs;
 
-use FondBot\Contracts\Channels\Driver;
 use FondBot\Traits\Loggable;
 use Illuminate\Bus\Queueable;
 use FondBot\Channels\ChannelManager;
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\StoryManager;
 use Illuminate\Queue\SerializesModels;
 use FondBot\Conversation\ContextManager;

@@ -6,7 +6,6 @@ namespace FondBot\Contracts;
 
 interface LoggableArray
 {
-
     /**
      * Return information for log.
      *
