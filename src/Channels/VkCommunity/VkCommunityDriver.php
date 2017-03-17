@@ -12,16 +12,12 @@ use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\WebhookVerification;
 use FondBot\Conversation\Keyboard;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 
 class VkCommunityDriver extends Driver implements WebhookVerification
 {
     const API_VERSION = '5.53';
     const API_URL = 'https://api.vk.com/method/';
 
-    /**
-     * @var Client
-     */
     private $guzzle;
 
     /**
@@ -29,11 +25,6 @@ class VkCommunityDriver extends Driver implements WebhookVerification
      */
     private $sender;
 
-    /**
-     * VkDriver constructor.
-     *
-     * @param Client $guzzle
-     */
     public function __construct(Client $guzzle)
     {
         $this->guzzle = $guzzle;
@@ -91,24 +82,19 @@ class VkCommunityDriver extends Driver implements WebhookVerification
             return $this->sender;
         }
 
-        try {
-            $user_id = (string) $this->getRequest('object')['user_id'];
-            $request = $this->guzzle->get(self::API_URL . "users.get?user_ids={$user_id}&v=" . self::API_VERSION);
-            $response = json_decode($request->getBody()->getContents(), true);
+        $userId = (string)$this->getRequest('object')['user_id'];
+        $request = $this->guzzle->get(self::API_URL.'users.get', [
+            'query' => [
+                'user_ids' => $userId,
+                'v' => self::API_VERSION,
+            ],
+        ]);
+        $response = json_decode($request->getBody()->getContents(), true);
 
-            if ($response['response'][0] === null) {
-                throw new InvalidChannelRequest('Invalid user data');
-            }
-
-            $this->sender = Sender::create(
-                (string) $response['response'][0]['id'],
-                $response['response'][0]['first_name'] . ' ' . $response['response'][0]['last_name']
-            );
-        } catch (RequestException $exception) {
-            $this->error(get_class($exception), [$exception->getMessage()]);
-        }
-
-        return $this->sender;
+        return $this->sender = Sender::create(
+            (string)$response['response'][0]['id'],
+            $response['response'][0]['first_name'].' '.$response['response'][0]['last_name']
+        );
     }
 
     /**
@@ -118,7 +104,7 @@ class VkCommunityDriver extends Driver implements WebhookVerification
      */
     public function getMessage(): Message
     {
-        $text = (string) $this->getRequest('object')['body'];
+        $text = (string)$this->getRequest('object')['body'];
 
         return Message::create($text);
     }
@@ -132,12 +118,14 @@ class VkCommunityDriver extends Driver implements WebhookVerification
      */
     public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void
     {
-        $this->guzzle->get(self::API_URL . 'messages.send?' . http_build_query([
-            'message' => $text,
-            'user_id' => $receiver->getIdentifier(),
-            'access_token' => $this->getParameter('access_token'),
-            'v' => self::API_VERSION
-        ]));
+        $this->guzzle->get(self::API_URL.'messages.send', [
+            'query' => [
+                'message' => $text,
+                'user_id' => $receiver->getIdentifier(),
+                'access_token' => $this->getParameter('access_token'),
+                'v' => self::API_VERSION,
+            ],
+        ]);
     }
 
     /**
@@ -147,7 +135,7 @@ class VkCommunityDriver extends Driver implements WebhookVerification
      */
     public function isVerificationRequest(): bool
     {
-        return ($this->getRequest('type') === 'confirmation');
+        return $this->getRequest('type') === 'confirmation';
     }
 
     /**
