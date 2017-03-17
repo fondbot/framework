@@ -15,6 +15,7 @@ class ChannelServiceProvider extends ServiceProvider
      */
     private $drivers = [
         'Telegram' => Telegram\TelegramDriver::class,
+        'Slack'    => Slack\SlackDriver::class
     ];
 
     public function register()
