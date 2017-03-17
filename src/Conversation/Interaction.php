@@ -56,6 +56,11 @@ abstract class Interaction implements InteractionContract
         if ($this->context->getInteraction() instanceof $this) {
             $this->debug('run.process');
             $this->process();
+
+            // If no transition run we need to clear context.
+            if (!$this->transitioned) {
+                $this->clearContext();
+            }
         } else {
             $this->debug('run.sendMessage');
 

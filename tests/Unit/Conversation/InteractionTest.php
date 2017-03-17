@@ -28,8 +28,11 @@ class InteractionTest extends TestCase
         $this->interaction->setContext($this->context);
     }
 
-    public function test_run_current_interaction_in_context()
+    public function test_run_current_interaction_in_context_and_do_not_run_another_interaction()
     {
+        $contextManager = $this->mock(ContextManager::class);
+        $contextManager->shouldReceive('clear')->once();
+
         $this->context->shouldReceive('getInteraction')->andReturn($this->interaction);
 
         $this->interaction->run();
