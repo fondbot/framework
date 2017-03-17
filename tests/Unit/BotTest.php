@@ -26,7 +26,8 @@ class BotTest extends TestCase
         $driver->shouldReceive('verifyRequest')->once();
 
         $bot = new Bot($channelManager);
-        $bot->process($channel);
+        $bot->setChannel($channel);
+        $bot->process();
 
         Bus::assertDispatched(StartConversation::class);
     }

@@ -18,6 +18,8 @@ class Bot
 
     /** @var array */
     private $request = [];
+    /** @var Channel */
+    private $channel;
     private $channelManager;
 
     public function __construct(ChannelManager $channelManager)
@@ -40,48 +42,48 @@ class Bot
     }
 
     /**
-     * Process webhook request.
+     * Set channel.
      *
      * @param Channel $channel
      */
-    public function process(Channel $channel): void
+    public function setChannel(Channel $channel): void
     {
-        // Verify request
-        $this->createDriver($channel)->verifyRequest();
-
-        // Send job to start conversation
-        $job = (new StartConversation($channel, $this->request))
-            ->onQueue('fondbot');
-
-        dispatch($job);
+        $this->channel = $channel;
     }
 
     /**
-     * Verify webhook and respond something based on driver.
+     * Process webhook request.
      *
-     * @param Channel $channel
      * @return mixed
      */
-    public function verify(Channel $channel)
+    public function process()
     {
-        $driver = $this->createDriver($channel);
+        $driver = $this->createDriver();
 
-        // Verification is not required
-        if (! $driver instanceof WebhookVerification) {
-            return ['response' => 'OK'];
+        // Driver has webhook verification
+        if($driver instanceof WebhookVerification && $driver->isVerificationRequest()) {
+            return $driver->verifyWebhook();
         }
 
-        return $driver->verifyWebhook();
+        // Verify request
+        $driver->verifyRequest();
+
+        // Send job to start conversation
+        $job = (new StartConversation($this->channel, $this->request))
+            ->onQueue('fondbot');
+
+        dispatch($job);
+
+        return 'OK';
     }
 
     /**
      * Create driver instance.
      *
-     * @param Channel $channel
      * @return Driver
      */
-    private function createDriver(Channel $channel): Driver
+    private function createDriver(): Driver
     {
-        return $this->channelManager->createDriver($this->request, $channel);
+        return $this->channelManager->createDriver($this->request, $this->channel);
     }
 }

@@ -19,8 +19,8 @@ class WebhookController extends Controller
     public function handle(Request $request, Channel $channel, Bot $bot)
     {
         $bot->setRequest($request);
-        $bot->process($channel);
+        $bot->setChannel($channel);
 
-        return 'OK';
+        return $bot->process();
     }
 }
