@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Channels;
 
-use FondBot\Channels\Message;
-use FondBot\Channels\Receiver;
 use FondBot\Channels\Sender;
 use FondBot\Traits\Loggable;
+use FondBot\Channels\Message;
+use FondBot\Channels\Receiver;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;

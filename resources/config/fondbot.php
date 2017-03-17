@@ -8,7 +8,7 @@ return [
      */
     'namespace' => 'Bot',
 
-    /**
+    /*
      * Here you define all stories which be used.
      *
      * Example: App\Bot\StartStory::class
@@ -17,7 +17,7 @@ return [
 
     ],
 
-    /**
+    /*
      * Define fallback story.
      *
      * If no story found based on your configuration this story will be run.

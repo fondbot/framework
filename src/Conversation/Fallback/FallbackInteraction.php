@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Fallback;
 
-use FondBot\Conversation\Interaction;
-use FondBot\Conversation\Keyboard;
 use FondBot\Nifty\Emoji;
+use FondBot\Conversation\Keyboard;
+use FondBot\Conversation\Interaction;
 
 class FallbackInteraction extends Interaction
 {

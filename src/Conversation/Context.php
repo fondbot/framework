@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\LoggableArray;
+use FondBot\Contracts\Channels\Driver;
 
 class Context implements LoggableArray
 {

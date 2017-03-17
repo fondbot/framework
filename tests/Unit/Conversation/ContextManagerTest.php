@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use FondBot\Contracts\Channels\Driver;
 use FondBot\Channels\Sender;
 use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Database\Entities\Channel;
 

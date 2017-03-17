@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use Tests\Classes\ExampleInteraction;
-use Tests\Classes\ExampleStory;
 use Tests\TestCase;
-use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\Story;
+use Tests\Classes\ExampleStory;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Interaction;
+use Tests\Classes\ExampleInteraction;
+use FondBot\Contracts\Channels\Driver;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface driver
