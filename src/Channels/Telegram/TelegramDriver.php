@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace FondBot\Channels\Telegram;
 
 use FondBot\Channels\Driver;
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
-use FondBot\Channels\Message;
-use FondBot\Channels\Receiver;
-use FondBot\Channels\Request;
 use FondBot\Channels\Sender;
-use FondBot\Contracts\Channels\WebhookInstallation;
+use FondBot\Channels\Message;
+use FondBot\Channels\Request;
+use FondBot\Channels\Receiver;
 use FondBot\Conversation\Keyboard;
 use GuzzleHttp\Exception\RequestException;
+use FondBot\Contracts\Channels\WebhookInstallation;
+use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 class TelegramDriver extends Driver implements WebhookInstallation
 {

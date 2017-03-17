@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
-use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Conversation\Keyboard;
-use FondBot\Traits\Loggable;
 use GuzzleHttp\Client;
+use FondBot\Traits\Loggable;
+use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 abstract class Driver
 {

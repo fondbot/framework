@@ -1,17 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fondbot\Channels\Facebook;
 
 use FondBot\Channels\Driver;
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
+use FondBot\Channels\Sender;
 use FondBot\Channels\Message;
 use FondBot\Channels\Receiver;
-use FondBot\Channels\Sender;
-use FondBot\Contracts\Channels\WebhookVerification;
 use FondBot\Conversation\Keyboard;
 use GuzzleHttp\Exception\RequestException;
+use FondBot\Contracts\Channels\WebhookVerification;
+use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 class FacebookDriver extends Driver implements WebhookVerification
 {
@@ -54,19 +54,19 @@ class FacebookDriver extends Driver implements WebhookVerification
         $id = array_get($this->getRequest('entry'), '0.messaging.0.sender.id');
 
         try {
-            $response = $this->guzzle->get($this->getBaseUrl() . $id, $this->getDefaultRequestParameters());
+            $response = $this->guzzle->get($this->getBaseUrl().$id, $this->getDefaultRequestParameters());
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
 
             throw new InvalidChannelRequest('Can not get user profile', 0, $exception);
         }
 
-        $user = json_decode((string)$response->getBody());
+        $user = json_decode((string) $response->getBody());
 
         $username = "{$user->first_name} {$user->last_name}";
 
         return Sender::create(
-            (string)$id,
+            (string) $id,
             $username,
             $username
         );
@@ -113,13 +113,12 @@ class FacebookDriver extends Driver implements WebhookVerification
         }
 
         try {
-            $this->guzzle->post($this->getBaseUrl() . 'me/messages',
+            $this->guzzle->post($this->getBaseUrl().'me/messages',
                 $this->getDefaultRequestParameters() + ['form_params' => $parameters]);
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
         }
     }
-
 
     /**
      * Whether current request type is verification.
@@ -150,7 +149,7 @@ class FacebookDriver extends Driver implements WebhookVerification
         if ($this->getParameter('app_secret')) {
             //todo for this testing need add setter and getter headers and add modify method getRequest to return all request data
             return hash_equals(request()->header('X_HUB_SIGNATURE', ''),
-                'sha1=' . hash_hmac('sha1', request()->getContent(), $this->getParameter('app_secret')));
+                'sha1='.hash_hmac('sha1', request()->getContent(), $this->getParameter('app_secret')));
         }
 
         return 'OK';

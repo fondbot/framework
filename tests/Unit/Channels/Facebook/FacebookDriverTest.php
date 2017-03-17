@@ -1,21 +1,21 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Unit\Channels\Facebook;
 
-use Fondbot\Channels\Facebook\FacebookDriver;
+use Tests\TestCase;
+use GuzzleHttp\Client;
+use FondBot\Channels\Sender;
 use FondBot\Channels\Message;
 use FondBot\Channels\Receiver;
-use FondBot\Channels\Sender;
-use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboard;
-use FondBot\Conversation\Keyboards\Button;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Tests\TestCase;
+use FondBot\Conversation\Keyboards\Button;
+use GuzzleHttp\Exception\RequestException;
+use Fondbot\Channels\Facebook\FacebookDriver;
+use FondBot\Contracts\Database\Entities\Channel;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -137,7 +137,7 @@ class FacebookDriverTest extends TestCase
         $stream = $this->mock(ResponseInterface::class);
 
         $stream->shouldReceive('getBody')->andReturn(json_encode($response));
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/' . $senderId, [
+        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
             'query' => [
                 'access_token' => $this->channel->parameters['page_token'],
             ],
@@ -167,7 +167,7 @@ class FacebookDriverTest extends TestCase
             ],
         ]);
 
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/' . $senderId, [
+        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
             'query' => [
                 'access_token' => $this->channel->parameters['page_token'],
             ],
