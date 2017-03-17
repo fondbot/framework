@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Config;
+use FondBot\Conversation\Fallback\FallbackStory;
 use Tests\TestCase;
 use FondBot\Channels\Message;
 use FondBot\Conversation\Story;
@@ -36,7 +37,7 @@ class StoryManagerTest extends TestCase
         $this->assertSame($story, $result);
     }
 
-    public function test_find_no_story_in_context_no_activation_found()
+    public function test_find_fallback_story()
     {
         Config::set('fondbot', [
             'stories' => [
@@ -51,7 +52,7 @@ class StoryManagerTest extends TestCase
         $message->shouldReceive('getText')->andReturn('/start');
 
         $result = $this->manager->find($context, $message);
-        $this->assertNull($result);
+        $this->assertInstanceOf(FallbackStory::class, $result);
     }
 
     public function test_find_no_story_in_context_activation_found()
