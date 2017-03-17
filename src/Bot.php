@@ -9,12 +9,10 @@ use FondBot\Channels\Driver;
 use FondBot\Contracts\Channels\WebhookVerification;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Jobs\StartConversation;
-use FondBot\Traits\Loggable;
 use Illuminate\Http\Request;
 
 class Bot
 {
-    use Loggable;
 
     /** @var array */
     private $request = [];
