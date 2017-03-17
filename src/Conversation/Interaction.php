@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Channels\Message;
 use FondBot\Traits\Loggable;
 use FondBot\Channels\Receiver;
 use FondBot\Contracts\Events\MessageSent;
@@ -25,6 +26,16 @@ abstract class Interaction implements InteractionContract
         $sender = $this->getContext()->getDriver()->getSender();
 
         return Receiver::create($sender->getIdentifier(), $sender->getName(), $sender->getUsername());
+    }
+
+    /**
+     * Get sender's message.
+     *
+     * @return Message
+     */
+    public function getSenderMessage(): Message
+    {
+        return $this->getContext()->getDriver()->getMessage();
     }
 
     /**
@@ -61,31 +72,34 @@ abstract class Interaction implements InteractionContract
             if (!$this->transitioned) {
                 $this->clearContext();
             }
-        } else {
-            $this->debug('run.sendMessage');
 
-            // Update context information
-            $this->context->setInteraction($this);
-            $this->updateContext();
+            $this->after();
 
-            // Send message to participant
-            $this->context->getDriver()->sendMessage(
-                $this->getReceiver(),
-                $this->text(),
-                $this->keyboard()
-            );
-
-            // Fire event that message was sent
-            $this->getEventDispatcher()->dispatch(
-                new MessageSent(
-                    $this->context,
-                    $this->getReceiver(),
-                    $this->text()
-                )
-            );
+            return;
         }
 
-        // Perform actions before running interaction
+        // Set current interaction in context
+        $this->context->setInteraction($this);
+
+        // Send message to participant
+        $this->context->getDriver()->sendMessage(
+            $this->getReceiver(),
+            $this->text(),
+            $this->keyboard()
+        );
+
+        // Fire event that message was sent
+        $this->getEventDispatcher()->dispatch(
+            new MessageSent(
+                $this->context,
+                $this->getReceiver(),
+                $this->text()
+            )
+        );
+
+        $this->updateContext();
+
+        // Perform actions after running interaction
         $this->after();
     }
 

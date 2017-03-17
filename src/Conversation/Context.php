@@ -68,6 +68,11 @@ class Context implements LoggableArray
         $this->values = $values;
     }
 
+    public function setValue(string $key, $value): void
+    {
+        $this->values[$key] = $value;
+    }
+
     /**
      * Return information for log.
      *

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Conversation;
 
+use FondBot\Channels\Message;
 use FondBot\Channels\Receiver;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Keyboard;
@@ -30,6 +31,13 @@ interface Interaction
      * @return Receiver
      */
     public function getReceiver(): Receiver;
+
+    /**
+     * Get sender's message.
+     *
+     * @return Message
+     */
+    public function getSenderMessage(): Message;
 
     /**
      * Message text to be sent to Participant.
