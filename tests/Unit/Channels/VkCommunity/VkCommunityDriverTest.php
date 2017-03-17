@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Unit\Channels\VkCommunity;
 
-use FondBot\Channels\Message;
-use FondBot\Channels\Receiver;
-use FondBot\Channels\Sender;
-use FondBot\Channels\VkCommunity\VkCommunityDriver;
-use FondBot\Contracts\Database\Entities\Channel;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
 use Tests\TestCase;
+use GuzzleHttp\Client;
+use FondBot\Channels\Sender;
+use FondBot\Channels\Message;
+use GuzzleHttp\Psr7\Response;
+use FondBot\Channels\Receiver;
+use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Channels\VkCommunity\VkCommunityDriver;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
