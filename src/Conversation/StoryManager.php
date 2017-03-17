@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Channels\Message;
+use FondBot\Conversation\Fallback\FallbackStory;
 
 class StoryManager
 {
@@ -26,7 +27,16 @@ class StoryManager
         }
 
         // Find Story by message
-        return $this->findByMessage($message);
+        $story = $this->findByMessage($message);
+
+        if ($story !== null) {
+            return $story;
+        }
+
+        // Otherwise, run fallback story
+        return resolve(
+            config('fondbot.fallback_story', FallbackStory::class)
+        );
     }
 
     /**

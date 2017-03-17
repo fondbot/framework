@@ -28,23 +28,37 @@ abstract class Interaction implements InteractionContract
     }
 
     /**
-     * Process reply.
+     * Do something before running Interaction.
      */
-    abstract protected function process(): void;
+    protected function before(): void
+    {
+    }
+
+    /**
+     * Do something after running Interaction.
+     */
+    protected function after(): void
+    {
+    }
 
     /**
      * Run interaction.
      */
     public function run(): void
     {
+        $this->debug('run');
+
         // Perform actions before running interaction
         $this->before();
 
         // Process reply if current interaction in context
         // Reply to participant if not
         if ($this->context->getInteraction() instanceof $this) {
+            $this->debug('run.process');
             $this->process();
         } else {
+            $this->debug('run.sendMessage');
+
             // Update context information
             $this->context->setInteraction($this);
             $this->updateContext();
@@ -71,18 +85,9 @@ abstract class Interaction implements InteractionContract
     }
 
     /**
-     * Do something before running Interaction.
+     * Process reply.
      */
-    protected function before(): void
-    {
-    }
-
-    /**
-     * Do something after running Interaction.
-     */
-    protected function after(): void
-    {
-    }
+    abstract protected function process(): void;
 
     private function getEventDispatcher(): Dispatcher
     {

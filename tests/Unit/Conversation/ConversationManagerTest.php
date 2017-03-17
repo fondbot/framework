@@ -23,7 +23,8 @@ class ConversationManagerTest extends TestCase
         $context->shouldReceive('setStory')->with($story)->once();
         $contextManager->shouldReceive('save')->with($context)->once();
 
-        $story->shouldReceive('run')->with($context)->once();
+        $story->shouldReceive('setContext')->with($context)->once();
+        $story->shouldReceive('run')->once();
 
         $manager = new ConversationManager($contextManager, $participantService);
         $manager->start($context, $story);

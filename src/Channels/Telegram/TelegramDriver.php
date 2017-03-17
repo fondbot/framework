@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace FondBot\Channels\Telegram;
 
 use GuzzleHttp\Client;
-use FondBot\Channels\Driver;
 use FondBot\Channels\Sender;
 use FondBot\Channels\Message;
 use FondBot\Channels\Request;
 use FondBot\Channels\Receiver;
 use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Channels\Driver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Channels\WebhookInstallation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;

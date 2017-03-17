@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Channels\Driver;
+use FondBot\Contracts\Channels\Driver;
 use Illuminate\Contracts\Cache\Repository as Cache;
 
 class ContextManager
