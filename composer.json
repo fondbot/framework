@@ -34,7 +34,7 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit --stop-on-failure",
-        "cs": "php-cs-fixer fix src/"
+        "cs": "php-cs-fixer fix --allow-risky=yes"
     },
     "config": {
         "preferred-install": "dist",

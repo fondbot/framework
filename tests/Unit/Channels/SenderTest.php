@@ -22,7 +22,8 @@ class SenderTest extends TestCase
         $this->assertEquals($username, $sender->getUsername());
     }
 
-    public function test_create_accepts_null_for_name_and_username() {
+    public function test_create_accepts_null_for_name_and_username()
+    {
         $id = $this->faker()->uuid;
 
         $sender = Sender::create($id);

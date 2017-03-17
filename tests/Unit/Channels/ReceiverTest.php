@@ -22,7 +22,8 @@ class ReceiverTest extends TestCase
         $this->assertEquals($username, $receiver->getUsername());
     }
 
-    public function test_create_accepts_null_for_name_and_username() {
+    public function test_create_accepts_null_for_name_and_username()
+    {
         $id = $this->faker()->uuid;
 
         $receiver = Receiver::create($id);
