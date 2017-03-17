@@ -23,7 +23,7 @@ class WebhookInstall extends Command
 
         $driver = $manager->createDriver([], $channel);
 
-        if (! $driver instanceof WebhookInstallation) {
+        if (!$driver instanceof WebhookInstallation) {
             $this->error('Driver does support automatic webhook installation.');
 
             return;

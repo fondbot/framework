@@ -29,5 +29,4 @@ class ExampleStory extends Story
     {
         return ExampleInteraction::class;
     }
-
 }

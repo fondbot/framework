@@ -17,7 +17,7 @@ class DeleteChannel extends Command
         $channels = $service->all()->pluck('name', 'id')->toArray();
         $channel = $this->choice('Channel', $channels);
 
-        if (! $this->confirm('Are you sure?')) {
+        if (!$this->confirm('Are you sure?')) {
             return;
         }
 

@@ -24,7 +24,7 @@ class EnableChannel extends Command
 
         $channel = $this->choice('Channel', $channels);
 
-        if (! $this->confirm('Are you sure?')) {
+        if (!$this->confirm('Are you sure?')) {
             return;
         }
 

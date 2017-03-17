@@ -61,7 +61,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         Route::model('channel', Channel::class);
 
-        if (! $this->app->routesAreCached()) {
+        if (!$this->app->routesAreCached()) {
             Route::group([
                 'prefix' => 'fondbot',
                 'namespace' => 'FondBot\Http\Controllers',

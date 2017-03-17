@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Conversation\Traits\Transitions;
 use FondBot\Traits\Loggable;
+use FondBot\Conversation\Traits\Transitions;
 
 abstract class Story
 {
@@ -46,7 +46,6 @@ abstract class Story
      */
     protected function after(): void
     {
-
     }
 
     public function run(Context $context): void
