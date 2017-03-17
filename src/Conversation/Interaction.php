@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Traits\Loggable;
 use FondBot\Channels\Receiver;
 use FondBot\Contracts\Events\MessageSent;
-use FondBot\Traits\Loggable;
 use Illuminate\Contracts\Events\Dispatcher;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
@@ -15,6 +15,11 @@ abstract class Interaction implements InteractionContract
 {
     use Transitions, Loggable;
 
+    /**
+     * Get message receiver.
+     *
+     * @return Receiver
+     */
     public function getReceiver(): Receiver
     {
         $sender = $this->getContext()->getDriver()->getSender();

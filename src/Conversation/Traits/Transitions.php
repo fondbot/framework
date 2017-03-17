@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Conversation\ConversationManager;
-use FondBot\Conversation\Story;
 use InvalidArgumentException;
+use FondBot\Conversation\Story;
 use FondBot\Conversation\Interaction;
+use FondBot\Conversation\ConversationManager;
 
 trait Transitions
 {
