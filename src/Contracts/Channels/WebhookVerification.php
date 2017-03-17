@@ -11,7 +11,7 @@ interface WebhookVerification
      *
      * @return bool
      */
-    public function isVerificationRequest(): bool;
+    public function isVerificationRequestFailed(): bool;
 
     /**
      * Run webhook verification and respond if required.

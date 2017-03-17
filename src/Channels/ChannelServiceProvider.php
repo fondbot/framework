@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace FondBot\Channels;
 
@@ -15,6 +15,7 @@ class ChannelServiceProvider extends ServiceProvider
      */
     private $drivers = [
         'Telegram' => Telegram\TelegramDriver::class,
+        'Facebook' => Facebook\FacebookDriver::class,
     ];
 
     public function register()
