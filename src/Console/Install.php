@@ -29,7 +29,7 @@ class Install extends Command
             return;
         }
 
-        if (! $this->confirm('This command will erase some of your files and install fresh copy of FondBot. Are you sure?')) {
+        if (!$this->confirm('This command will erase some of your files and install fresh copy of FondBot. Are you sure?')) {
             exit;
         }
     }

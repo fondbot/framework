@@ -45,7 +45,7 @@ class TelegramDriver extends Driver implements WebhookInstallation
     {
         if (
             $this->getRequest('message') === null ||
-            ! isset(
+            !isset(
                 $this->getRequest('message')['from'],
                 $this->getRequest('message')['text']
             )
