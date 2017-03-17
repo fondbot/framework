@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Console;
 
 use Illuminate\Support\Str;
-use FondBot\Channels\Driver;
+use FondBot\Contracts\Channels\Driver;
 use Illuminate\Console\Command;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Database\Services\ChannelService;

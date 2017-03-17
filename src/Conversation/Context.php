@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Channels\Driver;
+use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\LoggableArray;
 
-class Context
+class Context implements LoggableArray
 {
     /** @var Driver */
     private $driver;
@@ -65,5 +66,20 @@ class Context
     public function setValues(array $values): void
     {
         $this->values = $values;
+    }
+
+    /**
+     * Return information for log.
+     *
+     * @return array
+     */
+    public function toLoggableArray(): array
+    {
+        return [
+            'driver' => get_class($this->getDriver()),
+            'story' => get_class($this->getStory()),
+            'interaction' => get_class($this->getInteraction()),
+            'values' => $this->getValues(),
+        ];
     }
 }

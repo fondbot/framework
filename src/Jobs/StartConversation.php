@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Jobs;
 
-use FondBot\Channels\Driver;
+use FondBot\Contracts\Channels\Driver;
+use FondBot\Traits\Loggable;
 use Illuminate\Bus\Queueable;
 use FondBot\Channels\ChannelManager;
 use FondBot\Conversation\StoryManager;
@@ -20,7 +21,7 @@ use FondBot\Contracts\Database\Services\ParticipantService;
 
 class StartConversation implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable, SerializesModels;
+    use InteractsWithQueue, Queueable, SerializesModels, Loggable;
 
     private $channel;
     private $request;
@@ -38,6 +39,8 @@ class StartConversation implements ShouldQueue
         ConversationManager $conversationManager,
         ParticipantService $participantService
     ) {
+        $this->debug('handle', ['channel' => $this->channel->toArray(), 'request' => $this->request]);
+
         /** @var Driver $driver */
         $driver = $channelManager->createDriver($this->request, $this->channel);
 

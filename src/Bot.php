@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Channels\Driver;
+use FondBot\Contracts\Channels\Driver;
+use FondBot\Traits\Loggable;
 use Illuminate\Http\Request;
 use FondBot\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
@@ -13,6 +14,8 @@ use FondBot\Contracts\Channels\WebhookVerification;
 
 class Bot
 {
+    use Loggable;
+
     /** @var array */
     private $request = [];
     /** @var Channel */
@@ -55,10 +58,15 @@ class Bot
      */
     public function process()
     {
+        $this->debug('process', [
+            'channel' => $this->channel->toArray(),
+            'request' => $this->request,
+        ]);
         $driver = $this->createDriver();
 
         // Driver has webhook verification
         if ($driver instanceof WebhookVerification && $driver->isVerificationRequest()) {
+            $this->debug('process.verifyWebhook');
             return $driver->verifyWebhook();
         }
 

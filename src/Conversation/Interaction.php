@@ -37,6 +37,8 @@ abstract class Interaction implements InteractionContract
      */
     public function run(): void
     {
+        $this->debug('run');
+
         // Perform actions before running interaction
         $this->before();
 

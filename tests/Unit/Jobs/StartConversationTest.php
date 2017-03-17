@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Jobs;
 
 use Tests\TestCase;
-use FondBot\Channels\Driver;
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Channels\Sender;
 use FondBot\Channels\Message;
 use FondBot\Conversation\Story;

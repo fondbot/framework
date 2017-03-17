@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Channels;
+namespace FondBot\Contracts\Channels;
 
+use FondBot\Channels\Message;
+use FondBot\Channels\Receiver;
+use FondBot\Channels\Sender;
 use FondBot\Traits\Loggable;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Database\Entities\Channel;
