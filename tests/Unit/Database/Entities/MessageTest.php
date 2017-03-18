@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Database\Entities;
 
+use Tests\TestCase;
 use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Message;
 use FondBot\Contracts\Database\Entities\Participant;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\TestCase;
 
 /**
  * @property Message $message

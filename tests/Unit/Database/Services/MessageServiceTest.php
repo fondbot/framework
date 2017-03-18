@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Database\Services;
 
-use FondBot\Contracts\Database\Entities\Message;
-use FondBot\Database\Services\MessageService;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
+use FondBot\Database\Services\MessageService;
+use FondBot\Contracts\Database\Entities\Message;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
  * @property Message $message
