@@ -25,6 +25,7 @@ class Channel extends Model
 
     protected $casts = [
         'parameters' => 'array',
+        'is_enabled' => 'bool',
     ];
 
     protected $fillable = [
