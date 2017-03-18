@@ -20,16 +20,18 @@ class ChannelManager
      * Create driver instance.
      *
      * @param array $request
+     * @param array $headers
      * @param Channel $channel
      *
      * @return Driver
      */
-    public function createDriver(array $request, Channel $channel): Driver
+    public function createDriver(array $request, array $headers, Channel $channel): Driver
     {
         /** @var Driver $driver */
         $driver = resolve($channel->driver);
         $driver->setChannel($channel);
         $driver->setRequest($request);
+        $driver->setHeaders($headers);
 
         return $driver;
     }

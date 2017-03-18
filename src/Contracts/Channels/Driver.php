@@ -19,6 +19,9 @@ abstract class Driver
     /** @var array */
     private $request = [];
 
+    /** @var array */
+    private $headers = [];
+
     /** @var Channel */
     private $channel;
 
@@ -38,12 +41,47 @@ abstract class Driver
     /**
      * Get request value.
      *
-     * @param string $name
+     * @param string $key
+     *
      * @return mixed
      */
-    public function getRequest(string $name)
+    public function getRequest(string $key)
     {
-        return $this->request[$name] ?? null;
+        return array_get($this->request, $key);
+    }
+
+    /**
+     * If request has key.
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function hasRequest(string $key): bool
+    {
+        return array_get($this->request, $key) !== null;
+    }
+
+    /**
+     * Set headers.
+     *
+     * @param array $headers
+     */
+    public function setHeaders(array $headers): void
+    {
+        $this->headers = $headers;
+    }
+
+    /**
+     * Get header value.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function getHeader(string $name)
+    {
+        return $this->headers[$name] ?? null;
     }
 
     /**
@@ -71,6 +109,7 @@ abstract class Driver
      * Get parameter value.
      *
      * @param string $name
+     *
      * @return mixed
      */
     public function getParameter(string $name)

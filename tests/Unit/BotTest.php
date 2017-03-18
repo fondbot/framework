@@ -6,6 +6,7 @@ namespace Tests\Unit;
 
 use Bus;
 use FondBot\Bot;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 use FondBot\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
@@ -20,12 +21,14 @@ class BotTest extends TestCase
 
         $channelManager = $this->mock(ChannelManager::class);
         $channel = new Channel();
+        $request = new Request();
         $driver = $this->mock(Driver::class);
 
-        $channelManager->shouldReceive('createDriver')->with([], $channel)->andReturn($driver)->once();
+        $channelManager->shouldReceive('createDriver')->with([], [], $channel)->andReturn($driver)->once();
         $driver->shouldReceive('verifyRequest')->once();
 
         $bot = new Bot($channelManager);
+        $bot->setRequest($request);
         $bot->setChannel($channel);
         $bot->process();
 

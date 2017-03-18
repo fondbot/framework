@@ -18,8 +18,13 @@ class Bot
 
     /** @var array */
     private $request = [];
+
+    /** @var array */
+    private $headers = [];
+
     /** @var Channel */
     private $channel;
+
     private $channelManager;
 
     public function __construct(ChannelManager $channelManager)
@@ -39,6 +44,8 @@ class Bot
         } else {
             $this->request = $request->all();
         }
+
+        $this->headers = $request->headers->all();
     }
 
     /**
@@ -61,7 +68,9 @@ class Bot
         $this->debug('process', [
             'channel' => $this->channel->toArray(),
             'request' => $this->request,
+            'headers' => $this->headers,
         ]);
+
         $driver = $this->createDriver();
 
         // Driver has webhook verification
@@ -75,7 +84,7 @@ class Bot
         $driver->verifyRequest();
 
         // Send job to start conversation
-        $job = (new StartConversation($this->channel, $this->request))
+        $job = (new StartConversation($this->channel, $this->request, $this->headers))
             ->onQueue('fondbot');
 
         dispatch($job);
@@ -90,6 +99,6 @@ class Bot
      */
     private function createDriver(): Driver
     {
-        return $this->channelManager->createDriver($this->request, $this->channel);
+        return $this->channelManager->createDriver($this->request, $this->headers, $this->channel);
     }
 }

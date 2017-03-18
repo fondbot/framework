@@ -80,6 +80,10 @@ class ContextTest extends TestCase
         $this->context->setValues($values);
         $this->assertSame($values, $this->context->getValues());
         $this->assertNotSame($this->values, $this->context->getValues());
+
+        $this->context->setValue('uuid', $uuid = $this->faker()->uuid);
+        $values['uuid'] = $uuid;
+        $this->assertSame($values, $this->context->getValues());
     }
 
     public function test_toLoggableArray()
