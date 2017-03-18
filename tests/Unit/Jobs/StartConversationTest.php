@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Jobs;
 
 use Tests\TestCase;
-use FondBot\Channels\Sender;
-use FondBot\Channels\Message;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\Message;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Jobs\StartConversation;

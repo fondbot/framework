@@ -6,9 +6,9 @@ namespace Tests\Unit\Channels\Drivers;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
-use FondBot\Channels\Sender;
-use FondBot\Channels\Message;
-use FondBot\Channels\Receiver;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboard;
 use Psr\Http\Message\RequestInterface;
 use FondBot\Conversation\Keyboards\Button;

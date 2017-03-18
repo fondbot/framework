@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Events;
 
-use FondBot\Channels\Receiver;
+use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Context;
 
 class MessageSent

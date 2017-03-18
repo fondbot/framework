@@ -6,10 +6,10 @@ namespace Unit\Channels\VkCommunity;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
-use FondBot\Channels\Sender;
-use FondBot\Channels\Message;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\Message;
 use GuzzleHttp\Psr7\Response;
-use FondBot\Channels\Receiver;
+use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Channels\VkCommunity\VkCommunityDriver;
 

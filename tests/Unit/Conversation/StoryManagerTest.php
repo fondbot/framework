@@ -6,7 +6,7 @@ namespace Tests\Unit\Conversation;
 
 use Config;
 use Tests\TestCase;
-use FondBot\Channels\Message;
+use FondBot\Contracts\Channels\Message;
 use FondBot\Conversation\Story;
 use Tests\Classes\ExampleStory;
 use FondBot\Conversation\Context;

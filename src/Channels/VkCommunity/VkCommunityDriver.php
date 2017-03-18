@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Channels\VkCommunity;
 
 use GuzzleHttp\Client;
-use FondBot\Channels\Sender;
-use FondBot\Channels\Message;
-use FondBot\Channels\Receiver;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\WebhookVerification;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Conversation;
 
-use FondBot\Channels\Message;
-use FondBot\Channels\Receiver;
+use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Keyboard;
 

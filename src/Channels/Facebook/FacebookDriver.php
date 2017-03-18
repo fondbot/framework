@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Channels\Facebook;
 
 use GuzzleHttp\Client;
-use FondBot\Channels\Sender;
-use FondBot\Channels\Message;
-use FondBot\Channels\Receiver;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
 use GuzzleHttp\Exception\RequestException;
@@ -71,12 +71,12 @@ class FacebookDriver extends Driver implements WebhookVerification
             throw new InvalidChannelRequest('Can not get user profile', 0, $exception);
         }
 
-        $user = json_decode((string) $response->getBody());
+        $user = json_decode((string)$response->getBody());
 
         $username = "{$user->first_name} {$user->last_name}";
 
         return Sender::create(
-            (string) $id,
+            (string)$id,
             $username,
             $username
         );
@@ -95,8 +95,8 @@ class FacebookDriver extends Driver implements WebhookVerification
     /**
      * Send reply to participant.
      *
-     * @param Receiver      $receiver
-     * @param string        $text
+     * @param Receiver $receiver
+     * @param string $text
      * @param Keyboard|null $keyboard
      */
     public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void
@@ -105,7 +105,7 @@ class FacebookDriver extends Driver implements WebhookVerification
             'recipient' => [
                 'id' => $receiver->getIdentifier(),
             ],
-            'message'   => [
+            'message' => [
                 'text' => $text,
             ],
         ];
@@ -114,15 +114,17 @@ class FacebookDriver extends Driver implements WebhookVerification
             foreach ($keyboard->getButtons() as $button) {
                 $parameters['message']['quick_replies'][] = [
                     'content_type' => 'text',
-                    'title'        => $button->getValue(),
-                    'payload'      => $button->getValue(),
+                    'title' => $button->getValue(),
+                    'payload' => $button->getValue(),
                 ];
             }
         }
 
         try {
-            $this->guzzle->post($this->getBaseUrl().'me/messages',
-                $this->getDefaultRequestParameters() + ['form_params' => $parameters]);
+            $this->guzzle->post(
+                $this->getBaseUrl().'me/messages',
+                $this->getDefaultRequestParameters() + ['form_params' => $parameters]
+            );
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
         }

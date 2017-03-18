@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use FondBot\Channels\Sender;
+use FondBot\Contracts\Channels\Sender;
 use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\Driver;

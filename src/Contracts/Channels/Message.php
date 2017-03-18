@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Channels;
+namespace FondBot\Contracts\Channels;
 
 class Message
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Channels\Message;
+use FondBot\Contracts\Channels\Message;
 use FondBot\Conversation\Fallback\FallbackStory;
 
 class StoryManager

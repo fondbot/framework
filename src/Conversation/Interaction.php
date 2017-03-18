@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Traits\Loggable;
-use FondBot\Channels\Message;
-use FondBot\Channels\Receiver;
+use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Events\MessageSent;
 use Illuminate\Contracts\Events\Dispatcher;
 use FondBot\Conversation\Traits\Transitions;

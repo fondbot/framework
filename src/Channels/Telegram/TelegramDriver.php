@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Channels\Telegram;
 
 use GuzzleHttp\Client;
-use FondBot\Channels\Sender;
-use FondBot\Channels\Message;
-use FondBot\Channels\Request;
-use FondBot\Channels\Receiver;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
 use GuzzleHttp\Exception\RequestException;
@@ -121,10 +120,10 @@ class TelegramDriver extends Driver implements WebhookInstallation
             ]);
         }
 
-        $request = Request::create($parameters);
-
         try {
-            $this->guzzle->post($this->getBaseUrl().'/sendMessage', $request->toArray());
+            $this->guzzle->post($this->getBaseUrl().'/sendMessage', [
+                'form_params' => $parameters,
+            ]);
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
         }
