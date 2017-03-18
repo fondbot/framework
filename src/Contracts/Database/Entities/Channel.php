@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Database\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -35,7 +36,7 @@ class Channel extends Model
         'is_enabled',
     ];
 
-    public function participants()
+    public function participants(): HasMany
     {
         return $this->hasMany(Participant::class);
     }

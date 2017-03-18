@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Database\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -35,12 +36,12 @@ class Message extends Model
         'parameters',
     ];
 
-    public function sender()
+    public function sender(): BelongsTo
     {
         return $this->belongsTo(Participant::class);
     }
 
-    public function receiver()
+    public function receiver(): BelongsTo
     {
         return $this->belongsTo(Participant::class);
     }
