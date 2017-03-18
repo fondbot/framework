@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Channels\Facebook;
+namespace Tests\Unit\Channels\Facebook;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
