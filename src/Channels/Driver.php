@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use GuzzleHttp\Client;
 use FondBot\Traits\Loggable;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Database\Entities\Channel;
@@ -13,13 +12,6 @@ use FondBot\Channels\Exceptions\InvalidChannelRequest;
 abstract class Driver
 {
     use Loggable;
-
-    protected $guzzle;
-
-    public function __construct(Client $guzzle)
-    {
-        $this->guzzle = $guzzle;
-    }
 
     /** @var array */
     private $request = [];

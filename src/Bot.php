@@ -58,7 +58,7 @@ class Bot
         $driver = $this->createDriver();
 
         // Driver has webhook verification
-        if ($driver instanceof WebhookVerification && $driver->isVerificationRequestFailed()) {
+        if ($driver instanceof WebhookVerification && $driver->isVerificationRequest()) {
             return $driver->verifyWebhook();
         }
 

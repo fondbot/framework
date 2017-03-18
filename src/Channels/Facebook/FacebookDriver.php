@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Fondbot\Channels\Facebook;
 
+use GuzzleHttp\Client;
 use FondBot\Channels\Driver;
 use FondBot\Channels\Sender;
 use FondBot\Channels\Message;
@@ -15,6 +16,13 @@ use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 class FacebookDriver extends Driver implements WebhookVerification
 {
+    private $guzzle;
+
+    public function __construct(Client $guzzle)
+    {
+        $this->guzzle = $guzzle;
+    }
+
     /**
      * Configuration parameters.
      *
@@ -125,7 +133,7 @@ class FacebookDriver extends Driver implements WebhookVerification
      *
      * @return bool
      */
-    public function isVerificationRequestFailed(): bool
+    public function isVerificationRequest(): bool
     {
         return $this->getRequest('hub_mode') === 'subscribe'
             && $this->getRequest('hub_verify_token')

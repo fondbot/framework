@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Telegram;
 
+use GuzzleHttp\Client;
 use FondBot\Channels\Driver;
 use FondBot\Channels\Sender;
 use FondBot\Channels\Message;
@@ -16,6 +17,13 @@ use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 class TelegramDriver extends Driver implements WebhookInstallation
 {
+    private $guzzle;
+
+    public function __construct(Client $guzzle)
+    {
+        $this->guzzle = $guzzle;
+    }
+
     /**
      * Configuration parameters.
      *
