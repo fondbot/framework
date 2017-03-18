@@ -86,25 +86,17 @@ class FacebookDriverTest extends TestCase
         $data = [
             'foo' => 'bar',
         ];
-        $headers = [
-            'X_HUB_SIGNATURE' => $this->generateSignature($data, str_random()),
-        ];
 
         $this->facebook->setRequest($data);
-        $this->facebook->setHeaders($headers);
+        $this->facebook->setHeaders($this->generateHeaders($data, str_random()));
 
         $this->facebook->verifyRequest();
     }
 
     public function test_verifyRequest_valid_header()
     {
-        $data = $this->generateResponse();
-        $headers = [
-            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret']),
-        ];
-
-        $this->facebook->setRequest($data);
-        $this->facebook->setHeaders($headers);
+        $this->facebook->setRequest($data = $this->generateResponse());
+        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
@@ -118,12 +110,9 @@ class FacebookDriverTest extends TestCase
         $data = [
             'foo' => 'bar',
         ];
-        $headers = [
-            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret']),
-        ];
 
         $this->facebook->setRequest($data);
-        $this->facebook->setHeaders($headers);
+        $this->facebook->setHeaders($this->generateHeaders($data,$this->channel->parameters['app_secret'] ));
 
         $this->facebook->verifyRequest();
     }
@@ -147,11 +136,8 @@ class FacebookDriverTest extends TestCase
                 ],
             ],
         ];
-        $headers = [
-            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret']),
-        ];
 
-        $this->facebook->setHeaders($headers);
+        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
         $this->facebook->setRequest($data);
 
         $this->facebook->verifyRequest();
@@ -328,7 +314,7 @@ class FacebookDriverTest extends TestCase
     private function generateHeaders(array $data, $key): array
     {
         return [
-            'X_HUB_SIGNATURE' => $this->generateSignature($data, $key),
+            'x-hub-signature' => [$this->generateSignature($data, $key)],
         ];
     }
 }

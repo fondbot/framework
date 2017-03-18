@@ -175,7 +175,7 @@ class FacebookDriver extends Driver implements WebhookVerification
             return;
         }
 
-        if (!$header = $this->getHeader('X_HUB_SIGNATURE')) {
+        if (!$header = $this->getHeader('x-hub-signature')[0] ?? null) {
             throw new InvalidChannelRequest('Header signature is not provided');
         }
 
