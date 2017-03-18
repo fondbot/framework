@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace FondBot\Channels\Facebook;
 
 use GuzzleHttp\Client;
+use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
-use FondBot\Conversation\Keyboard;
-use FondBot\Contracts\Channels\Driver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Channels\WebhookVerification;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
@@ -71,12 +71,12 @@ class FacebookDriver extends Driver implements WebhookVerification
             throw new InvalidChannelRequest('Can not get user profile', 0, $exception);
         }
 
-        $user = json_decode((string)$response->getBody());
+        $user = json_decode((string) $response->getBody());
 
         $username = "{$user->first_name} {$user->last_name}";
 
         return Sender::create(
-            (string)$id,
+            (string) $id,
             $username,
             $username
         );

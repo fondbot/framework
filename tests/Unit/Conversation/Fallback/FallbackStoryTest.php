@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Fallback;
 
-use FondBot\Channels\Telegram\TelegramDriver;
-use FondBot\Contracts\Events\MessageSent;
+use Tests\TestCase;
+use Tests\Classes\FakeDriver;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\ContextManager;
-use FondBot\Conversation\Fallback\FallbackInteraction;
+use FondBot\Contracts\Events\MessageSent;
 use FondBot\Conversation\Fallback\FallbackStory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\Classes\FakeDriver;
-use Tests\TestCase;
+use FondBot\Conversation\Fallback\FallbackInteraction;
 
 /**
  * @property \FondBot\Conversation\Fallback\FallbackStory story

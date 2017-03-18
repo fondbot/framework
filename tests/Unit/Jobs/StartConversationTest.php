@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Jobs;
 
 use Tests\TestCase;
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Message;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\StoryManager;
+use FondBot\Contracts\Channels\Message;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Conversation\ConversationManager;

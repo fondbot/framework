@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Message;
 use FondBot\Conversation\Context;
 use Tests\Classes\ExampleInteraction;
 use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\Message;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Events\MessageSent;
 

@@ -6,11 +6,11 @@ namespace Tests\Unit\Channels\Drivers;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
+use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Sender;
+use Psr\Http\Message\RequestInterface;
 use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
-use FondBot\Conversation\Keyboard;
-use Psr\Http\Message\RequestInterface;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Telegram\TelegramDriver;
