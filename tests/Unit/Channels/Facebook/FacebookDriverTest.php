@@ -112,7 +112,7 @@ class FacebookDriverTest extends TestCase
         ];
 
         $this->facebook->setRequest($data);
-        $this->facebook->setHeaders($this->generateHeaders($data,$this->channel->parameters['app_secret'] ));
+        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
