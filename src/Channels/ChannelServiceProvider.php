@@ -14,9 +14,9 @@ class ChannelServiceProvider extends ServiceProvider
      * @var array
      */
     private $drivers = [
+        'Facebook' => Facebook\FacebookDriver::class,
         'Telegram'    => Telegram\TelegramDriver::class,
-        'VkCommunity' => VkCommunity\VkCommunityDriver::class,
-        'Facebook'    => Facebook\FacebookDriver::class,
+        'VK Communities' => VkCommunity\VkCommunityDriver::class,
     ];
 
     public function register()
