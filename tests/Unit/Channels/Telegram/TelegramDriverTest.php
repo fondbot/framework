@@ -156,8 +156,8 @@ class TelegramDriverTest extends TestCase
         $replyMarkup = json_encode([
             'keyboard' => [
                 [
-                    (object)['text' => $button1Text],
-                    (object)['text' => $button2Text],
+                    (object) ['text' => $button1Text],
+                    (object) ['text' => $button2Text],
                 ],
             ],
             'resize_keyboard' => true,

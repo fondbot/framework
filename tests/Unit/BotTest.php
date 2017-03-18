@@ -6,8 +6,8 @@ namespace Tests\Unit;
 
 use Bus;
 use FondBot\Bot;
-use Illuminate\Http\Request;
 use Tests\TestCase;
+use Illuminate\Http\Request;
 use FondBot\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;

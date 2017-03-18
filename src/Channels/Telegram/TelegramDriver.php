@@ -76,7 +76,7 @@ class TelegramDriver extends Driver implements WebhookInstallation
         $from = $this->getRequest('message.from');
 
         return Sender::create(
-            (string)$from['id'],
+            (string) $from['id'],
             $from['first_name'].' '.$from['last_name'],
             $from['username']
         );
