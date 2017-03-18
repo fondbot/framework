@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Channels\Driver;
+use FondBot\Traits\Loggable;
+use FondBot\Contracts\Channels\Driver;
 use Illuminate\Contracts\Cache\Repository as Cache;
 
 class ContextManager
 {
+    use Loggable;
+
     private $cache;
 
     public function __construct(Cache $cache)
@@ -25,6 +28,8 @@ class ContextManager
      */
     public function resolve(Driver $driver): Context
     {
+        $this->debug('resolve', ['driver' => get_class($driver)]);
+
         $key = $this->key($driver);
 
         $value = $this->cache->get($key);
@@ -47,6 +52,8 @@ class ContextManager
      */
     public function save(Context $context): void
     {
+        $this->debug('save', ['context' => $context]);
+
         $key = $this->key($context->getDriver());
 
         $value = [
@@ -65,6 +72,8 @@ class ContextManager
      */
     public function clear(Context $context): void
     {
+        $this->debug('clear', ['context' => $context]);
+
         $key = $this->key($context->getDriver());
 
         $this->cache->forget($key);

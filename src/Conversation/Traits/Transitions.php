@@ -14,6 +14,13 @@ trait Transitions
     use InteractsWithContext;
 
     /**
+     * Whether any transition run.
+     *
+     * @var bool
+     */
+    protected $transitioned = false;
+
+    /**
      * Move to another story.
      *
      * @param string $story
@@ -35,6 +42,8 @@ trait Transitions
         /** @var ConversationManager $conversationManager */
         $conversationManager = resolve(ConversationManager::class);
         $conversationManager->start($this->getContext(), $instance);
+
+        $this->transitioned = true;
     }
 
     /**
@@ -56,5 +65,7 @@ trait Transitions
         // Run interaction
         $instance->setContext($this->context);
         $instance->run();
+
+        $this->transitioned = true;
     }
 }

@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use FondBot\Channels\Driver;
 use FondBot\Channels\Sender;
+use FondBot\Channels\Message;
 use FondBot\Conversation\Context;
 use Tests\Classes\ExampleInteraction;
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Events\MessageSent;
 
@@ -28,8 +29,22 @@ class InteractionTest extends TestCase
         $this->interaction->setContext($this->context);
     }
 
-    public function test_run_current_interaction_in_context()
+    public function test_getSenderMessage()
     {
+        $driver = $this->mock(Driver::class);
+        $message = Message::create($this->faker()->text);
+
+        $this->context->shouldReceive('getDriver')->andReturn($driver);
+        $driver->shouldReceive('getMessage')->andReturn($message);
+
+        $this->assertSame($message, $this->interaction->getSenderMessage());
+    }
+
+    public function test_run_current_interaction_in_context_and_do_not_run_another_interaction()
+    {
+        $contextManager = $this->mock(ContextManager::class);
+        $contextManager->shouldReceive('clear')->once();
+
         $this->context->shouldReceive('getInteraction')->andReturn($this->interaction);
 
         $this->interaction->run();

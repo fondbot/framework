@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use FondBot\Channels\Driver;
 use FondBot\Conversation\Story;
+use Tests\Classes\ExampleStory;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Interaction;
+use Tests\Classes\ExampleInteraction;
+use FondBot\Contracts\Channels\Driver;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface driver
@@ -78,5 +80,24 @@ class ContextTest extends TestCase
         $this->context->setValues($values);
         $this->assertSame($values, $this->context->getValues());
         $this->assertNotSame($this->values, $this->context->getValues());
+    }
+
+    public function test_toLoggableArray()
+    {
+        $story = new ExampleStory;
+        $interaction = new ExampleInteraction;
+        $values = ['phone' => $this->faker()->phoneNumber];
+
+        $expected = [
+            'driver' => get_class($this->driver),
+            'story' => get_class($story),
+            'interaction' => get_class($interaction),
+            'values' => $values,
+        ];
+
+        $this->context->setStory($story);
+        $this->context->setInteraction($interaction);
+        $this->context->setValues($values);
+        $this->assertSame($expected, $this->context->toLoggableArray());
     }
 }
