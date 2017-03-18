@@ -179,7 +179,7 @@ class FacebookDriver extends Driver implements WebhookVerification
             throw new InvalidChannelRequest('Header signature is not provided');
         }
 
-        if (!hash_equals($header, 'sha1=' . hash_hmac('sha1', json_encode($this->getRequest()), $secret))) {
+        if (!hash_equals($header, 'sha1='.hash_hmac('sha1', json_encode($this->getRequest()), $secret))) {
             throw new InvalidChannelRequest('Invalid signature header');
         }
     }

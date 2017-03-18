@@ -65,7 +65,8 @@ class FacebookDriverTest extends TestCase
         $this->facebook->verifyRequest();
     }
 
-    public function test_verifyRequest_skip_signature(){
+    public function test_verifyRequest_skip_signature()
+    {
         $data = $this->generateResponse();
         $this->shouldReturnAttribute($channel = $this->mock(Channel::class), 'parameters', []);
 
@@ -86,7 +87,7 @@ class FacebookDriverTest extends TestCase
             'foo' => 'bar',
         ];
         $headers = [
-            'X_HUB_SIGNATURE' => $this->generateSignature($data, str_random())
+            'X_HUB_SIGNATURE' => $this->generateSignature($data, str_random()),
         ];
 
         $this->facebook->setRequest($data);
@@ -99,7 +100,7 @@ class FacebookDriverTest extends TestCase
     {
         $data = $this->generateResponse();
         $headers = [
-            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret'])
+            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret']),
         ];
 
         $this->facebook->setRequest($data);
@@ -118,7 +119,7 @@ class FacebookDriverTest extends TestCase
             'foo' => 'bar',
         ];
         $headers = [
-            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret'])
+            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret']),
         ];
 
         $this->facebook->setRequest($data);
@@ -147,7 +148,7 @@ class FacebookDriverTest extends TestCase
             ],
         ];
         $headers = [
-            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret'])
+            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret']),
         ];
 
         $this->facebook->setHeaders($headers);
@@ -183,7 +184,7 @@ class FacebookDriverTest extends TestCase
         $stream = $this->mock(ResponseInterface::class);
 
         $stream->shouldReceive('getBody')->andReturn(json_encode($response));
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/' . $senderId, [
+        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
             'query' => [
                 'access_token' => $this->channel->parameters['page_token'],
             ],
@@ -201,7 +202,7 @@ class FacebookDriverTest extends TestCase
         $senderId = $this->faker()->uuid;
         $this->facebook->setRequest($this->generateResponse($senderId));
 
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/' . $senderId, [
+        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
             'query' => [
                 'access_token' => $this->channel->parameters['page_token'],
             ],
@@ -327,7 +328,7 @@ class FacebookDriverTest extends TestCase
     private function generateHeaders(array $data, $key): array
     {
         return [
-            'X_HUB_SIGNATURE' => $this->generateSignature($data, $key)
+            'X_HUB_SIGNATURE' => $this->generateSignature($data, $key),
         ];
     }
 }
