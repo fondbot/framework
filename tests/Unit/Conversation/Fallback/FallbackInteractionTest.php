@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Fallback;
 
+use Tests\TestCase;
+use Tests\Classes\FakeDriver;
 use FondBot\Conversation\Context;
-use FondBot\Conversation\Fallback\FallbackInteraction;
 use FondBot\Conversation\Fallback\FallbackStory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\Classes\FakeDriver;
-use Tests\TestCase;
+use FondBot\Conversation\Fallback\FallbackInteraction;
 
 /**
  * @property FallbackInteraction interaction

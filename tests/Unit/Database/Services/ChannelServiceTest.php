@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Database\Services;
 
-use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Database\Services\ChannelService;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
+use FondBot\Database\Services\ChannelService;
+use FondBot\Contracts\Database\Entities\Channel;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
  * @property Channel[] items
@@ -26,7 +26,7 @@ class ChannelServiceTest extends TestCase
             $this->channel = resolve(Channel::class)
         );
 
-        /** @var Channel $enabled */
+        /* @var Channel $enabled */
         $this->items = [
             'enabled' => $this->service->create([
                 'name' => $this->faker()->name,
