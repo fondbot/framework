@@ -14,7 +14,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
-use Fondbot\Channels\Facebook\FacebookDriver;
+use FondBot\Channels\Facebook\FacebookDriver;
 use FondBot\Contracts\Database\Entities\Channel;
 
 /**
@@ -42,6 +42,7 @@ class FacebookDriverTest extends TestCase
         $this->facebook = new FacebookDriver($this->guzzle);
         $this->facebook->setChannel($this->channel);
         $this->facebook->setRequest([]);
+        $this->facebook->setHeaders([]);
     }
 
     public function test_getConfig()
@@ -57,10 +58,72 @@ class FacebookDriverTest extends TestCase
 
     /**
      * @expectedException \FondBot\Channels\Exceptions\InvalidChannelRequest
+     * @expectedExceptionMessage Header signature is not provided
+     */
+    public function test_verifyRequest_invalid_header()
+    {
+        $this->facebook->verifyRequest();
+    }
+
+    public function test_verifyRequest_skip_signature(){
+        $data = $this->generateResponse();
+        $this->shouldReturnAttribute($channel = $this->mock(Channel::class), 'parameters', []);
+
+        $this->facebook->setHeaders($this->generateHeaders($data, str_random()));
+        $this->facebook->setRequest($data);
+        $this->facebook->setChannel($channel);
+
+        $this->facebook->verifyRequest();
+    }
+
+    /**
+     * @expectedException \FondBot\Channels\Exceptions\InvalidChannelRequest
+     * @expectedExceptionMessage Invalid signature header
+     */
+    public function test_verifyRequest_invalid_secret()
+    {
+        $data = [
+            'foo' => 'bar',
+        ];
+        $headers = [
+            'X_HUB_SIGNATURE' => $this->generateSignature($data, str_random())
+        ];
+
+        $this->facebook->setRequest($data);
+        $this->facebook->setHeaders($headers);
+
+        $this->facebook->verifyRequest();
+    }
+
+    public function test_verifyRequest_valid_header()
+    {
+        $data = $this->generateResponse();
+        $headers = [
+            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret'])
+        ];
+
+        $this->facebook->setRequest($data);
+        $this->facebook->setHeaders($headers);
+
+        $this->facebook->verifyRequest();
+    }
+
+    /**
+     * @expectedException \FondBot\Channels\Exceptions\InvalidChannelRequest
      * @expectedExceptionMessage Invalid payload
      */
     public function test_verifyRequest_empty_message()
     {
+        $data = [
+            'foo' => 'bar',
+        ];
+        $headers = [
+            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret'])
+        ];
+
+        $this->facebook->setRequest($data);
+        $this->facebook->setHeaders($headers);
+
         $this->facebook->verifyRequest();
     }
 
@@ -70,7 +133,7 @@ class FacebookDriverTest extends TestCase
      */
     public function test_verifyRequest_empty_message_from()
     {
-        $this->facebook->setRequest([
+        $data = [
             'entry' => [
                 [
                     'messaging' => [
@@ -82,29 +145,23 @@ class FacebookDriverTest extends TestCase
                     ],
                 ],
             ],
-        ]);
+        ];
+        $headers = [
+            'X_HUB_SIGNATURE' => $this->generateSignature($data, $this->channel->parameters['app_secret'])
+        ];
+
+        $this->facebook->setHeaders($headers);
+        $this->facebook->setRequest($data);
 
         $this->facebook->verifyRequest();
     }
 
     public function test_verifyRequest()
     {
-        $this->facebook->setRequest([
-            'entry' => [
-                [
-                    'messaging' => [
-                        [
-                            'sender'  => [
-                                'id' => $this->faker()->uuid,
-                            ],
-                            'message' => [
-                                'text' => $this->faker()->word,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
+        $data = $this->generateResponse();
+
+        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
+        $this->facebook->setRequest($data);
 
         $this->facebook->verifyRequest();
     }
@@ -120,24 +177,13 @@ class FacebookDriverTest extends TestCase
             'timezone'    => $this->faker()->randomDigit,
             'gender'      => $this->faker()->word,
         ];
-        $this->facebook->setRequest([
-            'entry' => [
-                [
-                    'messaging' => [
-                        [
-                            'sender' => [
-                                'id' => $senderId,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
+
+        $this->facebook->setRequest($this->generateResponse($senderId));
 
         $stream = $this->mock(ResponseInterface::class);
 
         $stream->shouldReceive('getBody')->andReturn(json_encode($response));
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
+        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/' . $senderId, [
             'query' => [
                 'access_token' => $this->channel->parameters['page_token'],
             ],
@@ -153,21 +199,9 @@ class FacebookDriverTest extends TestCase
     public function test_getSender_exception()
     {
         $senderId = $this->faker()->uuid;
-        $this->facebook->setRequest([
-            'entry' => [
-                [
-                    'messaging' => [
-                        [
-                            'sender' => [
-                                'id' => $senderId,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
+        $this->facebook->setRequest($this->generateResponse($senderId));
 
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
+        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/' . $senderId, [
             'query' => [
                 'access_token' => $this->channel->parameters['page_token'],
             ],
@@ -178,19 +212,7 @@ class FacebookDriverTest extends TestCase
 
     public function test_getMessage()
     {
-        $this->facebook->setRequest([
-            'entry' => [
-                [
-                    'messaging' => [
-                        [
-                            'message' => [
-                                'text' => $this->faker()->word,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
+        $this->facebook->setRequest($this->generateResponse());
 
         $this->assertInstanceOf(Message::class, $this->facebook->getMessage());
     }
@@ -253,32 +275,6 @@ class FacebookDriverTest extends TestCase
         $this->facebook->sendMessage($receiver, $text);
     }
 
-    public function test_verification_request_check_webhook()
-    {
-        $this->facebook->setRequest([
-            'hub_mode'         => 'subscribe',
-            'hub_verify_token' => $this->faker()->word,
-        ]);
-
-        $this->assertTrue($this->facebook->isVerificationRequest());
-    }
-
-    public function test_verification_request_app_secret()
-    {
-        $this->assertTrue($this->facebook->isVerificationRequest());
-    }
-
-    public function test_verification_request_not_set_app_secret()
-    {
-        $channel = $this->mock(Channel::class);
-
-        $channel->shouldReceive('getAttribute')->andReturn(['app_secret' => '']);
-
-        $this->facebook->setChannel($channel);
-
-        $this->assertFalse($this->facebook->isVerificationRequest());
-    }
-
     public function test_verify_webhook_check()
     {
         $this->facebook->setRequest([
@@ -287,17 +283,51 @@ class FacebookDriverTest extends TestCase
             'hub_challenge'    => $challenge = $this->faker()->randomNumber(),
         ]);
 
+        $this->assertTrue($this->facebook->isVerificationRequest());
         $this->assertEquals($challenge, $this->facebook->verifyWebhook());
     }
 
-    public function test_verify_webhook_ok()
+    /**
+     * @expectedException \FondBot\Channels\Exceptions\InvalidChannelRequest
+     * @expectedExceptionMessage Invalid verify token
+     */
+    public function test_verifyWebhook_invalid_token()
     {
-        $channel = $this->mock(Channel::class);
+        $this->facebook->setRequest([
+            'hub_mode'         => 'subscribe',
+            'hub_verify_token' => $this->faker()->word,
+            'hub_challenge'    => $challenge = $this->faker()->randomNumber(),
+        ]);
 
-        $channel->shouldReceive('getAttribute')->andReturn(['app_secret' => '']);
+        $this->assertTrue($this->facebook->isVerificationRequest());
+        $this->facebook->verifyWebhook();
+    }
 
-        $this->facebook->setChannel($channel);
+    private function generateSignature(array $data, $key): string
+    {
+        return 'sha1='.hash_hmac('sha1', json_encode($data), $key);
+    }
 
-        $this->assertEquals('OK', $this->facebook->verifyWebhook());
+    private function generateResponse(string $id = null, string $text = null): array
+    {
+        return [
+            'entry' => [
+                [
+                    'messaging' => [
+                        [
+                            'sender' => ['id' => $id ?: $this->faker()->uuid],
+                            'message' => ['text' => $text ?: $this->faker()->word],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    private function generateHeaders(array $data, $key): array
+    {
+        return [
+            'X_HUB_SIGNATURE' => $this->generateSignature($data, $key)
+        ];
     }
 }

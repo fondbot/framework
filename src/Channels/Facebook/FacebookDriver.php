@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Fondbot\Channels\Facebook;
+namespace FondBot\Channels\Facebook;
 
 use GuzzleHttp\Client;
 use FondBot\Channels\Sender;
@@ -44,8 +44,10 @@ class FacebookDriver extends Driver implements WebhookVerification
      */
     public function verifyRequest(): void
     {
-        if (!array_has($this->getRequest('entry'), '0.messaging.0.sender.id')
-            || !array_has($this->getRequest('entry'), '0.messaging.0.message.text')
+        $this->verifySignature();
+
+        if (!$this->hasRequest('entry.0.messaging.0.sender.id')
+            || !$this->hasRequest('entry.0.messaging.0.message.text')
         ) {
             throw new InvalidChannelRequest('Invalid payload');
         }
@@ -135,32 +137,21 @@ class FacebookDriver extends Driver implements WebhookVerification
      */
     public function isVerificationRequest(): bool
     {
-        return $this->getRequest('hub_mode') === 'subscribe'
-            && $this->getRequest('hub_verify_token')
-            || $this->getParameter('app_secret');
+        return $this->getRequest('hub_mode') === 'subscribe' && $this->hasRequest('hub_verify_token');
     }
 
     /**
      * Run webhook verification and respond if required.
-     *
      * @return mixed
+     * @throws InvalidChannelRequest
      */
     public function verifyWebhook()
     {
-        if ($this->getRequest('hub_mode') === 'subscribe'
-            && $this->getRequest('hub_verify_token') === $this->getParameter('verify_token')
-        ) {
-            //todo If verify token does not match need Exception or log error, for this need VerificationManager and add method like hasRequest
+        if ($this->getRequest('hub_verify_token') === $this->getParameter('verify_token')) {
             return $this->getRequest('hub_challenge');
         }
 
-        if ($this->getParameter('app_secret')) {
-            //todo for this testing need add setter and getter headers and add modify method getRequest to return all request data
-            return hash_equals(request()->header('X_HUB_SIGNATURE', ''),
-                'sha1='.hash_hmac('sha1', request()->getContent(), $this->getParameter('app_secret')));
-        }
-
-        return 'OK';
+        throw new InvalidChannelRequest('Invalid verify token');
     }
 
     private function getBaseUrl(): string
@@ -175,5 +166,21 @@ class FacebookDriver extends Driver implements WebhookVerification
                 'access_token' => $this->getParameter('page_token'),
             ],
         ];
+    }
+
+    private function verifySignature(): void
+    {
+        if (!$secret = $this->getParameter('app_secret')) {
+            // If app secret non set, just skip this check
+            return;
+        }
+
+        if (!$header = $this->getHeader('X_HUB_SIGNATURE')) {
+            throw new InvalidChannelRequest('Header signature is not provided');
+        }
+
+        if (!hash_equals($header, 'sha1=' . hash_hmac('sha1', json_encode($this->getRequest()), $secret))) {
+            throw new InvalidChannelRequest('Invalid signature header');
+        }
     }
 }

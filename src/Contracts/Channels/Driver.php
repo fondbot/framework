@@ -41,11 +41,11 @@ abstract class Driver
     /**
      * Get request value.
      *
-     * @param string $key
+     * @param null|string $key
      *
      * @return mixed
      */
-    public function getRequest(string $key)
+    public function getRequest(string $key = null)
     {
         return array_get($this->request, $key);
     }
@@ -59,7 +59,7 @@ abstract class Driver
      */
     public function hasRequest(string $key): bool
     {
-        return array_get($this->request, $key) !== null;
+        return array_has($this->request, $key);
     }
 
     /**
