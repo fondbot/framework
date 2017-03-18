@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Channels;
 
 use FondBot\Channels\Sender;
+use FondBot\Contracts\ContainsRequestInformation;
 use FondBot\Traits\Loggable;
 use FondBot\Channels\Message;
 use FondBot\Channels\Receiver;
@@ -14,75 +15,13 @@ use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 abstract class Driver
 {
-    use Loggable;
-
-    /** @var array */
-    private $request = [];
-
-    /** @var array */
-    private $headers = [];
+    use ContainsRequestInformation, Loggable;
 
     /** @var Channel */
     private $channel;
 
     /** @var array */
     private $parameters;
-
-    /**
-     * Set request.
-     *
-     * @param array $request
-     */
-    public function setRequest(array $request): void
-    {
-        $this->request = $request;
-    }
-
-    /**
-     * Get request value.
-     *
-     * @param null|string $key
-     *
-     * @return mixed
-     */
-    public function getRequest(string $key = null)
-    {
-        return array_get($this->request, $key);
-    }
-
-    /**
-     * If request has key.
-     *
-     * @param string $key
-     *
-     * @return bool
-     */
-    public function hasRequest(string $key): bool
-    {
-        return array_has($this->request, $key);
-    }
-
-    /**
-     * Set headers.
-     *
-     * @param array $headers
-     */
-    public function setHeaders(array $headers): void
-    {
-        $this->headers = $headers;
-    }
-
-    /**
-     * Get header value.
-     *
-     * @param string $name
-     *
-     * @return mixed
-     */
-    public function getHeader(string $name)
-    {
-        return $this->headers[$name] ?? null;
-    }
 
     /**
      * Set channel name.
