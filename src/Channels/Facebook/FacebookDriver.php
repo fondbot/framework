@@ -61,7 +61,7 @@ class FacebookDriver extends Driver implements WebhookVerification
     public function getSender(): Sender
     {
         // todo When bot can process with multiple messages, rewrite to looping
-        $id = array_get($this->getRequest('entry'), '0.messaging.0.sender.id');
+        $id = $this->getRequest('entry.0.messaging.0.sender.id');
 
         try {
             $response = $this->guzzle->get($this->getBaseUrl().$id, $this->getDefaultRequestParameters());
@@ -89,9 +89,7 @@ class FacebookDriver extends Driver implements WebhookVerification
      */
     public function getMessage(): Message
     {
-        $text = array_get($this->getRequest('entry'), '0.messaging.0.message.text');
-
-        return Message::create($text);
+        return Message::create($this->getRequest('entry.0.messaging.0.message.text'));
     }
 
     /**
