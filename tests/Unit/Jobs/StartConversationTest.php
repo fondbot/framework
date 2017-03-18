@@ -25,6 +25,7 @@ class StartConversationTest extends TestCase
     public function test_story_found()
     {
         $request = [];
+        $headers = [];
         $channel = new Channel(['id' => random_int(1, time())]);
         $participant = new Participant;
 
@@ -37,7 +38,7 @@ class StartConversationTest extends TestCase
         $context = $this->mock(Context::class);
         $story = $this->mock(Story::class);
 
-        $channelManager->shouldReceive('createDriver')->with($request, $channel)->andReturn($driver)->once();
+        $channelManager->shouldReceive('createDriver')->with($request, $headers, $channel)->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
             $message = Message::create($this->faker()->text)
@@ -64,13 +65,14 @@ class StartConversationTest extends TestCase
         $storyManager->shouldReceive('find')->with($context, $message)->andReturn($story)->once();
         $conversationManager->shouldReceive('start')->with($context, $story)->once();
 
-        $job = new StartConversation($channel, $request);
+        $job = new StartConversation($channel, $request, $headers);
         $job->handle($channelManager, $contextManager, $storyManager, $conversationManager, $participantService);
     }
 
     public function test_no_story_found()
     {
         $request = [];
+        $headers = [];
         $channel = new Channel(['id' => random_int(1, time())]);
         $participant = new Participant;
 
@@ -82,7 +84,7 @@ class StartConversationTest extends TestCase
         $driver = $this->mock(Driver::class);
         $context = $this->mock(Context::class);
 
-        $channelManager->shouldReceive('createDriver')->with($request, $channel)->andReturn($driver)->once();
+        $channelManager->shouldReceive('createDriver')->with($request, $headers, $channel)->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
             $message = Message::create($this->faker()->text)
@@ -109,7 +111,7 @@ class StartConversationTest extends TestCase
         $storyManager->shouldReceive('find')->with($context, $message)->andReturn(null)->once();
         $conversationManager->shouldReceive('start')->never();
 
-        $job = new StartConversation($channel, $request);
+        $job = new StartConversation($channel, $request, $headers);
         $job->handle($channelManager, $contextManager, $storyManager, $conversationManager, $participantService);
     }
 }

@@ -51,6 +51,13 @@ class TelegramDriverTest extends TestCase
         $this->assertEquals($expected, $this->telegram->getConfig());
     }
 
+    public function test_getHeaders()
+    {
+        $this->telegram->setHeaders($headers = ['Token' => $this->faker()->uuid]);
+
+        $this->assertSame($headers['Token'], $this->telegram->getHeader('Token'));
+    }
+
     /**
      * @expectedException \FondBot\Channels\Exceptions\InvalidChannelRequest
      * @expectedExceptionMessage Invalid payload
@@ -149,8 +156,8 @@ class TelegramDriverTest extends TestCase
         $replyMarkup = json_encode([
             'keyboard' => [
                 [
-                    (object) ['text' => $button1Text],
-                    (object) ['text' => $button2Text],
+                    (object)['text' => $button1Text],
+                    (object)['text' => $button2Text],
                 ],
             ],
             'resize_keyboard' => true,
@@ -196,7 +203,8 @@ class TelegramDriverTest extends TestCase
         $receiver = $this->mock(Receiver::class);
         $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
 
-        $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request', $this->mock(RequestInterface::class)));
+        $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request',
+            $this->mock(RequestInterface::class)));
 
         $this->telegram->sendMessage($receiver, $text);
     }

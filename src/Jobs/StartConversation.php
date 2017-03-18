@@ -25,11 +25,13 @@ class StartConversation implements ShouldQueue
 
     private $channel;
     private $request;
+    private $headers;
 
-    public function __construct(Channel $channel, array $request)
+    public function __construct(Channel $channel, array $request, array $headers)
     {
         $this->channel = $channel;
         $this->request = $request;
+        $this->headers = $headers;
     }
 
     public function handle(
@@ -42,7 +44,7 @@ class StartConversation implements ShouldQueue
         $this->debug('handle', ['channel' => $this->channel->toArray(), 'request' => $this->request]);
 
         /** @var Driver $driver */
-        $driver = $channelManager->createDriver($this->request, $this->channel);
+        $driver = $channelManager->createDriver($this->request, $this->headers, $this->channel);
 
         // Store sender in database as participant
         $participant = $participantService->createOrUpdate([
