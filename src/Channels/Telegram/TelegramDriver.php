@@ -44,11 +44,9 @@ class TelegramDriver extends Driver implements WebhookInstallation
     public function verifyRequest(): void
     {
         if (
-            $this->getRequest('message') === null ||
-            !isset(
-                $this->getRequest('message')['from'],
-                $this->getRequest('message')['text']
-            )
+            !$this->hasRequest('message') ||
+            !$this->hasRequest('message.from') ||
+            !$this->hasRequest('message.text')
         ) {
             throw new InvalidChannelRequest('Invalid payload');
         }
@@ -75,10 +73,10 @@ class TelegramDriver extends Driver implements WebhookInstallation
      */
     public function getSender(): Sender
     {
-        $from = $this->getRequest('message')['from'];
+        $from = $this->getRequest('message.from');
 
         return Sender::create(
-            (string) $from['id'],
+            (string)$from['id'],
             $from['first_name'].' '.$from['last_name'],
             $from['username']
         );
@@ -91,7 +89,7 @@ class TelegramDriver extends Driver implements WebhookInstallation
      */
     public function getMessage(): Message
     {
-        $text = $this->getRequest('message')['text'];
+        $text = $this->getRequest('message.text');
 
         return Message::create($text);
     }

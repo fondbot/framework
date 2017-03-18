@@ -41,13 +41,25 @@ abstract class Driver
     /**
      * Get request value.
      *
-     * @param string $name
+     * @param string $key
      *
      * @return mixed
      */
-    public function getRequest(string $name)
+    public function getRequest(string $key)
     {
-        return $this->request[$name] ?? null;
+        return array_get($this->request, $key);
+    }
+
+    /**
+     * If request has key.
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function hasRequest(string $key): bool
+    {
+        return array_get($this->request, $key) !== null;
     }
 
     /**
