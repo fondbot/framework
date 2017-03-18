@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Channels;
 
 use FondBot\Channels\Sender;
-use FondBot\Contracts\ContainsRequestInformation;
 use FondBot\Traits\Loggable;
 use FondBot\Channels\Message;
 use FondBot\Channels\Receiver;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\ContainsRequestInformation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 abstract class Driver
