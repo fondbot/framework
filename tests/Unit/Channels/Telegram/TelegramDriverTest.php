@@ -56,6 +56,7 @@ class TelegramDriverTest extends TestCase
         $this->telegram->setHeaders($headers = ['Token' => $this->faker()->uuid]);
 
         $this->assertSame($headers['Token'], $this->telegram->getHeader('Token'));
+        $this->assertSame($headers, $this->telegram->getHeaders());
     }
 
     /**

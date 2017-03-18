@@ -34,5 +34,6 @@ class ExampleInteraction extends Interaction
      */
     protected function process(): void
     {
+        $this->remember('key', 'value');
     }
 }

@@ -34,12 +34,12 @@ class ChannelServiceTest extends TestCase
                 'parameters' => '',
                 'is_enabled' => true,
             ]),
-            'disabled' => $this->service->create([
+            'disabled' => $this->service->createOrUpdate([
                 'name' => $this->faker()->name,
                 'driver' => $this->faker()->word,
                 'parameters' => '',
                 'is_enabled' => false,
-            ]),
+            ], []),
         ];
     }
 
@@ -86,5 +86,32 @@ class ChannelServiceTest extends TestCase
         $item = $this->items['enabled']->fresh();
 
         $this->assertFalse($item->is_enabled);
+    }
+
+    public function test_all()
+    {
+        $result = $this->service->all();
+
+        $this->assertCount(count($this->items), $result);
+    }
+
+    public function test_findById()
+    {
+        /** @var Channel $item */
+        $item = collect($this->items)->random();
+
+        $result = $this->service->findById($item->id);
+
+        $this->assertEquals($item->id, $result->id);
+    }
+
+    public function test_delete()
+    {
+        /** @var Channel $item */
+        $item = collect($this->items)->random();
+
+        $this->service->delete($item);
+
+        $this->assertNull($item->fresh());
     }
 }

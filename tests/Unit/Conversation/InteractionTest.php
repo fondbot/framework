@@ -46,6 +46,8 @@ class InteractionTest extends TestCase
         $contextManager->shouldReceive('clear')->once();
 
         $this->context->shouldReceive('getInteraction')->andReturn($this->interaction);
+        $this->context->shouldReceive('setValue')->with('key', 'value')->once();
+        $contextManager->shouldReceive('save')->once();
 
         $this->interaction->run();
     }
