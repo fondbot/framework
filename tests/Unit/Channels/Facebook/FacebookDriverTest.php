@@ -260,12 +260,12 @@ class FacebookDriverTest extends TestCase
             'hub_verify_token' => $this->faker()->word,
         ]);
 
-        $this->assertTrue($this->facebook->isVerificationRequestFailed());
+        $this->assertTrue($this->facebook->isVerificationRequest());
     }
 
     public function test_verification_request_app_secret()
     {
-        $this->assertTrue($this->facebook->isVerificationRequestFailed());
+        $this->assertTrue($this->facebook->isVerificationRequest());
     }
 
     public function test_verification_request_not_set_app_secret()
@@ -276,7 +276,7 @@ class FacebookDriverTest extends TestCase
 
         $this->facebook->setChannel($channel);
 
-        $this->assertFalse($this->facebook->isVerificationRequestFailed());
+        $this->assertFalse($this->facebook->isVerificationRequest());
     }
 
     public function test_verify_webhook_check()
