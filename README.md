@@ -14,4 +14,5 @@ You can find all installation instructions and full documentation on [https://do
 
 ## Community
 
-Join Slack: https://fondbot.signup.team  
+If you have questions or suggestions you are welcome to our Slack channel:
+[https://fondbot.signup.team](https://fondbot.signup.team)
