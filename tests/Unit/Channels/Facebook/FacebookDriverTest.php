@@ -204,6 +204,19 @@ class FacebookDriverTest extends TestCase
         $this->assertInstanceOf(Message::class, $this->facebook->getMessage());
     }
 
+    public function test_getMessageWithLocation()
+    {
+        $latitude = $this->faker()->latitude;
+        $longitude = $this->faker()->longitude;
+
+        $this->facebook->setRequest($this->generateLocationResponse($latitude, $longitude));
+
+        $message = $this->facebook->getMessage();
+        $this->assertInstanceOf(Message\Location::class, $message->getLocation());
+        $this->assertSame($latitude, $message->getLocation()->getLatitude());
+        $this->assertSame($longitude, $message->getLocation()->getLongitude());
+    }
+
     public function test_sendMessage_with_keyboard()
     {
         $text = $this->faker()->text;
@@ -302,8 +315,38 @@ class FacebookDriverTest extends TestCase
                 [
                     'messaging' => [
                         [
-                            'sender' => ['id' => $id ?: $this->faker()->uuid],
+                            'sender'  => ['id' => $id ?: $this->faker()->uuid],
                             'message' => ['text' => $text ?: $this->faker()->word],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    private function generateLocationResponse(float $latitude, float $longitude): array
+    {
+        return [
+            'entry' => [
+                [
+                    'messaging' => [
+                        [
+                            'sender'  => [$this->faker()->uuid],
+                            'message' => [
+                                'attachments' => [
+                                    [
+                                        'title'   => $this->faker()->sentence,
+                                        'url'     => $this->faker()->url,
+                                        'type'    => 'location',
+                                        'payload' => [
+                                            'coordinates' => [
+                                                'lat'  => $latitude ?: $this->faker()->latitude,
+                                                'long' => $longitude ?: $this->faker()->longitude,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
