@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Channels\VkCommunity;
 
 use FondBot\Contracts\Channels\Message;
-use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Contracts\Channels\Message\Location;
+use FondBot\Contracts\Channels\Message\Attachment;
 
 class VkCommunityMessage implements Message
 {

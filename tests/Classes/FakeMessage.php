@@ -7,12 +7,11 @@ namespace Tests\Classes;
 use Faker\Factory;
 use Faker\Generator;
 use FondBot\Contracts\Channels\Message;
-use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Contracts\Channels\Message\Location;
+use FondBot\Contracts\Channels\Message\Attachment;
 
 class FakeMessage implements Message
 {
-
     /**
      * Get text.
      *

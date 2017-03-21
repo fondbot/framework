@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
-use FondBot\Channels\Telegram\TelegramMessage;
-use FondBot\Contracts\Channels\Message\Attachment;
-use FondBot\Contracts\Channels\Message\Location;
-use Psr\Http\Message\ResponseInterface;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Telegram\TelegramDriver;
+use FondBot\Channels\Telegram\TelegramMessage;
+use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Channels\Message\Attachment;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -373,8 +373,8 @@ class TelegramDriverTest extends TestCase
         $replyMarkup = json_encode([
             'keyboard' => [
                 [
-                    (object)['text' => $button1Text],
-                    (object)['text' => $button2Text],
+                    (object) ['text' => $button1Text],
+                    (object) ['text' => $button2Text],
                 ],
             ],
             'resize_keyboard' => true,

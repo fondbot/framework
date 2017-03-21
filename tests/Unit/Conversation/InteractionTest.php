@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use Tests\Classes\FakeMessage;
 use Tests\TestCase;
+use Tests\Classes\FakeMessage;
 use FondBot\Conversation\Context;
 use Tests\Classes\ExampleInteraction;
 use FondBot\Contracts\Channels\Driver;

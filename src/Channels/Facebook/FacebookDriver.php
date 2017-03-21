@@ -71,12 +71,12 @@ class FacebookDriver extends Driver implements WebhookVerification
             throw new InvalidChannelRequest('Can not get user profile', 0, $exception);
         }
 
-        $user = json_decode((string)$response->getBody());
+        $user = json_decode((string) $response->getBody());
 
         $username = "{$user->first_name} {$user->last_name}";
 
         return Sender::create(
-            (string)$id,
+            (string) $id,
             $username,
             $username
         );
