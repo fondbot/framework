@@ -1,5 +1,4 @@
 <img src="https://docs.fondbot.com/images/logo.png" width="200px">
-======================
 
 [![Build Status](https://img.shields.io/travis/fondbot/fondbot.svg?style=flat-square)](https://travis-ci.org/fondbot/fondbot)
 [![StyleCI](https://styleci.io/repos/78780366/shield)](https://styleci.io/repos/78780366)
