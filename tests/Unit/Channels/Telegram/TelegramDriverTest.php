@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
+use FondBot\Contracts\Channels\Message\Location;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Conversation\Keyboard;
@@ -138,6 +139,30 @@ class TelegramDriverTest extends TestCase
         ]);
 
         $this->assertInstanceOf(Message::class, $this->telegram->getMessage());
+    }
+
+    public function test_getMessage_with_location()
+    {
+        $latitude = $this->faker()->latitude;
+        $longitude = $this->faker()->longitude;
+
+        $this->telegram->setRequest([
+            'message' => [
+                'text' => $this->faker()->text,
+                'location' => [
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                ],
+            ],
+        ]);
+
+        $message = $this->telegram->getMessage();
+        $this->assertInstanceOf(Message::class, $message);
+
+        $location = $message->getLocation();
+        $this->assertInstanceOf(Location::class, $location);
+        $this->assertSame($latitude, $location->getLatitude());
+        $this->assertSame($longitude, $location->getLongitude());
     }
 
     public function test_sendMessage_with_keyboard()

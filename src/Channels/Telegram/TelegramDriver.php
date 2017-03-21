@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Telegram;
 
+use FondBot\Contracts\Channels\Message\Location;
 use GuzzleHttp\Client;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
@@ -75,7 +76,7 @@ class TelegramDriver extends Driver implements WebhookInstallation
         $from = $this->getRequest('message.from');
 
         return Sender::create(
-            (string) $from['id'],
+            (string)$from['id'],
             $from['first_name'].' '.$from['last_name'],
             $from['username']
         );
@@ -88,9 +89,17 @@ class TelegramDriver extends Driver implements WebhookInstallation
      */
     public function getMessage(): Message
     {
+        $location = null;
         $text = $this->getRequest('message.text');
 
-        return Message::create($text);
+        if ($this->getRequest('message.location') !== null) {
+            $location = Location::create(
+                $this->getRequest('message.location.latitude'),
+                $this->getRequest('message.location.longitude')
+            );
+        }
+
+        return Message::create($text, $location);
     }
 
     /**

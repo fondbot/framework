@@ -4,17 +4,28 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Channels;
 
+use FondBot\Contracts\Channels\Message\Location;
+
 class Message
 {
     /** @var string */
     protected $text;
 
-    public static function create(string $text): Message
+    /** @var Location */
+    protected $location;
+
+    public static function create(string $text, Location $location = null): Message
     {
         $instance = new self;
         $instance->setText($text);
+        $instance->setLocation($location);
 
         return $instance;
+    }
+
+    public function getText(): string
+    {
+        return $this->text;
     }
 
     public function setText(string $text): void
@@ -22,8 +33,13 @@ class Message
         $this->text = $text;
     }
 
-    public function getText(): string
+    public function getLocation(): ?Location
     {
-        return $this->text;
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): void
+    {
+        $this->location = $location;
     }
 }
