@@ -11,7 +11,6 @@ use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
-use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\WebhookInstallation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 

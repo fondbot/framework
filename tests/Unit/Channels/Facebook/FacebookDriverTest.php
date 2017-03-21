@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Facebook;
 
-use FondBot\Channels\Facebook\FacebookMessage;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Conversation\Keyboard;
@@ -15,6 +14,7 @@ use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Facebook\FacebookDriver;
+use FondBot\Channels\Facebook\FacebookMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 
 /**
