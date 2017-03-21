@@ -6,7 +6,6 @@ namespace FondBot\Contracts\Channels\Message;
 
 class Location
 {
-
     protected $latitude;
     protected $longitude;
 
@@ -38,5 +37,4 @@ class Location
     {
         $this->longitude = $longitude;
     }
-
 }
