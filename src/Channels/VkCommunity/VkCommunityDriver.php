@@ -82,7 +82,7 @@ class VkCommunityDriver extends Driver implements WebhookVerification
             return $this->sender;
         }
 
-        $userId = (string) $this->getRequest('object')['user_id'];
+        $userId = (string)$this->getRequest('object')['user_id'];
         $request = $this->guzzle->get(self::API_URL.'users.get', [
             'query' => [
                 'user_ids' => $userId,
@@ -92,7 +92,7 @@ class VkCommunityDriver extends Driver implements WebhookVerification
         $response = json_decode($request->getBody()->getContents(), true);
 
         return $this->sender = Sender::create(
-            (string) $response['response'][0]['id'],
+            (string)$response['response'][0]['id'],
             $response['response'][0]['first_name'].' '.$response['response'][0]['last_name']
         );
     }
@@ -104,9 +104,7 @@ class VkCommunityDriver extends Driver implements WebhookVerification
      */
     public function getMessage(): Message
     {
-        $text = (string) $this->getRequest('object')['body'];
-
-        return Message::create($text);
+        return new VkCommunityMessage($this->getRequest('object'));
     }
 
     /**

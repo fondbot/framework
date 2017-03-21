@@ -71,12 +71,12 @@ class FacebookDriver extends Driver implements WebhookVerification
             throw new InvalidChannelRequest('Can not get user profile', 0, $exception);
         }
 
-        $user = json_decode((string) $response->getBody());
+        $user = json_decode((string)$response->getBody());
 
         $username = "{$user->first_name} {$user->last_name}";
 
         return Sender::create(
-            (string) $id,
+            (string)$id,
             $username,
             $username
         );
@@ -89,7 +89,7 @@ class FacebookDriver extends Driver implements WebhookVerification
      */
     public function getMessage(): Message
     {
-        return Message::create($this->getRequest('entry.0.messaging.0.message.text'));
+        return new FacebookMessage($this->getRequest('entry.0.messaging.0.message'));
     }
 
     /**

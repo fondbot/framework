@@ -6,17 +6,13 @@ namespace FondBot\Contracts\Channels\Message;
 
 class Location
 {
-
     protected $latitude;
     protected $longitude;
 
-    public static function create(float $latitude, float $longitude): Location
+    public function __construct(float $latitude, float $longitude)
     {
-        $instance = new self;
-        $instance->setLatitude($latitude);
-        $instance->setLongitude($longitude);
-
-        return $instance;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
     }
 
     public function getLatitude(): float
@@ -24,19 +20,8 @@ class Location
         return $this->latitude;
     }
 
-    public function setLatitude(float $latitude): void
-    {
-        $this->latitude = $latitude;
-    }
-
     public function getLongitude(): float
     {
         return $this->longitude;
     }
-
-    public function setLongitude(float $longitude): void
-    {
-        $this->longitude = $longitude;
-    }
-
 }
