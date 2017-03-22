@@ -38,7 +38,7 @@ class StartConversationTest extends TestCase
         $context = $this->mock(Context::class);
         $story = $this->mock(Story::class);
 
-        $channelManager->shouldReceive('createDriver')->with($request, $headers, $channel)->andReturn($driver)->once();
+        $channelManager->shouldReceive('createDriver')->with($channel, [], [])->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
             $message = FakeMessage::create()
@@ -84,7 +84,7 @@ class StartConversationTest extends TestCase
         $driver = $this->mock(Driver::class);
         $context = $this->mock(Context::class);
 
-        $channelManager->shouldReceive('createDriver')->with($request, $headers, $channel)->andReturn($driver)->once();
+        $channelManager->shouldReceive('createDriver')->with($channel, [], [])->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
             $message = FakeMessage::create()

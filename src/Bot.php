@@ -99,6 +99,6 @@ class Bot
      */
     private function createDriver(): Driver
     {
-        return $this->channelManager->createDriver($this->request, $this->headers, $this->channel);
+        return $this->channelManager->createDriver($this->channel, $this->request, $this->headers);
     }
 }
