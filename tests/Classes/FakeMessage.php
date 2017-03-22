@@ -25,6 +25,7 @@ class FakeMessage implements Message
     public static function create()
     {
         $faker = Factory::create();
+
         return new self(
             $faker->text,
             new Location($faker->latitude, $faker->longitude),

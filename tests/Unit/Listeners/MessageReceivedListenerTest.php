@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners;
 
-use Tests\Classes\FakeMessage;
 use Tests\TestCase;
+use Tests\Classes\FakeMessage;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Contracts\Database\Entities\Participant;
 use FondBot\Contracts\Database\Services\MessageService;
