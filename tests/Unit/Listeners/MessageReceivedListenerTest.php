@@ -50,7 +50,7 @@ class MessageReceivedListenerTest extends TestCase
             'sender_id' => $participant->id,
             'receiver_id' => null,
             'text' => $message->getText(),
-            'attachment' => '/storage/'.$files[0],
+            'attachment' => $files[0],
             'location' => json_encode($message->getLocation()->toArray()),
             'parameters' => null,
         ]);
@@ -73,7 +73,7 @@ class MessageReceivedListenerTest extends TestCase
             'sender_id' => $participant->id,
             'receiver_id' => null,
             'text' => $message->getText(),
-            'attachment' => '/storage/'.$files[0],
+            'attachment' => $files[0],
             'location' => json_encode($message->getLocation()->toArray()),
             'parameters' => null,
         ]);

@@ -66,8 +66,6 @@ class MessageReceivedListener
 
         $disk->put($config['folder'], $file, 'public');
 
-        $path = $config['folder'].'/'.$file->hashName();
-
-        return $disk->url($path);
+        return $config['folder'].'/'.$file->hashName();
     }
 }
