@@ -76,9 +76,9 @@ class TelegramDriverTest extends TestCase
      * @expectedException \FondBot\Channels\Exceptions\InvalidChannelRequest
      * @expectedExceptionMessage Invalid payload
      */
-    public function test_verifyRequest_empty_message_from()
+    public function test_verifyRequest_no_sender()
     {
-        $this->telegram->setRequest(['message' => ['text' => $this->faker()->word]]);
+        $this->telegram->setRequest(['message' => []]);
 
         $this->telegram->verifyRequest();
     }
@@ -86,17 +86,6 @@ class TelegramDriverTest extends TestCase
     public function test_verifyRequest()
     {
         $this->telegram->setRequest(['message' => ['from' => $this->faker()->name, 'text' => $this->faker()->word]]);
-
-        $this->telegram->verifyRequest();
-    }
-
-    /**
-     * @expectedException \FondBot\Channels\Exceptions\InvalidChannelRequest
-     * @expectedExceptionMessage Invalid payload
-     */
-    public function test_verifyRequest_empty_message_text()
-    {
-        $this->telegram->setRequest(['message' => ['from' => $this->faker()->name]]);
 
         $this->telegram->verifyRequest();
     }
@@ -160,24 +149,32 @@ class TelegramDriverTest extends TestCase
      * @dataProvider attachments
      *
      * @param string $type
+     * @param array $result
      */
-    public function test_getMessage_with_attachments(string $type)
+    public function test_getMessage_with_attachments(string $type, array $result = null)
     {
-        $this->telegram->setRequest([
-            'message' => [
-                $type => [
-                    'file_id' => $id = $this->faker()->uuid,
-                ],
-            ],
-        ]);
+        if ($result === null) {
+            $result = [
+                'file_id' => $id = $this->faker()->uuid,
+            ];
+        } else {
+            $id = collect($result)->pluck('file_id')->last();
+        }
 
+        $this->telegram->setRequest(['message' => [$type => $result]]);
+
+        // Get file path from Telegram
         $response = $this->mock(ResponseInterface::class);
         $response->shouldReceive('getBody')->andReturnSelf();
         $response->shouldReceive('getContents')->andReturn(json_encode([
-            'file_path' => $path = $this->faker()->imageUrl(),
+            'ok' => true,
+            'result' => [
+                'file_id' => $id,
+                'file_size' => $this->faker()->randomFloat(),
+                'file_path' => $path = $this->faker()->imageUrl(),
+            ],
         ]));
 
-        // Get file path from Telegram
         $this->guzzle->shouldReceive('post')
             ->with(
                 'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/getFile',
@@ -191,7 +188,7 @@ class TelegramDriverTest extends TestCase
             ->once();
 
         // Retrieve file contents
-        $path = 'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/'.$path;
+        $path = 'https://api.telegram.org/file/bot'.$this->channel->parameters['token'].'/'.$path;
         $response = $this->mock(ResponseInterface::class);
         $response->shouldReceive('getBody')->andReturnSelf();
         $response->shouldReceive('getContents')->andReturn($contents = $this->faker()->text);
@@ -434,6 +431,32 @@ class TelegramDriverTest extends TestCase
         return [
             ['audio'],
             ['document'],
+            [
+                'photo',
+                [
+                    [
+                        'file_id' => $this->faker()->uuid,
+                        'file_size' => 1,
+                        'file_path' => $this->faker()->imageUrl(),
+                        'width' => $this->faker()->randomNumber(),
+                        'height' => $this->faker()->randomNumber(),
+                    ],
+                    [
+                        'file_id' => $this->faker()->uuid,
+                        'file_size' => 2,
+                        'file_path' => $this->faker()->imageUrl(),
+                        'width' => $this->faker()->randomNumber(),
+                        'height' => $this->faker()->randomNumber(),
+                    ],
+                    [
+                        'file_id' => $this->faker()->uuid,
+                        'file_size' => 3,
+                        'file_path' => $this->faker()->imageUrl(),
+                        'width' => $this->faker()->randomNumber(),
+                        'height' => $this->faker()->randomNumber(),
+                    ],
+                ],
+            ],
             ['sticker'],
             ['video'],
             ['voice'],
