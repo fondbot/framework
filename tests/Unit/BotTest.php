@@ -45,5 +45,7 @@ class BotTest extends TestCase
         $result = $bot->process();
 
         $this->assertSame($request->json('verification'), $result);
+
+        Bus::assertNotDispatched(StartConversation::class);
     }
 }
