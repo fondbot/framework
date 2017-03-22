@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes;
+namespace Tests\Classes\Fakes;
 
 use FondBot\Conversation\Keyboard;
 use FondBot\Conversation\Interaction;
 
-class ExampleInteraction extends Interaction
+class FakeInteraction extends Interaction
 {
     /**
      * Message text to be sent to Participant.

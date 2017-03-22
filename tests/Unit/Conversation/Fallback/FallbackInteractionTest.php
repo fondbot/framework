@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation\Fallback;
 
 use Tests\TestCase;
-use Tests\Classes\FakeDriver;
+use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Fallback\FallbackStory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

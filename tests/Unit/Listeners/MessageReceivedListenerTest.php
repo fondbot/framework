@@ -6,7 +6,7 @@ namespace Tests\Unit\Listeners;
 
 use Storage;
 use Tests\TestCase;
-use Tests\Classes\FakeMessage;
+use Tests\Classes\Fakes\FakeMessage;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Contracts\Database\Entities\Participant;
 use FondBot\Contracts\Database\Services\MessageService;

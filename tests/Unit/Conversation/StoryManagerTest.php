@@ -7,7 +7,7 @@ namespace Tests\Unit\Conversation;
 use Config;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
-use Tests\Classes\ExampleStory;
+use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\StoryManager;
 use FondBot\Contracts\Channels\Message;
@@ -41,7 +41,7 @@ class StoryManagerTest extends TestCase
     {
         Config::set('fondbot', [
             'stories' => [
-                ExampleStory::class,
+                FakeStory::class,
             ],
         ]);
 
@@ -59,7 +59,7 @@ class StoryManagerTest extends TestCase
     {
         Config::set('fondbot', [
             'stories' => [
-                ExampleStory::class,
+                FakeStory::class,
             ],
         ]);
 
@@ -70,6 +70,6 @@ class StoryManagerTest extends TestCase
         $message->shouldReceive('getText')->andReturn('/example');
 
         $result = $this->manager->find($context, $message);
-        $this->assertInstanceOf(ExampleStory::class, $result);
+        $this->assertInstanceOf(FakeStory::class, $result);
     }
 }

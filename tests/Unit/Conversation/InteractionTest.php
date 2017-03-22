@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use Tests\Classes\FakeMessage;
+use Tests\Classes\Fakes\FakeMessage;
 use FondBot\Conversation\Context;
-use Tests\Classes\ExampleInteraction;
+use Tests\Classes\Fakes\FakeInteraction;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\ContextManager;
@@ -15,7 +15,7 @@ use FondBot\Contracts\Events\MessageSent;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface context
- * @property ExampleInteraction interaction
+ * @property FakeInteraction interaction
  */
 class InteractionTest extends TestCase
 {
@@ -25,7 +25,7 @@ class InteractionTest extends TestCase
 
         $this->context = $this->mock(Context::class);
 
-        $this->interaction = new ExampleInteraction;
+        $this->interaction = new FakeInteraction;
         $this->interaction->setContext($this->context);
     }
 

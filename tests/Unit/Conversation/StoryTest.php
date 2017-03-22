@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use Tests\Classes\ExampleStory;
+use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Interaction;
-use Tests\Classes\ExampleInteraction;
+use Tests\Classes\Fakes\FakeInteraction;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface context
- * @property ExampleStory story
+ * @property FakeStory story
  */
 class StoryTest extends TestCase
 {
@@ -21,12 +21,12 @@ class StoryTest extends TestCase
         parent::setUp();
 
         $this->context = $this->mock(Context::class);
-        $this->story = new ExampleStory;
+        $this->story = new FakeStory;
     }
 
     public function test_run_no_interaction_in_context()
     {
-        $interaction = $this->mock(ExampleInteraction::class);
+        $interaction = $this->mock(FakeInteraction::class);
 
         $this->context->shouldReceive('getInteraction')->andReturn(null);
         $interaction->shouldReceive('setContext')->with($this->context)->once();
