@@ -13,8 +13,8 @@ class AddLocationAndAttachmentFieldsToMessages extends Migration
     public function up()
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->json('location')->nullable()->after('text');
-            $table->json('attachment')->nullable()->after('location');
+            $table->text('attachment')->nullable()->after('text');
+            $table->json('location')->nullable()->after('attachment');
         });
     }
 
@@ -26,7 +26,7 @@ class AddLocationAndAttachmentFieldsToMessages extends Migration
     public function down()
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->dropColumn('location', 'attachment');
+            $table->dropColumn('attachment', 'location');
         });
     }
 }

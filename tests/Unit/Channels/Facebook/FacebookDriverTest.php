@@ -34,7 +34,7 @@ class FacebookDriverTest extends TestCase
             'name' => $this->faker()->name,
             'parameters' => [
                 'page_token' => str_random(),
-                'verify_token' => $this->faker()->word,
+                'verify_token' => str_random(),
                 'app_secret' => str_random(),
             ],
         ]);

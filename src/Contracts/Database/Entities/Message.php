@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $sender_id
  * @property int $receiver_id
  * @property string $text
+ * @property string $attachment
  * @property array $location
- * @property array $attachment
  * @property array $parameters
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
@@ -29,7 +29,6 @@ class Message extends Model
 
     protected $casts = [
         'location' => 'array',
-        'attachment' => 'array',
         'parameters' => 'array',
     ];
 
@@ -37,8 +36,8 @@ class Message extends Model
         'sender_id',
         'receiver_id',
         'text',
-        'location',
         'attachment',
+        'location',
         'parameters',
     ];
 
