@@ -14,6 +14,7 @@ use FondBot\Conversation\Keyboard;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Channels\WebhookInstallation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
+use GuzzleHttp\Psr7\Stream;
 
 class SlackDriver extends Driver implements WebhookInstallation
 {
@@ -63,6 +64,20 @@ class SlackDriver extends Driver implements WebhookInstallation
      */
     public function getSender(): Sender
     {
+        $from     = $this->getRequest('user');
+        $userData = $this->guzzle->get($this->getBaseUrl() . 'users.info/?' . 'token=' . $this->getParameter('token') .'&' .'user=' . $from)->getBody();
+
+        if ( ($responseUser = $this->jsonNormalize($userData))->ok === true)
+        {
+            return Sender::create(
+                (string) $from['id'],
+                $responseUser->user->profile->first_name .' '. $responseUser->user->profile->last_name,
+                $responseUser->user->name
+            );
+        } else{
+            throw new \Exception($responseUser->error);
+        }
+
 
     }
 
@@ -73,7 +88,7 @@ class SlackDriver extends Driver implements WebhookInstallation
      */
     public function getMessage(): Message
     {
-        $text = $this->getRequest('message')['text'];
+        $text = $this->getRequest('text');
 
         return Message::create($text);
     }
@@ -93,5 +108,10 @@ class SlackDriver extends Driver implements WebhookInstallation
     private function getBaseUrl(): string
     {
         return  config('fondbot.slack.baseUrl');
+    }
+
+    private function jsonNormalize(Stream $guzzleBody)
+    {
+        return json_decode((string) $guzzleBody);
     }
 }
