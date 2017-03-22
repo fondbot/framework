@@ -31,7 +31,6 @@ class MessageSentListener
         $this->messageService->create([
             'receiver_id' => $participant->id,
             'text' => $event->getText(),
-            'parameters' => [],
         ]);
     }
 }

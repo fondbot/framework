@@ -18,10 +18,17 @@ class MessageReceivedListener
 
     public function handle(MessageReceived $event)
     {
+        $participant = $event->getParticipant();
+        $message = $event->getMessage();
+
+        $location = $message->getLocation() !== null ? $message->getLocation()->toArray() : null;
+        $attachment = $message->getAttachment() !== null ? $message->getAttachment()->toArray() : null;
+
         $this->messageService->create([
-            'sender_id' => $event->getParticipant()->id,
-            'text' => $event->getText(),
-            'parameters' => [],
+            'sender_id' => $participant->id,
+            'text' => $message->getText(),
+            'location' => $location,
+            'attachment' => $attachment,
         ]);
     }
 }

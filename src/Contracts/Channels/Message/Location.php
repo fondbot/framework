@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Channels\Message;
 
-class Location
+use Illuminate\Contracts\Support\Arrayable;
+
+class Location implements Arrayable
 {
     protected $latitude;
     protected $longitude;
@@ -23,5 +25,18 @@ class Location
     public function getLongitude(): float
     {
         return $this->longitude;
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+        ];
     }
 }

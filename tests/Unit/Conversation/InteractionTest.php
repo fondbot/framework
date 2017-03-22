@@ -32,7 +32,7 @@ class InteractionTest extends TestCase
     public function test_getSenderMessage()
     {
         $driver = $this->mock(Driver::class);
-        $message = new FakeMessage;
+        $message = FakeMessage::create();
 
         $this->context->shouldReceive('getDriver')->andReturn($driver);
         $driver->shouldReceive('getMessage')->andReturn($message);

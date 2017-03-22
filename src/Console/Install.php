@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Console;
 
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 
 class Install extends Command
 {
@@ -17,6 +18,7 @@ class Install extends Command
     {
         $this->confirmation();
 
+        $this->storage();
         $this->assets();
         $this->migrations();
 
@@ -32,6 +34,11 @@ class Install extends Command
         if (!$this->confirm('This command will erase some of your files and install fresh copy of FondBot. Are you sure?')) {
             exit;
         }
+    }
+
+    private function storage(): void
+    {
+        (new Filesystem)->makeDirectory(storage_path('fondbot'));
     }
 
     private function assets(): void

@@ -41,7 +41,7 @@ class StartConversationTest extends TestCase
         $channelManager->shouldReceive('createDriver')->with($request, $headers, $channel)->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
-            $message = new FakeMessage
+            $message = FakeMessage::create()
         );
         $driver->shouldReceive('getSender')->andReturn(
             $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName)
@@ -87,7 +87,7 @@ class StartConversationTest extends TestCase
         $channelManager->shouldReceive('createDriver')->with($request, $headers, $channel)->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
-            $message = new FakeMessage
+            $message = FakeMessage::create()
         );
         $driver->shouldReceive('getSender')->andReturn(
             $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName)

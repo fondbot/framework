@@ -61,7 +61,7 @@ class StartConversation implements ShouldQueue
         $this->events()->dispatch(
             new MessageReceived(
                 $participant,
-                $driver->getMessage()->getText()
+                $driver->getMessage()
             )
         );
 
