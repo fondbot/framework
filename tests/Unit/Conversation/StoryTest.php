@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\Context;
+use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\Interaction;
 use Tests\Classes\Fakes\FakeInteraction;
 
