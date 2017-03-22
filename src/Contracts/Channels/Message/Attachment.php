@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Channels\Message;
 
 use GuzzleHttp\Client;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\File;
+use Illuminate\Contracts\Support\Arrayable;
 
 class Attachment implements Arrayable
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
-use Illuminate\Http\File;
 use Tests\TestCase;
 use GuzzleHttp\Client;
+use Illuminate\Http\File;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
@@ -376,8 +376,8 @@ class TelegramDriverTest extends TestCase
         $replyMarkup = json_encode([
             'keyboard' => [
                 [
-                    (object)['text' => $button1Text],
-                    (object)['text' => $button2Text],
+                    (object) ['text' => $button1Text],
+                    (object) ['text' => $button2Text],
                 ],
             ],
             'resize_keyboard' => true,

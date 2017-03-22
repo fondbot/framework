@@ -27,7 +27,7 @@ return [
 
     'attachments' => [
 
-        /**
+        /*
          * Filesystem disk to use for storing attachments.
          */
         'filesystem' => [
