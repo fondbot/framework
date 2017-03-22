@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Storage;
 use Tests\TestCase;
 use Tests\Classes\Fakes\FakeMessage;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Contracts\Database\Entities\Participant;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class MessageReceivedListenerTest extends TestCase
 {

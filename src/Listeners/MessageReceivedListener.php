@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace FondBot\Listeners;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Filesystem\Cloud;
 use Illuminate\Contracts\Filesystem\Factory;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Contracts\Database\Services\MessageService;
-use Illuminate\Filesystem\Filesystem;
 
 class MessageReceivedListener
 {
