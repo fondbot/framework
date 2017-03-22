@@ -6,13 +6,13 @@ namespace Tests\Classes;
 
 use Faker\Factory;
 use Faker\Generator;
-use FondBot\Contracts\Channels\WebhookVerification;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Channels\WebhookVerification;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 class FakeDriver extends Driver implements WebhookVerification

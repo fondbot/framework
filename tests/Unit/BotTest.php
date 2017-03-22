@@ -6,12 +6,10 @@ namespace Tests\Unit;
 
 use Bus;
 use FondBot\Bot;
-use Tests\Classes\FakeDriver;
 use Tests\TestCase;
 use Illuminate\Http\Request;
+use Tests\Classes\FakeDriver;
 use FondBot\Jobs\StartConversation;
-use FondBot\Channels\ChannelManager;
-use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Database\Entities\Channel;
 
 class BotTest extends TestCase
