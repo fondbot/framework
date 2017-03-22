@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace FondBot\Channels\Slack;
 
@@ -33,7 +33,7 @@ class SlackDriver extends Driver implements WebhookInstallation
     public function getConfig(): array
     {
         return [
-            'token',
+            'token'
         ];
     }
 
@@ -44,7 +44,14 @@ class SlackDriver extends Driver implements WebhookInstallation
      */
     public function verifyRequest(): void
     {
-
+        if (
+            is_null( $this->getRequest('type') ) ||
+            is_null( $this->getRequest('user') ) ||
+            is_null( $this->getRequest('text') ) &&
+            $this->getRequest('type') !== 'message'
+        ) {
+            throw new InvalidChannelRequest('Invalid payload');
+        }
     }
 
     /**
@@ -67,18 +74,16 @@ class SlackDriver extends Driver implements WebhookInstallation
         $from     = $this->getRequest('user');
         $userData = $this->guzzle->get($this->getBaseUrl() . 'users.info/?' . 'token=' . $this->getParameter('token') .'&' .'user=' . $from)->getBody();
 
-        if ( ($responseUser = $this->jsonNormalize($userData))->ok === true)
+        if ( ($responseUser = $this->jsonNormalize($userData))->ok === false)
         {
-            return Sender::create(
-                (string) $from['id'],
-                $responseUser->user->profile->first_name .' '. $responseUser->user->profile->last_name,
-                $responseUser->user->name
-            );
-        } else{
             throw new \Exception($responseUser->error);
         }
 
-
+        return Sender::create(
+            (string) $responseUser->user->id,
+            $responseUser->user->profile->first_name .' '. $responseUser->user->profile->last_name,
+            $responseUser->user->name
+        );
     }
 
     /**
@@ -89,7 +94,6 @@ class SlackDriver extends Driver implements WebhookInstallation
     public function getMessage(): Message
     {
         $text = $this->getRequest('text');
-
         return Message::create($text);
     }
 
