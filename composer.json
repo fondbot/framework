@@ -2,12 +2,22 @@
     "name": "fondbot/fondbot",
     "description": "Laravel framework library for creating Bots.",
     "type": "library",
+    "keywords": [
+        "fondbot",
+        "bot",
+        "bots",
+        "chatbots",
+        "laravel",
+        "telegram",
+        "facebook messenger",
+        "vk"
+    ],
     "license": "MIT",
     "homepage": "https://fondbot.com",
     "authors": [
         {
             "name": "Vladimir Yuldashev",
-            "email": "misterio92@gmail.com"
+            "email": "vladimir@fondbot.com"
         }
     ],
     "require": {
