@@ -6,6 +6,7 @@ namespace FondBot\Contracts\Channels\Message;
 
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\File;
 
 class Attachment implements Arrayable
 {
@@ -53,9 +54,18 @@ class Attachment implements Arrayable
         return $this->contents;
     }
 
-    private function getGuzzle(): Client
+    /**
+     * Get attachment as a file.
+     *
+     * @return File
+     */
+    public function getFile(): File
     {
-        return resolve(Client::class);
+        // Create temporary file
+        $path = sys_get_temp_dir().'/'.uniqid('attachment', true);
+        file_put_contents($path, $this->getContents());
+
+        return new File($path);
     }
 
     /**
@@ -69,5 +79,10 @@ class Attachment implements Arrayable
             'type' => $this->type,
             'path' => $this->path,
         ];
+    }
+
+    private function getGuzzle(): Client
+    {
+        return resolve(Client::class);
     }
 }

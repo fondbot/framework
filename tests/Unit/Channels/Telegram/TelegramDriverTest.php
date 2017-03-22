@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
+use Illuminate\Http\File;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Conversation\Keyboard;
@@ -204,6 +205,8 @@ class TelegramDriverTest extends TestCase
         $this->assertSame($type, $attachment->getType());
         $this->assertSame($path, $attachment->getPath());
         $this->assertSame($contents, $attachment->getContents());
+        $this->assertInstanceOf(File::class, $attachment->getFile());
+        $this->assertSame(['type' => $type, 'path' => $path], $attachment->toArray());
     }
 
     public function test_getMessage_with_contact_full()
@@ -373,8 +376,8 @@ class TelegramDriverTest extends TestCase
         $replyMarkup = json_encode([
             'keyboard' => [
                 [
-                    (object) ['text' => $button1Text],
-                    (object) ['text' => $button2Text],
+                    (object)['text' => $button1Text],
+                    (object)['text' => $button2Text],
                 ],
             ],
             'resize_keyboard' => true,
