@@ -93,6 +93,7 @@ class ServiceProvider extends BaseServiceProvider
                 \FondBot\Console\CreateInteraction::class,
                 \FondBot\Console\WebhookInstall::class,
                 \FondBot\Console\Install::class,
+                \FondBot\Console\Update::class,
             ]);
         }
     }

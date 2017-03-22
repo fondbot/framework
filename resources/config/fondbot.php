@@ -25,4 +25,16 @@ return [
      */
     'fallback_story' => FondBot\Conversation\Fallback\FallbackStory::class,
 
+    'attachments' => [
+
+        /*
+         * Filesystem disk to use for storing attachments.
+         */
+        'filesystem' => [
+            'enabled' => true,
+            'disk' => 'local',
+            'folder' => 'fondbot/attachments',
+        ],
+    ],
+
 ];

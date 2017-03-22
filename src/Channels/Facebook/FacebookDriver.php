@@ -11,7 +11,6 @@ use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
-use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\WebhookVerification;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
@@ -90,17 +89,7 @@ class FacebookDriver extends Driver implements WebhookVerification
      */
     public function getMessage(): Message
     {
-        $location = null;
-        $text = $this->getRequest('entry.0.messaging.0.message.text') ?: '';
-
-        if ($attachment = $this->getRequestAttachments('location')) {
-            $location = Location::create(
-                $attachment['payload']['coordinates']['lat'],
-                $attachment['payload']['coordinates']['long']
-            );
-        }
-
-        return Message::create($text, $location);
+        return new FacebookMessage($this->getRequest('entry.0.messaging.0.message'));
     }
 
     /**
@@ -193,26 +182,5 @@ class FacebookDriver extends Driver implements WebhookVerification
         if (!hash_equals($header, 'sha1='.hash_hmac('sha1', json_encode($this->getRequest()), $secret))) {
             throw new InvalidChannelRequest('Invalid signature header');
         }
-    }
-
-    /**
-     * Return attachments from request
-     *
-     * @param string|null $type
-     *
-     * @return array|null
-     */
-    private function getRequestAttachments(string $type = null): ?array
-    {
-        $attachments = $this->getRequest('entry.0.messaging.0.message.attachments');
-
-        if (is_null($type)) {
-            return $attachments;
-        }
-
-        // Is it real to send many locations or something in one request?
-        return collect($attachments)->first(function ($attachment) use ($type) {
-            return $attachment['type'] === $type;
-        });
     }
 }

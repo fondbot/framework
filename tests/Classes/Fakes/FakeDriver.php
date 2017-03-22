@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes;
+namespace Tests\Classes\Fakes;
 
 use Faker\Factory;
 use Faker\Generator;
@@ -12,9 +12,10 @@ use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Channels\WebhookVerification;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
-class FakeDriver extends Driver
+class FakeDriver extends Driver implements WebhookVerification
 {
     /**
      * Get channel.
@@ -70,7 +71,7 @@ class FakeDriver extends Driver
      */
     public function getMessage(): Message
     {
-        return Message::create($this->faker()->text);
+        return new FakeMessage($this->faker()->text());
     }
 
     /**
@@ -87,5 +88,25 @@ class FakeDriver extends Driver
     private function faker(): Generator
     {
         return Factory::create();
+    }
+
+    /**
+     * Whether current request type is verification.
+     *
+     * @return bool
+     */
+    public function isVerificationRequest(): bool
+    {
+        return $this->hasRequest('verification');
+    }
+
+    /**
+     * Run webhook verification and respond if required.
+     *
+     * @return mixed
+     */
+    public function verifyWebhook()
+    {
+        return $this->getRequest('verification');
     }
 }

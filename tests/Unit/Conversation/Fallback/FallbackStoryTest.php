@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation\Fallback;
 
 use Tests\TestCase;
-use Tests\Classes\FakeDriver;
 use FondBot\Conversation\Context;
+use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Events\MessageSent;
 use FondBot\Conversation\Fallback\FallbackStory;

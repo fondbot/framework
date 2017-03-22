@@ -5,41 +5,28 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Channels;
 
 use FondBot\Contracts\Channels\Message\Location;
+use FondBot\Contracts\Channels\Message\Attachment;
 
-class Message
+interface Message
 {
-    /** @var string */
-    protected $text;
+    /**
+     * Get text.
+     *
+     * @return string|null
+     */
+    public function getText(): ?string;
 
-    /** @var Location */
-    protected $location;
+    /**
+     * Get location.
+     *
+     * @return Location|null
+     */
+    public function getLocation(): ?Location;
 
-    public static function create(string $text, Location $location = null): Message
-    {
-        $instance = new self;
-        $instance->setText($text);
-        $instance->setLocation($location);
-
-        return $instance;
-    }
-
-    public function getText(): string
-    {
-        return $this->text;
-    }
-
-    public function setText(string $text): void
-    {
-        $this->text = $text;
-    }
-
-    public function getLocation(): ?Location
-    {
-        return $this->location;
-    }
-
-    public function setLocation(?Location $location): void
-    {
-        $this->location = $location;
-    }
+    /**
+     * Get attachment.
+     *
+     * @return Attachment|null
+     */
+    public function getAttachment(): ?Attachment;
 }

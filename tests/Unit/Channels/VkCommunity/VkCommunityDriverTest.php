@@ -8,10 +8,10 @@ use Tests\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Channels\VkCommunity\VkCommunityDriver;
+use FondBot\Channels\VkCommunity\VkCommunityMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -187,11 +187,13 @@ class VkCommunityDriverTest extends TestCase
         $this->vkCommunity->setRequest([
             'type' => 'message_new',
             'object' => [
-                'body' => $this->faker()->word,
+                'body' => $text = $this->faker()->word,
             ],
         ]);
 
-        $this->assertInstanceOf(Message::class, $this->vkCommunity->getMessage());
+        $message = $this->vkCommunity->getMessage();
+        $this->assertInstanceOf(VkCommunityMessage::class, $message);
+        $this->assertSame($text, $message->getText());
     }
 
     public function test_isVerificationRequest()

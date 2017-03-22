@@ -6,11 +6,11 @@ namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
 use FondBot\Conversation\Story;
-use Tests\Classes\ExampleStory;
 use FondBot\Conversation\Context;
+use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\Interaction;
-use Tests\Classes\ExampleInteraction;
 use FondBot\Contracts\Channels\Driver;
+use Tests\Classes\Fakes\FakeInteraction;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface driver
@@ -88,8 +88,8 @@ class ContextTest extends TestCase
 
     public function test_toLoggableArray()
     {
-        $story = new ExampleStory;
-        $interaction = new ExampleInteraction;
+        $story = new FakeStory;
+        $interaction = new FakeInteraction;
         $values = ['phone' => $this->faker()->phoneNumber];
 
         $expected = [

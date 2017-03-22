@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Events;
 
+use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Database\Entities\Participant;
 
 class MessageReceived
 {
     private $participant;
-    private $text;
+    private $message;
 
     public function __construct(
         Participant $participant,
-        string $text
+        Message $message
     ) {
         $this->participant = $participant;
-        $this->text = $text;
+        $this->message = $message;
     }
 
     public function getParticipant(): Participant
@@ -24,8 +25,8 @@ class MessageReceived
         return $this->participant;
     }
 
-    public function getText(): string
+    public function getMessage(): Message
     {
-        return $this->text;
+        return $this->message;
     }
 }

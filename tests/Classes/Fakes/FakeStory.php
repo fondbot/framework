@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes;
+namespace Tests\Classes\Fakes;
 
 use FondBot\Conversation\Story;
 
-class ExampleStory extends Story
+class FakeStory extends Story
 {
     /**
      * Story activations.
@@ -27,6 +27,6 @@ class ExampleStory extends Story
      */
     public function firstInteraction(): string
     {
-        return ExampleInteraction::class;
+        return FakeInteraction::class;
     }
 }

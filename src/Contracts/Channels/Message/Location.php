@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Channels\Message;
 
-class Location
+use Illuminate\Contracts\Support\Arrayable;
+
+class Location implements Arrayable
 {
     protected $latitude;
     protected $longitude;
 
-    public static function create(float $latitude, float $longitude): Location
+    public function __construct(float $latitude, float $longitude)
     {
-        $instance = new self;
-        $instance->setLatitude($latitude);
-        $instance->setLongitude($longitude);
-
-        return $instance;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
     }
 
     public function getLatitude(): float
@@ -23,18 +22,21 @@ class Location
         return $this->latitude;
     }
 
-    public function setLatitude(float $latitude): void
-    {
-        $this->latitude = $latitude;
-    }
-
     public function getLongitude(): float
     {
         return $this->longitude;
     }
 
-    public function setLongitude(float $longitude): void
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
     {
-        $this->longitude = $longitude;
+        return [
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+        ];
     }
 }

@@ -104,9 +104,7 @@ class VkCommunityDriver extends Driver implements WebhookVerification
      */
     public function getMessage(): Message
     {
-        $text = (string) $this->getRequest('object')['body'];
-
-        return Message::create($text);
+        return new VkCommunityMessage($this->getRequest('object'));
     }
 
     /**

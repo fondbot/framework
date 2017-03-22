@@ -9,10 +9,10 @@ use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
+use Tests\Classes\Fakes\FakeMessage;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\StoryManager;
-use FondBot\Contracts\Channels\Message;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Conversation\ConversationManager;
@@ -41,7 +41,7 @@ class StartConversationTest extends TestCase
         $channelManager->shouldReceive('createDriver')->with($request, $headers, $channel)->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
-            $message = Message::create($this->faker()->text)
+            $message = FakeMessage::create()
         );
         $driver->shouldReceive('getSender')->andReturn(
             $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName)
@@ -87,7 +87,7 @@ class StartConversationTest extends TestCase
         $channelManager->shouldReceive('createDriver')->with($request, $headers, $channel)->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
-            $message = Message::create($this->faker()->text)
+            $message = FakeMessage::create()
         );
         $driver->shouldReceive('getSender')->andReturn(
             $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName)

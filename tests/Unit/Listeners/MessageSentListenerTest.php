@@ -39,7 +39,6 @@ class MessageSentListenerTest extends TestCase
         $messageService->shouldReceive('create')->with([
             'receiver_id' => $participant->id,
             'text' => $text,
-            'parameters' => [],
         ])->once();
 
         event(new MessageSent($context, $receiver, $text));
