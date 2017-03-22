@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use Tests\Classes\Fakes\FakeMessage;
 use FondBot\Conversation\Context;
-use Tests\Classes\Fakes\FakeInteraction;
+use Tests\Classes\Fakes\FakeMessage;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\ContextManager;
+use Tests\Classes\Fakes\FakeInteraction;
 use FondBot\Contracts\Events\MessageSent;
 
 /**

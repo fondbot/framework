@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Jobs;
 
 use Tests\TestCase;
-use Tests\Classes\Fakes\FakeMessage;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
+use Tests\Classes\Fakes\FakeMessage;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\StoryManager;
