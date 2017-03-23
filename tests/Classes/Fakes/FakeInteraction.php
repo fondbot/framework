@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
-use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Conversation\Interaction;
 
 class FakeInteraction extends Interaction

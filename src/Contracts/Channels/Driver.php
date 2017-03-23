@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Channels;
 
 use FondBot\Traits\Loggable;
-use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\ContainsRequestInformation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;

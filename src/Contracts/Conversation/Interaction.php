@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Conversation;
 
 use FondBot\Conversation\Context;
-use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
 

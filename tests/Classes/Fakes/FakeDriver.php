@@ -6,7 +6,7 @@ namespace Tests\Classes\Fakes;
 
 use Faker\Factory;
 use Faker\Generator;
-use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\Message;

@@ -9,12 +9,9 @@ class Button
     /** @var string */
     private $value;
 
-    public static function create(string $value): Button
+    public function __construct(string $value)
     {
-        $instance = new static;
-        $instance->setValue($value);
-
-        return $instance;
+        $this->value = $value;
     }
 
     public function getValue(): string

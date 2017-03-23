@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Channels\Facebook;
 
 use GuzzleHttp\Client;
-use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\Message;

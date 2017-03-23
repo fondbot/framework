@@ -7,7 +7,7 @@ namespace Tests\Unit\Channels\Drivers;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use Illuminate\Http\File;
-use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

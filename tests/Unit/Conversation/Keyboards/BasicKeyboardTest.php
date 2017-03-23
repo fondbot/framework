@@ -6,20 +6,20 @@ namespace Tests\Unit\Conversation\Keyboards;
 
 use Tests\TestCase;
 use FondBot\Conversation\Keyboards\Button;
-use FondBot\Conversation\Keyboards\ReplyKeyboard;
+use FondBot\Conversation\Keyboards\BasicKeyboard;
 
-class ReplyKeyboardTest extends TestCase
+class BasicKeyboardTest extends TestCase
 {
     public function test_create()
     {
         $buttons = [
-            Button::create('Click me'),
+            new Button('Click me'),
         ];
 
-        $keyboard = ReplyKeyboard::create($buttons);
+        $keyboard = new BasicKeyboard($buttons);
 
-        $this->assertInstanceOf(ReplyKeyboard::class, $keyboard);
-        $this->assertEquals('reply', $keyboard->getType());
+        $this->assertInstanceOf(BasicKeyboard::class, $keyboard);
+        $this->assertEquals('basic', $keyboard->getType());
         $this->assertSame($buttons, $keyboard->getButtons());
         $this->assertEquals('Click me', $keyboard->getButtons()[0]->getValue());
     }
