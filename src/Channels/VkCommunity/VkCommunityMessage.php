@@ -24,7 +24,7 @@ class VkCommunityMessage implements Message
      */
     public function getText(): ?string
     {
-        return $this->payload['body'] ?? '';
+        return $this->payload['body'] ?? null;
     }
 
     /**
