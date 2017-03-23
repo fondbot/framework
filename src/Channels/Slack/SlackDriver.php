@@ -101,8 +101,7 @@ class SlackDriver extends Driver
      */
     public function getMessage(): Message
     {
-        $text = $this->getRequest('text');
-        return Message::create($text);
+        return new SlackMessage($this->getRequest());
     }
 
     /**
@@ -120,10 +119,8 @@ class SlackDriver extends Driver
             'token'   => $this->getParameter('token')
         ];
 
-        $request = Request::create($parameters);
-
         try {
-            $this->guzzle->post($this->getBaseUrl() . $this->mapDriver('postMessage'), $request->toArray());
+            $this->guzzle->post($this->getBaseUrl() . $this->mapDriver('postMessage'), $parameters);
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
         }
