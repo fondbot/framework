@@ -12,8 +12,8 @@ use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\ReceiverMessage;
-use FondBot\Contracts\Channels\Extensions\WebhookInstallation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
+use FondBot\Contracts\Channels\Extensions\WebhookInstallation;
 
 class TelegramDriver extends Driver implements WebhookInstallation
 {

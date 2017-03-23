@@ -8,5 +8,4 @@ use FondBot\Conversation\Fallback\FallbackStory;
 
 class FakeFallbackStory extends FallbackStory
 {
-
 }

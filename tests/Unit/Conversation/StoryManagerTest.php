@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use Tests\Classes\Fakes\FakeFallbackStory;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\StoryManager;
+use Tests\Classes\Fakes\FakeFallbackStory;
 use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Conversation\Fallback\FallbackStory;
 
