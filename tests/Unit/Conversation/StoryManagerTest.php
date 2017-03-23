@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use Config;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
@@ -39,11 +38,7 @@ class StoryManagerTest extends TestCase
 
     public function test_find_fallback_story()
     {
-        Config::set('fondbot', [
-            'stories' => [
-                FakeStory::class,
-            ],
-        ]);
+        $this->manager->add(FakeStory::class);
 
         $context = $this->mock(Context::class);
         $message = $this->mock(Message::class);
@@ -57,11 +52,7 @@ class StoryManagerTest extends TestCase
 
     public function test_find_no_story_in_context_activation_found()
     {
-        Config::set('fondbot', [
-            'stories' => [
-                FakeStory::class,
-            ],
-        ]);
+        $this->manager->add(FakeStory::class);
 
         $context = $this->mock(Context::class);
         $message = $this->mock(Message::class);
