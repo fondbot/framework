@@ -114,8 +114,8 @@ class FacebookDriver extends Driver implements WebhookVerification
             foreach ($keyboard->getButtons() as $button) {
                 $parameters['message']['quick_replies'][] = [
                     'content_type' => 'text',
-                    'title' => $button->getValue(),
-                    'payload' => $button->getValue(),
+                    'title' => $button->getLabel(),
+                    'payload' => $button->getLabel(),
                 ];
             }
         }

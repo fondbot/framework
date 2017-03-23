@@ -111,7 +111,7 @@ class TelegramDriver extends Driver implements WebhookInstallation
             $buttons = [];
 
             foreach ($keyboard->getButtons() as $button) {
-                $buttons[] = ['text' => $button->getValue()];
+                $buttons[] = ['text' => $button->getLabel()];
             }
 
             $parameters['reply_markup'] = json_encode([

@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Keyboards;
 
-class Button
+use FondBot\Contracts\Conversation\Button as ButtonContract;
+
+class Button implements ButtonContract
 {
-    /** @var string */
-    private $value;
+    private $label;
 
-    public function __construct(string $value)
+    public function __construct(string $label)
     {
-        $this->value = $value;
+        $this->label = $label;
     }
 
-    public function getValue(): string
+    /**
+     * Button label.
+     *
+     * @return string
+     */
+    public function getLabel(): string
     {
-        return $this->value;
-    }
-
-    public function setValue(string $value): void
-    {
-        $this->value = $value;
+        return $this->label;
     }
 }

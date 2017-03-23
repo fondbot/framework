@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Keyboards;
 
+use FondBot\Contracts\Conversation\Button;
 use FondBot\Contracts\Conversation\Keyboard;
 
 class BasicKeyboard implements Keyboard

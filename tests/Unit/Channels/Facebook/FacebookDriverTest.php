@@ -10,7 +10,7 @@ use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Contracts\Channels\Receiver;
-use FondBot\Conversation\Keyboards\Button;
+use FondBot\Contracts\Conversation\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Channels\Facebook\FacebookDriver;
@@ -217,8 +217,8 @@ class FacebookDriverTest extends TestCase
 
         $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
         $keyboard->shouldReceive('getButtons')->andReturn([$button1, $button2]);
-        $button1->shouldReceive('getValue')->andReturn($button1Text = $this->faker()->word);
-        $button2->shouldReceive('getValue')->andReturn($button2Text = $this->faker()->word);
+        $button1->shouldReceive('getLabel')->andReturn($button1Text = $this->faker()->word);
+        $button2->shouldReceive('getLabel')->andReturn($button2Text = $this->faker()->word);
 
         $this->guzzle->shouldReceive('post')->with(
             'https://graph.facebook.com/v2.6/me/messages',

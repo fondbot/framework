@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Conversation;
 
-use FondBot\Conversation\Keyboards\Button;
-
 interface Keyboard
 {
     const TYPE_BASIC = 'basic';
