@@ -10,7 +10,6 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class Attachment implements Arrayable
 {
-
     public const TYPE_FILE = 'file';
     public const TYPE_IMAGE = 'photo';
     public const TYPE_AUDIO = 'audio';
