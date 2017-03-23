@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation\Keyboards;
 
 use Tests\TestCase;
-use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Conversation\Keyboards\Button;
+use FondBot\Conversation\Keyboards\BasicKeyboard;
 
 class BasicKeyboardTest extends TestCase
 {
