@@ -23,14 +23,16 @@ class MessageSentListener
 
     public function handle(MessageSent $event)
     {
+        $message = $event->getMessage();
+
         $participant = $this->participantService->findByChannelAndIdentifier(
             $event->getContext()->getDriver()->getChannel(),
-            $event->getReceiver()->getIdentifier()
+            $message->getReceiver()->getIdentifier()
         );
 
         $this->messageService->create([
             'receiver_id' => $participant->id,
-            'text' => $event->getText(),
+            'text' => $message->getText(),
         ]);
     }
 }

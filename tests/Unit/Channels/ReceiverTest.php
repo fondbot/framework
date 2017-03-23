@@ -15,7 +15,7 @@ class ReceiverTest extends TestCase
         $name = $this->faker()->name;
         $username = $this->faker()->userName;
 
-        $receiver = Receiver::create($id, $name, $username);
+        $receiver = new Receiver($id, $name, $username);
 
         $this->assertEquals($id, $receiver->getIdentifier());
         $this->assertEquals($name, $receiver->getName());
@@ -26,7 +26,7 @@ class ReceiverTest extends TestCase
     {
         $id = $this->faker()->uuid;
 
-        $receiver = Receiver::create($id);
+        $receiver = new Receiver($id);
 
         $this->assertEquals($id, $receiver->getIdentifier());
         $this->assertNull($receiver->getName());

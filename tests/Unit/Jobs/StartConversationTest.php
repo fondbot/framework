@@ -9,11 +9,11 @@ use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
-use Tests\Classes\Fakes\FakeMessage;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\StoryManager;
 use FondBot\Conversation\ContextManager;
+use Tests\Classes\Fakes\FakeSenderMessage;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Conversation\ConversationManager;
 use FondBot\Contracts\Database\Entities\Channel;
@@ -38,10 +38,10 @@ class StartConversationTest extends TestCase
         $context = $this->mock(Context::class);
         $story = $this->mock(Story::class);
 
-        $channelManager->shouldReceive('createDriver')->with($request, $headers, $channel)->andReturn($driver)->once();
+        $channelManager->shouldReceive('createDriver')->with($channel, [], [])->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
-            $message = FakeMessage::create()
+            $message = FakeSenderMessage::create()
         );
         $driver->shouldReceive('getSender')->andReturn(
             $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName)
@@ -84,10 +84,10 @@ class StartConversationTest extends TestCase
         $driver = $this->mock(Driver::class);
         $context = $this->mock(Context::class);
 
-        $channelManager->shouldReceive('createDriver')->with($request, $headers, $channel)->andReturn($driver)->once();
+        $channelManager->shouldReceive('createDriver')->with($channel, [], [])->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
-            $message = FakeMessage::create()
+            $message = FakeSenderMessage::create()
         );
         $driver->shouldReceive('getSender')->andReturn(
             $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName)

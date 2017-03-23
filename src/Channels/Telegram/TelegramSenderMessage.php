@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace FondBot\Channels\Telegram;
 
 use GuzzleHttp\Client;
-use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
-class TelegramMessage implements Message
+class TelegramSenderMessage implements SenderMessage
 {
-    private $baseUrl;
+    private $token;
     private $payload;
 
-    public function __construct(string $baseUrl, array $payload)
+    public function __construct(string $token, array $payload)
     {
-        $this->baseUrl = $baseUrl;
+        $this->token = $token;
         $this->payload = $payload;
     }
 
@@ -40,6 +40,7 @@ class TelegramMessage implements Message
         return
             $this->getAudio() ??
             $this->getDocument() ??
+            $this->getPhoto() ??
             $this->getSticker() ??
             $this->getVideo() ??
             $this->getVoice();
@@ -57,7 +58,7 @@ class TelegramMessage implements Message
         }
 
         return new Attachment(
-            'audio',
+            Attachment::TYPE_AUDIO,
             $this->getFilePath($this->payload['audio']['file_id'])
         );
     }
@@ -76,6 +77,26 @@ class TelegramMessage implements Message
         return new Attachment(
             'document',
             $this->getFilePath($this->payload['document']['file_id'])
+        );
+    }
+
+    /**
+     * Get photo.
+     *
+     * @return Attachment|null
+     */
+    public function getPhoto(): ?Attachment
+    {
+        if (!isset($this->payload['photo'])) {
+            return null;
+        }
+
+        /** @var array $photo */
+        $photo = collect($this->payload['photo'])->sortByDesc('file_size')->first();
+
+        return new Attachment(
+            'photo',
+            $this->getFilePath($photo['file_id'])
         );
     }
 
@@ -108,7 +129,7 @@ class TelegramMessage implements Message
         }
 
         return new Attachment(
-            'video',
+            Attachment::TYPE_VIDEO,
             $this->getFilePath($this->payload['video']['file_id'])
         );
     }
@@ -211,16 +232,19 @@ class TelegramMessage implements Message
      */
     private function getFilePath(string $fileId): string
     {
-        $response = $this->guzzle()->post($this->baseUrl.'/getFile', [
-            'form_params' => [
-                'file_id' => $fileId,
-            ],
-        ]);
+        $response = $this->guzzle()->post(
+            'https://api.telegram.org/bot'.$this->token.'/getFile',
+            [
+                'form_params' => [
+                    'file_id' => $fileId,
+                ],
+            ]
+        );
 
         $response = $response->getBody()->getContents();
         $response = json_decode($response, true);
 
-        return $this->baseUrl.'/'.$response['file_path'];
+        return 'https://api.telegram.org/file/bot'.$this->token.'/'.$response['result']['file_path'];
     }
 
     private function guzzle(): Client

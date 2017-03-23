@@ -6,12 +6,12 @@ namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
 use FondBot\Conversation\Context;
-use Tests\Classes\Fakes\FakeMessage;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\ContextManager;
 use Tests\Classes\Fakes\FakeInteraction;
 use FondBot\Contracts\Events\MessageSent;
+use Tests\Classes\Fakes\FakeSenderMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface context
@@ -32,7 +32,7 @@ class InteractionTest extends TestCase
     public function test_getSenderMessage()
     {
         $driver = $this->mock(Driver::class);
-        $message = FakeMessage::create();
+        $message = FakeSenderMessage::create();
 
         $this->context->shouldReceive('getDriver')->andReturn($driver);
         $driver->shouldReceive('getMessage')->andReturn($message);

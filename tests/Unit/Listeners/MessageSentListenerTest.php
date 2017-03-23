@@ -9,6 +9,7 @@ use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Events\MessageSent;
+use Tests\Classes\Fakes\FakeReceiverMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
 use FondBot\Contracts\Database\Services\MessageService;
@@ -25,8 +26,8 @@ class MessageSentListenerTest extends TestCase
         $driver = $this->mock(Driver::class);
         $channel = new Channel();
         $participant = new Participant(['id' => random_int(1, time())]);
-        $receiver = Receiver::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
-        $text = $this->faker()->text;
+        $receiver = new Receiver($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
+        $message = new FakeReceiverMessage($receiver, $this->faker()->text());
 
         $context->shouldReceive('getDriver')->andReturn($driver);
         $driver->shouldReceive('getChannel')->andReturn($channel);
@@ -38,9 +39,9 @@ class MessageSentListenerTest extends TestCase
 
         $messageService->shouldReceive('create')->with([
             'receiver_id' => $participant->id,
-            'text' => $text,
+            'text' => $message->getText(),
         ])->once();
 
-        event(new MessageSent($context, $receiver, $text));
+        event(new MessageSent($context, $message));
     }
 }

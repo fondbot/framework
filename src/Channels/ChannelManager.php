@@ -19,13 +19,14 @@ class ChannelManager
     /**
      * Create driver instance.
      *
-     * @param array $request
-     * @param array $headers
      * @param Channel $channel
      *
-     * @return Driver
+     * @param array $request
+     * @param array $headers
+     *
+     * @return \FondBot\Contracts\Channels\Driver
      */
-    public function createDriver(array $request, array $headers, Channel $channel): Driver
+    public function createDriver(Channel $channel, array $request = [], array $headers = []): Driver
     {
         /** @var Driver $driver */
         $driver = resolve($channel->driver);

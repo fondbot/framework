@@ -6,7 +6,6 @@ namespace Tests\Unit\Channels\Facebook;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
-use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -14,8 +13,10 @@ use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Facebook\FacebookDriver;
-use FondBot\Channels\Facebook\FacebookMessage;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Conversation\Keyboards\BasicKeyboard;
+use FondBot\Channels\Facebook\FacebookSenderMessage;
+use FondBot\Channels\Facebook\FacebookReceiverMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -34,7 +35,7 @@ class FacebookDriverTest extends TestCase
             'name' => $this->faker()->name,
             'parameters' => [
                 'page_token' => str_random(),
-                'verify_token' => $this->faker()->word,
+                'verify_token' => str_random(),
                 'app_secret' => str_random(),
             ],
         ]);
@@ -202,7 +203,7 @@ class FacebookDriverTest extends TestCase
         $this->facebook->setRequest($this->generateResponse(null, $text = $this->faker()->text()));
 
         $message = $this->facebook->getMessage();
-        $this->assertInstanceOf(FacebookMessage::class, $message);
+        $this->assertInstanceOf(FacebookSenderMessage::class, $message);
         $this->assertSame($text, $message->getText());
     }
 
@@ -223,35 +224,31 @@ class FacebookDriverTest extends TestCase
     {
         $text = $this->faker()->text;
 
-        $receiver = $this->mock(Receiver::class);
-        $keyboard = $this->mock(Keyboard::class);
-        $button1 = $this->mock(Button::class);
-        $button2 = $this->mock(Button::class);
-
-        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
-        $keyboard->shouldReceive('getButtons')->andReturn([$button1, $button2]);
-        $button1->shouldReceive('getValue')->andReturn($button1Text = $this->faker()->word);
-        $button2->shouldReceive('getValue')->andReturn($button2Text = $this->faker()->word);
+        $receiver = new Receiver($this->faker()->uuid);
+        $keyboard = new BasicKeyboard([
+            new Button($this->faker()->word),
+            new Button($this->faker()->word),
+        ]);
 
         $this->guzzle->shouldReceive('post')->with(
             'https://graph.facebook.com/v2.6/me/messages',
             [
                 'form_params' => [
                     'recipient' => [
-                        'id' => $chatId,
+                        'id' => $receiver->getIdentifier(),
                     ],
                     'message' => [
                         'text' => $text,
                         'quick_replies' => [
                             [
                                 'content_type' => 'text',
-                                'title' => $button1Text,
-                                'payload' => $button1Text,
+                                'title' => $keyboard->getButtons()[0]->getLabel(),
+                                'payload' => $keyboard->getButtons()[0]->getLabel(),
                             ],
                             [
                                 'content_type' => 'text',
-                                'title' => $button2Text,
-                                'payload' => $button2Text,
+                                'title' => $keyboard->getButtons()[1]->getLabel(),
+                                'payload' => $keyboard->getButtons()[1]->getLabel(),
                             ],
                         ],
                     ],
@@ -262,7 +259,12 @@ class FacebookDriverTest extends TestCase
             ]
         );
 
-        $this->facebook->sendMessage($receiver, $text, $keyboard);
+        $result = $this->facebook->sendMessage($receiver, $text, $keyboard);
+
+        $this->assertInstanceOf(FacebookReceiverMessage::class, $result);
+        $this->assertSame($receiver, $result->getReceiver());
+        $this->assertSame($text, $result->getText());
+        $this->assertSame($keyboard, $result->getKeyboard());
     }
 
     public function test_sendMessage_request_exception()

@@ -44,7 +44,7 @@ class StartConversation implements ShouldQueue
         $this->debug('handle', ['channel' => $this->channel->toArray(), 'request' => $this->request]);
 
         /** @var Driver $driver */
-        $driver = $channelManager->createDriver($this->request, $this->headers, $this->channel);
+        $driver = $channelManager->createDriver($this->channel, $this->request, $this->headers);
 
         // Store sender in database as participant
         $participant = $participantService->createOrUpdate([

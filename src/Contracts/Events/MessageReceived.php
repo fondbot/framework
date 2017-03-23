@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Events;
 
-use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Database\Entities\Participant;
 
 class MessageReceived
@@ -14,7 +14,7 @@ class MessageReceived
 
     public function __construct(
         Participant $participant,
-        Message $message
+        SenderMessage $message
     ) {
         $this->participant = $participant;
         $this->message = $message;
@@ -25,7 +25,7 @@ class MessageReceived
         return $this->participant;
     }
 
-    public function getMessage(): Message
+    public function getMessage(): SenderMessage
     {
         return $this->message;
     }

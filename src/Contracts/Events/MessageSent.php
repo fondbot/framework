@@ -5,22 +5,19 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Events;
 
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Channels\Receiver;
+use FondBot\Contracts\Channels\ReceiverMessage;
 
 class MessageSent
 {
     private $context;
-    private $receiver;
-    private $text;
+    private $message;
 
     public function __construct(
         Context $context,
-        Receiver $receiver,
-        string $text
+        ReceiverMessage $message
     ) {
         $this->context = $context;
-        $this->receiver = $receiver;
-        $this->text = $text;
+        $this->message = $message;
     }
 
     public function getContext(): Context
@@ -28,13 +25,8 @@ class MessageSent
         return $this->context;
     }
 
-    public function getReceiver(): Receiver
+    public function getMessage(): ReceiverMessage
     {
-        return $this->receiver;
-    }
-
-    public function getText(): string
-    {
-        return $this->text;
+        return $this->message;
     }
 }

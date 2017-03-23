@@ -6,13 +6,15 @@ namespace Tests\Unit\Listeners;
 
 use Storage;
 use Tests\TestCase;
-use Tests\Classes\Fakes\FakeMessage;
+use Tests\Classes\Fakes\FakeSenderMessage;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Contracts\Database\Entities\Participant;
-use FondBot\Contracts\Database\Services\MessageService;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class MessageReceivedListenerTest extends TestCase
 {
+    use DatabaseMigrations;
+
     protected function setUp()
     {
         parent::setUp();
@@ -35,16 +37,8 @@ class MessageReceivedListenerTest extends TestCase
     public function test_full()
     {
         Participant::unguard();
-        $messageService = $this->mock(MessageService::class);
         $participant = new Participant(['id' => random_int(1, time())]);
-        $message = FakeMessage::create();
-
-        $messageService->shouldReceive('create')->with([
-            'sender_id' => $participant->id,
-            'text' => $message->getText(),
-            'location' => $message->getLocation()->toArray(),
-            'attachment' => $message->getAttachment()->toArray(),
-        ])->once();
+        $message = FakeSenderMessage::create();
 
         event(new MessageReceived($participant, $message));
 
@@ -52,27 +46,59 @@ class MessageReceivedListenerTest extends TestCase
 
         $this->assertCount(1, $files);
         $this->assertTrue(ends_with($files[0], '.jpeg'));
+        $this->assertDatabaseHas('messages', [
+            'sender_id' => $participant->id,
+            'receiver_id' => null,
+            'text' => $message->getText(),
+            'attachment' => $files[0],
+            'location' => json_encode($message->getLocation()->toArray()),
+            'parameters' => null,
+        ]);
+    }
+
+    public function test_full_cannot_get_url()
+    {
+        Participant::unguard();
+        $participant = new Participant(['id' => random_int(1, time())]);
+        $message = FakeSenderMessage::create();
+
+        event(new MessageReceived($participant, $message));
+
+        $files = Storage::disk('fake')->allFiles();
+
+        $this->assertCount(1, $files);
+        $this->assertTrue(ends_with($files[0], '.jpeg'));
+
+        $this->assertDatabaseHas('messages', [
+            'sender_id' => $participant->id,
+            'receiver_id' => null,
+            'text' => $message->getText(),
+            'attachment' => $files[0],
+            'location' => json_encode($message->getLocation()->toArray()),
+            'parameters' => null,
+        ]);
     }
 
     public function test_full_without_location_and_attachment()
     {
         Participant::unguard();
-        $messageService = $this->mock(MessageService::class);
         $participant = new Participant(['id' => random_int(1, time())]);
-        $message = new FakeMessage($this->faker()->text());
-
-        $messageService->shouldReceive('create')->with([
-            'sender_id' => $participant->id,
-            'text' => $message->getText(),
-            'location' => null,
-            'attachment' => null,
-        ])->once();
+        $message = new FakeSenderMessage($this->faker()->text());
 
         event(new MessageReceived($participant, $message));
 
         $files = Storage::disk('fake')->allFiles();
 
         $this->assertCount(0, $files);
+
+        $this->assertDatabaseHas('messages', [
+            'sender_id' => $participant->id,
+            'receiver_id' => null,
+            'text' => $message->getText(),
+            'attachment' => null,
+            'location' => null,
+            'parameters' => null,
+        ]);
     }
 
     public function test_filesystem_disabled()
@@ -88,21 +114,22 @@ class MessageReceivedListenerTest extends TestCase
         ]);
 
         Participant::unguard();
-        $messageService = $this->mock(MessageService::class);
         $participant = new Participant(['id' => random_int(1, time())]);
-        $message = FakeMessage::create();
-
-        $messageService->shouldReceive('create')->with([
-            'sender_id' => $participant->id,
-            'text' => $message->getText(),
-            'location' => $message->getLocation()->toArray(),
-            'attachment' => $message->getAttachment()->toArray(),
-        ])->once();
+        $message = FakeSenderMessage::create();
 
         event(new MessageReceived($participant, $message));
 
         $files = Storage::disk('fake')->allFiles();
 
         $this->assertCount(0, $files);
+
+        $this->assertDatabaseHas('messages', [
+            'sender_id' => $participant->id,
+            'receiver_id' => null,
+            'text' => $message->getText(),
+            'attachment' => $message->getAttachment()->getPath(),
+            'location' => json_encode($message->getLocation()->toArray()),
+            'parameters' => null,
+        ]);
     }
 }

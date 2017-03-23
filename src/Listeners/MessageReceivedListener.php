@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Listeners;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Contracts\Filesystem\Cloud;
 use Illuminate\Contracts\Filesystem\Factory;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Contracts\Channels\Message\Attachment;
@@ -23,16 +25,14 @@ class MessageReceivedListener
         $participant = $event->getParticipant();
         $message = $event->getMessage();
 
-        $this->storeAttachment($message->getAttachment());
-
+        $attachment = $this->storeAttachment($message->getAttachment());
         $location = $message->getLocation() !== null ? $message->getLocation()->toArray() : null;
-        $attachment = $message->getAttachment() !== null ? $message->getAttachment()->toArray() : null;
 
         $this->messageService->create([
             'sender_id' => $participant->id,
             'text' => $message->getText(),
-            'location' => $location,
             'attachment' => $attachment,
+            'location' => $location,
         ]);
     }
 
@@ -40,28 +40,32 @@ class MessageReceivedListener
      * Store attachment using filesystem.
      *
      * @param Attachment|null $attachment
+     *
+     * @return string
      */
-    private function storeAttachment(?Attachment $attachment): void
+    private function storeAttachment(?Attachment $attachment): ?string
     {
         if ($attachment === null) {
-            return;
+            return null;
         }
 
         $config = config('fondbot.attachments.filesystem');
 
         if ($config['enabled'] !== true) {
-            return;
+            return $attachment->getPath();
         }
 
         /** @var Factory $filesystem */
         $filesystem = resolve(Factory::class);
+
+        /** @var Filesystem|Cloud $disk */
         $disk = $filesystem->disk($config['disk']);
-        $disk->makeDirectory($config['folder']);
+        $disk->makeDirectory($config['folder'], 0777, true, true);
 
         $file = $attachment->getFile();
 
-        $path = $file->hashName($config['folder']);
+        $disk->put($config['folder'], $file, 'public');
 
-        $disk->put($path, $file, 'public');
+        return $config['folder'].'/'.$file->hashName();
     }
 }

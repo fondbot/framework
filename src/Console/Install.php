@@ -38,7 +38,13 @@ class Install extends Command
 
     private function storage(): void
     {
-        (new Filesystem)->makeDirectory(storage_path('fondbot'));
+        $this->callSilent('storage:link');
+
+        $directory = storage_path('app/fondbot');
+
+        $filesystem = new Filesystem;
+        $filesystem->makeDirectory($directory, 0777, true, true);
+        @$filesystem->link($directory, storage_path('app/public/fondbot'));
     }
 
     private function assets(): void

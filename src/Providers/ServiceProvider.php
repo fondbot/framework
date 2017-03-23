@@ -8,13 +8,14 @@ use Route;
 use FondBot\Contracts\Events\MessageSent;
 use FondBot\Listeners\MessageSentListener;
 use Illuminate\Contracts\Events\Dispatcher;
-use FondBot\Channels\ChannelServiceProvider;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Listeners\MessageReceivedListener;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Services\ChannelService;
 use FondBot\Contracts\Database\Services\MessageService;
+use FondBot\Contracts\Providers\ChannelServiceProvider;
 use FondBot\Contracts\Database\Services\ParticipantService;
+use FondBot\Contracts\Providers\ConversationServiceProvider;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
@@ -22,6 +23,7 @@ class ServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->app->register(ChannelServiceProvider::class);
+        $this->app->register(ConversationServiceProvider::class);
         $this->contracts();
         $this->events();
         $this->console();

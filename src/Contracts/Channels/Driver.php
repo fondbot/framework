@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Channels;
 
 use FondBot\Traits\Loggable;
-use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\ContainsRequestInformation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
@@ -77,9 +77,9 @@ abstract class Driver
     /**
      * Get message received from sender.
      *
-     * @return Message
+     * @return SenderMessage
      */
-    abstract public function getMessage(): Message;
+    abstract public function getMessage(): SenderMessage;
 
     /**
      * Send reply to participant.
@@ -87,6 +87,8 @@ abstract class Driver
      * @param Receiver $receiver
      * @param string $text
      * @param Keyboard|null $keyboard
+     *
+     * @return ReceiverMessage
      */
-    abstract public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void;
+    abstract public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage;
 }

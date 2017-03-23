@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Traits\Loggable;
-use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Events\MessageSent;
 use Illuminate\Contracts\Events\Dispatcher;
 use FondBot\Conversation\Traits\Transitions;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
 abstract class Interaction implements InteractionContract
@@ -25,15 +25,15 @@ abstract class Interaction implements InteractionContract
     {
         $sender = $this->getContext()->getDriver()->getSender();
 
-        return Receiver::create($sender->getIdentifier(), $sender->getName(), $sender->getUsername());
+        return new Receiver($sender->getIdentifier(), $sender->getName(), $sender->getUsername());
     }
 
     /**
      * Get sender's message.
      *
-     * @return Message
+     * @return SenderMessage
      */
-    public function getSenderMessage(): Message
+    public function getSenderMessage(): SenderMessage
     {
         return $this->getContext()->getDriver()->getMessage();
     }
@@ -82,20 +82,14 @@ abstract class Interaction implements InteractionContract
         $this->context->setInteraction($this);
 
         // Send message to participant
-        $this->context->getDriver()->sendMessage(
+        $message = $this->context->getDriver()->sendMessage(
             $this->getReceiver(),
             $this->text(),
             $this->keyboard()
         );
 
         // Fire event that message was sent
-        $this->getEventDispatcher()->dispatch(
-            new MessageSent(
-                $this->context,
-                $this->getReceiver(),
-                $this->text()
-            )
-        );
+        $this->getEventDispatcher()->dispatch(new MessageSent($this->context, $message));
 
         $this->updateContext();
 
