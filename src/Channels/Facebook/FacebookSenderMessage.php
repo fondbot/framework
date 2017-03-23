@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace FondBot\Channels\Facebook;
 
@@ -34,6 +34,13 @@ class FacebookSenderMessage implements SenderMessage
      */
     public function getLocation(): ?Location
     {
+        if ($location = $this->getAttachmentPayload('location')) {
+            return new Location(
+                $location['coordinates']['lat'],
+                $location['coordinates']['long']
+            );
+        }
+
         return null;
     }
 
@@ -44,6 +51,57 @@ class FacebookSenderMessage implements SenderMessage
      */
     public function getAttachment(): ?Attachment
     {
+        return $this->getImage()
+            ?? $this->getAudio()
+            ?? $this->getVideo()
+            ?? $this->getFile();
+    }
+
+    public function getImage()
+    {
+        if ($image = $this->getAttachmentPayload('image')) {
+            return new Attachment(Attachment::TYPE_IMAGE, $image['url']);
+        }
+
         return null;
+    }
+
+    public function getAudio()
+    {
+        if ($audio = $this->getAttachmentPayload('audio')) {
+            return new Attachment(Attachment::TYPE_AUDIO, $audio['url']);
+        }
+
+        return null;
+    }
+
+    public function getVideo()
+    {
+        if ($video = $this->getAttachmentPayload('video')) {
+            return new Attachment(Attachment::TYPE_VIDEO, $video['url']);
+        }
+
+        return null;
+    }
+
+    public function getFile()
+    {
+        if ($file = $this->getAttachmentPayload('file')) {
+            return new Attachment(Attachment::TYPE_FILE, $file['url']);
+        }
+
+        return null;
+    }
+
+    private function getAttachmentPayload(string $type): ?array
+    {
+        if (!$attachments = $this->payload['attachments'] ?? null) {
+            return null;
+        }
+
+        // Is it real to send many locations or something in one request?
+        return collect($attachments)->first(function ($attachment) use ($type) {
+                return $attachment['type'] === $type;
+            })['payload'] ?? null;
     }
 }
