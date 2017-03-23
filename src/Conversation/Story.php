@@ -9,16 +9,10 @@ use FondBot\Conversation\Traits\Transitions;
 
 abstract class Story
 {
-    use Loggable, Transitions;
+    use Transitions, Loggable;
 
     /** @var string */
     protected $name;
-
-    /** @var bool */
-    protected $enabled = true;
-
-    /** @var Context */
-    protected $context;
 
     /**
      * Story activations.
@@ -48,17 +42,21 @@ abstract class Story
     {
     }
 
-    public function run(Context $context): void
+    public function run(): void
     {
-        $this->context = $context;
+        $this->debug('run', [
+            'name' => $this->name,
+            'firstInteraction' => $this->firstInteraction(),
+            'context' => $this->context,
+        ]);
 
         $this->before();
-        $interaction = $context->getInteraction();
+        $interaction = $this->context->getInteraction();
 
         // Story in already running
         // Process interaction from context
         if ($interaction !== null) {
-            $interaction->setContext($context);
+            $interaction->setContext($this->context);
             $interaction->run();
 
             return;

@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace FondBot\Channels\Telegram;
 
 use GuzzleHttp\Client;
-use FondBot\Channels\Driver;
-use FondBot\Channels\Sender;
-use FondBot\Channels\Message;
-use FondBot\Channels\Request;
-use FondBot\Channels\Receiver;
 use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Channels\WebhookInstallation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
@@ -44,11 +43,8 @@ class TelegramDriver extends Driver implements WebhookInstallation
     public function verifyRequest(): void
     {
         if (
-            $this->getRequest('message') === null ||
-            !isset(
-                $this->getRequest('message')['from'],
-                $this->getRequest('message')['text']
-            )
+            !$this->hasRequest('message') ||
+            !$this->hasRequest('message.from')
         ) {
             throw new InvalidChannelRequest('Invalid payload');
         }
@@ -75,7 +71,7 @@ class TelegramDriver extends Driver implements WebhookInstallation
      */
     public function getSender(): Sender
     {
-        $from = $this->getRequest('message')['from'];
+        $from = $this->getRequest('message.from');
 
         return Sender::create(
             (string) $from['id'],
@@ -91,9 +87,10 @@ class TelegramDriver extends Driver implements WebhookInstallation
      */
     public function getMessage(): Message
     {
-        $text = $this->getRequest('message')['text'];
-
-        return Message::create($text);
+        return new TelegramMessage(
+            $this->getParameter('token'),
+            $this->getRequest('message')
+        );
     }
 
     /**
@@ -123,10 +120,10 @@ class TelegramDriver extends Driver implements WebhookInstallation
             ]);
         }
 
-        $request = Request::create($parameters);
-
         try {
-            $this->guzzle->post($this->getBaseUrl().'/sendMessage', $request->toArray());
+            $this->guzzle->post($this->getBaseUrl().'/sendMessage', [
+                'form_params' => $parameters,
+            ]);
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
         }

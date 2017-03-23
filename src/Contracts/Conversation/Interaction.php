@@ -6,6 +6,8 @@ namespace FondBot\Contracts\Conversation;
 
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\Receiver;
 
 interface Interaction
 {
@@ -22,6 +24,20 @@ interface Interaction
      * @param Context $context
      */
     public function setContext(Context $context): void;
+
+    /**
+     * Get message receiver.
+     *
+     * @return Receiver
+     */
+    public function getReceiver(): Receiver;
+
+    /**
+     * Get sender's message.
+     *
+     * @return Message
+     */
+    public function getSenderMessage(): Message;
 
     /**
      * Message text to be sent to Participant.

@@ -21,7 +21,7 @@ class WebhookInstall extends Command
 
         $url = route('fondbot.webhook', $channel);
 
-        $driver = $manager->createDriver([], $channel);
+        $driver = $manager->createDriver($channel);
 
         if (!$driver instanceof WebhookInstallation) {
             $this->error('Driver does support automatic webhook installation.');

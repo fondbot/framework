@@ -21,6 +21,14 @@ trait CreatesApplication
         $app->register(\FondBot\Providers\ServiceProvider::class);
         $app->make(Kernel::class)->bootstrap();
 
+        // Use SQLite memory database
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('database.connections.testing', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ]);
+
         return $app;
     }
 }

@@ -2,46 +2,23 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Channels;
+namespace FondBot\Contracts\Channels;
 
 use FondBot\Traits\Loggable;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\ContainsRequestInformation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 abstract class Driver
 {
-    use Loggable;
-
-    /** @var array */
-    private $request = [];
+    use ContainsRequestInformation, Loggable;
 
     /** @var Channel */
     private $channel;
 
     /** @var array */
     private $parameters;
-
-    /**
-     * Set request.
-     *
-     * @param array $request
-     */
-    public function setRequest(array $request): void
-    {
-        $this->request = $request;
-    }
-
-    /**
-     * Get request value.
-     *
-     * @param string $name
-     * @return mixed
-     */
-    public function getRequest(string $name)
-    {
-        return $this->request[$name] ?? null;
-    }
 
     /**
      * Set channel name.
@@ -68,6 +45,7 @@ abstract class Driver
      * Get parameter value.
      *
      * @param string $name
+     *
      * @return mixed
      */
     public function getParameter(string $name)

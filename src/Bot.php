@@ -4,19 +4,27 @@ declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Channels\Driver;
+use FondBot\Traits\Loggable;
 use Illuminate\Http\Request;
 use FondBot\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Channels\WebhookVerification;
 
 class Bot
 {
+    use Loggable;
+
     /** @var array */
     private $request = [];
+
+    /** @var array */
+    private $headers = [];
+
     /** @var Channel */
     private $channel;
+
     private $channelManager;
 
     public function __construct(ChannelManager $channelManager)
@@ -36,6 +44,8 @@ class Bot
         } else {
             $this->request = $request->all();
         }
+
+        $this->headers = $request->headers->all();
     }
 
     /**
@@ -55,10 +65,18 @@ class Bot
      */
     public function process()
     {
+        $this->debug('process', [
+            'channel' => $this->channel->toArray(),
+            'request' => $this->request,
+            'headers' => $this->headers,
+        ]);
+
         $driver = $this->createDriver();
 
         // Driver has webhook verification
         if ($driver instanceof WebhookVerification && $driver->isVerificationRequest()) {
+            $this->debug('process.verifyWebhook');
+
             return $driver->verifyWebhook();
         }
 
@@ -66,7 +84,7 @@ class Bot
         $driver->verifyRequest();
 
         // Send job to start conversation
-        $job = (new StartConversation($this->channel, $this->request))
+        $job = (new StartConversation($this->channel, $this->request, $this->headers))
             ->onQueue('fondbot');
 
         dispatch($job);
@@ -81,6 +99,6 @@ class Bot
      */
     private function createDriver(): Driver
     {
-        return $this->channelManager->createDriver($this->request, $this->channel);
+        return $this->channelManager->createDriver($this->channel, $this->request, $this->headers);
     }
 }

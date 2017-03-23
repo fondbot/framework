@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Channels\Receiver;
+use FondBot\Traits\Loggable;
+use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Events\MessageSent;
 use Illuminate\Contracts\Events\Dispatcher;
 use FondBot\Conversation\Traits\Transitions;
-use FondBot\Conversation\Traits\InteractsWithContext;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
 abstract class Interaction implements InteractionContract
 {
-    use Transitions, InteractsWithContext;
+    use Transitions, Loggable;
 
+    /**
+     * Get message receiver.
+     *
+     * @return Receiver
+     */
     public function getReceiver(): Receiver
     {
         $sender = $this->getContext()->getDriver()->getSender();
@@ -23,46 +29,13 @@ abstract class Interaction implements InteractionContract
     }
 
     /**
-     * Process reply.
+     * Get sender's message.
+     *
+     * @return Message
      */
-    abstract protected function process(): void;
-
-    /**
-     * Run interaction.
-     */
-    public function run(): void
+    public function getSenderMessage(): Message
     {
-        // Perform actions before running interaction
-        $this->before();
-
-        // Process reply if current interaction in context
-        // Reply to participant if not
-        if ($this->context->getInteraction() instanceof $this) {
-            $this->process();
-        } else {
-            // Update context information
-            $this->context->setInteraction($this);
-            $this->updateContext();
-
-            // Send message to participant
-            $this->context->getDriver()->sendMessage(
-                $this->getReceiver(),
-                $this->text(),
-                $this->keyboard()
-            );
-
-            // Fire event that message was sent
-            $this->getEventDispatcher()->dispatch(
-                new MessageSent(
-                    $this->context,
-                    $this->getReceiver(),
-                    $this->text()
-                )
-            );
-        }
-
-        // Perform actions before running interaction
-        $this->after();
+        return $this->getContext()->getDriver()->getMessage();
     }
 
     /**
@@ -78,6 +51,62 @@ abstract class Interaction implements InteractionContract
     protected function after(): void
     {
     }
+
+    /**
+     * Run interaction.
+     */
+    public function run(): void
+    {
+        $this->debug('run');
+
+        // Perform actions before running interaction
+        $this->before();
+
+        // Process reply if current interaction in context
+        // Reply to participant if not
+        if ($this->context->getInteraction() instanceof $this) {
+            $this->debug('run.process');
+            $this->process();
+
+            // If no transition run we need to clear context.
+            if (!$this->transitioned) {
+                $this->clearContext();
+            }
+
+            $this->after();
+
+            return;
+        }
+
+        // Set current interaction in context
+        $this->context->setInteraction($this);
+
+        // Send message to participant
+        $this->context->getDriver()->sendMessage(
+            $this->getReceiver(),
+            $this->text(),
+            $this->keyboard()
+        );
+
+        // Fire event that message was sent
+        $this->getEventDispatcher()->dispatch(
+            new MessageSent(
+                $this->context,
+                $this->getReceiver(),
+                $this->text()
+            )
+        );
+
+        $this->updateContext();
+
+        // Perform actions after running interaction
+        $this->after();
+    }
+
+    /**
+     * Process reply.
+     */
+    abstract protected function process(): void;
 
     private function getEventDispatcher(): Dispatcher
     {

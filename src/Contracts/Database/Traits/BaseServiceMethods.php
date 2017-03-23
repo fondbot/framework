@@ -13,6 +13,16 @@ trait BaseServiceMethods
     protected $entity;
 
     /**
+     * Get model.
+     *
+     * @return Model
+     */
+    public function getEntity(): Model
+    {
+        return $this->entity;
+    }
+
+    /**
      * Get all records from database.
      *
      * @return Collection
@@ -26,6 +36,7 @@ trait BaseServiceMethods
      * Find record by id.
      *
      * @param int $id
+     *
      * @return Model|null
      */
     public function findById(int $id): ?Model
@@ -37,6 +48,7 @@ trait BaseServiceMethods
      * Create new record.
      *
      * @param array $attributes
+     *
      * @return Model
      */
     public function create(array $attributes): Model
@@ -52,6 +64,7 @@ trait BaseServiceMethods
      *
      * @param array $attributes
      * @param array $values
+     *
      * @return Model|mixed
      */
     public function createOrUpdate(array $attributes, array $values): Model
@@ -64,6 +77,7 @@ trait BaseServiceMethods
      *
      * @param Model $entity
      * @param array $attributes
+     *
      * @return Model
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */

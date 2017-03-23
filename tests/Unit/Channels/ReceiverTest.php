@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Channels;
 
 use Tests\TestCase;
-use FondBot\Channels\Receiver;
+use FondBot\Contracts\Channels\Receiver;
 
 class ReceiverTest extends TestCase
 {
