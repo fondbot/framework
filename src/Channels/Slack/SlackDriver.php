@@ -106,7 +106,19 @@ class SlackDriver extends Driver implements WebhookInstallation
      */
     public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void
     {
+        $parameters = [
+            'channel' => $receiver->getIdentifier(),
+            'text'    => $text,
+            'token'   => $this->getParameter('token')
+        ];
 
+        $request = Request::create($parameters);
+
+        try {
+            $this->guzzle->post($this->getBaseUrl() . 'chat.postMessage', $request->toArray());
+        } catch (RequestException $exception) {
+            $this->error(get_class($exception), [$exception->getMessage()]);
+        }
     }
 
     private function getBaseUrl(): string
