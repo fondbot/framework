@@ -10,7 +10,7 @@ use FondBot\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Contracts\Channels\WebhookVerification;
+use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 
 class Bot
 {

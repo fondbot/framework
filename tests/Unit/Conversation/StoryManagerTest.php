@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
+use Tests\Classes\Fakes\FakeFallbackStory;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
@@ -21,7 +22,7 @@ class StoryManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->manager = new StoryManager;
+        $this->manager = resolve(StoryManager::class);
     }
 
     public function test_find_has_story_in_context()
@@ -45,6 +46,11 @@ class StoryManagerTest extends TestCase
 
         $context->shouldReceive('getStory')->andReturn(null);
         $message->shouldReceive('getText')->andReturn('/start');
+
+        $result = $this->manager->find($context, $message);
+        $this->assertInstanceOf(FallbackStory::class, $result);
+
+        $this->manager->setFallbackStory(FakeFallbackStory::class);
 
         $result = $this->manager->find($context, $message);
         $this->assertInstanceOf(FallbackStory::class, $result);

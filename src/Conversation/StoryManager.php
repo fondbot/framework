@@ -10,16 +10,18 @@ use FondBot\Conversation\Fallback\FallbackStory;
 class StoryManager
 {
     private $stories;
+    private $fallbackStory;
 
-    public function __construct(array $stories = [])
+    public function __construct(array $stories = [], string $fallbackStory = FallbackStory::class)
     {
         $this->stories = $stories;
+        $this->fallbackStory = $fallbackStory;
     }
 
     /**
      * Find story.
      *
-     * @param Context $context
+     * @param Context       $context
      * @param SenderMessage $message
      *
      * @return Story|null
@@ -77,5 +79,15 @@ class StoryManager
         if (!in_array($story, $this->stories, true)) {
             $this->stories[] = $story;
         }
+    }
+
+    /**
+     * Set fallback story.
+     *
+     * @param string $story
+     */
+    public function setFallbackStory(string $story): void
+    {
+        $this->fallbackStory = $story;
     }
 }

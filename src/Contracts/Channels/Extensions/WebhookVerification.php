@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Contracts\Channels;
+namespace FondBot\Contracts\Channels\Extensions;
 
+/**
+ * Driver required webhook verification.
+ */
 interface WebhookVerification
 {
     /**

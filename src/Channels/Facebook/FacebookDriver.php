@@ -12,7 +12,7 @@ use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\ReceiverMessage;
-use FondBot\Contracts\Channels\WebhookVerification;
+use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 class FacebookDriver extends Driver implements WebhookVerification
