@@ -50,7 +50,7 @@ class ChannelService implements ChannelServiceContract
      * @param string $name
      * @return ChannelContract|Model|null
      */
-    public function findByName(string $name): ChannelContract
+    public function findByName(string $name): ?ChannelContract
     {
         return $this->entity
             ->where('name', $name)

@@ -33,6 +33,18 @@ trait InteractsWithContext
     }
 
     /**
+     * Remember value in context.
+     *
+     * @param string $key
+     * @param $value
+     */
+    protected function remember(string $key, $value): void
+    {
+        $this->context->setValue($key, $value);
+        $this->updateContext();
+    }
+
+    /**
      * Update context instance.
      */
     protected function updateContext(): void

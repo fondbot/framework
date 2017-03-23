@@ -1,5 +1,4 @@
-FondBot
-======================
+<img src="https://docs.fondbot.com/images/logo.png" width="200px">
 
 [![Build Status](https://img.shields.io/travis/fondbot/fondbot.svg?style=flat-square)](https://travis-ci.org/fondbot/fondbot)
 [![StyleCI](https://styleci.io/repos/78780366/shield)](https://styleci.io/repos/78780366)
@@ -11,3 +10,8 @@ FondBot is a Laravel framework library for creating chat bots.
 ## Installation and usage
 
 You can find all installation instructions and full documentation on [https://docs.fondbot.com/](https://docs.fondbot.com/en/)
+
+## Community
+
+If you have questions or suggestions you are welcome to our Slack channel:
+[https://fondbot.signup.team](https://fondbot.signup.team)

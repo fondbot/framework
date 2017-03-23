@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Database\Entities\Channel;
 
 class ChannelManager
@@ -18,17 +19,20 @@ class ChannelManager
     /**
      * Create driver instance.
      *
-     * @param array $request
      * @param Channel $channel
      *
-     * @return Driver
+     * @param array $request
+     * @param array $headers
+     *
+     * @return \FondBot\Contracts\Channels\Driver
      */
-    public function createDriver(array $request, Channel $channel): Driver
+    public function createDriver(Channel $channel, array $request = [], array $headers = []): Driver
     {
         /** @var Driver $driver */
         $driver = resolve($channel->driver);
         $driver->setChannel($channel);
         $driver->setRequest($request);
+        $driver->setHeaders($headers);
 
         return $driver;
     }

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Channels;
+namespace FondBot\Contracts\Channels;
 
-class Receiver
+class Sender
 {
     /** @var string */
     private $identifier;
@@ -15,7 +15,7 @@ class Receiver
     /** @var string|null */
     private $username;
 
-    public static function create(string $identifier, string $name = null, string $username = null): Receiver
+    public static function create(string $identifier, string $name = null, string $username = null): Sender
     {
         $instance = new static;
         $instance->setIdentifier($identifier);

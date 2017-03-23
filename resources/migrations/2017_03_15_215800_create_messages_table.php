@@ -16,8 +16,8 @@ class CreateMessagesTable extends Migration
             $table->increments('id');
             $table->integer('sender_id', false, true)->nullable();
             $table->integer('receiver_id', false, true)->nullable();
-            $table->text('text');
-            $table->json('parameters');
+            $table->text('text')->nullable();
+            $table->json('parameters')->nullable();
             $table->timestamps();
         });
     }

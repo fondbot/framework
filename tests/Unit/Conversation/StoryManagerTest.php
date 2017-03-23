@@ -6,11 +6,12 @@ namespace Tests\Unit\Conversation;
 
 use Config;
 use Tests\TestCase;
-use FondBot\Channels\Message;
 use FondBot\Conversation\Story;
-use Tests\Classes\ExampleStory;
 use FondBot\Conversation\Context;
+use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\StoryManager;
+use FondBot\Contracts\Channels\Message;
+use FondBot\Conversation\Fallback\FallbackStory;
 
 /**
  * @property StoryManager manager
@@ -36,11 +37,11 @@ class StoryManagerTest extends TestCase
         $this->assertSame($story, $result);
     }
 
-    public function test_find_no_story_in_context_no_activation_found()
+    public function test_find_fallback_story()
     {
         Config::set('fondbot', [
             'stories' => [
-                ExampleStory::class,
+                FakeStory::class,
             ],
         ]);
 
@@ -51,14 +52,14 @@ class StoryManagerTest extends TestCase
         $message->shouldReceive('getText')->andReturn('/start');
 
         $result = $this->manager->find($context, $message);
-        $this->assertNull($result);
+        $this->assertInstanceOf(FallbackStory::class, $result);
     }
 
     public function test_find_no_story_in_context_activation_found()
     {
         Config::set('fondbot', [
             'stories' => [
-                ExampleStory::class,
+                FakeStory::class,
             ],
         ]);
 
@@ -69,6 +70,6 @@ class StoryManagerTest extends TestCase
         $message->shouldReceive('getText')->andReturn('/example');
 
         $result = $this->manager->find($context, $message);
-        $this->assertInstanceOf(ExampleStory::class, $result);
+        $this->assertInstanceOf(FakeStory::class, $result);
     }
 }

@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Database\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
  * @property int $sender_id
  * @property int $receiver_id
  * @property string $text
+ * @property string $attachment
+ * @property array $location
  * @property array $parameters
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
@@ -25,6 +28,7 @@ class Message extends Model
     protected $table = 'messages';
 
     protected $casts = [
+        'location' => 'array',
         'parameters' => 'array',
     ];
 
@@ -32,15 +36,17 @@ class Message extends Model
         'sender_id',
         'receiver_id',
         'text',
+        'attachment',
+        'location',
         'parameters',
     ];
 
-    public function sender()
+    public function sender(): BelongsTo
     {
         return $this->belongsTo(Participant::class);
     }
 
-    public function receiver()
+    public function receiver(): BelongsTo
     {
         return $this->belongsTo(Participant::class);
     }

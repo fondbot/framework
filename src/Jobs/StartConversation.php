@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Jobs;
 
-use FondBot\Channels\Driver;
+use FondBot\Traits\Loggable;
 use Illuminate\Bus\Queueable;
 use FondBot\Channels\ChannelManager;
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\StoryManager;
 use Illuminate\Queue\SerializesModels;
 use FondBot\Conversation\ContextManager;
@@ -20,15 +21,17 @@ use FondBot\Contracts\Database\Services\ParticipantService;
 
 class StartConversation implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable, SerializesModels;
+    use InteractsWithQueue, Queueable, SerializesModels, Loggable;
 
     private $channel;
     private $request;
+    private $headers;
 
-    public function __construct(Channel $channel, array $request)
+    public function __construct(Channel $channel, array $request, array $headers)
     {
         $this->channel = $channel;
         $this->request = $request;
+        $this->headers = $headers;
     }
 
     public function handle(
@@ -38,8 +41,10 @@ class StartConversation implements ShouldQueue
         ConversationManager $conversationManager,
         ParticipantService $participantService
     ) {
+        $this->debug('handle', ['channel' => $this->channel->toArray(), 'request' => $this->request]);
+
         /** @var Driver $driver */
-        $driver = $channelManager->createDriver($this->request, $this->channel);
+        $driver = $channelManager->createDriver($this->channel, $this->request, $this->headers);
 
         // Store sender in database as participant
         $participant = $participantService->createOrUpdate([
@@ -56,7 +61,7 @@ class StartConversation implements ShouldQueue
         $this->events()->dispatch(
             new MessageReceived(
                 $participant,
-                $driver->getMessage()->getText()
+                $driver->getMessage()
             )
         );
 

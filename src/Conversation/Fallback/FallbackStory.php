@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes;
+namespace FondBot\Conversation\Fallback;
 
 use FondBot\Conversation\Story;
 
-class ExampleStory extends Story
+class FallbackStory extends Story
 {
+    protected $name = 'defaultFallbackStory';
+
     /**
      * Story activations.
      *
@@ -15,9 +17,7 @@ class ExampleStory extends Story
      */
     public function activations(): array
     {
-        return [
-            '/example',
-        ];
+        return [];
     }
 
     /**
@@ -27,6 +27,14 @@ class ExampleStory extends Story
      */
     public function firstInteraction(): string
     {
-        return ExampleInteraction::class;
+        return FallbackInteraction::class;
+    }
+
+    /**
+     * Do something after running Story.
+     */
+    protected function after(): void
+    {
+        $this->clearContext();
     }
 }

@@ -7,28 +7,45 @@ namespace Tests\Unit;
 use Bus;
 use FondBot\Bot;
 use Tests\TestCase;
-use FondBot\Channels\Driver;
+use Illuminate\Http\Request;
 use FondBot\Jobs\StartConversation;
-use FondBot\Channels\ChannelManager;
+use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Contracts\Database\Entities\Channel;
 
 class BotTest extends TestCase
 {
-    public function test()
+    public function test_request()
     {
         Bus::fake();
 
-        $channelManager = $this->mock(ChannelManager::class);
-        $channel = $this->mock(Channel::class);
-        $driver = $this->mock(Driver::class);
+        $channel = new Channel(['driver' => FakeDriver::class]);
+        $request = new Request();
 
-        $channelManager->shouldReceive('createDriver')->with([], $channel)->andReturn($driver)->once();
-        $driver->shouldReceive('verifyRequest')->once();
-
-        $bot = new Bot($channelManager);
+        $bot = resolve(Bot::class);
+        $bot->setRequest($request);
         $bot->setChannel($channel);
         $bot->process();
 
         Bus::assertDispatched(StartConversation::class);
+    }
+
+    public function test_verification()
+    {
+        Bus::fake();
+
+        $channel = new Channel(['driver' => FakeDriver::class]);
+        $request = new Request([], [], [], [], [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode(['verification' => $this->faker()->uuid])
+        );
+
+        $bot = resolve(Bot::class);
+        $bot->setRequest($request);
+        $bot->setChannel($channel);
+        $result = $bot->process();
+
+        $this->assertSame($request->json('verification'), $result);
+
+        Bus::assertNotDispatched(StartConversation::class);
     }
 }
