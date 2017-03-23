@@ -114,9 +114,11 @@ class SlackDriver extends Driver
     public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void
     {
         $parameters = [
-            'channel' => $receiver->getIdentifier(),
-            'text'    => $text,
-            'token'   => $this->getParameter('token')
+            'query' => [
+                'channel' => $receiver->getIdentifier(),
+                'text'    => $text,
+                'token'   => $this->getParameter('token')
+            ]
         ];
 
         try {
