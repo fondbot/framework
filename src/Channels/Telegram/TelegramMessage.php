@@ -58,7 +58,7 @@ class TelegramMessage implements Message
         }
 
         return new Attachment(
-            'audio',
+            Attachment::TYPE_AUDIO,
             $this->getFilePath($this->payload['audio']['file_id'])
         );
     }
@@ -129,7 +129,7 @@ class TelegramMessage implements Message
         }
 
         return new Attachment(
-            'video',
+            Attachment::TYPE_VIDEO,
             $this->getFilePath($this->payload['video']['file_id'])
         );
     }
