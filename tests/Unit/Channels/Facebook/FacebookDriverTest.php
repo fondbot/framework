@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Facebook;
 
-use FondBot\Channels\Facebook\FacebookReceiverMessage;
-use FondBot\Conversation\Keyboards\BasicKeyboard;
-use FondBot\Conversation\Keyboards\Button;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Contracts\Channels\Receiver;
+use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Facebook\FacebookDriver;
-use FondBot\Channels\Facebook\FacebookSenderMessage;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Conversation\Keyboards\BasicKeyboard;
+use FondBot\Channels\Facebook\FacebookSenderMessage;
+use FondBot\Channels\Facebook\FacebookReceiverMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle

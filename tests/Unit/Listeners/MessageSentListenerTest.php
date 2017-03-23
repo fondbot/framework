@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners;
 
-use Tests\Classes\Fakes\FakeReceiverMessage;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Events\MessageSent;
+use Tests\Classes\Fakes\FakeReceiverMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
 use FondBot\Contracts\Database\Services\MessageService;

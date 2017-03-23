@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Classes\Fakes;
 
 use FondBot\Contracts\Channels\Receiver;
-use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Channels\ReceiverMessage;
 
 class FakeReceiverMessage implements ReceiverMessage
 {

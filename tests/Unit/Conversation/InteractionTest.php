@@ -6,12 +6,12 @@ namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
 use FondBot\Conversation\Context;
-use Tests\Classes\Fakes\FakeSenderMessage;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\ContextManager;
 use Tests\Classes\Fakes\FakeInteraction;
 use FondBot\Contracts\Events\MessageSent;
+use Tests\Classes\Fakes\FakeSenderMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface context

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Conversation;
 
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Receiver;
+use FondBot\Contracts\Channels\SenderMessage;
 
 interface Interaction
 {

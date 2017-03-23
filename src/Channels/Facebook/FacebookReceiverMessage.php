@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Channels\Facebook;
 
 use FondBot\Contracts\Channels\Receiver;
-use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
 
 class FacebookReceiverMessage implements ReceiverMessage

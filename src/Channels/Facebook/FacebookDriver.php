@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Facebook;
 
-use FondBot\Contracts\Channels\ReceiverMessage;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Channels\WebhookVerification;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 

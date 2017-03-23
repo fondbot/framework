@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Channels\VkCommunity;
 
 use FondBot\Contracts\Channels\Receiver;
-use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Channels\ReceiverMessage;
 
 class VkCommunityReceiverMessage implements ReceiverMessage
 {

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
-use FondBot\Channels\Telegram\TelegramReceiverMessage;
-use FondBot\Conversation\Keyboards\BasicKeyboard;
-use FondBot\Conversation\Keyboards\Button;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use Illuminate\Http\File;
@@ -14,12 +11,15 @@ use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Contracts\Channels\Receiver;
+use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Telegram\TelegramDriver;
-use FondBot\Channels\Telegram\TelegramSenderMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
+use FondBot\Channels\Telegram\TelegramSenderMessage;
+use FondBot\Channels\Telegram\TelegramReceiverMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
