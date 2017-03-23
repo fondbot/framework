@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Channels\Facebook;
+namespace FondBot\Channels\VkCommunity;
 
-use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
-class FacebookMessage implements Message
+class VkCommunitySenderMessage implements SenderMessage
 {
     private $payload;
 
@@ -24,7 +24,7 @@ class FacebookMessage implements Message
      */
     public function getText(): ?string
     {
-        return $this->payload['text'] ?? null;
+        return $this->payload['body'] ?? null;
     }
 
     /**

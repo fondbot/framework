@@ -7,8 +7,9 @@ namespace Tests\Classes\Fakes;
 use Faker\Factory;
 use Faker\Generator;
 use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Database\Entities\Channel;
@@ -67,11 +68,11 @@ class FakeDriver extends Driver implements WebhookVerification
     /**
      * Get message received from sender.
      *
-     * @return Message
+     * @return SenderMessage
      */
-    public function getMessage(): Message
+    public function getMessage(): SenderMessage
     {
-        return new FakeMessage($this->faker()->text());
+        return new FakeSenderMessage($this->faker()->text());
     }
 
     /**
@@ -80,9 +81,12 @@ class FakeDriver extends Driver implements WebhookVerification
      * @param Receiver $receiver
      * @param string $text
      * @param Keyboard|null $keyboard
+     *
+     * @return ReceiverMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void
+    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
     {
+        return new FakeReceiverMessage($receiver, $text, $keyboard);
     }
 
     private function faker(): Generator

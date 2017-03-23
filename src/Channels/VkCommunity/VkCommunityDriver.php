@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\VkCommunity;
 
+use FondBot\Contracts\Channels\ReceiverMessage;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\WebhookVerification;
@@ -100,11 +101,11 @@ class VkCommunityDriver extends Driver implements WebhookVerification
     /**
      * Get message received from sender.
      *
-     * @return Message
+     * @return SenderMessage
      */
-    public function getMessage(): Message
+    public function getMessage(): SenderMessage
     {
-        return new VkCommunityMessage($this->getRequest('object'));
+        return new VkCommunitySenderMessage($this->getRequest('object'));
     }
 
     /**
@@ -113,17 +114,22 @@ class VkCommunityDriver extends Driver implements WebhookVerification
      * @param Receiver $receiver
      * @param string $text
      * @param Keyboard|null $keyboard
+     *
+     * @return ReceiverMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void
+    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
     {
-        $this->guzzle->get(self::API_URL.'messages.send', [
-            'query' => [
-                'message' => $text,
-                'user_id' => $receiver->getIdentifier(),
-                'access_token' => $this->getParameter('access_token'),
-                'v' => self::API_VERSION,
-            ],
+        $message = new VkCommunityReceiverMessage($receiver, $text, $keyboard);
+        $query = array_merge($message->toArray(), [
+            'access_token' => $this->getParameter('access_token'),
+            'v' => self::API_VERSION,
         ]);
+
+        $this->guzzle->get(self::API_URL.'messages.send', [
+            'query' => $query,
+        ]);
+
+        return $message;
     }
 
     /**

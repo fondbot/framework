@@ -6,7 +6,7 @@ namespace Tests\Unit\Listeners;
 
 use Storage;
 use Tests\TestCase;
-use Tests\Classes\Fakes\FakeMessage;
+use Tests\Classes\Fakes\FakeSenderMessage;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Contracts\Database\Entities\Participant;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -38,7 +38,7 @@ class MessageReceivedListenerTest extends TestCase
     {
         Participant::unguard();
         $participant = new Participant(['id' => random_int(1, time())]);
-        $message = FakeMessage::create();
+        $message = FakeSenderMessage::create();
 
         event(new MessageReceived($participant, $message));
 
@@ -60,7 +60,7 @@ class MessageReceivedListenerTest extends TestCase
     {
         Participant::unguard();
         $participant = new Participant(['id' => random_int(1, time())]);
-        $message = FakeMessage::create();
+        $message = FakeSenderMessage::create();
 
         event(new MessageReceived($participant, $message));
 
@@ -83,7 +83,7 @@ class MessageReceivedListenerTest extends TestCase
     {
         Participant::unguard();
         $participant = new Participant(['id' => random_int(1, time())]);
-        $message = new FakeMessage($this->faker()->text());
+        $message = new FakeSenderMessage($this->faker()->text());
 
         event(new MessageReceived($participant, $message));
 
@@ -115,7 +115,7 @@ class MessageReceivedListenerTest extends TestCase
 
         Participant::unguard();
         $participant = new Participant(['id' => random_int(1, time())]);
-        $message = FakeMessage::create();
+        $message = FakeSenderMessage::create();
 
         event(new MessageReceived($participant, $message));
 

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Telegram;
 
+use FondBot\Contracts\Channels\ReceiverMessage;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Conversation\Keyboard;
@@ -83,11 +84,11 @@ class TelegramDriver extends Driver implements WebhookInstallation
     /**
      * Get message received from sender.
      *
-     * @return Message
+     * @return SenderMessage
      */
-    public function getMessage(): Message
+    public function getMessage(): SenderMessage
     {
-        return new TelegramMessage(
+        return new TelegramSenderMessage(
             $this->getParameter('token'),
             $this->getRequest('message')
         );
@@ -99,34 +100,22 @@ class TelegramDriver extends Driver implements WebhookInstallation
      * @param Receiver $receiver
      * @param string $text
      * @param Keyboard|null $keyboard
+     *
+     * @return ReceiverMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void
+    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
     {
-        $parameters = [
-            'chat_id' => $receiver->getIdentifier(),
-            'text' => $text,
-        ];
-
-        if ($keyboard !== null) {
-            $buttons = [];
-
-            foreach ($keyboard->getButtons() as $button) {
-                $buttons[] = ['text' => $button->getLabel()];
-            }
-
-            $parameters['reply_markup'] = json_encode([
-                'keyboard' => [$buttons],
-                'resize_keyboard' => true,
-            ]);
-        }
+        $message = new TelegramReceiverMessage($receiver, $text, $keyboard);
 
         try {
             $this->guzzle->post($this->getBaseUrl().'/sendMessage', [
-                'form_params' => $parameters,
+                'form_params' => $message->toArray(),
             ]);
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
         }
+
+        return $message;
     }
 
     private function getBaseUrl(): string

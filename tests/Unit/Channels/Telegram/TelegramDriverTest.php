@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
+use FondBot\Channels\Telegram\TelegramReceiverMessage;
+use FondBot\Conversation\Keyboards\BasicKeyboard;
+use FondBot\Conversation\Keyboards\Button;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use Illuminate\Http\File;
@@ -11,11 +14,9 @@ use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Contracts\Channels\Receiver;
-use FondBot\Contracts\Conversation\Button;
 use GuzzleHttp\Exception\RequestException;
-use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Channels\Telegram\TelegramDriver;
-use FondBot\Channels\Telegram\TelegramMessage;
+use FondBot\Channels\Telegram\TelegramSenderMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Channels\Message\Attachment;
@@ -130,9 +131,9 @@ class TelegramDriverTest extends TestCase
             ],
         ]);
 
-        /** @var TelegramMessage $message */
+        /** @var TelegramSenderMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramMessage::class, $message);
+        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
         $this->assertSame($text, $message->getText());
         $this->assertNull($message->getAttachment());
         $this->assertNull($message->getAudio());
@@ -195,7 +196,7 @@ class TelegramDriverTest extends TestCase
         $this->guzzle->shouldReceive('get')->with($path)->andReturn($response)->once();
 
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramMessage::class, $message);
+        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
 
         $attachment = $this->telegram->getMessage()->getAttachment();
         $this->assertInstanceOf(Attachment::class, $attachment);
@@ -219,9 +220,9 @@ class TelegramDriverTest extends TestCase
             ],
         ]);
 
-        /** @var TelegramMessage $message */
+        /** @var TelegramSenderMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramMessage::class, $message);
+        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
         $this->assertSame($contact, $message->getContact());
 
         $contact = $message->getContact();
@@ -244,9 +245,9 @@ class TelegramDriverTest extends TestCase
 
         $contact = array_merge($contact, ['last_name' => null, 'user_id' => null]);
 
-        /** @var TelegramMessage $message */
+        /** @var TelegramSenderMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramMessage::class, $message);
+        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
         $this->assertSame($contact, $message->getContact());
 
         $contact = $message->getContact();
@@ -272,7 +273,7 @@ class TelegramDriverTest extends TestCase
         ]);
 
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramMessage::class, $message);
+        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
 
         $location = $message->getLocation();
         $this->assertInstanceOf(Location::class, $location);
@@ -302,9 +303,9 @@ class TelegramDriverTest extends TestCase
 
         $venue['location'] = new Location($venue['location']['latitude'], $venue['location']['longitude']);
 
-        /** @var TelegramMessage $message */
+        /** @var TelegramSenderMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramMessage::class, $message);
+        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
         $this->assertEquals($venue, $message->getVenue());
 
         $venue = $message->getVenue();
@@ -340,9 +341,9 @@ class TelegramDriverTest extends TestCase
         $venue['location'] = new Location($venue['location']['latitude'], $venue['location']['longitude']);
         $venue['foursquare_id'] = null;
 
-        /** @var TelegramMessage $message */
+        /** @var TelegramSenderMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramMessage::class, $message);
+        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
         $this->assertEquals($venue, $message->getVenue());
 
         $venue = $message->getVenue();
@@ -360,21 +361,17 @@ class TelegramDriverTest extends TestCase
     {
         $text = $this->faker()->text;
 
-        $receiver = $this->mock(Receiver::class);
-        $keyboard = $this->mock(Keyboard::class);
-        $button1 = $this->mock(Button::class);
-        $button2 = $this->mock(Button::class);
-
-        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
-        $keyboard->shouldReceive('getButtons')->andReturn([$button1, $button2]);
-        $button1->shouldReceive('getLabel')->andReturn($button1Text = $this->faker()->word);
-        $button2->shouldReceive('getLabel')->andReturn($button2Text = $this->faker()->word);
+        $receiver = new Receiver($this->faker()->uuid);
+        $keyboard = new BasicKeyboard([
+            new Button($this->faker()->word),
+            new Button($this->faker()->word),
+        ]);
 
         $replyMarkup = json_encode([
             'keyboard' => [
                 [
-                    (object) ['text' => $button1Text],
-                    (object) ['text' => $button2Text],
+                    (object) ['text' => $keyboard->getButtons()[0]->getLabel()],
+                    (object) ['text' => $keyboard->getButtons()[1]->getLabel()],
                 ],
             ],
             'resize_keyboard' => true,
@@ -384,14 +381,19 @@ class TelegramDriverTest extends TestCase
             'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/sendMessage',
             [
                 'form_params' => [
-                    'chat_id' => $chatId,
+                    'chat_id' => $receiver->getIdentifier(),
                     'text' => $text,
                     'reply_markup' => $replyMarkup,
                 ],
             ]
         )->once();
 
-        $this->telegram->sendMessage($receiver, $text, $keyboard);
+        $result = $this->telegram->sendMessage($receiver, $text, $keyboard);
+
+        $this->assertInstanceOf(TelegramReceiverMessage::class, $result);
+        $this->assertSame($receiver, $result->getReceiver());
+        $this->assertSame($text, $result->getText());
+        $this->assertSame($keyboard, $result->getKeyboard());
     }
 
     public function test_sendMessage_without_keyboard()
@@ -407,6 +409,7 @@ class TelegramDriverTest extends TestCase
                 'form_params' => [
                     'chat_id' => $chatId,
                     'text' => $text,
+                    'reply_markup' => 'null',
                 ],
             ]
         )->once();

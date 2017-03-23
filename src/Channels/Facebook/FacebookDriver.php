@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Facebook;
 
+use FondBot\Contracts\Channels\ReceiverMessage;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Conversation\Keyboard;
@@ -85,11 +86,11 @@ class FacebookDriver extends Driver implements WebhookVerification
     /**
      * Get message received from sender.
      *
-     * @return Message
+     * @return SenderMessage
      */
-    public function getMessage(): Message
+    public function getMessage(): SenderMessage
     {
-        return new FacebookMessage($this->getRequest('entry.0.messaging.0.message'));
+        return new FacebookSenderMessage($this->getRequest('entry.0.messaging.0.message'));
     }
 
     /**
@@ -98,36 +99,23 @@ class FacebookDriver extends Driver implements WebhookVerification
      * @param Receiver $receiver
      * @param string $text
      * @param Keyboard|null $keyboard
+     *
+     * @return ReceiverMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void
+    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
     {
-        $parameters = [
-            'recipient' => [
-                'id' => $receiver->getIdentifier(),
-            ],
-            'message' => [
-                'text' => $text,
-            ],
-        ];
-
-        if ($keyboard !== null) {
-            foreach ($keyboard->getButtons() as $button) {
-                $parameters['message']['quick_replies'][] = [
-                    'content_type' => 'text',
-                    'title' => $button->getLabel(),
-                    'payload' => $button->getLabel(),
-                ];
-            }
-        }
+        $message = new FacebookReceiverMessage($receiver, $text, $keyboard);
 
         try {
             $this->guzzle->post(
                 $this->getBaseUrl().'me/messages',
-                $this->getDefaultRequestParameters() + ['form_params' => $parameters]
+                $this->getDefaultRequestParameters() + ['form_params' => $message->toArray()]
             );
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
         }
+
+        return $message;
     }
 
     /**

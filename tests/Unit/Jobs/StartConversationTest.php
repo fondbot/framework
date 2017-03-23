@@ -9,7 +9,7 @@ use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
-use Tests\Classes\Fakes\FakeMessage;
+use Tests\Classes\Fakes\FakeSenderMessage;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\StoryManager;
@@ -41,7 +41,7 @@ class StartConversationTest extends TestCase
         $channelManager->shouldReceive('createDriver')->with($channel, [], [])->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
-            $message = FakeMessage::create()
+            $message = FakeSenderMessage::create()
         );
         $driver->shouldReceive('getSender')->andReturn(
             $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName)
@@ -87,7 +87,7 @@ class StartConversationTest extends TestCase
         $channelManager->shouldReceive('createDriver')->with($channel, [], [])->andReturn($driver)->once();
 
         $driver->shouldReceive('getMessage')->andReturn(
-            $message = FakeMessage::create()
+            $message = FakeSenderMessage::create()
         );
         $driver->shouldReceive('getSender')->andReturn(
             $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName)
