@@ -68,11 +68,12 @@ class SlackDriver extends Driver implements WebhookInstallation
      * Get message sender.
      *
      * @return Sender
+     * @throws \Exception
      */
     public function getSender(): Sender
     {
         $from     = $this->getRequest('user');
-        $userData = $this->guzzle->get($this->getBaseUrl() . 'users.info/?' . 'token=' . $this->getParameter('token') .'&' .'user=' . $from)->getBody();
+        $userData = $this->guzzle->get($this->getBaseUrl() . $this->mapDriver('infoAboutUser') . '/?' . 'token=' . $this->getParameter('token') .'&' .'user=' . $from)->getBody();
 
         if ( ($responseUser = $this->jsonNormalize($userData))->ok === false)
         {
@@ -115,7 +116,7 @@ class SlackDriver extends Driver implements WebhookInstallation
         $request = Request::create($parameters);
 
         try {
-            $this->guzzle->post($this->getBaseUrl() . 'chat.postMessage', $request->toArray());
+            $this->guzzle->post($this->getBaseUrl() . $this->mapDriver('postMessage'), $request->toArray());
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
         }
@@ -126,8 +127,36 @@ class SlackDriver extends Driver implements WebhookInstallation
         return  config('fondbot.slack.baseUrl');
     }
 
+    /**
+     * Getting json conversion from guzzle
+     * @param Stream $guzzleBody
+     * @return mixed
+     */
     private function jsonNormalize(Stream $guzzleBody)
     {
         return json_decode((string) $guzzleBody);
+    }
+
+    /**
+     * The array method for correct job slack driver
+     *
+     * @param string $name
+     * @return string
+     * @throws \Exception
+     */
+    private function mapDriver(string $name) : string
+    {
+        $map =  [
+            'infoAboutUser' => 'users.info',
+            'postMessage'   => 'chat.postMessage'
+        ];
+
+        if ( isset($map[$name]) )
+        {
+            return $map[$name];
+        } else{
+            throw new \Exception('no matches');
+        }
+
     }
 }
