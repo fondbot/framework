@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Facebook;
 
-use FondBot\Contracts\Channels\Message\Attachment;
-use FondBot\Contracts\Channels\Message\Location;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Sender;
@@ -15,8 +13,10 @@ use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Facebook\FacebookDriver;
+use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
+use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Channels\Facebook\FacebookSenderMessage;
 use FondBot\Channels\Facebook\FacebookReceiverMessage;
 
@@ -173,7 +173,7 @@ class FacebookDriverTest extends TestCase
         $stream = $this->mock(ResponseInterface::class);
 
         $stream->shouldReceive('getBody')->andReturn(json_encode($response));
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/' . $senderId, [
+        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
             'query' => [
                 'access_token' => $this->channel->parameters['page_token'],
             ],
@@ -191,7 +191,7 @@ class FacebookDriverTest extends TestCase
         $senderId = $this->faker()->uuid;
         $this->facebook->setRequest($this->generateResponse($senderId));
 
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/' . $senderId, [
+        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
             'query' => [
                 'access_token' => $this->channel->parameters['page_token'],
             ],
@@ -226,7 +226,8 @@ class FacebookDriverTest extends TestCase
         $this->assertNull($message->getAttachment());
     }
 
-    public function test_getMessageAttachments(){
+    public function test_getMessageAttachments()
+    {
         $this->facebook->setRequest($this->generateAttachmentResponse('audio'));
         $this->assertInstanceOf(Attachment::class, $this->facebook->getMessage()->getAttachment());
         $this->assertSame(Attachment::TYPE_AUDIO, $this->facebook->getMessage()->getAttachment()->getType());
@@ -330,7 +331,7 @@ class FacebookDriverTest extends TestCase
 
     private function generateSignature(array $data, $key): string
     {
-        return 'sha1=' . hash_hmac('sha1', json_encode($data), $key);
+        return 'sha1='.hash_hmac('sha1', json_encode($data), $key);
     }
 
     private function generateResponse(string $id = null, string $text = null): array
