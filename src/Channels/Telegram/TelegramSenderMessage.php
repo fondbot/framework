@@ -224,7 +224,7 @@ class TelegramSenderMessage implements SenderMessage
     }
 
     /**
-     * Get file path.
+     * Get file path by id.
      *
      * @param string $fileId
      *

@@ -57,7 +57,12 @@ class FacebookSenderMessage implements SenderMessage
             ?? $this->getFile();
     }
 
-    public function getImage()
+    /**
+     * Get image.
+     *
+     * @return Attachment|null
+     */
+    public function getImage(): ?Attachment
     {
         if ($image = $this->getAttachmentPayload('image')) {
             return new Attachment(Attachment::TYPE_IMAGE, $image['url']);
@@ -66,7 +71,12 @@ class FacebookSenderMessage implements SenderMessage
         return null;
     }
 
-    public function getAudio()
+    /**
+     * Get audio.
+     *
+     * @return Attachment|null
+     */
+    public function getAudio(): ?Attachment
     {
         if ($audio = $this->getAttachmentPayload('audio')) {
             return new Attachment(Attachment::TYPE_AUDIO, $audio['url']);
@@ -75,7 +85,12 @@ class FacebookSenderMessage implements SenderMessage
         return null;
     }
 
-    public function getVideo()
+    /**
+     * Get video.
+     *
+     * @return Attachment|null
+     */
+    public function getVideo(): ?Attachment
     {
         if ($video = $this->getAttachmentPayload('video')) {
             return new Attachment(Attachment::TYPE_VIDEO, $video['url']);
@@ -84,7 +99,12 @@ class FacebookSenderMessage implements SenderMessage
         return null;
     }
 
-    public function getFile()
+    /**
+     * Get file.
+     *
+     * @return Attachment|null
+     */
+    public function getFile(): ?Attachment
     {
         if ($file = $this->getAttachmentPayload('file')) {
             return new Attachment(Attachment::TYPE_FILE, $file['url']);
@@ -101,7 +121,7 @@ class FacebookSenderMessage implements SenderMessage
 
         // Is it real to send many locations or something in one request?
         return collect($attachments)->first(function ($attachment) use ($type) {
-            return $attachment['type'] === $type;
-        })['payload'] ?? null;
+                return $attachment['type'] === $type;
+            })['payload'] ?? null;
     }
 }
