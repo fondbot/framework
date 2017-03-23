@@ -47,9 +47,7 @@ class FacebookDriver extends Driver implements WebhookVerification
     {
         $this->verifySignature();
 
-        if (!$this->hasRequest('entry.0.messaging.0.sender.id')
-            || !$this->hasRequest('entry.0.messaging.0.message.text')
-        ) {
+        if (!$this->hasRequest('entry.0.messaging.0.sender.id') || !$this->hasRequest('entry.0.messaging.0.message')) {
             throw new InvalidChannelRequest('Invalid payload');
         }
     }
