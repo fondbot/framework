@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation;
+namespace FondBot\Contracts\Providers;
 
+use FondBot\Conversation\StoryManager;
 use Illuminate\Support\ServiceProvider;
 
 class ConversationServiceProvider extends ServiceProvider
