@@ -6,13 +6,13 @@ namespace Tests\Unit\Channels\Facebook;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
-use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
+use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Channels\Facebook\FacebookDriver;
 use FondBot\Channels\Facebook\FacebookMessage;
 use FondBot\Contracts\Database\Entities\Channel;
