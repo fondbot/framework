@@ -37,10 +37,4 @@ return [
         ],
     ],
 
-    /**
-     *
-     */
-    'slack' => [
-        'baseUrl' => 'https://slack.com/api/'
-    ]
 ];

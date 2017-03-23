@@ -4,19 +4,18 @@ declare(strict_types = 1);
 
 namespace FondBot\Channels\Slack;
 
+
 use GuzzleHttp\Client;
-use FondBot\Channels\Driver;
-use FondBot\Channels\Sender;
-use FondBot\Channels\Message;
-use FondBot\Channels\Request;
-use FondBot\Channels\Receiver;
 use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
-use FondBot\Contracts\Channels\WebhookInstallation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use GuzzleHttp\Psr7\Stream;
 
-class SlackDriver extends Driver implements WebhookInstallation
+class SlackDriver extends Driver
 {
     private $guzzle;
 
@@ -73,7 +72,15 @@ class SlackDriver extends Driver implements WebhookInstallation
     public function getSender(): Sender
     {
         $from     = $this->getRequest('user');
-        $userData = $this->guzzle->get($this->getBaseUrl() . $this->mapDriver('infoAboutUser') . '/?' . 'token=' . $this->getParameter('token') .'&' .'user=' . $from)->getBody();
+
+        $userData = $this->guzzle->get($this->getBaseUrl() . $this->mapDriver('infoAboutUser'),
+            [
+                'query' => [
+                    'token' =>$this->getParameter('token'),
+                    'user' => $from
+                ]
+            ])->getBody();
+
 
         if ( ($responseUser = $this->jsonNormalize($userData))->ok === false)
         {
@@ -124,15 +131,16 @@ class SlackDriver extends Driver implements WebhookInstallation
 
     private function getBaseUrl(): string
     {
-        return  config('fondbot.slack.baseUrl');
+        return  'https://slack.com/api/';
     }
 
     /**
      * Getting json conversion from guzzle
-     * @param Stream $guzzleBody
+     *
+     * @param $guzzleBody
      * @return mixed
      */
-    private function jsonNormalize(Stream $guzzleBody)
+    private function jsonNormalize($guzzleBody)
     {
         return json_decode((string) $guzzleBody);
     }
