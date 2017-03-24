@@ -62,10 +62,10 @@ class FakeDriver extends Driver implements WebhookVerification
     public function getSender(): Sender
     {
         return $this->sender ?? $this->sender = Sender::create(
-            $this->faker()->uuid,
-            $this->faker()->name,
-            $this->faker()->userName
-        );
+                $this->faker()->uuid,
+                $this->faker()->name,
+                $this->faker()->userName
+            );
     }
 
     /**
@@ -81,8 +81,8 @@ class FakeDriver extends Driver implements WebhookVerification
     /**
      * Send reply to participant.
      *
-     * @param Receiver $receiver
-     * @param string $text
+     * @param Receiver      $receiver
+     * @param string        $text
      * @param Keyboard|null $keyboard
      *
      * @return ReceiverMessage

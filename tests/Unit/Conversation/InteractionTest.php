@@ -15,7 +15,7 @@ use Tests\Classes\Fakes\FakeSenderMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface context
- * @property FakeInteraction interaction
+ * @property FakeInteraction                            interaction
  */
 class InteractionTest extends TestCase
 {

@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property int $id
- * @property string $driver
- * @property string $name
- * @property array $parameters
- * @property bool $is_enabled
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @property int                                                         $id
+ * @property string                                                      $driver
+ * @property string                                                      $name
+ * @property array                                                       $parameters
+ * @property bool                                                        $is_enabled
+ * @property \Carbon\Carbon                                              $created_at
+ * @property \Carbon\Carbon                                              $updated_at
  *
  * @property-read Participant[]|\Illuminate\Database\Eloquent\Collection $participants
  *

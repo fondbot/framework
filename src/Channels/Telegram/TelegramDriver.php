@@ -97,8 +97,8 @@ class TelegramDriver extends Driver implements WebhookInstallation
     /**
      * Send reply to participant.
      *
-     * @param Receiver $receiver
-     * @param string $text
+     * @param Receiver      $receiver
+     * @param string        $text
      * @param Keyboard|null $keyboard
      *
      * @return ReceiverMessage

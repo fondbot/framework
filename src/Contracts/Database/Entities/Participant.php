@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int $id
- * @property int $channel_id
- * @property string $identifier
- * @property string $name
- * @property string $username
+ * @property int            $id
+ * @property int            $channel_id
+ * @property string         $identifier
+ * @property string         $name
+ * @property string         $username
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  *
- * @property Channel $channel
+ * @property Channel        $channel
  *
  * @mixin \Eloquent
  */

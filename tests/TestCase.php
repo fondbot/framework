@@ -19,6 +19,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * @param string $class
+     *
      * @return Mockery\MockInterface|Mockery\Mock|mixed
      */
     protected function mock(string $class)
@@ -32,8 +33,8 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * @param Mockery\MockInterface|Mockery\Mock $entity
-     * @param string $attribute
-     * @param $value
+     * @param string                             $attribute
+     * @param                                    $value
      */
     protected function shouldReturnAttribute(Mockery\MockInterface $entity, string $attribute, $value)
     {

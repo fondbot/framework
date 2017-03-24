@@ -16,8 +16,8 @@ use FondBot\Channels\VkCommunity\VkCommunityReceiverMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
- * @property Channel channel
- * @property VkCommunityDriver vkCommunity
+ * @property Channel                                    channel
+ * @property VkCommunityDriver                          vkCommunity
  */
 class VkCommunityDriverTest extends TestCase
 {

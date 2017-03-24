@@ -23,8 +23,8 @@ use FondBot\Channels\Telegram\TelegramReceiverMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
- * @property Channel channel
- * @property TelegramDriver telegram
+ * @property Channel                                    channel
+ * @property TelegramDriver                             telegram
  */
 class TelegramDriverTest extends TestCase
 {
@@ -145,7 +145,7 @@ class TelegramDriverTest extends TestCase
      * @dataProvider attachments
      *
      * @param string $type
-     * @param array $result
+     * @param array  $result
      */
     public function test_getMessage_with_attachments(string $type, array $result = null)
     {

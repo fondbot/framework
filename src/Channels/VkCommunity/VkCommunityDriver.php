@@ -111,8 +111,8 @@ class VkCommunityDriver extends Driver implements WebhookVerification
     /**
      * Send reply to participant.
      *
-     * @param Receiver $receiver
-     * @param string $text
+     * @param Receiver      $receiver
+     * @param string        $text
      * @param Keyboard|null $keyboard
      *
      * @return ReceiverMessage

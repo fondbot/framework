@@ -19,7 +19,7 @@ class ChannelServiceProvider extends ServiceProvider
      */
     private $drivers = [
         'Facebook' => Facebook\FacebookDriver::class,
-        'Telegram'    => Telegram\TelegramDriver::class,
+        'Telegram' => Telegram\TelegramDriver::class,
         'VK Communities' => VkCommunity\VkCommunityDriver::class,
     ];
 

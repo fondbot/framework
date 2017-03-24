@@ -33,12 +33,12 @@ class FacebookDriverTest extends TestCase
 
         $this->guzzle = $this->mock(Client::class);
         $this->channel = new Channel([
-            'driver'     => FacebookDriver::class,
-            'name'       => $this->faker()->name,
+            'driver' => FacebookDriver::class,
+            'name' => $this->faker()->name,
             'parameters' => [
-                'page_token'   => str_random(),
+                'page_token' => str_random(),
                 'verify_token' => str_random(),
-                'app_secret'   => str_random(),
+                'app_secret' => str_random(),
             ],
         ]);
 
@@ -160,12 +160,12 @@ class FacebookDriverTest extends TestCase
     {
         $senderId = $this->faker()->uuid;
         $response = [
-            'first_name'  => $this->faker()->firstName,
-            'last_name'   => $this->faker()->lastName,
+            'first_name' => $this->faker()->firstName,
+            'last_name' => $this->faker()->lastName,
             'profile_pic' => $this->faker()->url,
-            'locale'      => $this->faker()->locale,
-            'timezone'    => $this->faker()->randomDigit,
-            'gender'      => $this->faker()->word,
+            'locale' => $this->faker()->locale,
+            'timezone' => $this->faker()->randomDigit,
+            'gender' => $this->faker()->word,
         ];
 
         $this->facebook->setRequest($this->generateResponse($senderId));
@@ -259,23 +259,23 @@ class FacebookDriverTest extends TestCase
                     'recipient' => [
                         'id' => $receiver->getIdentifier(),
                     ],
-                    'message'   => [
-                        'text'          => $text,
+                    'message' => [
+                        'text' => $text,
                         'quick_replies' => [
                             [
                                 'content_type' => 'text',
-                                'title'        => $keyboard->getButtons()[0]->getLabel(),
-                                'payload'      => $keyboard->getButtons()[0]->getLabel(),
+                                'title' => $keyboard->getButtons()[0]->getLabel(),
+                                'payload' => $keyboard->getButtons()[0]->getLabel(),
                             ],
                             [
                                 'content_type' => 'text',
-                                'title'        => $keyboard->getButtons()[1]->getLabel(),
-                                'payload'      => $keyboard->getButtons()[1]->getLabel(),
+                                'title' => $keyboard->getButtons()[1]->getLabel(),
+                                'payload' => $keyboard->getButtons()[1]->getLabel(),
                             ],
                         ],
                     ],
                 ],
-                'query'       => [
+                'query' => [
                     'access_token' => $this->channel->parameters['page_token'],
                 ],
             ]
@@ -304,9 +304,9 @@ class FacebookDriverTest extends TestCase
     public function test_verify_webhook_check()
     {
         $this->facebook->setRequest([
-            'hub_mode'         => 'subscribe',
+            'hub_mode' => 'subscribe',
             'hub_verify_token' => $this->channel->parameters['verify_token'],
-            'hub_challenge'    => $challenge = $this->faker()->randomNumber(),
+            'hub_challenge' => $challenge = $this->faker()->randomNumber(),
         ]);
 
         $this->assertTrue($this->facebook->isVerificationRequest());
@@ -320,9 +320,9 @@ class FacebookDriverTest extends TestCase
     public function test_verifyWebhook_invalid_token()
     {
         $this->facebook->setRequest([
-            'hub_mode'         => 'subscribe',
+            'hub_mode' => 'subscribe',
             'hub_verify_token' => $this->faker()->word,
-            'hub_challenge'    => $challenge = $this->faker()->randomNumber(),
+            'hub_challenge' => $challenge = $this->faker()->randomNumber(),
         ]);
 
         $this->assertTrue($this->facebook->isVerificationRequest());
@@ -341,7 +341,7 @@ class FacebookDriverTest extends TestCase
                 [
                     'messaging' => [
                         [
-                            'sender'  => ['id' => $id ?: $this->faker()->uuid],
+                            'sender' => ['id' => $id ?: $this->faker()->uuid],
                             'message' => ['text' => $text ?: $this->faker()->word],
                         ],
                     ],
@@ -357,16 +357,16 @@ class FacebookDriverTest extends TestCase
                 [
                     'messaging' => [
                         [
-                            'sender'  => [$this->faker()->uuid],
+                            'sender' => [$this->faker()->uuid],
                             'message' => [
                                 'attachments' => [
                                     [
-                                        'title'   => $this->faker()->sentence,
-                                        'url'     => $this->faker()->url,
-                                        'type'    => 'location',
+                                        'title' => $this->faker()->sentence,
+                                        'url' => $this->faker()->url,
+                                        'type' => 'location',
                                         'payload' => [
                                             'coordinates' => [
-                                                'lat'  => $latitude ?: $this->faker()->latitude,
+                                                'lat' => $latitude ?: $this->faker()->latitude,
                                                 'long' => $longitude ?: $this->faker()->longitude,
                                             ],
                                         ],
@@ -387,11 +387,11 @@ class FacebookDriverTest extends TestCase
                 [
                     'messaging' => [
                         [
-                            'sender'  => [$this->faker()->uuid],
+                            'sender' => [$this->faker()->uuid],
                             'message' => [
                                 'attachments' => [
                                     [
-                                        'type'    => $type,
+                                        'type' => $type,
                                         'payload' => [
                                             'url' => $this->faker()->url,
                                         ],
