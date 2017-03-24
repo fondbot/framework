@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Channels\Facebook;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\ModelFactory;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Sender;
@@ -36,7 +37,7 @@ class FacebookDriverTest extends TestCase
 
         $this->guzzle = $this->mock(Client::class);
 
-        $this->channel = $this->factory(Channel::class, [
+        $this->channel = ModelFactory::channel([
             'driver' => FacebookDriver::class,
             'name' => $this->faker()->name,
             'parameters' => [

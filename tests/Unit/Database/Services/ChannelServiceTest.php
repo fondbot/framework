@@ -100,6 +100,7 @@ class ChannelServiceTest extends TestCase
         /** @var Channel $item */
         $item = collect($this->items)->random();
 
+        /** @var Channel $result */
         $result = $this->service->findById($item->id);
 
         $this->assertEquals($item->id, $result->id);

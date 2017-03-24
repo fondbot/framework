@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Illuminate\Database\Eloquent\Model;
 use Mockery;
 use Faker\Generator;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -20,6 +19,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Create mock instance.
+     * Should be used for all classes. For models use ModelFactory.
      *
      * @param string $class
      *
@@ -32,24 +32,6 @@ abstract class TestCase extends BaseTestCase
         $this->app->instance($class, $instance);
 
         return $instance;
-    }
-
-    /**
-     * Create model and save in database.
-     *
-     * @param string $entity
-     * @param array  $attributes
-     *
-     * @return \Illuminate\Database\Eloquent\Model|mixed
-     */
-    protected function factory(string $entity, array $attributes = []): Model
-    {
-        /** @var Model $entity */
-        $entity = new $entity($attributes);
-
-        $entity->save();
-
-        return $entity;
     }
 
 }

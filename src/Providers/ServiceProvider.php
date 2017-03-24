@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace FondBot\Providers;
 
 use Route;
-use FondBot\Contracts\Events\MessageSent;
-use FondBot\Listeners\MessageSentListener;
-use Illuminate\Contracts\Events\Dispatcher;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Services\ChannelService;
 use FondBot\Contracts\Database\Services\MessageService;
@@ -23,7 +20,6 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->register(ChannelServiceProvider::class);
         $this->app->register(ConversationServiceProvider::class);
         $this->contracts();
-        $this->events();
         $this->console();
     }
 
@@ -40,17 +36,6 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->bind(ChannelService::class, \FondBot\Database\Services\ChannelService::class);
         $this->app->bind(ParticipantService::class, \FondBot\Database\Services\ParticipantService::class);
         $this->app->bind(MessageService::class, \FondBot\Database\Services\MessageService::class);
-    }
-
-    /**
-     * Register events.
-     */
-    private function events(): void
-    {
-        /** @var Dispatcher $events */
-        $events = $this->app['events'];
-
-        $events->listen(MessageSent::class, MessageSentListener::class);
     }
 
     /**

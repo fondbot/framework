@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Fallback;
 
+use Bus;
+use FondBot\Conversation\Jobs\SendMessage;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
 use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Conversation\ContextManager;
-use FondBot\Contracts\Events\MessageSent;
 use FondBot\Conversation\Fallback\FallbackStory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use FondBot\Conversation\Fallback\FallbackInteraction;
@@ -39,6 +40,8 @@ class FallbackStoryTest extends TestCase
 
     public function test_after()
     {
+        Bus::fake();
+
         $driver = new FakeDriver();
         $context = new Context($driver->getChannel(), $driver->getSender(), $driver->getMessage());
 
@@ -46,10 +49,10 @@ class FallbackStoryTest extends TestCase
         $contextManager->shouldReceive('save')->once();
         $contextManager->shouldReceive('clear')->once();
 
-        $this->expectsEvents(MessageSent::class);
-
         $this->story->setContext($context);
         $this->story->setDriver($driver);
         $this->story->run();
+
+        Bus::assertDispatched(SendMessage::class);
     }
 }
