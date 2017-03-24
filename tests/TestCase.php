@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Illuminate\Database\Eloquent\Model;
 use Mockery;
 use Faker\Generator;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -18,6 +19,8 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Create mock instance.
+     *
      * @param string $class
      *
      * @return Mockery\MockInterface|Mockery\Mock|mixed
@@ -32,12 +35,21 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param Mockery\MockInterface|Mockery\Mock $entity
-     * @param string                             $attribute
-     * @param                                    $value
+     * Create model and save in database.
+     *
+     * @param string $entity
+     * @param array  $attributes
+     *
+     * @return \Illuminate\Database\Eloquent\Model|mixed
      */
-    protected function shouldReturnAttribute(Mockery\MockInterface $entity, string $attribute, $value)
+    protected function factory(string $entity, array $attributes = []): Model
     {
-        $entity->shouldReceive('getAttribute')->with($attribute)->andReturn($value);
+        /** @var Model $entity */
+        $entity = new $entity($attributes);
+
+        $entity->save();
+
+        return $entity;
     }
+
 }

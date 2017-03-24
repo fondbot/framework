@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Facebook;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Sender;
@@ -27,12 +28,15 @@ use FondBot\Channels\Facebook\FacebookReceiverMessage;
  */
 class FacebookDriverTest extends TestCase
 {
+    use DatabaseMigrations;
+
     protected function setUp()
     {
         parent::setUp();
 
         $this->guzzle = $this->mock(Client::class);
-        $this->channel = new Channel([
+
+        $this->channel = $this->factory(Channel::class, [
             'driver' => FacebookDriver::class,
             'name' => $this->faker()->name,
             'parameters' => [
@@ -71,7 +75,6 @@ class FacebookDriverTest extends TestCase
     public function test_verifyRequest_skip_signature()
     {
         $data = $this->generateResponse();
-        $this->shouldReturnAttribute($channel = $this->mock(Channel::class), 'parameters', []);
 
         $this->facebook->setHeaders($this->generateHeaders($data, str_random()));
         $this->facebook->setRequest($data);
@@ -172,12 +175,15 @@ class FacebookDriverTest extends TestCase
 
         $stream = $this->mock(ResponseInterface::class);
 
-        $stream->shouldReceive('getBody')->andReturn(json_encode($response));
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
-            'query' => [
-                'access_token' => $this->channel->parameters['page_token'],
-            ],
-        ])->andReturn($stream);
+        $stream->shouldReceive('getBody')->andReturn(json_encode($response))->atLeast()->once();
+        $this->guzzle->shouldReceive('get')
+            ->with('https://graph.facebook.com/v2.6/'.$senderId, [
+                'query' => [
+                    'access_token' => $this->channel->parameters['page_token'],
+                ],
+            ])
+            ->andReturn($stream)
+            ->atLeast()->once();
 
         $this->assertInstanceOf(Sender::class, $this->facebook->getSender());
     }
@@ -191,11 +197,13 @@ class FacebookDriverTest extends TestCase
         $senderId = $this->faker()->uuid;
         $this->facebook->setRequest($this->generateResponse($senderId));
 
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
-            'query' => [
-                'access_token' => $this->channel->parameters['page_token'],
-            ],
-        ])->andThrow(new RequestException('Invalid request', $this->mock(RequestInterface::class)));
+        $this->guzzle->shouldReceive('get')
+            ->with('https://graph.facebook.com/v2.6/'.$senderId, [
+                'query' => [
+                    'access_token' => $this->channel->parameters['page_token'],
+                ],
+            ])
+            ->andThrow(new RequestException('Invalid request', $this->mock(RequestInterface::class)));
 
         $this->facebook->getSender();
     }
