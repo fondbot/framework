@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Contracts\Channels\Sender;
+use Illuminate\Contracts\Support\Arrayable;
 use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Database\Entities\Channel;
-use Illuminate\Contracts\Support\Arrayable;
 
 class Context implements Arrayable
 {

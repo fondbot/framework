@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\SenderMessage;
-use FondBot\Contracts\Database\Entities\Channel;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Interaction;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Database\Entities\Channel;
 
 /**
  * @property \FondBot\Contracts\Database\Entities\Channel $channel

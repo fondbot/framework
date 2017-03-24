@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Fallback;
 
-use FondBot\Contracts\Database\Entities\Channel;
-use Tests\Classes\Fakes\FakeSender;
-use Tests\Classes\Fakes\FakeSenderMessage;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
+use Tests\Classes\Fakes\FakeSender;
+use Tests\Classes\Fakes\FakeSenderMessage;
+use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Fallback\FallbackStory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use FondBot\Conversation\Fallback\FallbackInteraction;

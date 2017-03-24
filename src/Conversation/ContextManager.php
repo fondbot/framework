@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Database\Entities\Channel;
 use Illuminate\Contracts\Cache\Repository as Cache;
 
 class ContextManager
@@ -86,7 +86,6 @@ class ContextManager
      * @param Sender  $sender
      *
      * @return string
-     *
      */
     private function key(Channel $channel, Sender $sender): string
     {

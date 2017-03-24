@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Contracts\Channels\Driver;
-use FondBot\Conversation\Story;
-use Tests\Classes\Fakes\FakeInteraction;
-use Tests\Classes\Fakes\FakeStory;
 use Tests\TestCase;
+use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
+use Tests\Classes\Fakes\FakeStory;
+use FondBot\Contracts\Channels\Driver;
+use Tests\Classes\Fakes\FakeInteraction;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver

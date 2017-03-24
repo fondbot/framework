@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Contracts\Channels\Driver;
 use InvalidArgumentException;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Interaction;
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\ConversationManager;
 
 trait Transitions

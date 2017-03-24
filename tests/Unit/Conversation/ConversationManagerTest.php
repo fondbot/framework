@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Contracts\Channels\Driver;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\ConversationManager;
 use FondBot\Contracts\Database\Services\ParticipantService;
