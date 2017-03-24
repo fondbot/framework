@@ -7,7 +7,6 @@ namespace Tests\Unit\Conversation\Jobs;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
-use FondBot\Conversation\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
@@ -17,6 +16,7 @@ use Tests\Classes\Fakes\FakeSenderMessage;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Conversation\ConversationManager;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Conversation\Jobs\StartConversation;
 use FondBot\Contracts\Database\Entities\Participant;
 use FondBot\Contracts\Database\Services\ParticipantService;
 

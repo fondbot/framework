@@ -6,10 +6,10 @@ namespace FondBot;
 
 use FondBot\Traits\Loggable;
 use Illuminate\Http\Request;
-use FondBot\Conversation\Jobs\StartConversation;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Conversation\Jobs\StartConversation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 
