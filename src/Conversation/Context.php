@@ -7,10 +7,9 @@ namespace FondBot\Conversation;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Contracts\LoggableArray;
 use Illuminate\Contracts\Support\Arrayable;
 
-class Context implements LoggableArray, Arrayable
+class Context implements Arrayable
 {
     private $channel;
     private $sender;
@@ -96,21 +95,6 @@ class Context implements LoggableArray, Arrayable
             'story' => $this->story !== null ? get_class($this->story) : null,
             'interaction' => $this->interaction !== null ? get_class($this->interaction) : null,
             'values' => $this->values,
-        ];
-    }
-
-    /**
-     * Return information for log.
-     *
-     * @return array
-     */
-    public function toLoggableArray(): array
-    {
-        return [
-            'channel' => $this->channel->toArray(),
-            'story' => get_class($this->getStory()),
-            'interaction' => get_class($this->getInteraction()),
-            'values' => $this->getValues(),
         ];
     }
 }

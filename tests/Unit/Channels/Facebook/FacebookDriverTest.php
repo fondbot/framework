@@ -43,7 +43,7 @@ class FacebookDriverTest extends TestCase
         ]);
 
         $this->facebook = new FacebookDriver($this->guzzle);
-        $this->facebook->setChannel($this->channel);
+        $this->facebook->setParameters($this->channel->parameters);
         $this->facebook->setRequest([]);
         $this->facebook->setHeaders([]);
     }
@@ -75,7 +75,7 @@ class FacebookDriverTest extends TestCase
 
         $this->facebook->setHeaders($this->generateHeaders($data, str_random()));
         $this->facebook->setRequest($data);
-        $this->facebook->setChannel($channel);
+        $this->facebook->setParameters([]);
 
         $this->facebook->verifyRequest();
     }

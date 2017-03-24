@@ -23,6 +23,7 @@ class ConversationManagerTest extends TestCase
         $story = $this->mock(Story::class);
 
         $context->shouldReceive('setStory')->with($story)->once();
+        $context->shouldReceive('toArray')->andReturn([])->atLeast()->once();
         $contextManager->shouldReceive('save')->with($context)->once();
 
         $story->shouldReceive('setDriver')->with($driver)->once();

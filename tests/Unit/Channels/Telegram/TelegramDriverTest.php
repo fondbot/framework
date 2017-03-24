@@ -40,7 +40,7 @@ class TelegramDriverTest extends TestCase
         ]);
 
         $this->telegram = new TelegramDriver($this->guzzle);
-        $this->telegram->setChannel($this->channel);
+        $this->telegram->setParameters($this->channel->parameters);
         $this->telegram->setRequest([]);
     }
 

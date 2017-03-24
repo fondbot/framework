@@ -112,19 +112,4 @@ class ContextTest extends TestCase
 
         $this->assertSame($expected, $this->context->toArray());
     }
-
-    public function test_toLoggableArray()
-    {
-        $values = ['phone' => $this->faker()->phoneNumber];
-
-        $expected = [
-            'channel' => $this->channel->toArray(),
-            'story' => get_class($this->story),
-            'interaction' => get_class($this->interaction),
-            'values' => $values,
-        ];
-
-        $this->context->setValues($values);
-        $this->assertSame($expected, $this->context->toLoggableArray());
-    }
 }

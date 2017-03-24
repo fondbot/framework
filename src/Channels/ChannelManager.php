@@ -30,7 +30,7 @@ class ChannelManager
     {
         /** @var Driver $driver */
         $driver = resolve($channel->driver);
-        $driver->setChannel($channel);
+        $driver->setParameters($channel->parameters);
         $driver->setRequest($request);
         $driver->setHeaders($headers);
 

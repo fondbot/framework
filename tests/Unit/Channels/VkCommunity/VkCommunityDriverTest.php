@@ -36,7 +36,7 @@ class VkCommunityDriverTest extends TestCase
         ]);
 
         $this->vkCommunity = new VkCommunityDriver($this->guzzle);
-        $this->vkCommunity->setChannel($this->channel);
+        $this->vkCommunity->setParameters($this->channel->parameters);
         $this->vkCommunity->setRequest([]);
     }
 

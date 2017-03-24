@@ -68,9 +68,9 @@ class ContextManagerTest extends TestCase
         ];
 
         $context = $this->mock(Context::class);
-        $context->shouldReceive('getChannel')->andReturn($this->channel)->once();
-        $context->shouldReceive('getSender')->andReturn($this->sender)->once();
-        $context->shouldReceive('toArray')->andReturn($contextArray)->once();
+        $context->shouldReceive('getChannel')->andReturn($this->channel)->atLeast()->once();
+        $context->shouldReceive('getSender')->andReturn($this->sender)->atLeast()->once();
+        $context->shouldReceive('toArray')->andReturn($contextArray)->atLeast()->once();
 
         $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
 
@@ -81,9 +81,16 @@ class ContextManagerTest extends TestCase
 
     public function test_clear()
     {
+        $contextArray = [
+            'story' => null,
+            'interaction' => null,
+            'values' => ['key1' => 'value1'],
+        ];
+
         $context = $this->mock(Context::class);
         $context->shouldReceive('getChannel')->andReturn($this->channel)->once();
         $context->shouldReceive('getSender')->andReturn($this->sender)->once();
+        $context->shouldReceive('toArray')->andReturn($contextArray)->atLeast()->once();
 
         $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
 
