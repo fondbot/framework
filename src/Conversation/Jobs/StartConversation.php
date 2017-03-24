@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Jobs;
+namespace FondBot\Conversation\Jobs;
 
 use FondBot\Traits\Loggable;
 use Illuminate\Bus\Queueable;

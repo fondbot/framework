@@ -8,7 +8,7 @@ use Bus;
 use FondBot\Bot;
 use Tests\TestCase;
 use Illuminate\Http\Request;
-use FondBot\Jobs\StartConversation;
+use FondBot\Conversation\Jobs\StartConversation;
 use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Contracts\Database\Entities\Channel;
 
