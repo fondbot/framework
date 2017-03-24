@@ -18,6 +18,9 @@ use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 
 class FakeDriver extends Driver implements WebhookVerification
 {
+    private $sender;
+    private $message;
+
     /**
      * Get channel.
      *
@@ -58,7 +61,7 @@ class FakeDriver extends Driver implements WebhookVerification
      */
     public function getSender(): Sender
     {
-        return Sender::create(
+        return $this->sender ?? $this->sender = Sender::create(
             $this->faker()->uuid,
             $this->faker()->name,
             $this->faker()->userName
@@ -72,7 +75,7 @@ class FakeDriver extends Driver implements WebhookVerification
      */
     public function getMessage(): SenderMessage
     {
-        return new FakeSenderMessage($this->faker()->text());
+        return $this->message ?? $this->message = new FakeSenderMessage($this->faker()->text());
     }
 
     /**

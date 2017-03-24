@@ -7,12 +7,11 @@ namespace FondBot\Conversation\Jobs;
 use FondBot\Traits\Loggable;
 use Illuminate\Bus\Queueable;
 use FondBot\Channels\ChannelManager;
-use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\StoryManager;
 use Illuminate\Queue\SerializesModels;
 use FondBot\Conversation\ContextManager;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Events\Dispatcher as Events;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Conversation\ConversationManager;
@@ -35,6 +34,7 @@ class StartConversation implements ShouldQueue
     }
 
     public function handle(
+        Events $events,
         ChannelManager $channelManager,
         ContextManager $contextManager,
         StoryManager $storyManager,
@@ -43,7 +43,6 @@ class StartConversation implements ShouldQueue
     ) {
         $this->debug('handle', ['channel' => $this->channel->toArray(), 'request' => $this->request]);
 
-        /** @var Driver $driver */
         $driver = $channelManager->createDriver($this->channel, $this->request, $this->headers);
 
         // Store sender in database as participant
@@ -58,7 +57,7 @@ class StartConversation implements ShouldQueue
         $context = $contextManager->resolve($driver);
 
         // Fire an event that message was received
-        $this->events()->dispatch(
+        $events->dispatch(
             new MessageReceived(
                 $participant,
                 $driver->getMessage()
@@ -75,10 +74,5 @@ class StartConversation implements ShouldQueue
 
         // Start Conversation
         $conversationManager->start($context, $story);
-    }
-
-    private function events(): Dispatcher
-    {
-        return resolve(Dispatcher::class);
     }
 }

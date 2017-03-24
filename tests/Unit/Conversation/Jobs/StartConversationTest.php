@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Jobs;
 
+use Illuminate\Events\Dispatcher;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\Classes\Fakes\FakeDriver;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\StoryManager;
 use FondBot\Conversation\ContextManager;
-use Tests\Classes\Fakes\FakeSenderMessage;
 use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Conversation\ConversationManager;
 use FondBot\Contracts\Database\Entities\Channel;
@@ -20,98 +21,115 @@ use FondBot\Conversation\Jobs\StartConversation;
 use FondBot\Contracts\Database\Entities\Participant;
 use FondBot\Contracts\Database\Services\ParticipantService;
 
+/**
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface       channelManager
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface       contextManager
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface       storyManager
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface       conversationManager
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface       participantService
+ * @property Driver                                           driver
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface       context
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface       story
+ * @property Channel                                          channel
+ * @property \FondBot\Contracts\Database\Entities\Participant participant
+ */
 class StartConversationTest extends TestCase
 {
+    use DatabaseMigrations;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->channelManager = $this->mock(ChannelManager::class);
+        $this->contextManager = $this->mock(ContextManager::class);
+        $this->storyManager = $this->mock(StoryManager::class);
+        $this->conversationManager = $this->mock(ConversationManager::class);
+        $this->participantService = $this->mock(ParticipantService::class);
+        $this->driver = new FakeDriver;
+        $this->context = $this->mock(Context::class);
+        $this->story = $this->mock(Story::class);
+        $this->channel = Channel::firstOrCreate([
+            'driver' => get_class($this->driver),
+            'name' => $this->faker()->word,
+            'parameters' => [],
+        ]);
+        $this->participant = new Participant;
+    }
+
     public function test_story_found()
     {
-        $request = [];
-        $headers = [];
-        $channel = new Channel(['id' => random_int(1, time())]);
-        $participant = new Participant;
+        $this->channelManager->shouldReceive('createDriver')->with($this->channel, [],
+            [])->andReturn($this->driver)->once();
 
-        $channelManager = $this->mock(ChannelManager::class);
-        $contextManager = $this->mock(ContextManager::class);
-        $storyManager = $this->mock(StoryManager::class);
-        $conversationManager = $this->mock(ConversationManager::class);
-        $participantService = $this->mock(ParticipantService::class);
-        $driver = $this->mock(Driver::class);
-        $context = $this->mock(Context::class);
-        $story = $this->mock(Story::class);
+        $sender = $this->driver->getSender();
+        $message = $this->driver->getMessage();
 
-        $channelManager->shouldReceive('createDriver')->with($channel, [], [])->andReturn($driver)->once();
-
-        $driver->shouldReceive('getMessage')->andReturn(
-            $message = FakeSenderMessage::create()
-        );
-        $driver->shouldReceive('getSender')->andReturn(
-            $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName)
-        );
-
-        $participantService->shouldReceive('createOrUpdate')
+        $this->participantService->shouldReceive('createOrUpdate')
             ->with(
                 [
-                    'channel_id' => $channel->id,
+                    'channel_id' => $this->channel->id,
                     'identifier' => $sender->getIdentifier(),
                     'name' => $sender->getName(),
                     'username' => $sender->getUsername(),
-                ], ['channel_id' => $channel->id, 'identifier' => $sender->getIdentifier()]
+                ], ['channel_id' => $this->channel->id, 'identifier' => $sender->getIdentifier()]
             )
-            ->andReturn($participant);
+            ->andReturn($this->participant);
 
-        $contextManager->shouldReceive('resolve')->with($driver)->andReturn($context)->once();
+        $this->contextManager->shouldReceive('resolve')->with($this->driver)->andReturn($this->context)->once();
 
         $this->expectsEvents(MessageReceived::class);
 
-        $storyManager->shouldReceive('find')->with($context, $message)->andReturn($story)->once();
-        $conversationManager->shouldReceive('start')->with($context, $story)->once();
+        $this->storyManager->shouldReceive('find')->with($this->context, $message)->andReturn($this->story)->once();
+        $this->conversationManager->shouldReceive('start')->with($this->context, $this->story)->once();
 
-        $job = new StartConversation($channel, $request, $headers);
-        $job->handle($channelManager, $contextManager, $storyManager, $conversationManager, $participantService);
+        $job = new StartConversation($this->channel, [], []);
+        $job->handle(
+            resolve(Dispatcher::class),
+            $this->channelManager,
+            $this->contextManager,
+            $this->storyManager,
+            $this->conversationManager,
+            $this->participantService
+        );
     }
 
     public function test_no_story_found()
     {
-        $request = [];
-        $headers = [];
-        $channel = new Channel(['id' => random_int(1, time())]);
-        $participant = new Participant;
+        $sender = $this->driver->getSender();
+        $message = $this->driver->getMessage();
 
-        $channelManager = $this->mock(ChannelManager::class);
-        $contextManager = $this->mock(ContextManager::class);
-        $storyManager = $this->mock(StoryManager::class);
-        $conversationManager = $this->mock(ConversationManager::class);
-        $participantService = $this->mock(ParticipantService::class);
-        $driver = $this->mock(Driver::class);
-        $context = $this->mock(Context::class);
+        $this->channelManager->shouldReceive('createDriver')
+            ->with($this->channel, [], [])
+            ->andReturn($this->driver)
+            ->once();
 
-        $channelManager->shouldReceive('createDriver')->with($channel, [], [])->andReturn($driver)->once();
-
-        $driver->shouldReceive('getMessage')->andReturn(
-            $message = FakeSenderMessage::create()
-        );
-        $driver->shouldReceive('getSender')->andReturn(
-            $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName)
-        );
-
-        $participantService->shouldReceive('createOrUpdate')
+        $this->participantService->shouldReceive('createOrUpdate')
             ->with(
                 [
-                    'channel_id' => $channel->id,
+                    'channel_id' => $this->channel->id,
                     'identifier' => $sender->getIdentifier(),
                     'name' => $sender->getName(),
                     'username' => $sender->getUsername(),
-                ], ['channel_id' => $channel->id, 'identifier' => $sender->getIdentifier()]
+                ], ['channel_id' => $this->channel->id, 'identifier' => $sender->getIdentifier()]
             )
-            ->andReturn($participant);
+            ->andReturn($this->participant);
 
-        $contextManager->shouldReceive('resolve')->with($driver)->andReturn($context)->once();
+        $this->contextManager->shouldReceive('resolve')->with($this->driver)->andReturn($this->context)->once();
 
         $this->expectsEvents(MessageReceived::class);
 
-        $storyManager->shouldReceive('find')->with($context, $message)->andReturn(null)->once();
-        $conversationManager->shouldReceive('start')->never();
+        $this->storyManager->shouldReceive('find')->with($this->context, $message)->andReturn(null)->once();
+        $this->conversationManager->shouldReceive('start')->never();
 
-        $job = new StartConversation($channel, $request, $headers);
-        $job->handle($channelManager, $contextManager, $storyManager, $conversationManager, $participantService);
+        $job = new StartConversation($this->channel, [], []);
+        $job->handle(
+            resolve(Dispatcher::class),
+            $this->channelManager,
+            $this->contextManager,
+            $this->storyManager,
+            $this->conversationManager,
+            $this->participantService
+        );
     }
 }
