@@ -33,5 +33,4 @@ abstract class TestCase extends BaseTestCase
 
         return $instance;
     }
-
 }

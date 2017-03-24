@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Jobs;
 
+use Tests\TestCase;
+use Tests\ModelFactory;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Receiver;
-use FondBot\Contracts\Channels\ReceiverMessage;
+use FondBot\Conversation\Jobs\SendMessage;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Channels\ReceiverMessage;
+use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use FondBot\Contracts\Database\Services\MessageService;
 use FondBot\Contracts\Database\Services\ParticipantService;
-use FondBot\Conversation\Jobs\SendMessage;
-use Tests\ModelFactory;
-use Tests\TestCase;
-use FondBot\Contracts\Database\Entities\Channel;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
  * @property Channel                                    $channel
@@ -78,5 +78,4 @@ class SendMessageTest extends TestCase
         $job = new SendMessage($this->channel, $this->receiver, $this->text, $this->keyboard);
         $job->handle($this->channelManager, $this->participantService, $this->messageService);
     }
-
 }

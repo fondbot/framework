@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Bus;
-use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Conversation\Jobs\SendMessage;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\ModelFactory;
 use Tests\TestCase;
+use Tests\ModelFactory;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\ContextManager;
 use Tests\Classes\Fakes\FakeInteraction;
+use FondBot\Conversation\Jobs\SendMessage;
 use Tests\Classes\Fakes\FakeSenderMessage;
+use FondBot\Contracts\Database\Entities\Channel;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $context

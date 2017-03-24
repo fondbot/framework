@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Facebook;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\ModelFactory;
 use Tests\TestCase;
 use GuzzleHttp\Client;
+use Tests\ModelFactory;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -20,6 +19,7 @@ use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Channels\Facebook\FacebookSenderMessage;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use FondBot\Channels\Facebook\FacebookReceiverMessage;
 
 /**

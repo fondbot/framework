@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Conversation\Jobs\SendMessage;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Channels\Receiver;
+use Illuminate\Contracts\Bus\Dispatcher;
+use FondBot\Conversation\Jobs\SendMessage;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
-use Illuminate\Contracts\Bus\Dispatcher;
 
 abstract class Interaction implements InteractionContract
 {

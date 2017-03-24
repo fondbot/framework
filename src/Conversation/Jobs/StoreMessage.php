@@ -16,10 +16,10 @@ use FondBot\Contracts\Channels\SenderMessage;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Message;
-use FondBot\Contracts\Database\Services\ParticipantService;
 use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Contracts\Database\Entities\Participant;
 use FondBot\Contracts\Database\Services\MessageService;
+use FondBot\Contracts\Database\Services\ParticipantService;
 
 class StoreMessage implements ShouldQueue
 {

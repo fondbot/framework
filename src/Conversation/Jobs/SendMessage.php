@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Jobs;
 
+use FondBot\Traits\Loggable;
+use Illuminate\Bus\Queueable;
 use FondBot\Channels\ChannelManager;
+use Illuminate\Queue\SerializesModels;
 use FondBot\Contracts\Channels\Receiver;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Services\MessageService;
 use FondBot\Contracts\Database\Services\ParticipantService;
-use FondBot\Traits\Loggable;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 
 class SendMessage implements ShouldQueue
 {
@@ -60,5 +60,4 @@ class SendMessage implements ShouldQueue
             'text' => $message->getText(),
         ]);
     }
-
 }

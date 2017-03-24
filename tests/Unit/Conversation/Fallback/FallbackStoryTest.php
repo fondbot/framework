@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation\Fallback;
 
 use Bus;
-use FondBot\Conversation\Jobs\SendMessage;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
 use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Conversation\ContextManager;
+use FondBot\Conversation\Jobs\SendMessage;
 use FondBot\Conversation\Fallback\FallbackStory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use FondBot\Conversation\Fallback\FallbackInteraction;

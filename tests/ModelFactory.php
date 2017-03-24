@@ -6,13 +6,12 @@ namespace Tests;
 
 use Faker\Factory;
 use Faker\Generator;
+use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
-use Tests\Classes\Fakes\FakeDriver;
 
 class ModelFactory
 {
-
     public static function channel(array $attributes = []): Channel
     {
         $channel = new Channel([
@@ -44,5 +43,4 @@ class ModelFactory
     {
         return Factory::create();
     }
-
 }
