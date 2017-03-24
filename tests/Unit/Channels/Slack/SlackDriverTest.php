@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace Tests\Unit\Channels\Slack;
 
 use FondBot\Channels\Slack\SlackDriver;
-use FondBot\Channels\Slack\SlackMessage;
+
+use FondBot\Channels\Slack\SlackSenderMessage;
 use FondBot\Contracts\Channels\Receiver;
+use FondBot\Contracts\Channels\ReceiverMessage;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\RequestInterface;
 use Tests\TestCase;
@@ -35,8 +37,9 @@ class SlackDriverTest extends TestCase
         ]);
 
         $this->slack = new SlackDriver($this->guzzle);
-        $this->slack->setChannel($this->channel);
+        $this->slack->setParameters($this->channel->parameters);
         $this->slack->setRequest([]);
+
     }
     public function tearDown()
     {
@@ -44,10 +47,6 @@ class SlackDriverTest extends TestCase
         m::close();
     }
 
-    public function test_getChannel()
-    {
-        $this->assertSame($this->channel, $this->slack->getChannel());
-    }
 
     public function test_getConfig()
     {
@@ -121,7 +120,7 @@ class SlackDriverTest extends TestCase
 
         /** @var TelegramMessage $message */
         $message = $this->slack->getMessage();
-        $this->assertInstanceOf(SlackMessage::class, $message);
+        $this->assertInstanceOf(SlackSenderMessage::class, $message);
         $this->assertSame($text, $message->getText());
     }
 
@@ -140,7 +139,7 @@ class SlackDriverTest extends TestCase
 
     public function test_sendMessage()
     {
-        $receiver = Receiver::create($this->faker()->uuid, $this->faker()->name);
+        $receiver = new Receiver($this->faker()->uuid, $this->faker()->name);
         $text     = $this->faker()->text();
 
         $this->guzzle->shouldReceive('post')
@@ -156,6 +155,7 @@ class SlackDriverTest extends TestCase
             )
             ->once();
 
-        $this->slack->sendMessage($receiver, $text);
+        $senderObject = $this->slack->sendMessage($receiver, $text);
+        $this->assertInstanceOf(ReceiverMessage::class, $senderObject);
     }
 }

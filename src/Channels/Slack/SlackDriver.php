@@ -5,14 +5,14 @@ declare(strict_types = 1);
 namespace FondBot\Channels\Slack;
 
 use GuzzleHttp\Client;
-use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
-
+use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceiverMessage;
 
 class SlackDriver extends Driver
 {
@@ -86,35 +86,38 @@ class SlackDriver extends Driver
     /**
      * Get message received from sender.
      *
-     * @return Message
+     * @return SenderMessage
      */
-    public function getMessage(): Message
+    public function getMessage(): SenderMessage
     {
-        return new SlackMessage($this->getRequest());
+        return new SlackSenderMessage($this->getRequest());
     }
 
     /**
-     * Send reply to participant.
+     *  Send reply to participant.
      *
-     * @param Receiver $receiver
-     * @param string $text
+     * @param Receiver      $receiver
+     * @param string        $text
      * @param Keyboard|null $keyboard
+     * @return ReceiverMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void
+    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
     {
-        $parameters = [
-            'query' => [
-                'channel' => $receiver->getIdentifier(),
-                'text'    => $text,
-                'token'   => $this->getParameter('token')
-            ]
-        ];
+        $message = new SlackReceiverMessage($receiver, $text, $keyboard);
+
+        $query   = array_merge($message->toArray(), [
+            'token'   => $this->getParameter('token')
+        ]);
 
         try {
-            $this->guzzle->post($this->getBaseUrl() . $this->mapDriver('postMessage'), $parameters);
+            $this->guzzle->post($this->getBaseUrl() . $this->mapDriver('postMessage'), [
+                'query' => $query
+            ]);
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
         }
+
+        return $message;
     }
 
     private function getBaseUrl(): string

@@ -4,12 +4,11 @@ declare(strict_types = 1);
 
 namespace FondBot\Channels\Slack;
 
-
-use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
-class SlackMessage implements Message
+class SlackSenderMessage implements SenderMessage
 {
 
     private $payload;
