@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace FondBot\Channels\Slack;
 
-
 use GuzzleHttp\Client;
 use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
@@ -13,7 +12,7 @@ use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
-use GuzzleHttp\Psr7\Stream;
+
 
 class SlackDriver extends Driver
 {
@@ -76,8 +75,8 @@ class SlackDriver extends Driver
         $userData = $this->guzzle->get($this->getBaseUrl() . $this->mapDriver('infoAboutUser'),
             [
                 'query' => [
-                    'token' =>$this->getParameter('token'),
-                    'user' => $from
+                    'token' => $this->getParameter('token'),
+                    'user'  => $from
                 ]
             ])->getBody();
 

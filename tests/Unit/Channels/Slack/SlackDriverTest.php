@@ -6,11 +6,15 @@ namespace Tests\Unit\Channels\Slack;
 
 use FondBot\Channels\Slack\SlackDriver;
 use FondBot\Channels\Slack\SlackMessage;
+use FondBot\Contracts\Channels\Receiver;
+use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\RequestInterface;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Contracts\Database\Entities\Channel;
+use Mockery as m;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -25,14 +29,19 @@ class SlackDriverTest extends TestCase
 
         $this->guzzle = $this->mock(Client::class);
         $this->channel = new Channel([
-            'driver' => SlackDriver::class,
-            'name' => $this->faker()->name,
+            'driver'     => SlackDriver::class,
+            'name'       => $this->faker()->name,
             'parameters' => ['token' => str_random()],
         ]);
 
         $this->slack = new SlackDriver($this->guzzle);
         $this->slack->setChannel($this->channel);
         $this->slack->setRequest([]);
+    }
+    public function tearDown()
+    {
+        parent::tearDown();
+        m::close();
     }
 
     public function test_getChannel()
@@ -132,4 +141,37 @@ class SlackDriverTest extends TestCase
         $this->assertSame($text, $message->getText());
     }
 
+    public function test_sendMessage_request_exception()
+    {
+        $text     = $this->faker()->text;
+        $receiver = $this->mock(Receiver::class);
+
+        $receiver->shouldReceive('getIdentifier')->andReturn( $this->faker()->uuid );
+
+        $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request',
+            $this->mock(RequestInterface::class)));
+
+        $this->slack->sendMessage($receiver, $text);
+    }
+
+    public function test_sendMessage()
+    {
+        $receiver = Receiver::create($this->faker()->uuid, $this->faker()->name);
+        $text     = $this->faker()->text();
+
+        $this->guzzle->shouldReceive('post')
+            ->with(
+                'https://slack.com/api/chat.postMessage',
+                [
+                    'query' => [
+                        'channel' => $receiver->getIdentifier(),
+                        'text'    => $text,
+                        'token'   => $this->slack->getParameter('token')
+                    ]
+                ]
+            )
+            ->once();
+
+        $this->slack->sendMessage($receiver, $text);
+    }
 }
