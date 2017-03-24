@@ -8,8 +8,6 @@ use Route;
 use FondBot\Contracts\Events\MessageSent;
 use FondBot\Listeners\MessageSentListener;
 use Illuminate\Contracts\Events\Dispatcher;
-use FondBot\Contracts\Events\MessageReceived;
-use FondBot\Listeners\MessageReceivedListener;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Services\ChannelService;
 use FondBot\Contracts\Database\Services\MessageService;
@@ -52,7 +50,6 @@ class ServiceProvider extends BaseServiceProvider
         /** @var Dispatcher $events */
         $events = $this->app['events'];
 
-        $events->listen(MessageReceived::class, MessageReceivedListener::class);
         $events->listen(MessageSent::class, MessageSentListener::class);
     }
 

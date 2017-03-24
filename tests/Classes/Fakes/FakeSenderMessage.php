@@ -62,4 +62,14 @@ class FakeSenderMessage implements SenderMessage
     {
         return $this->attachment;
     }
+
+    public function withoutLocation(): void
+    {
+        $this->location = null;
+    }
+
+    public function withoutAttachment(): void
+    {
+        $this->attachment = null;
+    }
 }

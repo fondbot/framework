@@ -11,12 +11,9 @@ use FondBot\Conversation\StoryManager;
 use Illuminate\Queue\SerializesModels;
 use FondBot\Conversation\ContextManager;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Events\Dispatcher as Events;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use FondBot\Contracts\Events\MessageReceived;
 use FondBot\Conversation\ConversationManager;
 use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Contracts\Database\Services\ParticipantService;
 
 class StartConversation implements ShouldQueue
 {
@@ -34,35 +31,20 @@ class StartConversation implements ShouldQueue
     }
 
     public function handle(
-        Events $events,
         ChannelManager $channelManager,
         ContextManager $contextManager,
         StoryManager $storyManager,
-        ConversationManager $conversationManager,
-        ParticipantService $participantService
+        ConversationManager $conversationManager
     ) {
         $this->debug('handle', ['channel' => $this->channel->toArray(), 'request' => $this->request]);
 
         $driver = $channelManager->createDriver($this->channel, $this->request, $this->headers);
 
-        // Store sender in database as participant
-        $participant = $participantService->createOrUpdate([
-            'channel_id' => $this->channel->id,
-            'identifier' => $driver->getSender()->getIdentifier(),
-            'name' => $driver->getSender()->getName(),
-            'username' => $driver->getSender()->getUsername(),
-        ], ['channel_id' => $this->channel->id, 'identifier' => $driver->getSender()->getIdentifier()]);
+        // Dispatch job to store message
+        dispatch((new StoreMessage($this->channel, $driver->getSender(), $driver->getMessage()))->onQueue('fondbot'));
 
         // Resolve context
         $context = $contextManager->resolve($driver);
-
-        // Fire an event that message was received
-        $events->dispatch(
-            new MessageReceived(
-                $participant,
-                $driver->getMessage()
-            )
-        );
 
         // Find story
         $story = $storyManager->find($context, $driver->getMessage());
