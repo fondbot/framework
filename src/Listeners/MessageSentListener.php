@@ -26,7 +26,7 @@ class MessageSentListener
         $message = $event->getMessage();
 
         $participant = $this->participantService->findByChannelAndIdentifier(
-            $event->getContext()->getDriver()->getChannel(),
+            $event->getContext()->getChannel(),
             $message->getReceiver()->getIdentifier()
         );
 

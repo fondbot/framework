@@ -44,7 +44,7 @@ class StartConversation implements ShouldQueue
         dispatch((new StoreMessage($this->channel, $driver->getSender(), $driver->getMessage()))->onQueue('fondbot'));
 
         // Resolve context
-        $context = $contextManager->resolve($driver);
+        $context = $contextManager->resolve($this->channel, $driver);
 
         // Find story
         $story = $storyManager->find($context, $driver->getMessage());
@@ -55,6 +55,6 @@ class StartConversation implements ShouldQueue
         }
 
         // Start Conversation
-        $conversationManager->start($context, $story);
+        $conversationManager->start($driver, $context, $story);
     }
 }

@@ -31,11 +31,9 @@ class InteractionTest extends TestCase
 
     public function test_getSenderMessage()
     {
-        $driver = $this->mock(Driver::class);
         $message = FakeSenderMessage::create();
 
-        $this->context->shouldReceive('getDriver')->andReturn($driver);
-        $driver->shouldReceive('getMessage')->andReturn($message);
+        $this->context->shouldReceive('getMessage')->andReturn($message)->once();
 
         $this->assertSame($message, $this->interaction->getSenderMessage());
     }
@@ -45,7 +43,7 @@ class InteractionTest extends TestCase
         $contextManager = $this->mock(ContextManager::class);
         $contextManager->shouldReceive('clear')->once();
 
-        $this->context->shouldReceive('getInteraction')->andReturn($this->interaction);
+        $this->context->shouldReceive('getInteraction')->andReturn($this->interaction)->once();
         $this->context->shouldReceive('setValue')->with('key', 'value')->once();
         $contextManager->shouldReceive('save')->once();
 
@@ -58,18 +56,16 @@ class InteractionTest extends TestCase
         $driver = $this->mock(Driver::class);
         $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
 
-        $this->context->shouldReceive('getInteraction')->andReturnNull();
+        $this->context->shouldReceive('getSender')->andReturn($sender)->once();
+        $this->context->shouldReceive('getInteraction')->andReturnNull()->once();
         $this->context->shouldReceive('setInteraction')->with($this->interaction)->once();
-        $this->context->shouldReceive('getDriver')->andReturn($driver);
-        $contextManager->shouldReceive('save')->with($this->context);
-
-        $driver->shouldReceive('getChannelName')->andReturn($channelName = $this->faker()->userName);
-        $driver->shouldReceive('getSender')->andReturn($sender);
+        $contextManager->shouldReceive('save')->with($this->context)->once();
 
         $driver->shouldReceive('sendMessage')->once();
 
         $this->expectsEvents(MessageSent::class);
 
+        $this->interaction->setDriver($driver);
         $this->interaction->setContext($this->context);
         $this->interaction->run();
     }

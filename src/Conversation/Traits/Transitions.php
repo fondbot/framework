@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
+use FondBot\Contracts\Channels\Driver;
 use InvalidArgumentException;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Interaction;
@@ -13,12 +14,25 @@ trait Transitions
 {
     use InteractsWithContext;
 
+    /** @var Driver */
+    protected $driver;
+
     /**
      * Whether any transition run.
      *
      * @var bool
      */
     protected $transitioned = false;
+
+    public function getDriver(): Driver
+    {
+        return $this->driver;
+    }
+
+    public function setDriver(Driver $driver): void
+    {
+        $this->driver = $driver;
+    }
 
     /**
      * Move to another story.
@@ -41,7 +55,7 @@ trait Transitions
 
         /** @var ConversationManager $conversationManager */
         $conversationManager = resolve(ConversationManager::class);
-        $conversationManager->start($this->getContext(), $instance);
+        $conversationManager->start($this->driver, $this->context, $instance);
 
         $this->transitioned = true;
     }
@@ -64,6 +78,7 @@ trait Transitions
 
         // Run interaction
         $instance->setContext($this->context);
+        $instance->setDriver($this->driver);
         $instance->run();
 
         $this->transitioned = true;

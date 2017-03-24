@@ -4,38 +4,50 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\LoggableArray;
-use FondBot\Contracts\Channels\Driver;
+use Illuminate\Contracts\Support\Arrayable;
 
-class Context implements LoggableArray
+class Context implements LoggableArray, Arrayable
 {
-    /** @var Driver */
-    private $driver;
-
-    /** @var Story|null */
+    private $channel;
+    private $sender;
+    private $message;
     private $story;
-
-    /** @var Interaction|null */
     private $interaction;
-
-    /** @var array */
     private $values;
 
     public function __construct(
-        Driver $driver,
+        Channel $channel,
+        Sender $sender,
+        SenderMessage $message,
         Story $story = null,
         Interaction $interaction = null,
         array $values = []
     ) {
-        $this->driver = $driver;
+        $this->channel = $channel;
+        $this->sender = $sender;
+        $this->message = $message;
         $this->story = $story;
         $this->interaction = $interaction;
         $this->values = $values;
     }
 
-    public function getDriver(): Driver
+    public function getChannel(): Channel
     {
-        return $this->driver;
+        return $this->channel;
+    }
+
+    public function getSender(): Sender
+    {
+        return $this->sender;
+    }
+
+    public function getMessage(): SenderMessage
+    {
+        return $this->message;
     }
 
     public function getStory(): ?Story
@@ -74,6 +86,20 @@ class Context implements LoggableArray
     }
 
     /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'story' => $this->story !== null ? get_class($this->story) : null,
+            'interaction' => $this->interaction !== null ? get_class($this->interaction) : null,
+            'values' => $this->values,
+        ];
+    }
+
+    /**
      * Return information for log.
      *
      * @return array
@@ -81,7 +107,7 @@ class Context implements LoggableArray
     public function toLoggableArray(): array
     {
         return [
-            'driver' => get_class($this->getDriver()),
+            'channel' => $this->channel->toArray(),
             'story' => get_class($this->getStory()),
             'interaction' => get_class($this->getInteraction()),
             'values' => $this->getValues(),

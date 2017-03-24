@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Database\Entities\Channel;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
-use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\Interaction;
-use FondBot\Contracts\Channels\Driver;
-use Tests\Classes\Fakes\FakeInteraction;
 
 /**
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface driver
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface story
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface interaction
- * @property array values
- * @property Context context
+ * @property \FondBot\Contracts\Database\Entities\Channel $channel
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $sender
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $message
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $story
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $interaction
+ * @property array                                        $values
+ * @property Context                                      $context
  */
 class ContextTest extends TestCase
 {
@@ -25,7 +27,9 @@ class ContextTest extends TestCase
     {
         parent::setUp();
 
-        $this->driver = $this->mock(Driver::class);
+        $this->channel = new Channel();
+        $this->sender = $this->mock(Sender::class);
+        $this->message = $this->mock(SenderMessage::class);
         $this->story = $this->mock(Story::class);
         $this->interaction = $this->mock(Interaction::class);
         $this->values = [
@@ -34,16 +38,28 @@ class ContextTest extends TestCase
         ];
 
         $this->context = new Context(
-            $this->driver,
+            $this->channel,
+            $this->sender,
+            $this->message,
             $this->story,
             $this->interaction,
             $this->values
         );
     }
 
-    public function test_driver()
+    public function test_getChannel()
     {
-        $this->assertSame($this->driver, $this->context->getDriver());
+        $this->assertSame($this->channel, $this->context->getChannel());
+    }
+
+    public function test_getSender()
+    {
+        $this->assertSame($this->sender, $this->context->getSender());
+    }
+
+    public function test_getMessage()
+    {
+        $this->assertSame($this->message, $this->context->getMessage());
     }
 
     public function test_story()
@@ -86,21 +102,28 @@ class ContextTest extends TestCase
         $this->assertSame($values, $this->context->getValues());
     }
 
+    public function test_toArray()
+    {
+        $expected = [
+            'story' => get_class($this->story),
+            'interaction' => get_class($this->interaction),
+            'values' => $this->values,
+        ];
+
+        $this->assertSame($expected, $this->context->toArray());
+    }
+
     public function test_toLoggableArray()
     {
-        $story = new FakeStory;
-        $interaction = new FakeInteraction;
         $values = ['phone' => $this->faker()->phoneNumber];
 
         $expected = [
-            'driver' => get_class($this->driver),
-            'story' => get_class($story),
-            'interaction' => get_class($interaction),
+            'channel' => $this->channel->toArray(),
+            'story' => get_class($this->story),
+            'interaction' => get_class($this->interaction),
             'values' => $values,
         ];
 
-        $this->context->setStory($story);
-        $this->context->setInteraction($interaction);
         $this->context->setValues($values);
         $this->assertSame($expected, $this->context->toLoggableArray());
     }

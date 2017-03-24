@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
+use Tests\Classes\Fakes\FakeSenderMessage;
 use Tests\TestCase;
 use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
@@ -14,10 +15,11 @@ use FondBot\Contracts\Database\Entities\Channel;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
- * @property Channel $channel
- * @property Sender $sender
+ * @property Channel                                    $channel
+ * @property Sender                                     $sender
+ * @property \Tests\Classes\Fakes\FakeSenderMessage     $message
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $cache
- * @property ContextManager manager
+ * @property ContextManager                             manager
  */
 class ContextManagerTest extends TestCase
 {
@@ -30,6 +32,7 @@ class ContextManagerTest extends TestCase
             'name' => $this->faker()->word,
         ]);
         $this->sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
+        $this->message = FakeSenderMessage::create();
         $this->cache = $this->mock(Repository::class);
 
         $this->manager = new ContextManager($this->cache);
@@ -37,8 +40,8 @@ class ContextManagerTest extends TestCase
 
     public function test_resolve()
     {
-        $this->driver->shouldReceive('getChannel')->andReturn($this->channel);
-        $this->driver->shouldReceive('getSender')->andReturn($this->sender);
+        $this->driver->shouldReceive('getSender')->andReturn($this->sender)->once();
+        $this->driver->shouldReceive('getMessage')->andReturn($this->message)->once();
 
         $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
 
@@ -51,33 +54,27 @@ class ContextManagerTest extends TestCase
             ],
         ])->once();
 
-        $context = $this->manager->resolve($this->driver);
+        $context = $this->manager->resolve($this->channel, $this->driver);
 
         $this->assertInstanceOf(Context::class, $context);
-        $this->assertSame($this->driver, $context->getDriver());
-        $this->assertNull($context->getStory());
-        $this->assertNull($context->getInteraction());
-        $this->assertSame($values, $context->getValues());
     }
 
     public function test_save()
     {
-        $this->driver->shouldReceive('getChannel')->andReturn($this->channel);
-        $this->driver->shouldReceive('getSender')->andReturn($this->sender);
+        $contextArray = [
+            'story' => null,
+            'interaction' => null,
+            'values' => ['key1' => 'value1'],
+        ];
 
         $context = $this->mock(Context::class);
-        $context->shouldReceive('getDriver')->andReturn($this->driver);
-        $context->shouldReceive('getStory')->andReturn(null);
-        $context->shouldReceive('getInteraction')->andReturn(null);
-        $context->shouldReceive('getValues')->andReturn($values = ['key1' => 'value1']);
+        $context->shouldReceive('getChannel')->andReturn($this->channel)->once();
+        $context->shouldReceive('getSender')->andReturn($this->sender)->once();
+        $context->shouldReceive('toArray')->andReturn($contextArray)->once();
 
         $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
 
-        $this->cache->shouldReceive('forever')->with($key, [
-            'story' => null,
-            'interaction' => null,
-            'values' => $values,
-        ])->once();
+        $this->cache->shouldReceive('forever')->with($key, $contextArray)->once();
 
         $this->manager->save($context);
     }
@@ -85,10 +82,8 @@ class ContextManagerTest extends TestCase
     public function test_clear()
     {
         $context = $this->mock(Context::class);
-        $context->shouldReceive('getDriver')->andReturn($this->driver);
-
-        $this->driver->shouldReceive('getChannel')->andReturn($this->channel);
-        $this->driver->shouldReceive('getSender')->andReturn($this->sender);
+        $context->shouldReceive('getChannel')->andReturn($this->channel)->once();
+        $context->shouldReceive('getSender')->andReturn($this->sender)->once();
 
         $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
 

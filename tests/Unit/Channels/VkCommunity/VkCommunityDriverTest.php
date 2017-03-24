@@ -40,11 +40,6 @@ class VkCommunityDriverTest extends TestCase
         $this->vkCommunity->setRequest([]);
     }
 
-    public function test_getChannel()
-    {
-        $this->assertSame($this->channel, $this->vkCommunity->getChannel());
-    }
-
     public function test_getConfig()
     {
         $expected = ['access_token', 'confirmation_token'];

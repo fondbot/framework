@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Traits\Loggable;
 
 class ConversationManager
@@ -20,16 +21,18 @@ class ConversationManager
     /**
      * Start or continue conversation.
      *
+     * @param Driver  $driver
      * @param Context $context
-     * @param Story $story
+     * @param Story   $story
      */
-    public function start(Context $context, Story $story): void
+    public function start(Driver $driver, Context $context, Story $story): void
     {
         $this->debug('start', ['context' => $context, 'story' => get_class($story)]);
 
         $context->setStory($story);
         $this->contextManager->save($context);
 
+        $story->setDriver($driver);
         $story->setContext($context);
         $story->run();
     }

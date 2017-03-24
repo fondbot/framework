@@ -23,7 +23,7 @@ abstract class Interaction implements InteractionContract
      */
     public function getReceiver(): Receiver
     {
-        $sender = $this->getContext()->getDriver()->getSender();
+        $sender = $this->getContext()->getSender();
 
         return new Receiver($sender->getIdentifier(), $sender->getName(), $sender->getUsername());
     }
@@ -35,7 +35,7 @@ abstract class Interaction implements InteractionContract
      */
     public function getSenderMessage(): SenderMessage
     {
-        return $this->getContext()->getDriver()->getMessage();
+        return $this->getContext()->getMessage();
     }
 
     /**
@@ -82,13 +82,19 @@ abstract class Interaction implements InteractionContract
         $this->context->setInteraction($this);
 
         // Send message to participant
-        $message = $this->context->getDriver()->sendMessage(
+        $message = $this->getDriver()->sendMessage(
             $this->getReceiver(),
             $this->text(),
             $this->keyboard()
         );
 
         // Fire event that message was sent
+//        dispatch(new StoreMessage(
+//            null,
+//            $this->context->getSender(),
+//            $this->context->getMessage()
+//        ));
+
         $this->getEventDispatcher()->dispatch(new MessageSent($this->context, $message));
 
         $this->updateContext();
