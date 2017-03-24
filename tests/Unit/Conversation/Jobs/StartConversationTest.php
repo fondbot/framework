@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation\Jobs;
 
 use Bus;
-use FondBot\Conversation\Jobs\StoreMessage;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\Classes\Fakes\FakeDriver;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
+use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\StoryManager;
 use FondBot\Conversation\ContextManager;
+use FondBot\Conversation\Jobs\StoreMessage;
 use FondBot\Conversation\ConversationManager;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Jobs\StartConversation;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface channelManager

@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Jobs;
 
-use FondBot\Contracts\Channels\Message\Attachment;
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\SenderMessage;
-use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Contracts\Database\Entities\Message;
-use FondBot\Contracts\Database\Entities\Participant;
-use FondBot\Contracts\Database\Services\MessageService;
-use FondBot\Database\Services\ParticipantService;
 use FondBot\Traits\Loggable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Filesystem\Cloud;
-use Illuminate\Contracts\Filesystem\Factory;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use FondBot\Contracts\Channels\Sender;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Filesystem\Cloud;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Filesystem\Factory;
+use FondBot\Contracts\Channels\SenderMessage;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Database\Entities\Message;
+use FondBot\Database\Services\ParticipantService;
+use FondBot\Contracts\Channels\Message\Attachment;
+use FondBot\Contracts\Database\Entities\Participant;
+use FondBot\Contracts\Database\Services\MessageService;
 
 class StoreMessage implements ShouldQueue
 {

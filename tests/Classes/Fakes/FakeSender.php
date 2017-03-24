@@ -9,7 +9,6 @@ use FondBot\Contracts\Channels\Sender;
 
 class FakeSender extends Sender
 {
-
     public function __construct()
     {
         $faker = Factory::create();
@@ -17,5 +16,4 @@ class FakeSender extends Sender
         $this->setName($faker->name);
         $this->setUsername($faker->userName);
     }
-
 }

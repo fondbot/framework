@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Jobs;
 
-use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Contracts\Database\Entities\Participant;
-use FondBot\Conversation\Jobs\StoreMessage;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Storage;
+use Tests\TestCase;
 use Tests\Classes\Fakes\FakeDriver;
 use Tests\Classes\Fakes\FakeSender;
 use Tests\Classes\Fakes\FakeSenderMessage;
-use Tests\TestCase;
+use FondBot\Conversation\Jobs\StoreMessage;
+use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Database\Entities\Participant;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface participantService
@@ -138,5 +138,4 @@ class StoreMessageTest extends TestCase
             'parameters' => null,
         ]);
     }
-
 }
