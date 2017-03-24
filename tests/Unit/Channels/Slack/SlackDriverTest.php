@@ -82,22 +82,6 @@ class SlackDriverTest extends TestCase
         $this->slack->verifyRequest();
     }
 
-    public function test_installWebhook()
-    {
-//        $url = $this->faker()->url;
-//
-//        $this->guzzle->shouldReceive('post')->with(
-//            'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/setWebhook',
-//            [
-//                'form_params' => [
-//                    'url' => $url,
-//                ],
-//            ]
-//        )->once();
-//
-//        $this->telegram->installWebhook($url);
-    }
-
     public function test_getSender()
     {
         $senderId = $this->faker()->uuid;

@@ -53,16 +53,6 @@ class SlackDriver extends Driver
     }
 
     /**
-     * Initialize webhook in the external service.
-     *
-     * @param string $url
-     */
-    public function installWebhook(string $url): void
-    {
-
-    }
-
-    /**
      * Get message sender.
      *
      * @return Sender
