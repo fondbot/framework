@@ -2,8 +2,12 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Channels;
+namespace FondBot\Contracts\Providers;
 
+use FondBot\Channels\Facebook;
+use FondBot\Channels\Telegram;
+use FondBot\Channels\VkCommunity;
+use FondBot\Channels\ChannelManager;
 use FondBot\Providers\ServiceProvider;
 
 class ChannelServiceProvider extends ServiceProvider
@@ -15,7 +19,7 @@ class ChannelServiceProvider extends ServiceProvider
      */
     private $drivers = [
         'Facebook' => Facebook\FacebookDriver::class,
-        'Telegram'    => Telegram\TelegramDriver::class,
+        'Telegram' => Telegram\TelegramDriver::class,
         'VK Communities' => VkCommunity\VkCommunityDriver::class,
         'Slack'    => Slack\SlackDriver::class
     ];

@@ -6,7 +6,9 @@ namespace Tests\Unit\Conversation\Fallback;
 
 use Tests\TestCase;
 use FondBot\Conversation\Context;
-use Tests\Classes\Fakes\FakeDriver;
+use Tests\Classes\Fakes\FakeSender;
+use Tests\Classes\Fakes\FakeSenderMessage;
+use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Fallback\FallbackStory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use FondBot\Conversation\Fallback\FallbackInteraction;
@@ -27,7 +29,13 @@ class FallbackInteractionTest extends TestCase
 
     public function test_process()
     {
-        $context = new Context(new FakeDriver, new FallbackStory, $this->interaction);
+        $context = new Context(
+            new Channel(),
+            new FakeSender(),
+            FakeSenderMessage::create(),
+            new FallbackStory,
+            $this->interaction
+        );
 
         $this->interaction->setContext($context);
         $this->interaction->run();

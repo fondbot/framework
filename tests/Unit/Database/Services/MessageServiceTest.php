@@ -10,7 +10,7 @@ use FondBot\Contracts\Database\Entities\Message;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
- * @property Message $message
+ * @property Message        $message
  * @property MessageService service
  */
 class MessageServiceTest extends TestCase

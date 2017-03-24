@@ -21,8 +21,8 @@ class ChannelManager
      *
      * @param Channel $channel
      *
-     * @param array $request
-     * @param array $headers
+     * @param array   $request
+     * @param array   $headers
      *
      * @return \FondBot\Contracts\Channels\Driver
      */
@@ -30,7 +30,7 @@ class ChannelManager
     {
         /** @var Driver $driver */
         $driver = resolve($channel->driver);
-        $driver->setChannel($channel);
+        $driver->setParameters($channel->parameters);
         $driver->setRequest($request);
         $driver->setHeaders($headers);
 

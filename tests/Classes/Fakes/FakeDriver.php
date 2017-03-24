@@ -6,17 +6,21 @@ namespace Tests\Classes\Fakes;
 
 use Faker\Factory;
 use Faker\Generator;
-use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Message;
 use FondBot\Contracts\Channels\Receiver;
+use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Contracts\Channels\WebhookVerification;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
+use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 
 class FakeDriver extends Driver implements WebhookVerification
 {
+    private $sender;
+    private $message;
+
     /**
      * Get channel.
      *
@@ -57,32 +61,35 @@ class FakeDriver extends Driver implements WebhookVerification
      */
     public function getSender(): Sender
     {
-        return Sender::create(
-            $this->faker()->uuid,
-            $this->faker()->name,
-            $this->faker()->userName
-        );
+        return $this->sender ?? $this->sender = Sender::create(
+                $this->faker()->uuid,
+                $this->faker()->name,
+                $this->faker()->userName
+            );
     }
 
     /**
      * Get message received from sender.
      *
-     * @return Message
+     * @return SenderMessage
      */
-    public function getMessage(): Message
+    public function getMessage(): SenderMessage
     {
-        return new FakeMessage($this->faker()->text());
+        return $this->message ?? $this->message = new FakeSenderMessage($this->faker()->text());
     }
 
     /**
      * Send reply to participant.
      *
-     * @param Receiver $receiver
-     * @param string $text
+     * @param Receiver      $receiver
+     * @param string        $text
      * @param Keyboard|null $keyboard
+     *
+     * @return ReceiverMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): void
+    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
     {
+        return new FakeReceiverMessage($receiver, $text, $keyboard);
     }
 
     private function faker(): Generator

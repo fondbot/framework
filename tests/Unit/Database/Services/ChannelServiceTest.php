@@ -10,8 +10,8 @@ use FondBot\Contracts\Database\Entities\Channel;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
- * @property Channel[] items
- * @property Channel channel
+ * @property Channel[]      items
+ * @property Channel        channel
  * @property ChannelService service
  */
 class ChannelServiceTest extends TestCase

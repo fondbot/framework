@@ -6,6 +6,8 @@ namespace FondBot\Conversation;
 
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Database\Entities\Channel;
 use Illuminate\Contracts\Cache\Repository as Cache;
 
 class ContextManager
@@ -22,23 +24,27 @@ class ContextManager
     /**
      * Resolve context instance.
      *
-     * @param Driver $driver
+     * @param Channel $channel
+     * @param Driver  $driver
      *
-     * @return Context
+     * @return \FondBot\Conversation\Context
      */
-    public function resolve(Driver $driver): Context
+    public function resolve(Channel $channel, Driver $driver): Context
     {
         $this->debug('resolve', ['driver' => get_class($driver)]);
 
-        $key = $this->key($driver);
-
+        $sender = $driver->getSender();
+        $message = $driver->getMessage();
+        $key = $this->key($channel, $sender);
         $value = $this->cache->get($key);
 
         $story = $value['story'] !== null ? resolve($value['story']) : null;
         $interaction = $value['interaction'] !== null ? resolve($value['interaction']) : null;
 
         return new Context(
-            $driver,
+            $channel,
+            $sender,
+            $message,
             $story,
             $interaction,
             $value['values'] ?? []
@@ -54,15 +60,9 @@ class ContextManager
     {
         $this->debug('save', ['context' => $context]);
 
-        $key = $this->key($context->getDriver());
+        $key = $this->key($context->getChannel(), $context->getSender());
 
-        $value = [
-            'story' => $context->getStory() !== null ? get_class($context->getStory()) : null,
-            'interaction' => $context->getInteraction() !== null ? get_class($context->getInteraction()) : null,
-            'values' => $context->getValues(),
-        ];
-
-        $this->cache->forever($key, $value);
+        $this->cache->forever($key, $context->toArray());
     }
 
     /**
@@ -74,7 +74,7 @@ class ContextManager
     {
         $this->debug('clear', ['context' => $context]);
 
-        $key = $this->key($context->getDriver());
+        $key = $this->key($context->getChannel(), $context->getSender());
 
         $this->cache->forget($key);
     }
@@ -82,12 +82,13 @@ class ContextManager
     /**
      * Get key of current context in storage (Cache, Memory, etc.).
      *
-     * @param Driver $driver
+     * @param Channel $channel
+     * @param Sender  $sender
      *
      * @return string
      */
-    private function key(Driver $driver): string
+    private function key(Channel $channel, Sender $sender): string
     {
-        return 'context.'.$driver->getChannel()->name.'.'.$driver->getSender()->getIdentifier();
+        return 'context.'.$channel->name.'.'.$sender->getIdentifier();
     }
 }

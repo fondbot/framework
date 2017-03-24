@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use Config;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\StoryManager;
-use FondBot\Contracts\Channels\Message;
+use Tests\Classes\Fakes\FakeFallbackStory;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Conversation\Fallback\FallbackStory;
 
 /**
@@ -22,13 +22,13 @@ class StoryManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->manager = new StoryManager;
+        $this->manager = resolve(StoryManager::class);
     }
 
     public function test_find_has_story_in_context()
     {
         $context = $this->mock(Context::class);
-        $message = $this->mock(Message::class);
+        $message = $this->mock(SenderMessage::class);
         $story = $this->mock(Story::class);
 
         $context->shouldReceive('getStory')->andReturn($story);
@@ -39,17 +39,18 @@ class StoryManagerTest extends TestCase
 
     public function test_find_fallback_story()
     {
-        Config::set('fondbot', [
-            'stories' => [
-                FakeStory::class,
-            ],
-        ]);
+        $this->manager->add(FakeStory::class);
 
         $context = $this->mock(Context::class);
-        $message = $this->mock(Message::class);
+        $message = $this->mock(SenderMessage::class);
 
         $context->shouldReceive('getStory')->andReturn(null);
         $message->shouldReceive('getText')->andReturn('/start');
+
+        $result = $this->manager->find($context, $message);
+        $this->assertInstanceOf(FallbackStory::class, $result);
+
+        $this->manager->setFallbackStory(FakeFallbackStory::class);
 
         $result = $this->manager->find($context, $message);
         $this->assertInstanceOf(FallbackStory::class, $result);
@@ -57,14 +58,10 @@ class StoryManagerTest extends TestCase
 
     public function test_find_no_story_in_context_activation_found()
     {
-        Config::set('fondbot', [
-            'stories' => [
-                FakeStory::class,
-            ],
-        ]);
+        $this->manager->add(FakeStory::class);
 
         $context = $this->mock(Context::class);
-        $message = $this->mock(Message::class);
+        $message = $this->mock(SenderMessage::class);
 
         $context->shouldReceive('getStory')->andReturn(null);
         $message->shouldReceive('getText')->andReturn('/example');

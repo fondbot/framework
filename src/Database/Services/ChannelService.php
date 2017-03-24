@@ -48,6 +48,7 @@ class ChannelService implements ChannelServiceContract
      * Find channel by name.
      *
      * @param string $name
+     *
      * @return ChannelContract|Model|null
      */
     public function findByName(string $name): ?ChannelContract

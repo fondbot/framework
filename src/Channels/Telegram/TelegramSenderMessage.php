@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace FondBot\Channels\Telegram;
 
 use GuzzleHttp\Client;
-use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
-class TelegramMessage implements Message
+class TelegramSenderMessage implements SenderMessage
 {
     private $token;
     private $payload;
@@ -58,7 +58,7 @@ class TelegramMessage implements Message
         }
 
         return new Attachment(
-            'audio',
+            Attachment::TYPE_AUDIO,
             $this->getFilePath($this->payload['audio']['file_id'])
         );
     }
@@ -129,7 +129,7 @@ class TelegramMessage implements Message
         }
 
         return new Attachment(
-            'video',
+            Attachment::TYPE_VIDEO,
             $this->getFilePath($this->payload['video']['file_id'])
         );
     }
@@ -224,7 +224,7 @@ class TelegramMessage implements Message
     }
 
     /**
-     * Get file path.
+     * Get file path by id.
      *
      * @param string $fileId
      *

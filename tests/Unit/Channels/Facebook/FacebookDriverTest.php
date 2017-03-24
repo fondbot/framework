@@ -6,7 +6,6 @@ namespace Tests\Unit\Channels\Facebook;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
-use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -14,13 +13,17 @@ use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Facebook\FacebookDriver;
-use FondBot\Channels\Facebook\FacebookMessage;
+use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Conversation\Keyboards\BasicKeyboard;
+use FondBot\Contracts\Channels\Message\Attachment;
+use FondBot\Channels\Facebook\FacebookSenderMessage;
+use FondBot\Channels\Facebook\FacebookReceiverMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
- * @property Channel channel
- * @property FacebookDriver facebook
+ * @property Channel                                    channel
+ * @property FacebookDriver                             facebook
  */
 class FacebookDriverTest extends TestCase
 {
@@ -40,7 +43,7 @@ class FacebookDriverTest extends TestCase
         ]);
 
         $this->facebook = new FacebookDriver($this->guzzle);
-        $this->facebook->setChannel($this->channel);
+        $this->facebook->setParameters($this->channel->parameters);
         $this->facebook->setRequest([]);
         $this->facebook->setHeaders([]);
     }
@@ -72,7 +75,7 @@ class FacebookDriverTest extends TestCase
 
         $this->facebook->setHeaders($this->generateHeaders($data, str_random()));
         $this->facebook->setRequest($data);
-        $this->facebook->setChannel($channel);
+        $this->facebook->setParameters([]);
 
         $this->facebook->verifyRequest();
     }
@@ -202,43 +205,72 @@ class FacebookDriverTest extends TestCase
         $this->facebook->setRequest($this->generateResponse(null, $text = $this->faker()->text()));
 
         $message = $this->facebook->getMessage();
-        $this->assertInstanceOf(FacebookMessage::class, $message);
+        $this->assertInstanceOf(FacebookSenderMessage::class, $message);
         $this->assertSame($text, $message->getText());
+        $this->assertNull($message->getLocation());
+    }
+
+    public function test_getMessageWithLocation()
+    {
+        $latitude = $this->faker()->latitude;
+        $longitude = $this->faker()->longitude;
+
+        $this->facebook->setRequest($this->generateLocationResponse($latitude, $longitude));
+
+        $message = $this->facebook->getMessage();
+        $this->assertInstanceOf(FacebookSenderMessage::class, $message);
+        $this->assertInstanceOf(Location::class, $location = $message->getLocation());
+        $this->assertSame($latitude, $location->getLatitude());
+        $this->assertSame($longitude, $location->getLongitude());
+        $this->assertNull($message->getText());
+        $this->assertNull($message->getAttachment());
+    }
+
+    public function test_getMessageAttachments()
+    {
+        $this->facebook->setRequest($this->generateAttachmentResponse('audio'));
+        $this->assertInstanceOf(Attachment::class, $this->facebook->getMessage()->getAttachment());
+        $this->assertSame(Attachment::TYPE_AUDIO, $this->facebook->getMessage()->getAttachment()->getType());
+
+        $this->facebook->setRequest($this->generateAttachmentResponse('image'));
+        $this->assertSame(Attachment::TYPE_IMAGE, $this->facebook->getMessage()->getAttachment()->getType());
+
+        $this->facebook->setRequest($this->generateAttachmentResponse('video'));
+        $this->assertSame(Attachment::TYPE_VIDEO, $this->facebook->getMessage()->getAttachment()->getType());
+
+        $this->facebook->setRequest($this->generateAttachmentResponse('file'));
+        $this->assertSame(Attachment::TYPE_FILE, $this->facebook->getMessage()->getAttachment()->getType());
     }
 
     public function test_sendMessage_with_keyboard()
     {
         $text = $this->faker()->text;
 
-        $receiver = $this->mock(Receiver::class);
-        $keyboard = $this->mock(Keyboard::class);
-        $button1 = $this->mock(Button::class);
-        $button2 = $this->mock(Button::class);
-
-        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
-        $keyboard->shouldReceive('getButtons')->andReturn([$button1, $button2]);
-        $button1->shouldReceive('getValue')->andReturn($button1Text = $this->faker()->word);
-        $button2->shouldReceive('getValue')->andReturn($button2Text = $this->faker()->word);
+        $receiver = new Receiver($this->faker()->uuid);
+        $keyboard = new BasicKeyboard([
+            new Button($this->faker()->word),
+            new Button($this->faker()->word),
+        ]);
 
         $this->guzzle->shouldReceive('post')->with(
             'https://graph.facebook.com/v2.6/me/messages',
             [
                 'form_params' => [
                     'recipient' => [
-                        'id' => $chatId,
+                        'id' => $receiver->getIdentifier(),
                     ],
                     'message' => [
                         'text' => $text,
                         'quick_replies' => [
                             [
                                 'content_type' => 'text',
-                                'title' => $button1Text,
-                                'payload' => $button1Text,
+                                'title' => $keyboard->getButtons()[0]->getLabel(),
+                                'payload' => $keyboard->getButtons()[0]->getLabel(),
                             ],
                             [
                                 'content_type' => 'text',
-                                'title' => $button2Text,
-                                'payload' => $button2Text,
+                                'title' => $keyboard->getButtons()[1]->getLabel(),
+                                'payload' => $keyboard->getButtons()[1]->getLabel(),
                             ],
                         ],
                     ],
@@ -249,7 +281,12 @@ class FacebookDriverTest extends TestCase
             ]
         );
 
-        $this->facebook->sendMessage($receiver, $text, $keyboard);
+        $result = $this->facebook->sendMessage($receiver, $text, $keyboard);
+
+        $this->assertInstanceOf(FacebookReceiverMessage::class, $result);
+        $this->assertSame($receiver, $result->getReceiver());
+        $this->assertSame($text, $result->getText());
+        $this->assertSame($keyboard, $result->getKeyboard());
     }
 
     public function test_sendMessage_request_exception()
@@ -306,6 +343,61 @@ class FacebookDriverTest extends TestCase
                         [
                             'sender' => ['id' => $id ?: $this->faker()->uuid],
                             'message' => ['text' => $text ?: $this->faker()->word],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    private function generateLocationResponse(float $latitude, float $longitude): array
+    {
+        return [
+            'entry' => [
+                [
+                    'messaging' => [
+                        [
+                            'sender' => [$this->faker()->uuid],
+                            'message' => [
+                                'attachments' => [
+                                    [
+                                        'title' => $this->faker()->sentence,
+                                        'url' => $this->faker()->url,
+                                        'type' => 'location',
+                                        'payload' => [
+                                            'coordinates' => [
+                                                'lat' => $latitude ?: $this->faker()->latitude,
+                                                'long' => $longitude ?: $this->faker()->longitude,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    private function generateAttachmentResponse(string $type)
+    {
+        return [
+            'entry' => [
+                [
+                    'messaging' => [
+                        [
+                            'sender' => [$this->faker()->uuid],
+                            'message' => [
+                                'attachments' => [
+                                    [
+                                        'type' => $type,
+                                        'payload' => [
+                                            'url' => $this->faker()->url,
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],

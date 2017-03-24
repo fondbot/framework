@@ -56,6 +56,7 @@ abstract class Story
         // Story in already running
         // Process interaction from context
         if ($interaction !== null) {
+            $interaction->setDriver($this->driver);
             $interaction->setContext($this->context);
             $interaction->run();
 

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\VkCommunity;
 
-use FondBot\Contracts\Channels\Message;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
-class VkCommunityMessage implements Message
+class VkCommunitySenderMessage implements SenderMessage
 {
     private $payload;
 
@@ -24,7 +24,7 @@ class VkCommunityMessage implements Message
      */
     public function getText(): ?string
     {
-        return $this->payload['body'] ?? '';
+        return $this->payload['body'] ?? null;
     }
 
     /**

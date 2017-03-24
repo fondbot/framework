@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ___NAMESPACE___;
 
 use FondBot\Conversation\Interaction;
-use FondBot\Conversation\Keyboard;
+use FondBot\Contracts\Conversation\Keyboard;
 
 class ___CLASSNAME___ extends Interaction
 {

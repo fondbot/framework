@@ -6,9 +6,9 @@ namespace Tests\Unit\Listeners;
 
 use Tests\TestCase;
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Events\MessageSent;
+use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
 use FondBot\Contracts\Database\Services\MessageService;
@@ -18,18 +18,19 @@ class MessageSentListenerTest extends TestCase
 {
     public function test()
     {
-        Participant::unguard();
         $participantService = $this->mock(ParticipantService::class);
         $messageService = $this->mock(MessageService::class);
         $context = $this->mock(Context::class);
-        $driver = $this->mock(Driver::class);
+        $receiver = $this->mock(Receiver::class);
+        $message = $this->mock(ReceiverMessage::class);
         $channel = new Channel();
         $participant = new Participant(['id' => random_int(1, time())]);
-        $receiver = Receiver::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
-        $text = $this->faker()->text;
 
-        $context->shouldReceive('getDriver')->andReturn($driver);
-        $driver->shouldReceive('getChannel')->andReturn($channel);
+        $receiver->shouldReceive('getIdentifier')->andReturn($this->faker()->uuid)->atLeast()->once();
+        $message->shouldReceive('getText')->andReturn($this->faker()->text)->atLeast()->once();
+        $message->shouldReceive('getReceiver')->andReturn($receiver)->once();
+
+        $context->shouldReceive('getChannel')->andReturn($channel)->once();
 
         $participantService->shouldReceive('findByChannelAndIdentifier')
             ->with($channel, $receiver->getIdentifier())
@@ -38,9 +39,9 @@ class MessageSentListenerTest extends TestCase
 
         $messageService->shouldReceive('create')->with([
             'receiver_id' => $participant->id,
-            'text' => $text,
+            'text' => $message->getText(),
         ])->once();
 
-        event(new MessageSent($context, $receiver, $text));
+        event(new MessageSent($context, $message));
     }
 }

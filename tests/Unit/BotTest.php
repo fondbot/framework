@@ -8,22 +8,35 @@ use Bus;
 use FondBot\Bot;
 use Tests\TestCase;
 use Illuminate\Http\Request;
-use FondBot\Jobs\StartConversation;
 use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Conversation\Jobs\StartConversation;
 
+/**
+ * @property Channel channel
+ */
 class BotTest extends TestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->channel = new Channel([
+            'driver' => FakeDriver::class,
+            'parameters' => [],
+        ]);
+    }
+
     public function test_request()
     {
         Bus::fake();
 
-        $channel = new Channel(['driver' => FakeDriver::class]);
         $request = new Request();
 
+        /** @var Bot $bot */
         $bot = resolve(Bot::class);
         $bot->setRequest($request);
-        $bot->setChannel($channel);
+        $bot->setChannel($this->channel);
         $bot->process();
 
         Bus::assertDispatched(StartConversation::class);
@@ -33,7 +46,6 @@ class BotTest extends TestCase
     {
         Bus::fake();
 
-        $channel = new Channel(['driver' => FakeDriver::class]);
         $request = new Request([], [], [], [], [],
             ['CONTENT_TYPE' => 'application/json'],
             json_encode(['verification' => $this->faker()->uuid])
@@ -41,7 +53,7 @@ class BotTest extends TestCase
 
         $bot = resolve(Bot::class);
         $bot->setRequest($request);
-        $bot->setChannel($channel);
+        $bot->setChannel($this->channel);
         $result = $bot->process();
 
         $this->assertSame($request->json('verification'), $result);

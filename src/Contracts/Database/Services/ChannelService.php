@@ -32,6 +32,7 @@ interface ChannelService
      * Find channel by name.
      *
      * @param string $name
+     *
      * @return Channel|null
      */
     public function findByName(string $name): ?Channel;
