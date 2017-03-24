@@ -18,7 +18,8 @@ interface ParticipantService
      * Find participant by channel id and identifier.
      *
      * @param Channel $channel
-     * @param string $identifier
+     * @param string  $identifier
+     *
      * @return Participant|\Illuminate\Database\Eloquent\Builder|null
      */
     public function findByChannelAndIdentifier(Channel $channel, string $identifier): ?Participant;

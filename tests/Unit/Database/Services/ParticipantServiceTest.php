@@ -12,7 +12,7 @@ use FondBot\Contracts\Database\Entities\Participant;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
- * @property Participant $participant
+ * @property Participant        $participant
  * @property ParticipantService service
  */
 class ParticipantServiceTest extends TestCase

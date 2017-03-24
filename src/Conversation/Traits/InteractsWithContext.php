@@ -36,7 +36,7 @@ trait InteractsWithContext
      * Remember value in context.
      *
      * @param string $key
-     * @param $value
+     * @param        $value
      */
     protected function remember(string $key, $value): void
     {

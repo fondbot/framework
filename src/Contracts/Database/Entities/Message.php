@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int $id
- * @property int $sender_id
- * @property int $receiver_id
- * @property string $text
- * @property string $attachment
- * @property array $location
- * @property array $parameters
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @property int                   $id
+ * @property int                   $sender_id
+ * @property int                   $receiver_id
+ * @property string                $text
+ * @property string                $attachment
+ * @property array                 $location
+ * @property array                 $parameters
+ * @property \Carbon\Carbon        $created_at
+ * @property \Carbon\Carbon        $updated_at
  *
  * @property-read Participant|null $sender
  * @property-read Participant|null $receiver

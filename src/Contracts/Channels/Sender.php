@@ -17,7 +17,7 @@ class Sender
 
     public static function create(string $identifier, string $name = null, string $username = null): Sender
     {
-        $instance = new static;
+        $instance = new self;
         $instance->setIdentifier($identifier);
         $instance->setName($name);
         $instance->setUsername($username);

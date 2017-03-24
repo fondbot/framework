@@ -6,8 +6,8 @@ namespace FondBot\Console;
 
 use Illuminate\Console\Command;
 use FondBot\Channels\ChannelManager;
-use FondBot\Contracts\Channels\WebhookInstallation;
 use FondBot\Contracts\Database\Services\ChannelService;
+use FondBot\Contracts\Channels\Extensions\WebhookInstallation;
 
 class WebhookInstall extends Command
 {

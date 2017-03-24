@@ -11,12 +11,13 @@ use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Channels\VkCommunity\VkCommunityDriver;
-use FondBot\Channels\VkCommunity\VkCommunityMessage;
+use FondBot\Channels\VkCommunity\VkCommunitySenderMessage;
+use FondBot\Channels\VkCommunity\VkCommunityReceiverMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
- * @property Channel channel
- * @property VkCommunityDriver vkCommunity
+ * @property Channel                                    channel
+ * @property VkCommunityDriver                          vkCommunity
  */
 class VkCommunityDriverTest extends TestCase
 {
@@ -35,13 +36,8 @@ class VkCommunityDriverTest extends TestCase
         ]);
 
         $this->vkCommunity = new VkCommunityDriver($this->guzzle);
-        $this->vkCommunity->setChannel($this->channel);
+        $this->vkCommunity->setParameters($this->channel->parameters);
         $this->vkCommunity->setRequest([]);
-    }
-
-    public function test_getChannel()
-    {
-        $this->assertSame($this->channel, $this->vkCommunity->getChannel());
     }
 
     public function test_getConfig()
@@ -162,7 +158,7 @@ class VkCommunityDriverTest extends TestCase
 
     public function test_sendMessage()
     {
-        $receiver = Receiver::create($this->faker()->uuid, $this->faker()->name);
+        $receiver = new Receiver($this->faker()->uuid, $this->faker()->name);
         $text = $this->faker()->text();
 
         $this->guzzle->shouldReceive('get')
@@ -179,7 +175,12 @@ class VkCommunityDriverTest extends TestCase
             )
             ->once();
 
-        $this->vkCommunity->sendMessage($receiver, $text);
+        $result = $this->vkCommunity->sendMessage($receiver, $text);
+
+        $this->assertInstanceOf(VkCommunityReceiverMessage::class, $result);
+        $this->assertSame($receiver, $result->getReceiver());
+        $this->assertSame($text, $result->getText());
+        $this->assertNull($result->getKeyboard());
     }
 
     public function test_getMessage()
@@ -192,8 +193,10 @@ class VkCommunityDriverTest extends TestCase
         ]);
 
         $message = $this->vkCommunity->getMessage();
-        $this->assertInstanceOf(VkCommunityMessage::class, $message);
+        $this->assertInstanceOf(VkCommunitySenderMessage::class, $message);
         $this->assertSame($text, $message->getText());
+        $this->assertNull($message->getLocation());
+        $this->assertNull($message->getAttachment());
     }
 
     public function test_isVerificationRequest()

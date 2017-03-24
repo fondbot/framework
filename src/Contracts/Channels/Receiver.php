@@ -6,23 +6,15 @@ namespace FondBot\Contracts\Channels;
 
 class Receiver
 {
-    /** @var string */
     private $identifier;
-
-    /** @var string|null */
     private $name;
-
-    /** @var string|null */
     private $username;
 
-    public static function create(string $identifier, string $name = null, string $username = null): Receiver
+    public function __construct(string $identifier, string $name = null, string $username = null)
     {
-        $instance = new static;
-        $instance->setIdentifier($identifier);
-        $instance->setName($name);
-        $instance->setUsername($username);
-
-        return $instance;
+        $this->identifier = $identifier;
+        $this->name = $name;
+        $this->username = $username;
     }
 
     public function getIdentifier(): string
@@ -30,28 +22,13 @@ class Receiver
         return $this->identifier;
     }
 
-    public function setIdentifier(string $id): void
-    {
-        $this->identifier = $id;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): void
-    {
-        $this->name = $name;
-    }
-
     public function getUsername(): ?string
     {
         return $this->username;
-    }
-
-    public function setUsername(?string $username): void
-    {
-        $this->username = $username;
     }
 }

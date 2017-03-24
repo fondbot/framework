@@ -39,7 +39,8 @@ class FallbackStoryTest extends TestCase
 
     public function test_after()
     {
-        $context = new Context(new FakeDriver);
+        $driver = new FakeDriver();
+        $context = new Context($driver->getChannel(), $driver->getSender(), $driver->getMessage());
 
         $contextManager = $this->mock(ContextManager::class);
         $contextManager->shouldReceive('save')->once();
@@ -48,6 +49,7 @@ class FallbackStoryTest extends TestCase
         $this->expectsEvents(MessageSent::class);
 
         $this->story->setContext($context);
+        $this->story->setDriver($driver);
         $this->story->run();
     }
 }
