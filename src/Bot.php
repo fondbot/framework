@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Conversation\Jobs\StartConversation;
+use FondBot\Conversation\Commands\StartConversation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 

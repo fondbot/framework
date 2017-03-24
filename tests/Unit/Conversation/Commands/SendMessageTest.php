@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation\Jobs;
+namespace Tests\Unit\Conversation\Commands;
 
 use Tests\TestCase;
 use Tests\ModelFactory;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Receiver;
-use FondBot\Conversation\Jobs\SendMessage;
+use FondBot\Conversation\Commands\SendMessage;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Database\Entities\Channel;

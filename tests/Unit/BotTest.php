@@ -10,7 +10,7 @@ use Tests\TestCase;
 use Illuminate\Http\Request;
 use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Conversation\Jobs\StartConversation;
+use FondBot\Conversation\Commands\StartConversation;
 
 /**
  * @property Channel channel

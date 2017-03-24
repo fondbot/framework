@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation\Jobs;
+namespace Tests\Unit\Conversation\Commands;
 
 use Storage;
 use Tests\TestCase;
 use Tests\Classes\Fakes\FakeDriver;
 use Tests\Classes\Fakes\FakeSender;
 use Tests\Classes\Fakes\FakeSenderMessage;
-use FondBot\Conversation\Jobs\StoreMessage;
+use FondBot\Conversation\Commands\StoreMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

@@ -11,7 +11,7 @@ use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\ContextManager;
 use Tests\Classes\Fakes\FakeInteraction;
-use FondBot\Conversation\Jobs\SendMessage;
+use FondBot\Conversation\Commands\SendMessage;
 use Tests\Classes\Fakes\FakeSenderMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

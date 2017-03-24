@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation\Jobs;
+namespace Tests\Unit\Conversation\Commands;
 
 use Bus;
 use Tests\TestCase;
@@ -13,11 +13,11 @@ use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\StoryManager;
 use FondBot\Conversation\ContextManager;
-use FondBot\Conversation\Jobs\StoreMessage;
+use FondBot\Conversation\Commands\StoreMessage;
 use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Conversation\ConversationManager;
 use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Conversation\Jobs\StartConversation;
+use FondBot\Conversation\Commands\StartConversation;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**

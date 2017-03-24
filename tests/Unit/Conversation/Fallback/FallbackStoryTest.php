@@ -9,7 +9,7 @@ use Tests\TestCase;
 use FondBot\Conversation\Context;
 use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Conversation\ContextManager;
-use FondBot\Conversation\Jobs\SendMessage;
+use FondBot\Conversation\Commands\SendMessage;
 use FondBot\Conversation\Fallback\FallbackStory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use FondBot\Conversation\Fallback\FallbackInteraction;
