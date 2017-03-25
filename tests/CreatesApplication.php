@@ -21,6 +21,8 @@ trait CreatesApplication
         $app->register(\FondBot\Providers\ServiceProvider::class);
         $app->make(Kernel::class)->bootstrap();
 
+        $app['config']->set('app.debug', true);
+
         // Use SQLite memory database
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [

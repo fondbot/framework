@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes\Fakes;
+namespace Tests\Classes\Fakes\Fallback;
 
 use FondBot\Conversation\Fallback\FallbackStory;
 

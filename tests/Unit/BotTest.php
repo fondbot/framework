@@ -8,7 +8,6 @@ use Bus;
 use FondBot\Bot;
 use Tests\TestCase;
 use Illuminate\Http\Request;
-use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Commands\StartConversation;
 
@@ -21,10 +20,7 @@ class BotTest extends TestCase
     {
         parent::setUp();
 
-        $this->channel = new Channel([
-            'driver' => FakeDriver::class,
-            'parameters' => [],
-        ]);
+        $this->channel = $this->factory(Channel::class)->create();
     }
 
     public function test_request()

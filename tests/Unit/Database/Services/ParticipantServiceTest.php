@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Database\Services;
 
 use Tests\TestCase;
-use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Database\Services\ParticipantService;
 use FondBot\Contracts\Database\Entities\Participant;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
- * @property Participant        $participant
  * @property ParticipantService service
  */
 class ParticipantServiceTest extends TestCase
@@ -23,19 +21,12 @@ class ParticipantServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->service = new ParticipantService(
-            $this->participant = resolve(Participant::class)
-        );
+        $this->service = new ParticipantService(resolve(Participant::class));
     }
 
-    public function test_findByChannelAndIdentifier_null()
+    public function test_findByChannelAndIdentifier_not_found()
     {
-        /** @var Channel $channel */
-        $channel = Channel::firstOrCreate([
-            'driver' => TelegramDriver::class,
-            'name' => $this->faker()->userName,
-            'parameters' => [],
-        ]);
+        $channel = $this->factory(Channel::class)->save();
         $identifier = $this->faker()->uuid;
 
         $result = $this->service->findByChannelAndIdentifier($channel, $identifier);
@@ -44,18 +35,10 @@ class ParticipantServiceTest extends TestCase
 
     public function test_findByChannelAndIdentifier()
     {
-        /** @var Channel $channel */
-        $channel = Channel::firstOrCreate([
-            'driver' => TelegramDriver::class,
-            'name' => $this->faker()->userName,
-            'parameters' => [],
-        ]);
+        $channel = $this->factory(Channel::class)->save();
 
         /** @var Participant $participant */
-        $participant = Participant::firstOrCreate([
-            'channel_id' => $channel->id,
-            'identifier' => $this->faker()->uuid,
-        ]);
+        $participant = $this->factory(Participant::class)->save(['channel_id' => $channel->id]);
 
         $result = $this->service->findByChannelAndIdentifier($channel, $participant->identifier);
         $this->assertSame($participant->id, $result->id);

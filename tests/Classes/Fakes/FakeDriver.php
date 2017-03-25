@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
-use Faker\Factory;
-use Faker\Generator;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\Receiver;
@@ -15,6 +13,7 @@ use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
+use Tests\Factory;
 
 class FakeDriver extends Driver implements WebhookVerification
 {
@@ -28,9 +27,8 @@ class FakeDriver extends Driver implements WebhookVerification
      */
     public function getChannel(): Channel
     {
-        return Channel::firstOrCreate([
+        return (new Factory(Channel::class))->create([
             'driver' => self::class,
-            'name' => $this->faker()->name,
             'parameters' => $this->getConfig(),
         ]);
     }
@@ -61,11 +59,7 @@ class FakeDriver extends Driver implements WebhookVerification
      */
     public function getSender(): Sender
     {
-        return $this->sender ?? $this->sender = Sender::create(
-                $this->faker()->uuid,
-                $this->faker()->name,
-                $this->faker()->userName
-            );
+        return $this->sender ?? $this->sender = (new Factory())->sender();
     }
 
     /**
@@ -75,7 +69,7 @@ class FakeDriver extends Driver implements WebhookVerification
      */
     public function getMessage(): SenderMessage
     {
-        return $this->message ?? $this->message = new FakeSenderMessage($this->faker()->text());
+        return $this->message ?? $this->message = (new Factory())->senderMessage();
     }
 
     /**
@@ -90,11 +84,6 @@ class FakeDriver extends Driver implements WebhookVerification
     public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
     {
         return new FakeReceiverMessage($receiver, $text, $keyboard);
-    }
-
-    private function faker(): Generator
-    {
-        return Factory::create();
     }
 
     /**

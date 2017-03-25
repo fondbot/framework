@@ -6,13 +6,11 @@ namespace Tests\Unit\Conversation;
 
 use Bus;
 use Tests\TestCase;
-use Tests\ModelFactory;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\ContextManager;
 use Tests\Classes\Fakes\FakeInteraction;
 use FondBot\Conversation\Commands\SendMessage;
-use Tests\Classes\Fakes\FakeSenderMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -30,7 +28,7 @@ class InteractionTest extends TestCase
         parent::setUp();
 
         $this->context = $this->mock(Context::class);
-        $this->channel = ModelFactory::channel();
+        $this->channel = $this->factory(Channel::class)->create();
 
         $this->interaction = new FakeInteraction;
         $this->interaction->setContext($this->context);
@@ -38,7 +36,7 @@ class InteractionTest extends TestCase
 
     public function test_getSenderMessage()
     {
-        $message = FakeSenderMessage::create();
+        $message = $this->factory()->senderMessage();
 
         $this->context->shouldReceive('getMessage')->andReturn($message)->once();
 

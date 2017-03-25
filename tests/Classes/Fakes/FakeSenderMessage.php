@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
-use Faker\Factory;
 use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
@@ -20,17 +19,6 @@ class FakeSenderMessage implements SenderMessage
         $this->text = $text;
         $this->location = $location;
         $this->attachment = $attachment;
-    }
-
-    public static function create()
-    {
-        $faker = Factory::create();
-
-        return new self(
-            $faker->text,
-            new Location($faker->latitude, $faker->longitude),
-            new Attachment('image', $faker->imageUrl())
-        );
     }
 
     /**

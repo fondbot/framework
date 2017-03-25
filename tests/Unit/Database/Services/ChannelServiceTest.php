@@ -11,7 +11,6 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
  * @property Channel[]      items
- * @property Channel        channel
  * @property ChannelService service
  */
 class ChannelServiceTest extends TestCase
@@ -22,9 +21,7 @@ class ChannelServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->service = new ChannelService(
-            $this->channel = resolve(Channel::class)
-        );
+        $this->service = new ChannelService(resolve(Channel::class));
 
         /* @var Channel $enabled */
         $this->items = [

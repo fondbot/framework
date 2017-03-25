@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation\Commands;
 
 use Tests\TestCase;
-use Tests\ModelFactory;
+use Tests\Factory;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Receiver;
@@ -20,11 +20,11 @@ use FondBot\Contracts\Database\Services\ParticipantService;
 
 /**
  * @property Channel                                    $channel
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $receiver
+ * @property Participant                                $participant
  * @property string                                     $text
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $receiver
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $keyboard
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
- * @property Participant                                $participant
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $receiverMessage
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $channelManager
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $participantService
@@ -38,15 +38,14 @@ class SendMessageTest extends TestCase
     {
         parent::setUp();
 
-        $this->channel = ModelFactory::channel();
-        $this->receiver = $this->mock(Receiver::class);
+        $this->channel = $this->factory(Channel::class)->create();
+        $this->participant = $this->factory(Participant::class)->create();
         $this->text = $this->faker()->text;
+
+        $this->receiver = $this->mock(Receiver::class);
         $this->keyboard = $this->mock(Keyboard::class);
-
         $this->driver = $this->mock(Driver::class);
-        $this->participant = ModelFactory::participant();
         $this->receiverMessage = $this->mock(ReceiverMessage::class);
-
         $this->channelManager = $this->mock(ChannelManager::class);
         $this->participantService = $this->mock(ParticipantService::class);
         $this->messageService = $this->mock(MessageService::class);

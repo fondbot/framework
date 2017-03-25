@@ -43,9 +43,7 @@ class StoryManager
         }
 
         // Otherwise, run fallback story
-        return resolve(
-            config('fondbot.fallback_story', FallbackStory::class)
-        );
+        return resolve($this->fallbackStory);
     }
 
     /**

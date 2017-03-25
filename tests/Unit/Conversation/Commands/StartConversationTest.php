@@ -51,11 +51,7 @@ class StartConversationTest extends TestCase
         $this->driver = $this->mock(Driver::class);
         $this->sender = $this->mock(Sender::class);
         $this->message = $this->mock(SenderMessage::class);
-        $this->channel = Channel::firstOrCreate([
-            'driver' => get_class($this->driver),
-            'name' => $this->faker()->word,
-            'parameters' => [],
-        ]);
+        $this->channel = $this->factory(Channel::class)->create();
     }
 
     public function test_story_found()

@@ -26,7 +26,7 @@ class VkCommunityDriverTest extends TestCase
         parent::setUp();
 
         $this->guzzle = $this->mock(Client::class);
-        $this->channel = new Channel([
+        $this->channel = $this->factory(Channel::class)->create([
             'driver' => VkCommunityDriver::class,
             'name' => $this->faker()->name,
             'parameters' => [

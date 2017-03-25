@@ -9,7 +9,7 @@ use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\StoryManager;
-use Tests\Classes\Fakes\FakeFallbackStory;
+use Tests\Classes\Fakes\Fallback\FakeFallbackStory;
 use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Conversation\Fallback\FallbackStory;
 
@@ -53,7 +53,7 @@ class StoryManagerTest extends TestCase
         $this->manager->setFallbackStory(FakeFallbackStory::class);
 
         $result = $this->manager->find($context, $message);
-        $this->assertInstanceOf(FallbackStory::class, $result);
+        $this->assertInstanceOf(FakeFallbackStory::class, $result);
     }
 
     public function test_find_no_story_in_context_activation_found()

@@ -33,4 +33,25 @@ abstract class TestCase extends BaseTestCase
 
         return $instance;
     }
+
+    protected function spy(string $class)
+    {
+        $instance = Mockery::spy($class)->makePartial();
+
+        $this->app->instance($class, $instance);
+
+        return $instance;
+    }
+
+    /**
+     * Get factory for a class.
+     *
+     * @param string $class
+     *
+     * @return Factory
+     */
+    protected function factory(string $class = null): Factory
+    {
+        return new Factory($class);
+    }
 }

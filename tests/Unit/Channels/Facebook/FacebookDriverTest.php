@@ -6,7 +6,6 @@ namespace Tests\Unit\Channels\Facebook;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
-use Tests\ModelFactory;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -19,7 +18,6 @@ use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Channels\Facebook\FacebookSenderMessage;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use FondBot\Channels\Facebook\FacebookReceiverMessage;
 
 /**
@@ -29,15 +27,13 @@ use FondBot\Channels\Facebook\FacebookReceiverMessage;
  */
 class FacebookDriverTest extends TestCase
 {
-    use DatabaseMigrations;
-
     protected function setUp()
     {
         parent::setUp();
 
         $this->guzzle = $this->mock(Client::class);
 
-        $this->channel = ModelFactory::channel([
+        $this->channel = $this->factory(Channel::class)->create([
             'driver' => FacebookDriver::class,
             'name' => $this->faker()->name,
             'parameters' => [
@@ -61,7 +57,7 @@ class FacebookDriverTest extends TestCase
             'app_secret',
         ];
 
-        $this->assertEquals($expected, $this->facebook->getConfig());
+        $this->assertSame($expected, $this->facebook->getConfig());
     }
 
     /**
@@ -206,7 +202,8 @@ class FacebookDriverTest extends TestCase
             ])
             ->andThrow(new RequestException('Invalid request', $this->mock(RequestInterface::class)));
 
-        $this->facebook->getSender();
+        $result = $this->facebook->getSender();
+        $this->assertInstanceOf(Sender::class, $result);
     }
 
     public function test_getMessage()

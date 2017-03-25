@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Database\Entities;
 
 use Tests\TestCase;
-use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -21,20 +20,16 @@ class ChannelTest extends TestCase
     {
         parent::setUp();
 
-        $this->channel = Channel::firstOrCreate([
-            'driver' => TelegramDriver::class,
-            'name' => $this->faker()->name,
-            'parameters' => [],
-        ]);
+        $this->channel = $this->factory(Channel::class)->save();
     }
 
     public function test_participants()
     {
-        Participant::firstOrCreate([
+        $participant = $this->factory(Participant::class)->save([
             'channel_id' => $this->channel->id,
-            'identifier' => $this->faker()->uuid,
         ]);
 
         $this->assertCount(1, $this->channel->participants);
+        $this->assertEquals($participant, $this->channel->participants->first());
     }
 }

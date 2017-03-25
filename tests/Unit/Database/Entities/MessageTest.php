@@ -33,15 +33,9 @@ class MessageTest extends TestCase
     public function test_sender()
     {
         /** @var Channel $channel */
-        $channel = Channel::firstOrCreate([
-            'driver' => TelegramDriver::class,
-            'name' => $this->faker()->name,
-            'parameters' => [],
-        ]);
+        $channel = $this->factory(Channel::class)->save();
         /** @var Participant $participant */
-        $participant = $channel->participants()->save(new Participant([
-            'identifier' => $this->faker()->uuid,
-        ]));
+        $participant = $this->factory(Participant::class)->save(['channel_id' => $channel->id]);
 
         $this->message->update(['sender_id' => $participant->id]);
 
@@ -51,15 +45,9 @@ class MessageTest extends TestCase
     public function test_receiver()
     {
         /** @var Channel $channel */
-        $channel = Channel::firstOrCreate([
-            'driver' => TelegramDriver::class,
-            'name' => $this->faker()->name,
-            'parameters' => [],
-        ]);
+        $channel = $this->factory(Channel::class)->save();
         /** @var Participant $participant */
-        $participant = $channel->participants()->save(new Participant([
-            'identifier' => $this->faker()->uuid,
-        ]));
+        $participant = $this->factory(Participant::class)->save(['channel_id' => $channel->id]);
 
         $this->message->update(['receiver_id' => $participant->id]);
 

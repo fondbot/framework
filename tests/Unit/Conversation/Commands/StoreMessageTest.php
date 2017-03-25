@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Commands;
 
+use FondBot\Contracts\Channels\SenderMessage;
 use Storage;
+use Tests\Factory;
 use Tests\TestCase;
-use Tests\Classes\Fakes\FakeDriver;
-use Tests\Classes\Fakes\FakeSender;
-use Tests\Classes\Fakes\FakeSenderMessage;
 use FondBot\Conversation\Commands\StoreMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface participantService
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface messageService
- * @property Channel                                    channel
- * @property \Tests\Classes\Fakes\FakeSender            sender
- * @property \Tests\Classes\Fakes\FakeSenderMessage     message
+ * @property Channel                                   channel
+ * @property \FondBot\Contracts\Channels\Sender        sender
+ * @property \FondBot\Contracts\Channels\SenderMessage message
  */
 class StoreMessageTest extends TestCase
 {
@@ -31,13 +28,9 @@ class StoreMessageTest extends TestCase
 
         Storage::fake('fake');
 
-        $this->channel = Channel::firstOrCreate([
-            'driver' => FakeDriver::class,
-            'name' => $this->faker()->word,
-            'parameters' => [],
-        ]);
-        $this->sender = new FakeSender;
-        $this->message = FakeSenderMessage::create();
+        $this->channel = $this->factory(Channel::class)->save();
+        $this->sender = $this->factory()->sender();
+        $this->message = $this->factory()->senderMessage();
     }
 
     public function test_create_participant_and_message_with_location_and_attachment()
@@ -92,8 +85,10 @@ class StoreMessageTest extends TestCase
             ],
         ]);
 
-        $this->message->withoutAttachment();
-        $this->message->withoutLocation();
+        $this->message = $this->factory()->senderMessage([
+            'location' => null,
+            'attachment' => null,
+        ]);
 
         $job = new StoreMessage($this->channel, $this->sender, $this->message);
         dispatch($job);

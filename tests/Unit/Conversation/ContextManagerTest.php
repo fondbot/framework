@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
+use FondBot\Contracts\Channels\SenderMessage;
 use Tests\TestCase;
 use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\ContextManager;
-use Tests\Classes\Fakes\FakeSenderMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 
 /**
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
  * @property Channel                                    $channel
  * @property Sender                                     $sender
- * @property \Tests\Classes\Fakes\FakeSenderMessage     $message
+ * @property SenderMessage                              $message
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $cache
- * @property ContextManager                             manager
+ * @property ContextManager                             $manager
  */
 class ContextManagerTest extends TestCase
 {
@@ -27,12 +27,10 @@ class ContextManagerTest extends TestCase
     {
         parent::setUp();
 
+        $this->channel = $this->factory(Channel::class)->create();
+        $this->sender = $this->factory()->sender();
+        $this->message = $this->factory()->senderMessage();
         $this->driver = $this->mock(Driver::class);
-        $this->channel = new Channel([
-            'name' => $this->faker()->word,
-        ]);
-        $this->sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
-        $this->message = FakeSenderMessage::create();
         $this->cache = $this->mock(Repository::class);
 
         $this->manager = new ContextManager($this->cache);

@@ -19,9 +19,7 @@ class MessageServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->service = new MessageService(
-            $this->message = resolve(Message::class)
-        );
+        $this->service = new MessageService(resolve(Message::class));
     }
 
     public function test()

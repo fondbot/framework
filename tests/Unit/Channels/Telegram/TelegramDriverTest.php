@@ -33,11 +33,7 @@ class TelegramDriverTest extends TestCase
         parent::setUp();
 
         $this->guzzle = $this->mock(Client::class);
-        $this->channel = new Channel([
-            'driver' => TelegramDriver::class,
-            'name' => $this->faker()->name,
-            'parameters' => ['token' => str_random()],
-        ]);
+        $this->channel = $this->factory(Channel::class)->create();
 
         $this->telegram = new TelegramDriver($this->guzzle);
         $this->telegram->setParameters($this->channel->parameters);

@@ -27,14 +27,14 @@ class ContextTest extends TestCase
     {
         parent::setUp();
 
-        $this->channel = new Channel();
+        $this->channel = $this->factory(Channel::class)->create();
         $this->sender = $this->mock(Sender::class);
         $this->message = $this->mock(SenderMessage::class);
         $this->story = $this->mock(Story::class);
         $this->interaction = $this->mock(Interaction::class);
         $this->values = [
-            'key_1' => str_random(),
-            'key_2' => str_random(),
+            'foo' => str_random(),
+            'bar' => str_random(),
         ];
 
         $this->context = new Context(
