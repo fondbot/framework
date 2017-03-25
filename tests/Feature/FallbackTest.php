@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use Tests\TestCase;
+use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Contracts\Database\Entities\Channel;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\Classes\Fakes\FakeDriver;
-use Tests\TestCase;
 
 class FallbackTest extends TestCase
 {
@@ -27,5 +27,4 @@ class FallbackTest extends TestCase
 
         $driver->shouldHaveReceived('sendMessage');
     }
-
 }

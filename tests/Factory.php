@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Faker\Factory as Faker;
 use Faker\Generator;
-use FondBot\Contracts\Channels\Message\Attachment;
-use FondBot\Contracts\Channels\Message\Location;
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\SenderMessage;
-use Illuminate\Database\Eloquent\Model;
+use Faker\Factory as Faker;
 use Tests\Classes\Fakes\FakeDriver;
-use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Contracts\Database\Entities\Participant;
+use FondBot\Contracts\Channels\Sender;
+use Illuminate\Database\Eloquent\Model;
 use Tests\Classes\Fakes\FakeSenderMessage;
+use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\Message\Location;
+use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Channels\Message\Attachment;
+use FondBot\Contracts\Database\Entities\Participant;
 
 class Factory
 {

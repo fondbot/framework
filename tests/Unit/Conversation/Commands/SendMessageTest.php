@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Commands;
 
-use Tests\TestCase;
 use Tests\Factory;
+use Tests\TestCase;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Receiver;
-use FondBot\Conversation\Commands\SendMessage;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Conversation\Commands\SendMessage;
 use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;

@@ -9,9 +9,9 @@ use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\StoryManager;
-use Tests\Classes\Fakes\Fallback\FakeFallbackStory;
 use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Conversation\Fallback\FallbackStory;
+use Tests\Classes\Fakes\Fallback\FakeFallbackStory;
 
 /**
  * @property StoryManager manager

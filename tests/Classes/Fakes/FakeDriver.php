@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
+use Tests\Factory;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\Receiver;
@@ -13,7 +14,6 @@ use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
-use Tests\Factory;
 
 class FakeDriver extends Driver implements WebhookVerification
 {

@@ -7,9 +7,9 @@ namespace FondBot\Conversation;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Channels\Receiver;
 use Illuminate\Contracts\Bus\Dispatcher;
-use FondBot\Conversation\Commands\SendMessage;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Conversation\Commands\SendMessage;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
 abstract class Interaction implements InteractionContract

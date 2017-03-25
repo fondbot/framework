@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels;
 
-use FondBot\Contracts\Database\Entities\Channel;
-use Tests\Classes\Fakes\FakeDriver;
 use Tests\TestCase;
+use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Channels\ChannelManager;
 use FondBot\Channels\Telegram\TelegramDriver;
+use FondBot\Contracts\Database\Entities\Channel;
 
 /**
  * @property ChannelManager manager

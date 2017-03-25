@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Contracts\Channels\SenderMessage;
 use Tests\TestCase;
 use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\ContextManager;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 
 /**

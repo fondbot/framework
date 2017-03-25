@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Commands;
 
-use FondBot\Contracts\Channels\SenderMessage;
 use Storage;
 use Tests\Factory;
 use Tests\TestCase;
+use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Conversation\Commands\StoreMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
