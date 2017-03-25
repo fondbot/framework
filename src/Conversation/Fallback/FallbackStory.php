@@ -8,8 +8,6 @@ use FondBot\Conversation\Story;
 
 class FallbackStory extends Story
 {
-    protected $name = 'defaultFallbackStory';
-
     /**
      * Story activations.
      *

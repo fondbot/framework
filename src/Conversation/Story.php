@@ -11,9 +11,6 @@ abstract class Story
 {
     use Transitions, Loggable;
 
-    /** @var string */
-    protected $name;
-
     /**
      * Story activations.
      *
@@ -45,7 +42,6 @@ abstract class Story
     public function run(): void
     {
         $this->debug('run', [
-            'name' => $this->name,
             'firstInteraction' => $this->firstInteraction(),
             'context' => $this->context,
         ]);
