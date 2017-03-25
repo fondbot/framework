@@ -73,6 +73,8 @@ class FacebookDriver extends Driver implements WebhookVerification
             $response = $this->guzzle->get(self::API_URL.$id, $this->getDefaultRequestParameters());
             $user = json_decode((string) $response->getBody(), true);
 
+            $user['id'] = $id;
+
             return $this->sender = new FacebookUser($user);
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
