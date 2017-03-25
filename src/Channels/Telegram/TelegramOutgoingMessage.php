@@ -58,11 +58,16 @@ class TelegramOutgoingMessage implements OutgoingMessage
      */
     public function toArray(): array
     {
-        return [
+        $payload = [
             'chat_id' => $this->recipient->getId(),
             'text' => $this->text,
-            'reply_markup' => json_encode($this->getReplyMarkup()),
         ];
+
+        if ($replyMarkup = $this->getReplyMarkup()) {
+            $payload['reply_markup'] = json_encode($this->getReplyMarkup());
+        }
+
+        return $payload;
     }
 
     private function getReplyMarkup(): ?array
