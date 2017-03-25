@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Unit\Channels\VkCommunity;
 
-use FondBot\Channels\VkCommunity\VkCommunitySender;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
@@ -12,6 +11,7 @@ use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Channels\VkCommunity\VkCommunityDriver;
+use FondBot\Channels\VkCommunity\VkCommunitySender;
 use FondBot\Channels\VkCommunity\VkCommunitySenderMessage;
 use FondBot\Channels\VkCommunity\VkCommunityReceiverMessage;
 

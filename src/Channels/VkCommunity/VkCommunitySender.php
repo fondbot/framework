@@ -36,7 +36,7 @@ class VkCommunitySender implements Sender
     }
 
     /**
-     * Username
+     * Username.
      *
      * @return string|null
      */

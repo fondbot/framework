@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Mockery;
 use Faker\Generator;
 use Faker\Factory as Faker;
-use Mockery;
 use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Contracts\Channels\Sender;
 use Illuminate\Database\Eloquent\Model;

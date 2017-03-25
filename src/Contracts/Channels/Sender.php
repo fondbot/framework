@@ -21,7 +21,7 @@ interface Sender
     public function getName(): ?string;
 
     /**
-     * Username
+     * Username.
      *
      * @return string|null
      */

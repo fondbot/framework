@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
-use FondBot\Channels\Telegram\TelegramSender;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use Illuminate\Http\File;
@@ -15,6 +14,7 @@ use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Telegram\TelegramDriver;
+use FondBot\Channels\Telegram\TelegramSender;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;

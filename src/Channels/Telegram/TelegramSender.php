@@ -36,7 +36,7 @@ class TelegramSender implements Sender
     }
 
     /**
-     * Username
+     * Username.
      *
      * @return string|null
      */

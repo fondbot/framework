@@ -36,7 +36,7 @@ class FacebookSender implements Sender
     }
 
     /**
-     * Username
+     * Username.
      *
      * @return string|null
      */
