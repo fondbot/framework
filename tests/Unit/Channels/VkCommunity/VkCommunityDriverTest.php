@@ -9,10 +9,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Channels\VkCommunity\VkCommunityDriver;
 use FondBot\Channels\VkCommunity\VkCommunityUser;
-use FondBot\Channels\VkCommunity\VkCommunityReceivedMessage;
+use FondBot\Channels\VkCommunity\VkCommunityDriver;
 use FondBot\Channels\VkCommunity\VkCommunityOutgoingMessage;
+use FondBot\Channels\VkCommunity\VkCommunityReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle

@@ -7,8 +7,8 @@ namespace Tests\Unit\Conversation;
 use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
-use FondBot\Conversation\Interaction;
 use FondBot\Contracts\Channels\User;
+use FondBot\Conversation\Interaction;
 use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 

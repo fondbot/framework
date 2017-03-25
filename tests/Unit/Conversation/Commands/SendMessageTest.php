@@ -6,8 +6,8 @@ namespace Tests\Unit\Conversation\Commands;
 
 use Tests\TestCase;
 use FondBot\Channels\ChannelManager;
-use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Conversation\Commands\SendMessage;
 use FondBot\Contracts\Channels\OutgoingMessage;

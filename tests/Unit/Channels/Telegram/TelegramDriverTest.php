@@ -12,14 +12,14 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
-use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Channels\Telegram\TelegramUser;
+use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
-use FondBot\Channels\Telegram\TelegramReceivedMessage;
 use FondBot\Channels\Telegram\TelegramOutgoingMessage;
+use FondBot\Channels\Telegram\TelegramReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle

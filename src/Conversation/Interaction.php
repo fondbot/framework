@@ -8,8 +8,8 @@ use FondBot\Traits\Loggable;
 use FondBot\Contracts\Channels\User;
 use Illuminate\Contracts\Bus\Dispatcher;
 use FondBot\Conversation\Traits\Transitions;
-use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Conversation\Commands\SendMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
 abstract class Interaction implements InteractionContract

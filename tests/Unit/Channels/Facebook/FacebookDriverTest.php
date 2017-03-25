@@ -11,14 +11,14 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
-use FondBot\Channels\Facebook\FacebookDriver;
 use FondBot\Channels\Facebook\FacebookUser;
+use FondBot\Channels\Facebook\FacebookDriver;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
-use FondBot\Channels\Facebook\FacebookReceivedMessage;
 use FondBot\Channels\Facebook\FacebookOutgoingMessage;
+use FondBot\Channels\Facebook\FacebookReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle

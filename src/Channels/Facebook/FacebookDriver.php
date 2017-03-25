@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace FondBot\Channels\Facebook;
 
 use GuzzleHttp\Client;
-use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Channels\Driver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Channels\OutgoingMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 
