@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Channels;
 
-interface Sender
+interface User
 {
     /**
      * Identifier.

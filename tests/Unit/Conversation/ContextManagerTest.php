@@ -8,15 +8,15 @@ use Tests\TestCase;
 use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use FondBot\Conversation\ContextManager;
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 
 /**
  * @property Channel                                    $channel
- * @property Sender                                     $sender
- * @property SenderMessage                              $message
+ * @property User                                       $sender
+ * @property ReceivedMessage                            $message
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $cache
  * @property ContextManager                             $manager
@@ -38,7 +38,7 @@ class ContextManagerTest extends TestCase
 
     public function test_resolve()
     {
-        $this->driver->shouldReceive('getSender')->andReturn($this->sender)->once();
+        $this->driver->shouldReceive('getUser')->andReturn($this->sender)->once();
         $this->driver->shouldReceive('getMessage')->andReturn($this->message)->once();
 
         $key = 'context.'.$this->channel->name.'.'.$this->sender->getId();
@@ -67,7 +67,7 @@ class ContextManagerTest extends TestCase
 
         $context = $this->mock(Context::class);
         $context->shouldReceive('getChannel')->andReturn($this->channel)->atLeast()->once();
-        $context->shouldReceive('getSender')->andReturn($this->sender)->atLeast()->once();
+        $context->shouldReceive('getUser')->andReturn($this->sender)->atLeast()->once();
         $context->shouldReceive('toArray')->andReturn($contextArray)->atLeast()->once();
 
         $key = 'context.'.$this->channel->name.'.'.$this->sender->getId();
@@ -81,13 +81,14 @@ class ContextManagerTest extends TestCase
     {
         $contextArray = [
             'story' => null,
+
             'interaction' => null,
             'values' => ['key1' => 'value1'],
         ];
 
         $context = $this->mock(Context::class);
         $context->shouldReceive('getChannel')->andReturn($this->channel)->once();
-        $context->shouldReceive('getSender')->andReturn($this->sender)->once();
+        $context->shouldReceive('getUser')->andReturn($this->sender)->once();
         $context->shouldReceive('toArray')->andReturn($contextArray)->atLeast()->once();
 
         $key = 'context.'.$this->channel->name.'.'.$this->sender->getId();

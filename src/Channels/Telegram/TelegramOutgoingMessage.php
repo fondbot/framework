@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Telegram;
 
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\ReceiverMessage;
+use FondBot\Contracts\Channels\OutgoingMessage;
 
-class TelegramReceiverMessage implements ReceiverMessage
+class TelegramOutgoingMessage implements OutgoingMessage
 {
     private $recipient;
     private $text;
     private $keyboard;
 
-    public function __construct(Sender $recipient, $text, Keyboard $keyboard = null)
+    public function __construct(User $recipient, $text, Keyboard $keyboard = null)
     {
         $this->recipient = $recipient;
         $this->text = $text;
@@ -24,9 +24,9 @@ class TelegramReceiverMessage implements ReceiverMessage
     /**
      * Get recipient.
      *
-     * @return Sender
+     * @return User
      */
-    public function getRecipient(): Sender
+    public function getRecipient(): User
     {
         return $this->recipient;
     }

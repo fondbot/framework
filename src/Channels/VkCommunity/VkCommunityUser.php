@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Channels\Facebook;
+namespace FondBot\Channels\VkCommunity;
 
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 
-class FacebookSender implements Sender
+class VkCommunityUser implements User
 {
     private $payload;
 

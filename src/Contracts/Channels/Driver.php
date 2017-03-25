@@ -53,27 +53,27 @@ abstract class Driver
     abstract public function verifyRequest(): void;
 
     /**
-     * Get message sender.
+     * Get user.
      *
-     * @return Sender
+     * @return User
      */
-    abstract public function getSender(): Sender;
+    abstract public function getUser(): User;
 
     /**
      * Get message received from sender.
      *
-     * @return SenderMessage
+     * @return ReceivedMessage
      */
-    abstract public function getMessage(): SenderMessage;
+    abstract public function getMessage(): ReceivedMessage;
 
     /**
      * Send reply to participant.
      *
-     * @param Sender        $sender
+     * @param User          $sender
      * @param string        $text
      * @param Keyboard|null $keyboard
      *
-     * @return ReceiverMessage
+     * @return OutgoingMessage
      */
-    abstract public function sendMessage(Sender $sender, string $text, Keyboard $keyboard = null): ReceiverMessage;
+    abstract public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage;
 }

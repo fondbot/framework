@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Conversation\Fallback\FallbackStory;
 
 class StoryManager
@@ -21,12 +21,12 @@ class StoryManager
     /**
      * Find story.
      *
-     * @param Context       $context
-     * @param SenderMessage $message
+     * @param Context         $context
+     * @param ReceivedMessage $message
      *
      * @return Story|null
      */
-    public function find(Context $context, SenderMessage $message): ?Story
+    public function find(Context $context, ReceivedMessage $message): ?Story
     {
         $story = $context->getStory();
 
@@ -49,11 +49,11 @@ class StoryManager
     /**
      * Find story by message.
      *
-     * @param SenderMessage $message
+     * @param ReceivedMessage $message
      *
      * @return Story|null
      */
-    private function findByMessage(SenderMessage $message): ?Story
+    private function findByMessage(ReceivedMessage $message): ?Story
     {
         foreach ($this->stories as $story) {
             $story = resolve($story);

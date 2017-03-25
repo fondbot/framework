@@ -6,19 +6,19 @@ namespace Tests\Unit\Channels\Facebook;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Facebook\FacebookDriver;
-use FondBot\Channels\Facebook\FacebookSender;
+use FondBot\Channels\Facebook\FacebookUser;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
-use FondBot\Channels\Facebook\FacebookSenderMessage;
-use FondBot\Channels\Facebook\FacebookReceiverMessage;
+use FondBot\Channels\Facebook\FacebookReceivedMessage;
+use FondBot\Channels\Facebook\FacebookOutgoingMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -183,15 +183,15 @@ class FacebookDriverTest extends TestCase
             ->andReturn($stream)
             ->atLeast()->once();
 
-        $sender = $this->facebook->getSender();
+        $sender = $this->facebook->getUser();
 
-        $this->assertInstanceOf(Sender::class, $sender);
-        $this->assertInstanceOf(FacebookSender::class, $sender);
+        $this->assertInstanceOf(User::class, $sender);
+        $this->assertInstanceOf(FacebookUser::class, $sender);
         $this->assertSame($senderId, $sender->getId());
         $this->assertSame($response['first_name'].' '.$response['last_name'], $sender->getName());
         $this->assertNull($sender->getUsername());
 
-        $this->assertSame($sender, $this->facebook->getSender());
+        $this->assertSame($sender, $this->facebook->getUser());
     }
 
     /**
@@ -211,8 +211,8 @@ class FacebookDriverTest extends TestCase
             ])
             ->andThrow(new RequestException('Invalid request', $this->mock(RequestInterface::class)));
 
-        $result = $this->facebook->getSender();
-        $this->assertInstanceOf(Sender::class, $result);
+        $result = $this->facebook->getUser();
+        $this->assertInstanceOf(User::class, $result);
     }
 
     public function test_getMessage()
@@ -220,7 +220,7 @@ class FacebookDriverTest extends TestCase
         $this->facebook->setRequest($this->generateResponse(null, $text = $this->faker()->text()));
 
         $message = $this->facebook->getMessage();
-        $this->assertInstanceOf(FacebookSenderMessage::class, $message);
+        $this->assertInstanceOf(FacebookReceivedMessage::class, $message);
         $this->assertSame($text, $message->getText());
         $this->assertNull($message->getLocation());
     }
@@ -233,7 +233,7 @@ class FacebookDriverTest extends TestCase
         $this->facebook->setRequest($this->generateLocationResponse($latitude, $longitude));
 
         $message = $this->facebook->getMessage();
-        $this->assertInstanceOf(FacebookSenderMessage::class, $message);
+        $this->assertInstanceOf(FacebookReceivedMessage::class, $message);
         $this->assertInstanceOf(Location::class, $location = $message->getLocation());
         $this->assertSame($latitude, $location->getLatitude());
         $this->assertSame($longitude, $location->getLongitude());
@@ -298,7 +298,7 @@ class FacebookDriverTest extends TestCase
 
         $result = $this->facebook->sendMessage($recipient, $text, $keyboard);
 
-        $this->assertInstanceOf(FacebookReceiverMessage::class, $result);
+        $this->assertInstanceOf(FacebookOutgoingMessage::class, $result);
         $this->assertSame($recipient, $result->getRecipient());
         $this->assertSame($text, $result->getText());
         $this->assertSame($keyboard, $result->getKeyboard());

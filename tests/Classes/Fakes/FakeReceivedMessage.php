@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
-class FakeSenderMessage implements SenderMessage
+class FakeReceivedMessage implements ReceivedMessage
 {
     protected $text;
     protected $location;

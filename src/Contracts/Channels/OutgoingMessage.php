@@ -9,14 +9,14 @@ use FondBot\Contracts\Conversation\Keyboard;
 /**
  * Message to be sent to receiver.
  */
-interface ReceiverMessage
+interface OutgoingMessage
 {
     /**
      * Get receiver.
      *
-     * @return Sender
+     * @return User
      */
-    public function getRecipient(): Sender;
+    public function getRecipient(): User;
 
     /**
      * Get message text.

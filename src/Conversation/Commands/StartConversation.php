@@ -41,7 +41,7 @@ class StartConversation implements ShouldQueue
         $driver = $channelManager->createDriver($this->channel, $this->request, $this->headers);
 
         // Dispatch job to store message
-        dispatch((new StoreMessage($this->channel, $driver->getSender(), $driver->getMessage()))->onQueue('fondbot'));
+        dispatch((new StoreMessage($this->channel, $driver->getUser(), $driver->getMessage()))->onQueue('fondbot'));
 
         // Resolve context
         $context = $contextManager->resolve($this->channel, $driver);

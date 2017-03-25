@@ -7,19 +7,19 @@ namespace Tests\Unit\Channels\Drivers;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use Illuminate\Http\File;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Telegram\TelegramDriver;
-use FondBot\Channels\Telegram\TelegramSender;
+use FondBot\Channels\Telegram\TelegramUser;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
-use FondBot\Channels\Telegram\TelegramSenderMessage;
-use FondBot\Channels\Telegram\TelegramReceiverMessage;
+use FondBot\Channels\Telegram\TelegramReceivedMessage;
+use FondBot\Channels\Telegram\TelegramOutgoingMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -111,9 +111,9 @@ class TelegramDriverTest extends TestCase
             ],
         ]);
 
-        $sender = $this->telegram->getSender();
-        $this->assertInstanceOf(Sender::class, $sender);
-        $this->assertInstanceOf(TelegramSender::class, $sender);
+        $sender = $this->telegram->getUser();
+        $this->assertInstanceOf(User::class, $sender);
+        $this->assertInstanceOf(TelegramUser::class, $sender);
         $this->assertSame($response['id'], $sender->getId());
         $this->assertSame($response['first_name'].' '.$response['last_name'], $sender->getName());
         $this->assertSame($response['username'], $sender->getUsername());
@@ -127,9 +127,9 @@ class TelegramDriverTest extends TestCase
             ],
         ]);
 
-        /** @var TelegramSenderMessage $message */
+        /** @var TelegramReceivedMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
         $this->assertSame($text, $message->getText());
         $this->assertNull($message->getAttachment());
         $this->assertNull($message->getAudio());
@@ -192,7 +192,7 @@ class TelegramDriverTest extends TestCase
         $this->guzzle->shouldReceive('get')->with($path)->andReturn($response)->once();
 
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
 
         $attachment = $this->telegram->getMessage()->getAttachment();
         $this->assertInstanceOf(Attachment::class, $attachment);
@@ -216,9 +216,9 @@ class TelegramDriverTest extends TestCase
             ],
         ]);
 
-        /** @var TelegramSenderMessage $message */
+        /** @var TelegramReceivedMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
         $this->assertSame($contact, $message->getContact());
 
         $contact = $message->getContact();
@@ -241,9 +241,9 @@ class TelegramDriverTest extends TestCase
 
         $contact = array_merge($contact, ['last_name' => null, 'user_id' => null]);
 
-        /** @var TelegramSenderMessage $message */
+        /** @var TelegramReceivedMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
         $this->assertSame($contact, $message->getContact());
 
         $contact = $message->getContact();
@@ -269,7 +269,7 @@ class TelegramDriverTest extends TestCase
         ]);
 
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
 
         $location = $message->getLocation();
         $this->assertInstanceOf(Location::class, $location);
@@ -299,9 +299,9 @@ class TelegramDriverTest extends TestCase
 
         $venue['location'] = new Location($venue['location']['latitude'], $venue['location']['longitude']);
 
-        /** @var TelegramSenderMessage $message */
+        /** @var TelegramReceivedMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
         $this->assertEquals($venue, $message->getVenue());
 
         $venue = $message->getVenue();
@@ -337,9 +337,9 @@ class TelegramDriverTest extends TestCase
         $venue['location'] = new Location($venue['location']['latitude'], $venue['location']['longitude']);
         $venue['foursquare_id'] = null;
 
-        /** @var TelegramSenderMessage $message */
+        /** @var TelegramReceivedMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
         $this->assertEquals($venue, $message->getVenue());
 
         $venue = $message->getVenue();
@@ -386,7 +386,7 @@ class TelegramDriverTest extends TestCase
 
         $result = $this->telegram->sendMessage($recipient, $text, $keyboard);
 
-        $this->assertInstanceOf(TelegramReceiverMessage::class, $result);
+        $this->assertInstanceOf(TelegramOutgoingMessage::class, $result);
         $this->assertSame($recipient, $result->getRecipient());
         $this->assertSame($text, $result->getText());
         $this->assertSame($keyboard, $result->getKeyboard());

@@ -8,10 +8,10 @@ use Mockery;
 use Faker\Generator;
 use Faker\Factory as Faker;
 use Tests\Classes\Fakes\FakeDriver;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use Illuminate\Database\Eloquent\Model;
-use Tests\Classes\Fakes\FakeSenderMessage;
-use FondBot\Contracts\Channels\SenderMessage;
+use Tests\Classes\Fakes\FakeReceivedMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Channels\Message\Attachment;
@@ -72,12 +72,12 @@ class Factory
     /**
      * @param array $attributes
      *
-     * @return Sender|\Mockery\Mock
+     * @return User|\Mockery\Mock
      */
-    public function sender(array $attributes = []): Sender
+    public function sender(array $attributes = []): User
     {
         /** @var \Mockery\Mock $mock */
-        $mock = Mockery::mock(Sender::class);
+        $mock = Mockery::mock(User::class);
 
         $mock->shouldReceive('getId')->andReturn($attributes['uuid'] ?? $this->faker()->uuid);
         $mock->shouldReceive('getName')->andReturn($attributes['name'] ?? $this->faker()->name);
@@ -86,7 +86,7 @@ class Factory
         return $mock;
     }
 
-    public function senderMessage(array $attributes = []): SenderMessage
+    public function senderMessage(array $attributes = []): ReceivedMessage
     {
         $location = array_has($attributes,
             'location') ? $attributes['location'] : new Location($this->faker()->latitude,
@@ -94,7 +94,7 @@ class Factory
         $attachment = array_has($attributes, 'attachment') ? $attributes['attachment'] : new Attachment('image',
             $this->faker()->imageUrl());
 
-        return new FakeSenderMessage(
+        return new FakeReceivedMessage(
             $attributes['text'] ?? $this->faker()->text,
             $location,
             $attachment

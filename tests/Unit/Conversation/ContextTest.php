@@ -8,8 +8,8 @@ use Tests\TestCase;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Interaction;
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 
 /**
@@ -28,8 +28,8 @@ class ContextTest extends TestCase
         parent::setUp();
 
         $this->channel = $this->factory(Channel::class)->create();
-        $this->sender = $this->mock(Sender::class);
-        $this->message = $this->mock(SenderMessage::class);
+        $this->sender = $this->mock(User::class);
+        $this->message = $this->mock(ReceivedMessage::class);
         $this->story = $this->mock(Story::class);
         $this->interaction = $this->mock(Interaction::class);
         $this->values = [
@@ -54,7 +54,7 @@ class ContextTest extends TestCase
 
     public function test_getSender()
     {
-        $this->assertSame($this->sender, $this->context->getSender());
+        $this->assertSame($this->sender, $this->context->getUser());
     }
 
     public function test_getMessage()

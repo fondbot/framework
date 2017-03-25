@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace FondBot\Channels\Telegram;
 
 use GuzzleHttp\Client;
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
-class TelegramSenderMessage implements SenderMessage
+class TelegramReceivedMessage implements ReceivedMessage
 {
     private $token;
     private $payload;

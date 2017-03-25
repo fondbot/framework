@@ -7,10 +7,7 @@ namespace FondBot\Contracts\Channels;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
-/**
- * Message received from sender.
- */
-interface SenderMessage
+interface ReceivedMessage
 {
     /**
      * Get text.

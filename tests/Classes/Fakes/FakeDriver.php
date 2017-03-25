@@ -6,10 +6,10 @@ namespace Tests\Classes\Fakes;
 
 use Tests\Factory;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\SenderMessage;
-use FondBot\Contracts\Channels\ReceiverMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Channels\OutgoingMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
@@ -54,9 +54,9 @@ class FakeDriver extends Driver implements WebhookVerification
     /**
      * Get message sender.
      *
-     * @return Sender
+     * @return User
      */
-    public function getSender(): Sender
+    public function getUser(): User
     {
         return $this->sender ?? $this->sender = (new Factory())->sender();
     }
@@ -64,9 +64,9 @@ class FakeDriver extends Driver implements WebhookVerification
     /**
      * Get message received from sender.
      *
-     * @return SenderMessage
+     * @return ReceivedMessage
      */
-    public function getMessage(): SenderMessage
+    public function getMessage(): ReceivedMessage
     {
         return $this->message ?? $this->message = (new Factory())->senderMessage();
     }
@@ -74,15 +74,15 @@ class FakeDriver extends Driver implements WebhookVerification
     /**
      * Send reply to participant.
      *
-     * @param Sender        $sender
+     * @param User          $sender
      * @param string        $text
      * @param Keyboard|null $keyboard
      *
-     * @return ReceiverMessage
+     * @return OutgoingMessage
      */
-    public function sendMessage(Sender $sender, string $text, Keyboard $keyboard = null): ReceiverMessage
+    public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage
     {
-        return new FakeReceiverMessage($sender, $text, $keyboard);
+        return new FakeOutgoingMessage($sender, $text, $keyboard);
     }
 
     /**

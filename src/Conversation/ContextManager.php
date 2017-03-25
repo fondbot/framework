@@ -6,7 +6,7 @@ namespace FondBot\Conversation;
 
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Database\Entities\Channel;
 use Illuminate\Contracts\Cache\Repository as Cache;
 
@@ -33,7 +33,7 @@ class ContextManager
     {
         $this->debug('resolve', ['driver' => get_class($driver)]);
 
-        $sender = $driver->getSender();
+        $sender = $driver->getUser();
         $message = $driver->getMessage();
         $key = $this->key($channel, $sender);
         $value = $this->cache->get($key);
@@ -60,7 +60,7 @@ class ContextManager
     {
         $this->debug('save', ['context' => $context]);
 
-        $key = $this->key($context->getChannel(), $context->getSender());
+        $key = $this->key($context->getChannel(), $context->getUser());
 
         $this->cache->forever($key, $context->toArray());
     }
@@ -74,7 +74,7 @@ class ContextManager
     {
         $this->debug('clear', ['context' => $context]);
 
-        $key = $this->key($context->getChannel(), $context->getSender());
+        $key = $this->key($context->getChannel(), $context->getUser());
 
         $this->cache->forget($key);
     }
@@ -83,11 +83,11 @@ class ContextManager
      * Get key of current context in storage (Cache, Memory, etc.).
      *
      * @param Channel $channel
-     * @param Sender  $sender
+     * @param User    $sender
      *
      * @return string
      */
-    private function key(Channel $channel, Sender $sender): string
+    private function key(Channel $channel, User $sender): string
     {
         return 'context.'.$channel->name.'.'.$sender->getId();
     }

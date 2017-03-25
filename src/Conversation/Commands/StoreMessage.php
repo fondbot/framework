@@ -6,13 +6,13 @@ namespace FondBot\Conversation\Commands;
 
 use FondBot\Traits\Loggable;
 use Illuminate\Bus\Queueable;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Filesystem\Cloud;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Filesystem\Factory;
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Message;
@@ -29,7 +29,7 @@ class StoreMessage implements ShouldQueue
     private $sender;
     private $message;
 
-    public function __construct(Channel $channel, Sender $sender, SenderMessage $message)
+    public function __construct(Channel $channel, User $sender, ReceivedMessage $message)
     {
         $this->channel = $channel;
         $this->sender = $sender;

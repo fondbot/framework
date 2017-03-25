@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Facebook;
 
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
-class FacebookSenderMessage implements SenderMessage
+class FacebookReceivedMessage implements ReceivedMessage
 {
     private $payload;
 

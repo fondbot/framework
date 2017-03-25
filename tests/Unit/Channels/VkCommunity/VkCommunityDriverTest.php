@@ -7,12 +7,12 @@ namespace Unit\Channels\VkCommunity;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Channels\VkCommunity\VkCommunityDriver;
-use FondBot\Channels\VkCommunity\VkCommunitySender;
-use FondBot\Channels\VkCommunity\VkCommunitySenderMessage;
-use FondBot\Channels\VkCommunity\VkCommunityReceiverMessage;
+use FondBot\Channels\VkCommunity\VkCommunityUser;
+use FondBot\Channels\VkCommunity\VkCommunityReceivedMessage;
+use FondBot\Channels\VkCommunity\VkCommunityOutgoingMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -140,18 +140,18 @@ class VkCommunityDriverTest extends TestCase
             ],
         ]);
 
-        $result = $this->vkCommunity->getSender();
+        $result = $this->vkCommunity->getUser();
 
-        $this->assertInstanceOf(Sender::class, $result);
-        $this->assertInstanceOf(VkCommunitySender::class, $result);
+        $this->assertInstanceOf(User::class, $result);
+        $this->assertInstanceOf(VkCommunityUser::class, $result);
         $this->assertEquals($senderId, $result->getId());
         $this->assertEquals($senderFirstName.' '.$senderLastName, $result->getName());
         $this->assertNull($result->getUsername());
 
         // Sender already set
-        $result = $this->vkCommunity->getSender();
+        $result = $this->vkCommunity->getUser();
 
-        $this->assertInstanceOf(Sender::class, $result);
+        $this->assertInstanceOf(User::class, $result);
         $this->assertEquals($senderId, $result->getId());
         $this->assertEquals($senderFirstName.' '.$senderLastName, $result->getName());
         $this->assertNull($result->getUsername());
@@ -178,7 +178,7 @@ class VkCommunityDriverTest extends TestCase
 
         $result = $this->vkCommunity->sendMessage($recipient, $text);
 
-        $this->assertInstanceOf(VkCommunityReceiverMessage::class, $result);
+        $this->assertInstanceOf(VkCommunityOutgoingMessage::class, $result);
         $this->assertSame($recipient, $result->getRecipient());
         $this->assertSame($text, $result->getText());
         $this->assertNull($result->getKeyboard());
@@ -194,7 +194,7 @@ class VkCommunityDriverTest extends TestCase
         ]);
 
         $message = $this->vkCommunity->getMessage();
-        $this->assertInstanceOf(VkCommunitySenderMessage::class, $message);
+        $this->assertInstanceOf(VkCommunityReceivedMessage::class, $message);
         $this->assertSame($text, $message->getText());
         $this->assertNull($message->getLocation());
         $this->assertNull($message->getAttachment());

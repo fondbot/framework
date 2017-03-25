@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\VkCommunity;
 
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
-class VkCommunitySenderMessage implements SenderMessage
+class VkCommunityReceivedMessage implements ReceivedMessage
 {
     private $payload;
 

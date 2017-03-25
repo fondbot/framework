@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Conversation;
 
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Channels\ReceivedMessage;
 
 interface Interaction
 {
@@ -27,16 +27,16 @@ interface Interaction
     /**
      * Get message receiver.
      *
-     * @return Sender
+     * @return User
      */
-    public function getSender(): Sender;
+    public function getSender(): User;
 
     /**
      * Get sender's message.
      *
-     * @return SenderMessage
+     * @return ReceivedMessage
      */
-    public function getSenderMessage(): SenderMessage;
+    public function getSenderMessage(): ReceivedMessage;
 
     /**
      * Message text to be sent to Participant.

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Telegram;
 
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 
-class TelegramSender implements Sender
+class TelegramUser implements User
 {
     private $payload;
 

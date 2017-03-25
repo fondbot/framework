@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Traits\Loggable;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use Illuminate\Contracts\Bus\Dispatcher;
 use FondBot\Conversation\Traits\Transitions;
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Conversation\Commands\SendMessage;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
@@ -19,19 +19,19 @@ abstract class Interaction implements InteractionContract
     /**
      * Get message receiver.
      *
-     * @return Sender
+     * @return User
      */
-    public function getSender(): Sender
+    public function getSender(): User
     {
-        return $this->getContext()->getSender();
+        return $this->getContext()->getUser();
     }
 
     /**
      * Get sender's message.
      *
-     * @return SenderMessage
+     * @return ReceivedMessage
      */
-    public function getSenderMessage(): SenderMessage
+    public function getSenderMessage(): ReceivedMessage
     {
         return $this->getContext()->getMessage();
     }

@@ -7,7 +7,7 @@ namespace FondBot\Conversation\Commands;
 use FondBot\Traits\Loggable;
 use Illuminate\Bus\Queueable;
 use FondBot\Channels\ChannelManager;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,7 +25,7 @@ class SendMessage implements ShouldQueue
     private $text;
     private $keyboard;
 
-    public function __construct(Channel $channel, Sender $sender, string $text, ?Keyboard $keyboard)
+    public function __construct(Channel $channel, User $sender, string $text, ?Keyboard $keyboard)
     {
         $this->channel = $channel;
         $this->sender = $sender;

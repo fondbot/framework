@@ -10,10 +10,10 @@ use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use FondBot\Conversation\StoryManager;
 use FondBot\Conversation\ContextManager;
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Conversation\ConversationManager;
 use FondBot\Conversation\Commands\StoreMessage;
 use FondBot\Contracts\Database\Entities\Channel;
@@ -49,14 +49,14 @@ class StartConversationTest extends TestCase
         $this->context = $this->mock(Context::class);
         $this->story = $this->mock(Story::class);
         $this->driver = $this->mock(Driver::class);
-        $this->sender = $this->mock(Sender::class);
-        $this->message = $this->mock(SenderMessage::class);
+        $this->sender = $this->mock(User::class);
+        $this->message = $this->mock(ReceivedMessage::class);
         $this->channel = $this->factory(Channel::class)->create();
     }
 
     public function test_story_found()
     {
-        $this->driver->shouldReceive('getSender')->andReturn($this->sender)->once();
+        $this->driver->shouldReceive('getUser')->andReturn($this->sender)->once();
         $this->driver->shouldReceive('getMessage')->andReturn($this->message)->atLeast()->once();
 
         $this->channelManager->shouldReceive('createDriver')
@@ -85,7 +85,7 @@ class StartConversationTest extends TestCase
 
     public function test_no_story_found()
     {
-        $this->driver->shouldReceive('getSender')->andReturn($this->sender)->once();
+        $this->driver->shouldReceive('getUser')->andReturn($this->sender)->once();
         $this->driver->shouldReceive('getMessage')->andReturn($this->message)->atLeast()->once();
 
         $this->channelManager->shouldReceive('createDriver')

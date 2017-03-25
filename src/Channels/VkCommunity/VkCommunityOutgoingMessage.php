@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes\Fakes;
+namespace FondBot\Channels\VkCommunity;
 
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\ReceiverMessage;
+use FondBot\Contracts\Channels\OutgoingMessage;
 
-class FakeReceiverMessage implements ReceiverMessage
+class VkCommunityOutgoingMessage implements OutgoingMessage
 {
     private $recipient;
     private $text;
     private $keyboard;
 
-    public function __construct(Sender $recipient, $text, Keyboard $keyboard = null)
+    public function __construct(User $recipient, $text, Keyboard $keyboard = null)
     {
         $this->recipient = $recipient;
         $this->text = $text;
@@ -24,9 +24,9 @@ class FakeReceiverMessage implements ReceiverMessage
     /**
      * Get receiver.
      *
-     * @return Sender
+     * @return User
      */
-    public function getRecipient(): Sender
+    public function getRecipient(): User
     {
         return $this->recipient;
     }
@@ -59,9 +59,8 @@ class FakeReceiverMessage implements ReceiverMessage
     public function toArray(): array
     {
         return [
-            'receiver' => $this->recipient->getId(),
-            'text' => $this->text,
-            'keyboard' => $this->keyboard->getType(),
+            'message' => $this->text,
+            'user_id' => $this->recipient->getId(),
         ];
     }
 }

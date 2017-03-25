@@ -7,10 +7,10 @@ namespace Tests\Unit\Conversation\Commands;
 use Tests\TestCase;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Conversation\Commands\SendMessage;
-use FondBot\Contracts\Channels\ReceiverMessage;
+use FondBot\Contracts\Channels\OutgoingMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Contracts\Database\Entities\Participant;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -21,7 +21,7 @@ use FondBot\Contracts\Database\Services\ParticipantService;
  * @property Channel                                    $channel
  * @property Participant                                $participant
  * @property string                                     $text
- * @property Sender|\Mockery\Mock                       recipient
+ * @property User|\Mockery\Mock                         recipient
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $keyboard
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $receiverMessage
@@ -44,7 +44,7 @@ class SendMessageTest extends TestCase
         $this->recipient = $this->factory()->sender();
         $this->keyboard = $this->mock(Keyboard::class);
         $this->driver = $this->mock(Driver::class);
-        $this->receiverMessage = $this->mock(ReceiverMessage::class);
+        $this->receiverMessage = $this->mock(OutgoingMessage::class);
         $this->channelManager = $this->mock(ChannelManager::class);
         $this->participantService = $this->mock(ParticipantService::class);
         $this->messageService = $this->mock(MessageService::class);

@@ -12,9 +12,9 @@ use FondBot\Contracts\Database\Entities\Participant;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
- * @property Channel                                   channel
- * @property \FondBot\Contracts\Channels\Sender        sender
- * @property \FondBot\Contracts\Channels\SenderMessage message
+ * @property Channel                                     channel
+ * @property \FondBot\Contracts\Channels\User            sender
+ * @property \FondBot\Contracts\Channels\ReceivedMessage message
  */
 class StoreMessageTest extends TestCase
 {

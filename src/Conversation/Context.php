@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Contracts\Channels\User;
 use Illuminate\Contracts\Support\Arrayable;
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Database\Entities\Channel;
 
 class Context implements Arrayable
 {
     private $channel;
-    private $sender;
+    private $user;
     private $message;
     private $story;
     private $interaction;
@@ -20,14 +20,14 @@ class Context implements Arrayable
 
     public function __construct(
         Channel $channel,
-        Sender $sender,
-        SenderMessage $message,
+        User $user,
+        ReceivedMessage $message,
         Story $story = null,
         Interaction $interaction = null,
         array $values = []
     ) {
         $this->channel = $channel;
-        $this->sender = $sender;
+        $this->user = $user;
         $this->message = $message;
         $this->story = $story;
         $this->interaction = $interaction;
@@ -39,12 +39,12 @@ class Context implements Arrayable
         return $this->channel;
     }
 
-    public function getSender(): Sender
+    public function getUser(): User
     {
-        return $this->sender;
+        return $this->user;
     }
 
-    public function getMessage(): SenderMessage
+    public function getMessage(): ReceivedMessage
     {
         return $this->message;
     }

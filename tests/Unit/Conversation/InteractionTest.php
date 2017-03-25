@@ -61,7 +61,7 @@ class InteractionTest extends TestCase
         $contextManager = $this->mock(ContextManager::class);
         $sender = $this->factory()->sender();
 
-        $this->context->shouldReceive('getSender')->andReturn($sender)->once();
+        $this->context->shouldReceive('getUser')->andReturn($sender)->once();
         $this->context->shouldReceive('getChannel')->andReturn($this->channel)->once();
         $this->context->shouldReceive('getInteraction')->andReturnNull()->once();
         $this->context->shouldReceive('setInteraction')->with($this->interaction)->once();
