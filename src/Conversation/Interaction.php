@@ -17,21 +17,21 @@ abstract class Interaction implements InteractionContract
     use Transitions, Loggable;
 
     /**
-     * Get message receiver.
+     * Get user.
      *
      * @return User
      */
-    public function getSender(): User
+    public function getUser(): User
     {
         return $this->getContext()->getUser();
     }
 
     /**
-     * Get sender's message.
+     * Get user's message.
      *
      * @return ReceivedMessage
      */
-    public function getSenderMessage(): ReceivedMessage
+    public function getUserMessage(): ReceivedMessage
     {
         return $this->getContext()->getMessage();
     }
@@ -83,7 +83,7 @@ abstract class Interaction implements InteractionContract
         $this->getDispatcher()->dispatch(
             (new SendMessage(
                 $this->getContext()->getChannel(),
-                $this->getSender(),
+                $this->getUser(),
                 $this->text(),
                 $this->keyboard()
             ))->onQueue('fondbot')

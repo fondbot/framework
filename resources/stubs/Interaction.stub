@@ -33,7 +33,7 @@ class ___CLASSNAME___ extends Interaction
      */
     public function text(): string
     {
-        return 'Hello, '.$this->getSender()->getName().'!';
+        return 'Hello, '.$this->getUser()->getName().'!';
     }
 
     /**

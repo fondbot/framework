@@ -29,14 +29,14 @@ interface Interaction
      *
      * @return User
      */
-    public function getSender(): User;
+    public function getUser(): User;
 
     /**
      * Get sender's message.
      *
      * @return ReceivedMessage
      */
-    public function getSenderMessage(): ReceivedMessage;
+    public function getUserMessage(): ReceivedMessage;
 
     /**
      * Message text to be sent to Participant.

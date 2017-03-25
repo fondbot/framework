@@ -39,7 +39,7 @@ class InteractionTest extends TestCase
 
         $this->context->shouldReceive('getMessage')->andReturn($message)->once();
 
-        $this->assertSame($message, $this->interaction->getSenderMessage());
+        $this->assertSame($message, $this->interaction->getUserMessage());
     }
 
     public function test_run_current_interaction_in_context_and_do_not_run_another_interaction()
