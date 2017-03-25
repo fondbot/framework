@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Commands;
 
-use FondBot\Contracts\Channels\Sender;
 use FondBot\Traits\Loggable;
 use Illuminate\Bus\Queueable;
 use FondBot\Channels\ChannelManager;
+use FondBot\Contracts\Channels\Sender;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;

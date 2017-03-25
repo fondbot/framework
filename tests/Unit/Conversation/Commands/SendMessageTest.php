@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Commands;
 
-use FondBot\Contracts\Channels\Sender;
 use Tests\TestCase;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Conversation\Commands\SendMessage;
 use FondBot\Contracts\Channels\ReceiverMessage;
