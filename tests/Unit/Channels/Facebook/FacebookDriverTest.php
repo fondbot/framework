@@ -9,7 +9,6 @@ use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Facebook\FacebookDriver;
@@ -262,7 +261,7 @@ class FacebookDriverTest extends TestCase
     {
         $text = $this->faker()->text;
 
-        $receiver = new Receiver($this->faker()->uuid);
+        $recipient = $this->factory()->sender();
         $keyboard = new BasicKeyboard([
             new Button($this->faker()->word),
             new Button($this->faker()->word),
@@ -273,7 +272,7 @@ class FacebookDriverTest extends TestCase
             [
                 'form_params' => [
                     'recipient' => [
-                        'id' => $receiver->getIdentifier(),
+                        'id' => $recipient->getId(),
                     ],
                     'message' => [
                         'text' => $text,
@@ -297,10 +296,10 @@ class FacebookDriverTest extends TestCase
             ]
         );
 
-        $result = $this->facebook->sendMessage($receiver, $text, $keyboard);
+        $result = $this->facebook->sendMessage($recipient, $text, $keyboard);
 
         $this->assertInstanceOf(FacebookReceiverMessage::class, $result);
-        $this->assertSame($receiver, $result->getReceiver());
+        $this->assertSame($recipient, $result->getRecipient());
         $this->assertSame($text, $result->getText());
         $this->assertSame($keyboard, $result->getKeyboard());
     }
@@ -308,13 +307,12 @@ class FacebookDriverTest extends TestCase
     public function test_sendMessage_request_exception()
     {
         $text = $this->faker()->text;
-        $receiver = $this->mock(Receiver::class);
-        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
+        $sender = $this->factory()->sender();
 
         $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request',
             $this->mock(RequestInterface::class)));
 
-        $this->facebook->sendMessage($receiver, $text);
+        $this->facebook->sendMessage($sender, $text);
     }
 
     public function test_verify_webhook_check()

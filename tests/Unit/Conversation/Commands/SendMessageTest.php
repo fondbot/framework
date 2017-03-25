@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Commands;
 
-use Tests\Factory;
+use FondBot\Contracts\Channels\Sender;
 use Tests\TestCase;
 use FondBot\Channels\ChannelManager;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Conversation\Commands\SendMessage;
 use FondBot\Contracts\Channels\ReceiverMessage;
@@ -22,7 +21,7 @@ use FondBot\Contracts\Database\Services\ParticipantService;
  * @property Channel                                    $channel
  * @property Participant                                $participant
  * @property string                                     $text
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $receiver
+ * @property Sender|\Mockery\Mock                       recipient
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $keyboard
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $receiverMessage
@@ -42,7 +41,7 @@ class SendMessageTest extends TestCase
         $this->participant = $this->factory(Participant::class)->create();
         $this->text = $this->faker()->text;
 
-        $this->receiver = $this->mock(Receiver::class);
+        $this->recipient = $this->factory()->sender();
         $this->keyboard = $this->mock(Keyboard::class);
         $this->driver = $this->mock(Driver::class);
         $this->receiverMessage = $this->mock(ReceiverMessage::class);
@@ -53,17 +52,15 @@ class SendMessageTest extends TestCase
 
     public function test()
     {
-        $this->receiver->shouldReceive('getIdentifier')->andReturn($receiverId = $this->faker()->uuid)->atLeast()->once();
-
         $this->channelManager->shouldReceive('createDriver')->with($this->channel)->andReturn($this->driver)->once();
 
         $this->driver->shouldReceive('sendMessage')
-            ->with($this->receiver, $this->text, $this->keyboard)
+            ->with($this->recipient, $this->text, $this->keyboard)
             ->andReturn($this->receiverMessage)
             ->once();
 
         $this->participantService->shouldReceive('findByChannelAndIdentifier')
-            ->with($this->channel, $receiverId)
+            ->with($this->channel, $this->recipient->getId())
             ->andReturn($this->participant)
             ->once();
 
@@ -74,7 +71,7 @@ class SendMessageTest extends TestCase
             'text' => $text,
         ])->once();
 
-        $job = new SendMessage($this->channel, $this->receiver, $this->text, $this->keyboard);
+        $job = new SendMessage($this->channel, $this->recipient, $this->text, $this->keyboard);
         $job->handle($this->channelManager, $this->participantService, $this->messageService);
     }
 }

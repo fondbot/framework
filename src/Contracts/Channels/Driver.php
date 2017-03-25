@@ -69,11 +69,11 @@ abstract class Driver
     /**
      * Send reply to participant.
      *
-     * @param Receiver      $receiver
+     * @param Sender        $sender
      * @param string        $text
      * @param Keyboard|null $keyboard
      *
      * @return ReceiverMessage
      */
-    abstract public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage;
+    abstract public function sendMessage(Sender $sender, string $text, Keyboard $keyboard = null): ReceiverMessage;
 }

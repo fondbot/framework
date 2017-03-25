@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Conversation;
 
+use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Channels\SenderMessage;
 
 interface Interaction
@@ -27,9 +27,9 @@ interface Interaction
     /**
      * Get message receiver.
      *
-     * @return Receiver
+     * @return Sender
      */
-    public function getReceiver(): Receiver;
+    public function getSender(): Sender;
 
     /**
      * Get sender's message.

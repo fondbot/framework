@@ -72,9 +72,9 @@ class Factory
     /**
      * @param array $attributes
      *
-     * @return \Mockery\Mock
+     * @return Sender|\Mockery\Mock
      */
-    public function sender(array $attributes = [])
+    public function sender(array $attributes = []): Sender
     {
         /** @var \Mockery\Mock $mock */
         $mock = Mockery::mock(Sender::class);

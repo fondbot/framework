@@ -7,7 +7,6 @@ namespace FondBot\Channels\Telegram;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\SenderMessage;
@@ -91,15 +90,15 @@ class TelegramDriver extends Driver implements WebhookInstallation
     /**
      * Send reply to participant.
      *
-     * @param Receiver      $receiver
+     * @param Sender        $sender
      * @param string        $text
      * @param Keyboard|null $keyboard
      *
      * @return ReceiverMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
+    public function sendMessage(Sender $sender, string $text, Keyboard $keyboard = null): ReceiverMessage
     {
-        $message = new TelegramReceiverMessage($receiver, $text, $keyboard);
+        $message = new TelegramReceiverMessage($sender, $text, $keyboard);
 
         try {
             $this->guzzle->post($this->getBaseUrl().'/sendMessage', [

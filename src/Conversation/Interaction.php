@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Contracts\Channels\Sender;
 use FondBot\Traits\Loggable;
-use FondBot\Contracts\Channels\Receiver;
 use Illuminate\Contracts\Bus\Dispatcher;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Contracts\Channels\SenderMessage;
@@ -19,13 +19,11 @@ abstract class Interaction implements InteractionContract
     /**
      * Get message receiver.
      *
-     * @return Receiver
+     * @return Sender
      */
-    public function getReceiver(): Receiver
+    public function getSender(): Sender
     {
-        $sender = $this->getContext()->getSender();
-
-        return new Receiver($sender->getId(), $sender->getName(), $sender->getUsername());
+        return $this->getContext()->getSender();
     }
 
     /**
@@ -85,7 +83,7 @@ abstract class Interaction implements InteractionContract
         $this->getDispatcher()->dispatch(
             (new SendMessage(
                 $this->getContext()->getChannel(),
-                $this->getReceiver(),
+                $this->getSender(),
                 $this->text(),
                 $this->keyboard()
             ))->onQueue('fondbot')

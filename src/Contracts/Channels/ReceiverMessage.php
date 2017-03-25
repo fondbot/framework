@@ -14,9 +14,9 @@ interface ReceiverMessage
     /**
      * Get receiver.
      *
-     * @return Receiver
+     * @return Sender
      */
-    public function getReceiver(): Receiver;
+    public function getRecipient(): Sender;
 
     /**
      * Get message text.

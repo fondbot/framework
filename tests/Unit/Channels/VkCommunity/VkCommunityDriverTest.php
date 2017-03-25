@@ -8,7 +8,6 @@ use Tests\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Channels\VkCommunity\VkCommunityDriver;
 use FondBot\Channels\VkCommunity\VkCommunitySender;
@@ -160,7 +159,7 @@ class VkCommunityDriverTest extends TestCase
 
     public function test_sendMessage()
     {
-        $receiver = new Receiver($this->faker()->uuid, $this->faker()->name);
+        $recipient = $this->factory()->sender();
         $text = $this->faker()->text();
 
         $this->guzzle->shouldReceive('get')
@@ -169,7 +168,7 @@ class VkCommunityDriverTest extends TestCase
                 [
                     'query' => [
                         'message' => $text,
-                        'user_id' => $receiver->getIdentifier(),
+                        'user_id' => $recipient->getId(),
                         'access_token' => $this->channel->parameters['access_token'],
                         'v' => VkCommunityDriver::API_VERSION,
                     ],
@@ -177,10 +176,10 @@ class VkCommunityDriverTest extends TestCase
             )
             ->once();
 
-        $result = $this->vkCommunity->sendMessage($receiver, $text);
+        $result = $this->vkCommunity->sendMessage($recipient, $text);
 
         $this->assertInstanceOf(VkCommunityReceiverMessage::class, $result);
-        $this->assertSame($receiver, $result->getReceiver());
+        $this->assertSame($recipient, $result->getRecipient());
         $this->assertSame($text, $result->getText());
         $this->assertNull($result->getKeyboard());
     }

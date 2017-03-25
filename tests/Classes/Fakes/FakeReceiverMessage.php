@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
-use FondBot\Contracts\Channels\Receiver;
+use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\ReceiverMessage;
 
 class FakeReceiverMessage implements ReceiverMessage
 {
-    private $receiver;
+    private $recipient;
     private $text;
     private $keyboard;
 
-    public function __construct(Receiver $receiver, $text, Keyboard $keyboard = null)
+    public function __construct(Sender $recipient, $text, Keyboard $keyboard = null)
     {
-        $this->receiver = $receiver;
+        $this->recipient = $recipient;
         $this->text = $text;
         $this->keyboard = $keyboard;
     }
@@ -24,11 +24,11 @@ class FakeReceiverMessage implements ReceiverMessage
     /**
      * Get receiver.
      *
-     * @return Receiver
+     * @return Sender
      */
-    public function getReceiver(): Receiver
+    public function getRecipient(): Sender
     {
-        return $this->receiver;
+        return $this->recipient;
     }
 
     /**
@@ -59,7 +59,7 @@ class FakeReceiverMessage implements ReceiverMessage
     public function toArray(): array
     {
         return [
-            'receiver' => $this->receiver->getIdentifier(),
+            'receiver' => $this->recipient->getId(),
             'text' => $this->text,
             'keyboard' => $this->keyboard->getType(),
         ];

@@ -10,7 +10,6 @@ use Illuminate\Http\File;
 use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Telegram\TelegramDriver;
@@ -358,7 +357,7 @@ class TelegramDriverTest extends TestCase
     {
         $text = $this->faker()->text;
 
-        $receiver = new Receiver($this->faker()->uuid);
+        $recipient = $this->factory()->sender();
         $keyboard = new BasicKeyboard([
             new Button($this->faker()->word),
             new Button($this->faker()->word),
@@ -378,17 +377,17 @@ class TelegramDriverTest extends TestCase
             'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/sendMessage',
             [
                 'form_params' => [
-                    'chat_id' => $receiver->getIdentifier(),
+                    'chat_id' => $recipient->getId(),
                     'text' => $text,
                     'reply_markup' => $replyMarkup,
                 ],
             ]
         )->once();
 
-        $result = $this->telegram->sendMessage($receiver, $text, $keyboard);
+        $result = $this->telegram->sendMessage($recipient, $text, $keyboard);
 
         $this->assertInstanceOf(TelegramReceiverMessage::class, $result);
-        $this->assertSame($receiver, $result->getReceiver());
+        $this->assertSame($recipient, $result->getRecipient());
         $this->assertSame($text, $result->getText());
         $this->assertSame($keyboard, $result->getKeyboard());
     }
@@ -397,33 +396,31 @@ class TelegramDriverTest extends TestCase
     {
         $text = $this->faker()->text;
 
-        $receiver = $this->mock(Receiver::class);
-        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
+        $recipient = $this->factory()->sender();
 
         $this->guzzle->shouldReceive('post')->with(
             'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/sendMessage',
             [
                 'form_params' => [
-                    'chat_id' => $chatId,
+                    'chat_id' => $recipient->getId(),
                     'text' => $text,
                     'reply_markup' => 'null',
                 ],
             ]
         )->once();
 
-        $this->telegram->sendMessage($receiver, $text);
+        $this->telegram->sendMessage($recipient, $text);
     }
 
     public function test_sendMessage_request_exception()
     {
         $text = $this->faker()->text;
-        $receiver = $this->mock(Receiver::class);
-        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
+        $recipient = $this->factory()->sender();
 
         $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request',
             $this->mock(RequestInterface::class)));
 
-        $this->telegram->sendMessage($receiver, $text);
+        $this->telegram->sendMessage($recipient, $text);
     }
 
     public function attachments(): array

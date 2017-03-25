@@ -7,7 +7,6 @@ namespace FondBot\Channels\VkCommunity;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\SenderMessage;
 use FondBot\Contracts\Channels\ReceiverMessage;
@@ -106,15 +105,15 @@ class VkCommunityDriver extends Driver implements WebhookVerification
     /**
      * Send reply to participant.
      *
-     * @param Receiver      $receiver
+     * @param Sender        $sender
      * @param string        $text
      * @param Keyboard|null $keyboard
      *
      * @return ReceiverMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
+    public function sendMessage(Sender $sender, string $text, Keyboard $keyboard = null): ReceiverMessage
     {
-        $message = new VkCommunityReceiverMessage($receiver, $text, $keyboard);
+        $message = new VkCommunityReceiverMessage($sender, $text, $keyboard);
         $query = array_merge($message->toArray(), [
             'access_token' => $this->getParameter('access_token'),
             'v' => self::API_VERSION,

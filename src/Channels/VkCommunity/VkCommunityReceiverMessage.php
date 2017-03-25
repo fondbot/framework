@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\VkCommunity;
 
-use FondBot\Contracts\Channels\Receiver;
+use FondBot\Contracts\Channels\Sender;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\ReceiverMessage;
 
 class VkCommunityReceiverMessage implements ReceiverMessage
 {
-    private $receiver;
+    private $recipient;
     private $text;
     private $keyboard;
 
-    public function __construct(Receiver $receiver, $text, Keyboard $keyboard = null)
+    public function __construct(Sender $recipient, $text, Keyboard $keyboard = null)
     {
-        $this->receiver = $receiver;
+        $this->recipient = $recipient;
         $this->text = $text;
         $this->keyboard = $keyboard;
     }
@@ -24,11 +24,11 @@ class VkCommunityReceiverMessage implements ReceiverMessage
     /**
      * Get receiver.
      *
-     * @return Receiver
+     * @return Sender
      */
-    public function getReceiver(): Receiver
+    public function getRecipient(): Sender
     {
-        return $this->receiver;
+        return $this->recipient;
     }
 
     /**
@@ -60,7 +60,7 @@ class VkCommunityReceiverMessage implements ReceiverMessage
     {
         return [
             'message' => $this->text,
-            'user_id' => $this->receiver->getIdentifier(),
+            'user_id' => $this->recipient->getId(),
         ];
     }
 }
