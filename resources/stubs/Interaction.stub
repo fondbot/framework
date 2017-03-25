@@ -9,7 +9,6 @@ use FondBot\Contracts\Conversation\Keyboard;
 
 class ___CLASSNAME___ extends Interaction
 {
-
     /**
      * Do something before running Interaction
      */
@@ -53,5 +52,4 @@ class ___CLASSNAME___ extends Interaction
     {
 
     }
-
 }
