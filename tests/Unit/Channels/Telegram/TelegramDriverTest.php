@@ -404,7 +404,6 @@ class TelegramDriverTest extends TestCase
                 'form_params' => [
                     'chat_id' => $recipient->getId(),
                     'text' => $text,
-                    'reply_markup' => 'null',
                 ],
             ]
         )->once();
