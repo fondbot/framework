@@ -17,7 +17,12 @@ use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 
 class FacebookDriver extends Driver implements WebhookVerification
 {
+    const API_URL = 'https://graph.facebook.com/v2.6/';
+
     private $guzzle;
+
+    /** @var Sender|null */
+    private $sender;
 
     public function __construct(Client $guzzle)
     {
@@ -59,26 +64,22 @@ class FacebookDriver extends Driver implements WebhookVerification
      */
     public function getSender(): Sender
     {
-        // todo When bot can process with multiple messages, rewrite to looping
+        if ($this->sender !== null) {
+            return $this->sender;
+        }
+
         $id = $this->getRequest('entry.0.messaging.0.sender.id');
 
         try {
-            $response = $this->guzzle->get($this->getBaseUrl().$id, $this->getDefaultRequestParameters());
+            $response = $this->guzzle->get(self::API_URL.$id, $this->getDefaultRequestParameters());
+            $user = json_decode((string) $response->getBody(), true);
+
+            return $this->sender = new FacebookSender($user);
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
 
             throw new InvalidChannelRequest('Can not get user profile', 0, $exception);
         }
-
-        $user = json_decode((string) $response->getBody());
-
-        $username = "{$user->first_name} {$user->last_name}";
-
-        return Sender::create(
-            (string) $id,
-            $username,
-            $username
-        );
     }
 
     /**
@@ -106,7 +107,7 @@ class FacebookDriver extends Driver implements WebhookVerification
 
         try {
             $this->guzzle->post(
-                $this->getBaseUrl().'me/messages',
+                self::API_URL.'me/messages',
                 $this->getDefaultRequestParameters() + ['form_params' => $message->toArray()]
             );
         } catch (RequestException $exception) {
@@ -138,11 +139,6 @@ class FacebookDriver extends Driver implements WebhookVerification
         }
 
         throw new InvalidChannelRequest('Invalid verify token');
-    }
-
-    private function getBaseUrl(): string
-    {
-        return 'https://graph.facebook.com/v2.6/';
     }
 
     private function getDefaultRequestParameters(): array

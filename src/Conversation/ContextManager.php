@@ -89,6 +89,6 @@ class ContextManager
      */
     private function key(Channel $channel, Sender $sender): string
     {
-        return 'context.'.$channel->name.'.'.$sender->getIdentifier();
+        return 'context.'.$channel->name.'.'.$sender->getId();
     }
 }

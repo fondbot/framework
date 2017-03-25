@@ -6,6 +6,7 @@ namespace Tests;
 
 use Faker\Generator;
 use Faker\Factory as Faker;
+use Mockery;
 use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Contracts\Channels\Sender;
 use Illuminate\Database\Eloquent\Model;
@@ -68,13 +69,21 @@ class Factory
         return $instance->fresh();
     }
 
-    public function sender(array $attributes = []): Sender
+    /**
+     * @param array $attributes
+     *
+     * @return \Mockery\Mock
+     */
+    public function sender(array $attributes = [])
     {
-        return Sender::create(
-            $attributes['uuid'] ?? $this->faker()->uuid,
-            $attributes['name'] ?? $this->faker()->name,
-            $attributes['username'] ?? $this->faker()->userName
-        );
+        /** @var \Mockery\Mock $mock */
+        $mock = Mockery::mock(Sender::class);
+
+        $mock->shouldReceive('getId')->andReturn($attributes['uuid'] ?? $this->faker()->uuid);
+        $mock->shouldReceive('getName')->andReturn($attributes['name'] ?? $this->faker()->name);
+        $mock->shouldReceive('getUsername')->andReturn($attributes['username'] ?? $this->faker()->userName);
+
+        return $mock;
     }
 
     public function senderMessage(array $attributes = []): SenderMessage

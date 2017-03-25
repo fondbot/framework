@@ -51,10 +51,10 @@ class StoreMessage implements ShouldQueue
     {
         return $service->createOrUpdate([
             'channel_id' => $this->channel->id,
-            'identifier' => $this->sender->getIdentifier(),
+            'identifier' => $this->sender->getId(),
             'name' => $this->sender->getName(),
             'username' => $this->sender->getUsername(),
-        ], ['channel_id' => $this->channel->id, 'identifier' => $this->sender->getIdentifier()]);
+        ], ['channel_id' => $this->channel->id, 'identifier' => $this->sender->getId()]);
     }
 
     /**

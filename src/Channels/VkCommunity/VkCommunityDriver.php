@@ -21,9 +21,7 @@ class VkCommunityDriver extends Driver implements WebhookVerification
 
     private $guzzle;
 
-    /**
-     * @var Sender
-     */
+    /** @var Sender|null */
     private $sender;
 
     public function __construct(Client $guzzle)
@@ -92,10 +90,7 @@ class VkCommunityDriver extends Driver implements WebhookVerification
         ]);
         $response = json_decode($request->getBody()->getContents(), true);
 
-        return $this->sender = Sender::create(
-            (string) $response['response'][0]['id'],
-            $response['response'][0]['first_name'].' '.$response['response'][0]['last_name']
-        );
+        return $this->sender = new VkCommunitySender($response['response'][0]);
     }
 
     /**

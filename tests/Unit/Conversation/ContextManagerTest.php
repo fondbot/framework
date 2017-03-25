@@ -41,7 +41,7 @@ class ContextManagerTest extends TestCase
         $this->driver->shouldReceive('getSender')->andReturn($this->sender)->once();
         $this->driver->shouldReceive('getMessage')->andReturn($this->message)->once();
 
-        $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
+        $key = 'context.'.$this->channel->name.'.'.$this->sender->getId();
 
         $this->cache->shouldReceive('get')->with($key)->andReturn([
             'story' => null,
@@ -70,7 +70,7 @@ class ContextManagerTest extends TestCase
         $context->shouldReceive('getSender')->andReturn($this->sender)->atLeast()->once();
         $context->shouldReceive('toArray')->andReturn($contextArray)->atLeast()->once();
 
-        $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
+        $key = 'context.'.$this->channel->name.'.'.$this->sender->getId();
 
         $this->cache->shouldReceive('forever')->with($key, $contextArray)->once();
 
@@ -90,7 +90,7 @@ class ContextManagerTest extends TestCase
         $context->shouldReceive('getSender')->andReturn($this->sender)->once();
         $context->shouldReceive('toArray')->andReturn($contextArray)->atLeast()->once();
 
-        $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
+        $key = 'context.'.$this->channel->name.'.'.$this->sender->getId();
 
         $this->cache->shouldReceive('forget')->with($key)->once();
 

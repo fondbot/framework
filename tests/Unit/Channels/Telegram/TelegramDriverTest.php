@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
+use FondBot\Channels\Telegram\TelegramSender;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use Illuminate\Http\File;
@@ -102,7 +103,7 @@ class TelegramDriverTest extends TestCase
     {
         $this->telegram->setRequest([
             'message' => [
-                'from' => [
+                'from' => $response = [
                     'id' => str_random(),
                     'first_name' => $this->faker()->firstName,
                     'last_name' => $this->faker()->lastName,
@@ -111,7 +112,12 @@ class TelegramDriverTest extends TestCase
             ],
         ]);
 
-        $this->assertInstanceOf(Sender::class, $this->telegram->getSender());
+        $sender = $this->telegram->getSender();
+        $this->assertInstanceOf(Sender::class, $sender);
+        $this->assertInstanceOf(TelegramSender::class, $sender);
+        $this->assertSame($response['id'], $sender->getId());
+        $this->assertSame($response['first_name'].' '.$response['last_name'], $sender->getName());
+        $this->assertSame($response['username'], $sender->getUsername());
     }
 
     public function test_getMessage()

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Unit\Channels\VkCommunity;
 
+use FondBot\Channels\VkCommunity\VkCommunitySender;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
@@ -143,7 +144,8 @@ class VkCommunityDriverTest extends TestCase
         $result = $this->vkCommunity->getSender();
 
         $this->assertInstanceOf(Sender::class, $result);
-        $this->assertEquals($senderId, $result->getIdentifier());
+        $this->assertInstanceOf(VkCommunitySender::class, $result);
+        $this->assertEquals($senderId, $result->getId());
         $this->assertEquals($senderFirstName.' '.$senderLastName, $result->getName());
         $this->assertNull($result->getUsername());
 
@@ -151,7 +153,7 @@ class VkCommunityDriverTest extends TestCase
         $result = $this->vkCommunity->getSender();
 
         $this->assertInstanceOf(Sender::class, $result);
-        $this->assertEquals($senderId, $result->getIdentifier());
+        $this->assertEquals($senderId, $result->getId());
         $this->assertEquals($senderFirstName.' '.$senderLastName, $result->getName());
         $this->assertNull($result->getUsername());
     }

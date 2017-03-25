@@ -25,7 +25,7 @@ abstract class Interaction implements InteractionContract
     {
         $sender = $this->getContext()->getSender();
 
-        return new Receiver($sender->getIdentifier(), $sender->getName(), $sender->getUsername());
+        return new Receiver($sender->getId(), $sender->getName(), $sender->getUsername());
     }
 
     /**

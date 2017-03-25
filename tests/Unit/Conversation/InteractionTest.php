@@ -7,7 +7,6 @@ namespace Tests\Unit\Conversation;
 use Bus;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\ContextManager;
 use Tests\Classes\Fakes\FakeInteraction;
 use FondBot\Conversation\Commands\SendMessage;
@@ -60,7 +59,7 @@ class InteractionTest extends TestCase
         Bus::fake();
 
         $contextManager = $this->mock(ContextManager::class);
-        $sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
+        $sender = $this->factory()->sender();
 
         $this->context->shouldReceive('getSender')->andReturn($sender)->once();
         $this->context->shouldReceive('getChannel')->andReturn($this->channel)->once();

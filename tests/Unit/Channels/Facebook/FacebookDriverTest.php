@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Facebook;
 
+use FondBot\Channels\Facebook\FacebookSender;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\Sender;
@@ -160,6 +161,7 @@ class FacebookDriverTest extends TestCase
     {
         $senderId = $this->faker()->uuid;
         $response = [
+            'id' => $senderId,
             'first_name' => $this->faker()->firstName,
             'last_name' => $this->faker()->lastName,
             'profile_pic' => $this->faker()->url,
@@ -182,7 +184,15 @@ class FacebookDriverTest extends TestCase
             ->andReturn($stream)
             ->atLeast()->once();
 
-        $this->assertInstanceOf(Sender::class, $this->facebook->getSender());
+        $sender = $this->facebook->getSender();
+
+        $this->assertInstanceOf(Sender::class, $sender);
+        $this->assertInstanceOf(FacebookSender::class, $sender);
+        $this->assertSame($senderId, $sender->getId());
+        $this->assertSame($response['first_name'].' '.$response['last_name'], $sender->getName());
+        $this->assertNull($sender->getUsername());
+
+        $this->assertSame($sender, $this->facebook->getSender());
     }
 
     /**
