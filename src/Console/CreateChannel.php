@@ -56,6 +56,6 @@ class CreateChannel extends Command
 
     private function enabled(): bool
     {
-        return $this->choice('Enable new channel?', ['Yes', 'No'], 1) === 'Yes';
+        return $this->choice('Enable new channel?', ['No', 'Yes'], 0) === 'Yes';
     }
 }
