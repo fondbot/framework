@@ -18,15 +18,24 @@ class ChannelServiceProvider extends ServiceProvider
      * @var array
      */
     private $drivers = [
-        'Facebook' => Facebook\FacebookDriver::class,
-        'Telegram' => Telegram\TelegramDriver::class,
-        'VK Communities' => VkCommunity\VkCommunityDriver::class,
+        'facebook' => Facebook\FacebookDriver::class,
+        'telegram' => Telegram\TelegramDriver::class,
+        'vk-communities' => VkCommunity\VkCommunityDriver::class,
     ];
 
     public function register()
     {
         $this->app->singleton(ChannelManager::class, function () {
-            return new ChannelManager($this->drivers);
+            return tap(new ChannelManager(), function (ChannelManager $manager) {
+                $this->registerDrivers($manager);
+            });
         });
+    }
+
+    private function registerDrivers(ChannelManager $manager): void
+    {
+        foreach ($this->drivers as $alias => $class) {
+            $manager->add($alias, $class);
+        }
     }
 }

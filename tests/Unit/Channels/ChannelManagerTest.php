@@ -7,7 +7,6 @@ namespace Tests\Unit\Channels;
 use Tests\TestCase;
 use Tests\Classes\Fakes\FakeDriver;
 use FondBot\Channels\ChannelManager;
-use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Contracts\Database\Entities\Channel;
 
 /**
@@ -19,9 +18,8 @@ class ChannelManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->manager = new ChannelManager([
-            'Telegram' => TelegramDriver::class,
-        ]);
+        $this->manager = new ChannelManager();
+        $this->manager->add('fake', FakeDriver::class);
     }
 
     public function test_createDriver()
@@ -36,9 +34,7 @@ class ChannelManagerTest extends TestCase
 
     public function test_supportedDrivers()
     {
-        $expected = [
-            'Telegram' => TelegramDriver::class,
-        ];
+        $expected = ['fake' => FakeDriver::class];
 
         $this->assertEquals($expected, $this->manager->supportedDrivers());
     }

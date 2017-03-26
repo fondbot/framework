@@ -8,6 +8,13 @@ return [
      */
     'namespace' => 'Bot',
 
+    /**
+     * Define all channels for your bot here.
+     */
+    'channels' => [
+
+    ],
+
     /*
      * Here you define all stories which be used.
      *

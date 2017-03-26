@@ -11,9 +11,15 @@ class ChannelManager
 {
     private $drivers;
 
-    public function __construct(array $drivers = [])
+    /**
+     * Add driver.
+     *
+     * @param string $alias
+     * @param string $driver
+     */
+    public function add(string $alias, string $driver): void
     {
-        $this->drivers = $drivers;
+        $this->drivers[$alias] = $driver;
     }
 
     /**
@@ -21,8 +27,8 @@ class ChannelManager
      *
      * @param Channel $channel
      *
-     * @param array   $request
-     * @param array   $headers
+     * @param array $request
+     * @param array $headers
      *
      * @return \FondBot\Contracts\Channels\Driver
      */
