@@ -7,6 +7,8 @@
 
 FondBot is a Laravel framework library for creating chat bots.
 
+**WARNING! THIS PACKAGE IS STILL IN DEVELOPMENT. API AND USAGE MAY CHANGE DRAMATICALLY UNTIL v1.0.0**
+
 ## Installation and usage
 
 You can find all installation instructions and full documentation on https://docs.fondbot.com
