@@ -7,11 +7,12 @@ namespace FondBot;
 use FondBot\Channels\Channel;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Conversation\Conversable;
+use FondBot\Contracts\Conversation\Interaction;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\ContextManager;
-use FondBot\Conversation\Interaction;
-use FondBot\Conversation\Story;
 use FondBot\Conversation\StoryManager;
 use FondBot\Traits\Loggable;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
@@ -122,18 +123,21 @@ class Bot
     /**
      * Start conversation.
      *
-     * @param Story            $story
-     * @param Interaction|null $interaction
+     * @param Conversable $conversable
      */
-    public function converse(Story $story, Interaction $interaction = null): void
+    public function converse(Conversable $conversable): void
     {
-        // Remember story in context
-        $this->context->setStory($story);
-        $this->context->setInteraction($interaction);
-        $this->context->setValues([]);
+        if ($conversable instanceof Story) {
+            $this->context->setStory($conversable);
+            $this->context->setInteraction(null);
+            $this->context->setValues([]);
 
-        // Execute story
-        $story->handle($this);
+            $conversable->handle($this);
+        } elseif ($conversable instanceof Interaction) {
+            $conversable->handle($this);
+
+            $this->context->setInteraction($conversable);
+        }
     }
 
     /**

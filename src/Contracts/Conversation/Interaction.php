@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Conversation;
 
-use FondBot\Bot;
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\ReceivedMessage;
 
@@ -30,13 +29,6 @@ interface Interaction
      * @return Keyboard|null
      */
     public function keyboard(): ?Keyboard;
-
-    /**
-     * Handle interaction.
-     *
-     * @param Bot $bot
-     */
-    public function handle(Bot $bot): void;
 
     /**
      * Process received message.

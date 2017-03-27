@@ -57,7 +57,7 @@ trait Transitions
         }
 
         // Run interaction
-        $instance->handle($this->bot);
+        $this->bot->converse($instance);
 
         $this->transitioned = true;
     }

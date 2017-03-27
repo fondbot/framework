@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Conversation\Story;
+use FondBot\Contracts\Conversation\Interaction;
 use Illuminate\Contracts\Support\Arrayable;
 use FondBot\Contracts\Channels\ReceivedMessage;
 

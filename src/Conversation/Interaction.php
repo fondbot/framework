@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Bot;
+use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Channels\User;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
-abstract class Interaction implements InteractionContract
+abstract class Interaction implements InteractionContract, Conversable
 {
     use Transitions, Loggable;
 
@@ -49,16 +50,14 @@ abstract class Interaction implements InteractionContract
     {
     }
 
+    /**
+     * Handle interaction.
+     *
+     * @param Bot $bot
+     */
     public function handle(Bot $bot): void
     {
         $this->bot = $bot;
-
-        $this->run();
-    }
-
-    private function run(): void
-    {
-        $this->debug('run');
 
         // Perform actions before running interaction
         $this->before();

@@ -32,19 +32,10 @@ class StoryTest extends TestCase
         $this->interaction = $this->mock(FakeInteraction::class);
     }
 
-    public function test_run_no_interaction_in_context()
+    public function test_handle()
     {
         $this->bot->shouldReceive('get')->with(FakeInteraction::class)->andReturn($this->interaction)->once();
-        $this->context->shouldReceive('getInteraction')->andReturn(null)->once();
-        $this->interaction->shouldReceive('handle')->with($this->bot)->once();
-
-        $this->story->handle($this->bot);
-    }
-
-    public function test_run_has_interaction_in_context()
-    {
-        $this->context->shouldReceive('getInteraction')->andReturn($this->interaction)->once();
-        $this->interaction->shouldReceive('handle')->with($this->bot)->once();
+        $this->bot->shouldReceive('converse')->with($this->interaction)->once();
 
         $this->story->handle($this->bot);
     }
