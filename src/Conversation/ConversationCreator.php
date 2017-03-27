@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use Exception;
-use Illuminate\Support\Str;
 use RuntimeException;
+use Illuminate\Support\Str;
 
 class ConversationCreator
 {

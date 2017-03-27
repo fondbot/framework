@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels;
 
-use FondBot\Channels\Channel;
 use Tests\TestCase;
-use Tests\Classes\Fakes\FakeDriver;
+use FondBot\Channels\Channel;
 use FondBot\Channels\DriverManager;
+use Tests\Classes\Fakes\FakeDriver;
 
 /**
  * @property DriverManager manager

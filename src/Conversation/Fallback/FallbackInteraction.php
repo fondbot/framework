@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Fallback;
 
-use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Channels\ReceivedMessage;
 
 class FallbackInteraction extends Interaction
 {
@@ -41,6 +41,5 @@ class FallbackInteraction extends Interaction
      */
     public function process(ReceivedMessage $message): void
     {
-
     }
 }

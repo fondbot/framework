@@ -2,7 +2,7 @@
 
 return [
 
-    /**
+    /*
      * Define all channels for your bot here.
      */
     'channels' => [

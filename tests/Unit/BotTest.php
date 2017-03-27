@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use FondBot\Bot;
-use FondBot\Channels\Channel;
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
-use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Extensions\WebhookVerification;
-use FondBot\Contracts\Channels\ReceivedMessage;
-use FondBot\Conversation\Context;
-use FondBot\Conversation\ContextManager;
-use FondBot\Conversation\Story;
-use FondBot\Conversation\StoryManager;
-use Illuminate\Contracts\Container\Container;
 use Mockery;
+use FondBot\Bot;
 use Tests\TestCase;
+use FondBot\Channels\Channel;
+use FondBot\Conversation\Story;
+use FondBot\Conversation\Context;
+use FondBot\Contracts\Channels\Driver;
+use FondBot\Conversation\StoryManager;
+use FondBot\Conversation\ContextManager;
+use Illuminate\Contracts\Container\Container;
+use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Channels\Exceptions\InvalidChannelRequest;
+use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface contextManager

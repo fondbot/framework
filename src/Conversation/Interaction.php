@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Bot;
-use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Channels\User;
 use FondBot\Conversation\Traits\Transitions;
+use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
 abstract class Interaction implements InteractionContract, Conversable

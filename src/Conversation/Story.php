@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Bot;
-use FondBot\Contracts\Conversation\Conversable;
-use FondBot\Contracts\Conversation\Story as StoryContract;
 use FondBot\Traits\Loggable;
 use FondBot\Conversation\Traits\Transitions;
+use FondBot\Contracts\Conversation\Conversable;
+use FondBot\Contracts\Conversation\Story as StoryContract;
 
 abstract class Story implements StoryContract, Conversable
 {
