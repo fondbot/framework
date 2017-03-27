@@ -12,7 +12,7 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../../resources/config/fondbot.php' => config_path('fondbot.php'),
+                __DIR__.'/../../../../config/fondbot.php' => config_path('fondbot.php'),
             ], 'fondbot');
 
             $this->commands([
