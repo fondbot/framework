@@ -20,7 +20,6 @@ class Install extends Command
 
         $this->storage();
         $this->assets();
-        $this->migrations();
 
         $this->info('FondBot has been installed.');
     }
@@ -50,14 +49,5 @@ class Install extends Command
     private function assets(): void
     {
         $this->callSilent('vendor:publish', ['--tag' => 'fondbot']);
-    }
-
-    private function migrations(): void
-    {
-        if ($this->option('fresh-migrations')) {
-            $this->callSilent('migrate:refresh', ['--force' => true, '--seed' => true]);
-        } else {
-            $this->callSilent('migrate', ['--force' => true, '--seed' => true]);
-        }
     }
 }
