@@ -126,6 +126,13 @@ class Bot
         $story->handle($this);
     }
 
+    /**
+     * Send message.
+     *
+     * @param User $recipient
+     * @param string $text
+     * @param Keyboard|null $keyboard
+     */
     public function sendMessage(User $recipient, string $text, Keyboard $keyboard = null): void
     {
         $this->driver->sendMessage(

@@ -22,11 +22,11 @@ class DriverManagerTest extends TestCase
         $this->manager->add('fake', new FakeDriver());
     }
 
-    public function test_createDriver()
+    public function test_get()
     {
         $channel = new Channel('fake', ['driver' => 'fake']);
 
-        $driver = $this->manager->create($channel);
+        $driver = $this->manager->get($channel);
 
         $this->assertInstanceOf(FakeDriver::class, $driver);
     }

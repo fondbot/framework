@@ -69,8 +69,8 @@ abstract class Driver
     /**
      * Send reply to participant.
      *
-     * @param User          $sender
-     * @param string        $text
+     * @param User $sender
+     * @param string $text
      * @param Keyboard|null $keyboard
      *
      * @return OutgoingMessage

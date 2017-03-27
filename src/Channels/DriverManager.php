@@ -23,13 +23,13 @@ class DriverManager
     }
 
     /**
-     * Create driver instance.
+     * Get driver instance.
      *
      * @param Channel $channel
      *
      * @return Driver
      */
-    public function create(Channel $channel): Driver
+    public function get(Channel $channel): Driver
     {
         $name = $channel->getParameters()['driver'];
 

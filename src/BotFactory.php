@@ -23,7 +23,7 @@ class BotFactory
     public function create(Container $container, Channel $channel, array $request, array $headers): Bot
     {
         // Create driver
-        $driver = $container->make(DriverManager::class)->create($channel);
+        $driver = $container->make(DriverManager::class)->get($channel);
 
         return new Bot($container, $channel, $driver, $request, $headers);
     }

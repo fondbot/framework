@@ -54,11 +54,9 @@ abstract class Story
 
         $this->before();
 
-        $interaction = $this->bot->getContext()->getInteraction();
-
         // Story in already running
         // Process interaction from context
-        if ($interaction !== null) {
+        if ($interaction = $this->bot->getContext()->getInteraction()) {
             $interaction->handle($this->bot);
 
             return;
