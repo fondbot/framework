@@ -56,14 +56,13 @@ class ServiceProvider extends BaseServiceProvider
     private function console(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(__DIR__.'/../../resources/migrations');
             $this->publishes([
                 __DIR__.'/../../resources/config/fondbot.php' => config_path('fondbot.php'),
             ], 'fondbot');
 
             $this->commands([
-                Console\CreateStory::class,
-                Console\CreateInteraction::class,
+                Console\MakeStory::class,
+                Console\MakeInteraction::class,
                 Console\WebhookInstall::class,
                 Console\Install::class,
                 Console\Update::class,

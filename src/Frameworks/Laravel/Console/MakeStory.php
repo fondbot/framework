@@ -7,10 +7,10 @@ namespace FondBot\Frameworks\Laravel\Console;
 use Illuminate\Console\Command;
 use FondBot\Conversation\ConversationCreator;
 
-class CreateStory extends Command
+class MakeStory extends Command
 {
-    protected $signature = 'fondbot:story:make {name}';
-    protected $description = 'Create a new story class';
+    protected $signature = 'fondbot:make:story {name}';
+    protected $description = 'Create a new FondBot story class';
 
     public function handle(ConversationCreator $creator)
     {

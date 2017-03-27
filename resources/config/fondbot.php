@@ -2,12 +2,6 @@
 
 return [
 
-    /*
-     * Namespace where your Stories and Interactions will be resolved from.
-     * This namespace should be related to your base application namespace.
-     */
-    'namespace' => 'Bot',
-
     /**
      * Define all channels for your bot here.
      */
@@ -45,17 +39,5 @@ return [
      * You can send some helpful information in it.
      */
     'fallback_story' => FondBot\Conversation\Fallback\FallbackStory::class,
-
-    'attachments' => [
-
-        /*
-         * Filesystem disk to use for storing attachments.
-         */
-        'filesystem' => [
-            'enabled' => true,
-            'disk' => 'local',
-            'folder' => 'fondbot/attachments',
-        ],
-    ],
 
 ];

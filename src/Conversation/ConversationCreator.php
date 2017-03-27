@@ -24,11 +24,11 @@ class ConversationCreator
         $className = $this->className($name, 'Story');
 
         // Replace stub placeholders
-        $this->replacePlaceholder($contents, 'namespace', $this->botNamespace());
+        $this->replacePlaceholder($contents, 'namespace', $this->applicationNamespace());
         $this->replacePlaceholder($contents, 'className', $className);
         $this->replacePlaceholder($contents, 'name', $this->formatName($name));
 
-        $path = $this->botDirectory().'/'.$this->filename($className);
+        $path = $this->applicationDirectory().'/'.$this->filename($className);
 
         $this->write($path, $contents);
     }
@@ -47,10 +47,10 @@ class ConversationCreator
         $className = $this->className($name, 'Interaction');
 
         // Replace stub placeholders
-        $this->replacePlaceholder($contents, 'namespace', $this->botNamespace('Interactions'));
+        $this->replacePlaceholder($contents, 'namespace', $this->applicationNamespace('Interactions'));
         $this->replacePlaceholder($contents, 'className', $className);
 
-        $path = $this->botDirectory('Interactions').'/'.$this->filename($className);
+        $path = $this->applicationDirectory('Interactions').'/'.$this->filename($className);
 
         $this->write($path, $contents);
     }
@@ -113,14 +113,20 @@ class ConversationCreator
     /**
      * Get application namespace.
      *
+     * @param string|null $postfix
+     *
      * @return string
      */
-    private function applicationNamespace(): string
+    private function applicationNamespace(string $postfix = null): string
     {
         $namespace = collect(config('app.providers'))->first(function ($item) {
             return str_contains($item, ['AppServiceProvider']);
         });
         $namespace = str_replace('Providers\\AppServiceProvider', '', $namespace);
+
+        if ($postfix !== null) {
+            $namespace .= '\\'.$postfix;
+        }
 
         return $namespace;
     }
@@ -128,9 +134,11 @@ class ConversationCreator
     /**
      * Get application directory.
      *
+     * @param string $postfix
+     *
      * @return string
      */
-    private function applicationDirectory(): string
+    private function applicationDirectory(string $postfix = null): string
     {
         $composer = file_get_contents(base_path('composer.json'));
         $composer = json_decode($composer, true);
@@ -141,51 +149,15 @@ class ConversationCreator
             return $namespace === $this->applicationNamespace();
         });
 
-        return $directory;
-    }
-
-    /**
-     * Get bot namespace.
-     *
-     * @param string|null $additional
-     *
-     * @return string
-     */
-    private function botNamespace(string $additional = null): string
-    {
-        $namespace = $this->applicationNamespace().config('fondbot.namespace');
-
-        if ($additional !== null) {
-            $namespace .= '\\'.$additional;
+        if ($postfix !== null) {
+            $directory .= $postfix;
         }
 
-        return $namespace;
-    }
-
-    /**
-     * Creates bot directory if not exists and returns its path.
-     *
-     * @param string|null $additional
-     *
-     * @return string
-     *
-     * @throws Exception
-     */
-    private function botDirectory(string $additional = null): string
-    {
-        $path = $this->applicationDirectory().config('fondbot.namespace');
-
-        if ($additional !== null) {
-            $path .= '/'.$additional;
-        }
-
-        $path = base_path($path);
-
-        if (!@mkdir($path, 0755, true) && !is_dir($path)) {
+        if (!@mkdir(base_path($directory), 0755, true) && !is_dir(base_path($directory))) {
             throw new RuntimeException('Could not create Bot directory.');
         }
 
-        return $path;
+        return $directory;
     }
 
     /**

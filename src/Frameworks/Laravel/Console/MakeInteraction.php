@@ -7,10 +7,10 @@ namespace FondBot\Frameworks\Laravel\Console;
 use Illuminate\Console\Command;
 use FondBot\Conversation\ConversationCreator;
 
-class CreateInteraction extends Command
+class MakeInteraction extends Command
 {
-    protected $signature = 'fondbot:interaction:make {name}';
-    protected $description = 'Create a new interaction class';
+    protected $signature = 'fondbot:make:interaction {name}';
+    protected $description = 'Create a new FondBot interaction class';
 
     public function handle(ConversationCreator $creator)
     {
