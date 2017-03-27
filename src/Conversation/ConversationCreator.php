@@ -6,6 +6,7 @@ namespace FondBot\Conversation;
 
 use Exception;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 class ConversationCreator
 {
@@ -181,7 +182,7 @@ class ConversationCreator
         $path = base_path($path);
 
         if (!@mkdir($path, 0755, true) && !is_dir($path)) {
-            throw new Exception('Could not create Bot directory.');
+            throw new RuntimeException('Could not create Bot directory.');
         }
 
         return $path;
@@ -198,7 +199,7 @@ class ConversationCreator
     private function write(string $path, string $contents): void
     {
         if (file_exists($path)) {
-            throw new Exception('File already exists.');
+            throw new RuntimeException('File already exists.');
         }
 
         file_put_contents($path, $contents);

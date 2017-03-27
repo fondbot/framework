@@ -4,21 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
+use Faker\Generator;
 use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
 class FakeReceivedMessage implements ReceivedMessage
 {
-    protected $text;
-    protected $location;
-    protected $attachment;
+    private $faker;
 
-    public function __construct(string $text, ?Location $location = null, ?Attachment $attachment = null)
+    public function __construct(Generator $faker)
     {
-        $this->text = $text;
-        $this->location = $location;
-        $this->attachment = $attachment;
+        $this->faker = $faker;
     }
 
     /**
@@ -28,7 +25,7 @@ class FakeReceivedMessage implements ReceivedMessage
      */
     public function getText(): ?string
     {
-        return $this->text;
+        return $this->faker->text;
     }
 
     /**
@@ -38,7 +35,7 @@ class FakeReceivedMessage implements ReceivedMessage
      */
     public function getLocation(): ?Location
     {
-        return $this->location;
+        return new Location($this->faker->latitude, $this->faker->longitude);
     }
 
     /**
@@ -48,16 +45,6 @@ class FakeReceivedMessage implements ReceivedMessage
      */
     public function getAttachment(): ?Attachment
     {
-        return $this->attachment;
-    }
-
-    public function withoutLocation(): void
-    {
-        $this->location = null;
-    }
-
-    public function withoutAttachment(): void
-    {
-        $this->attachment = null;
+        return new Attachment('image', $this->faker->imageUrl());
     }
 }

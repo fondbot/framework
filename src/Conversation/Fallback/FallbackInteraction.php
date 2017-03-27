@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Fallback;
 
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Nifty\Emoji;
 use FondBot\Conversation\Interaction;
 use FondBot\Contracts\Conversation\Keyboard;
@@ -35,9 +36,12 @@ class FallbackInteraction extends Interaction
     }
 
     /**
-     * Process reply.
+     * Process received message.
+     *
+     * @param ReceivedMessage $message
      */
-    protected function process(): void
+    public function process(ReceivedMessage $message): void
     {
+
     }
 }

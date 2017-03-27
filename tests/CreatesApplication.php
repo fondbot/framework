@@ -18,7 +18,7 @@ trait CreatesApplication
     {
         /** @var Application $app */
         $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
-        $app->register(\FondBot\Providers\ServiceProvider::class);
+        $app->register(\FondBot\Frameworks\Laravel\ServiceProvider::class);
         $app->make(Kernel::class)->bootstrap();
 
         $app['config']->set('app.debug', true);

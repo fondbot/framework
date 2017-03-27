@@ -7,7 +7,6 @@ namespace FondBot\Conversation;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Database\Entities\Channel;
 use Illuminate\Contracts\Cache\Repository as Cache;
 
 class ContextManager
@@ -24,12 +23,12 @@ class ContextManager
     /**
      * Resolve context instance.
      *
-     * @param Channel $channel
-     * @param Driver  $driver
+     * @param string $channel
+     * @param Driver $driver
      *
-     * @return \FondBot\Conversation\Context
+     * @return Context
      */
-    public function resolve(Channel $channel, Driver $driver): Context
+    public function resolve(string $channel, Driver $driver): Context
     {
         $this->debug('resolve', ['driver' => get_class($driver)]);
 
@@ -82,13 +81,13 @@ class ContextManager
     /**
      * Get key of current context in storage (Cache, Memory, etc.).
      *
-     * @param Channel $channel
-     * @param User    $sender
+     * @param string $channel
+     * @param User   $sender
      *
      * @return string
      */
-    private function key(Channel $channel, User $sender): string
+    private function key(string $channel, User $sender): string
     {
-        return 'context.'.$channel->name.'.'.$sender->getId();
+        return 'context.'.$channel.'.'.$sender->getId();
     }
 }

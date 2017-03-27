@@ -4,59 +4,63 @@ declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Traits\Loggable;
-use Illuminate\Http\Request;
-use FondBot\Channels\ChannelManager;
+use FondBot\Channels\Channel;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Database\Entities\Channel;
-use FondBot\Conversation\Commands\StartConversation;
+use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Conversation\Context;
+use FondBot\Conversation\ContextManager;
+use FondBot\Conversation\Interaction;
+use FondBot\Conversation\Story;
+use FondBot\Conversation\StoryManager;
+use FondBot\Traits\Loggable;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
+use Illuminate\Contracts\Container\Container;
 
 class Bot
 {
     use Loggable;
 
-    /** @var array */
-    private $request = [];
-
-    /** @var array */
-    private $headers = [];
-
-    /** @var Channel */
+    private $container;
     private $channel;
+    private $driver;
+    private $request;
+    private $headers;
 
-    private $channelManager;
+    /** @var Context|null */
+    private $context;
 
-    public function __construct(ChannelManager $channelManager)
-    {
-        $this->channelManager = $channelManager;
-    }
-
-    /**
-     * Set request parameters.
-     *
-     * @param Request $request
-     */
-    public function setRequest(Request $request): void
-    {
-        if ($request->isJson()) {
-            $this->request = $request->json()->all();
-        } else {
-            $this->request = $request->all();
-        }
-
-        $this->headers = $request->headers->all();
-    }
-
-    /**
-     * Set channel.
-     *
-     * @param Channel $channel
-     */
-    public function setChannel(Channel $channel): void
-    {
+    public function __construct(
+        Container $container,
+        Channel $channel,
+        Driver $driver,
+        array $request,
+        array $headers
+    ) {
+        $this->container = $container;
         $this->channel = $channel;
+        $this->driver = $driver;
+        $this->request = $request;
+        $this->headers = $headers;
+    }
+
+    /**
+     * Get context instance.
+     *
+     * @return Context
+     */
+    public function getContext(): Context
+    {
+        return $this->context;
+    }
+
+    /**
+     * Clear context.
+     */
+    public function clearContext(): void
+    {
+        $this->container->make(ContextManager::class)->clear($this->context);
     }
 
     /**
@@ -68,28 +72,34 @@ class Bot
     {
         try {
             $this->debug('process', [
-                'channel' => $this->channel->toArray(),
+                'channel' => $this->channel->getName(),
                 'request' => $this->request,
                 'headers' => $this->headers,
             ]);
 
-            $driver = $this->createDriver();
-
             // Driver has webhook verification
-            if ($driver instanceof WebhookVerification && $driver->isVerificationRequest()) {
+            if ($this->driver instanceof WebhookVerification && $this->driver->isVerificationRequest()) {
                 $this->debug('process.verifyWebhook');
 
-                return $driver->verifyWebhook();
+                return $this->driver->verifyWebhook();
             }
 
             // Verify request
-            $driver->verifyRequest();
+            $this->driver->verifyRequest();
 
-            // Send job to start conversation
-            $job = (new StartConversation($this->channel, $this->request, $this->headers))
-                ->onQueue('fondbot');
+            // Resolve context
+            $this->context = $this->container->make(ContextManager::class)
+                ->resolve($this->channel->getName(), $this->driver);
 
-            dispatch($job);
+            // Start or resume conversation
+            $story = $this->container->make(StoryManager::class)
+                ->find($this->context, $this->driver->getMessage());
+
+            if ($story !== null) {
+                $this->converse($story);
+            }
+
+            $this->container->make(ContextManager::class)->save($this->context);
 
             return 'OK';
         } catch (InvalidChannelRequest $exception) {
@@ -100,12 +110,28 @@ class Bot
     }
 
     /**
-     * Create driver instance.
+     * Start conversation.
      *
-     * @return Driver
+     * @param Story            $story
+     * @param Interaction|null $interaction
      */
-    private function createDriver(): Driver
+    public function converse(Story $story, Interaction $interaction = null): void
     {
-        return $this->channelManager->createDriver($this->channel, $this->request, $this->headers);
+        // Remember story in context
+        $this->context->setStory($story);
+        $this->context->setInteraction($interaction);
+        $this->context->setValues([]);
+
+        // Execute story
+        $story->handle($this);
+    }
+
+    public function sendMessage(User $recipient, string $text, Keyboard $keyboard = null): void
+    {
+        $this->driver->sendMessage(
+            $recipient,
+            $text,
+            $keyboard
+        );
     }
 }

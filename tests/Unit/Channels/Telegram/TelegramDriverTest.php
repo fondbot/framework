@@ -15,7 +15,6 @@ use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Telegram\TelegramUser;
 use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Contracts\Channels\Message\Location;
-use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Channels\Telegram\TelegramOutgoingMessage;
@@ -23,7 +22,7 @@ use FondBot\Channels\Telegram\TelegramReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
- * @property Channel                                    channel
+ * @property array                                      parameters
  * @property TelegramDriver                             telegram
  */
 class TelegramDriverTest extends TestCase
@@ -33,10 +32,9 @@ class TelegramDriverTest extends TestCase
         parent::setUp();
 
         $this->guzzle = $this->mock(Client::class);
-        $this->channel = $this->factory(Channel::class)->create();
 
         $this->telegram = new TelegramDriver($this->guzzle);
-        $this->telegram->setParameters($this->channel->parameters);
+        $this->telegram->setParameters($this->parameters = ['token' => str_random()]);
         $this->telegram->setRequest([]);
     }
 
@@ -87,7 +85,7 @@ class TelegramDriverTest extends TestCase
         $url = $this->faker()->url;
 
         $this->guzzle->shouldReceive('post')->with(
-            'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/setWebhook',
+            'https://api.telegram.org/bot'.$this->parameters['token'].'/setWebhook',
             [
                 'form_params' => [
                     'url' => $url,
@@ -174,7 +172,7 @@ class TelegramDriverTest extends TestCase
 
         $this->guzzle->shouldReceive('post')
             ->with(
-                'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/getFile',
+                'https://api.telegram.org/bot'.$this->parameters['token'].'/getFile',
                 [
                     'form_params' => [
                         'file_id' => $id,
@@ -185,7 +183,7 @@ class TelegramDriverTest extends TestCase
             ->once();
 
         // Retrieve file contents
-        $path = 'https://api.telegram.org/file/bot'.$this->channel->parameters['token'].'/'.$path;
+        $path = 'https://api.telegram.org/file/bot'.$this->parameters['token'].'/'.$path;
         $response = $this->mock(ResponseInterface::class);
         $response->shouldReceive('getBody')->andReturnSelf();
         $response->shouldReceive('getContents')->andReturn($contents = $this->faker()->text);
@@ -357,7 +355,8 @@ class TelegramDriverTest extends TestCase
     {
         $text = $this->faker()->text;
 
-        $recipient = $this->factory()->sender();
+        $recipient = $this->mock(User::class);
+        $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
         $keyboard = new BasicKeyboard([
             new Button($this->faker()->word),
             new Button($this->faker()->word),
@@ -374,10 +373,10 @@ class TelegramDriverTest extends TestCase
         ]);
 
         $this->guzzle->shouldReceive('post')->with(
-            'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/sendMessage',
+            'https://api.telegram.org/bot'.$this->parameters['token'].'/sendMessage',
             [
                 'form_params' => [
-                    'chat_id' => $recipient->getId(),
+                    'chat_id' => $recipientId,
                     'text' => $text,
                     'reply_markup' => $replyMarkup,
                 ],
@@ -396,13 +395,14 @@ class TelegramDriverTest extends TestCase
     {
         $text = $this->faker()->text;
 
-        $recipient = $this->factory()->sender();
+        $recipient = $this->mock(User::class);
+        $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
 
         $this->guzzle->shouldReceive('post')->with(
-            'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/sendMessage',
+            'https://api.telegram.org/bot'.$this->parameters['token'].'/sendMessage',
             [
                 'form_params' => [
-                    'chat_id' => $recipient->getId(),
+                    'chat_id' => $recipientId,
                     'text' => $text,
                 ],
             ]
@@ -414,7 +414,8 @@ class TelegramDriverTest extends TestCase
     public function test_sendMessage_request_exception()
     {
         $text = $this->faker()->text;
-        $recipient = $this->factory()->sender();
+        $recipient = $this->mock(User::class);
+        $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
 
         $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request',
             $this->mock(RequestInterface::class)));

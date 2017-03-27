@@ -11,7 +11,6 @@ use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\StoryManager;
 use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Conversation\Fallback\FallbackStory;
-use Tests\Classes\Fakes\Fallback\FakeFallbackStory;
 
 /**
  * @property StoryManager manager
@@ -39,7 +38,7 @@ class StoryManagerTest extends TestCase
 
     public function test_find_fallback_story()
     {
-        $this->manager->add(FakeStory::class);
+        $this->manager->add(new FakeStory());
 
         $context = $this->mock(Context::class);
         $message = $this->mock(ReceivedMessage::class);
@@ -50,15 +49,15 @@ class StoryManagerTest extends TestCase
         $result = $this->manager->find($context, $message);
         $this->assertInstanceOf(FallbackStory::class, $result);
 
-        $this->manager->setFallbackStory(FakeFallbackStory::class);
+        $this->manager->setFallbackStory(new FallbackStory());
 
         $result = $this->manager->find($context, $message);
-        $this->assertInstanceOf(FakeFallbackStory::class, $result);
+        $this->assertInstanceOf(FallbackStory::class, $result);
     }
 
     public function test_find_no_story_in_context_activation_found()
     {
-        $this->manager->add(FakeStory::class);
+        $this->manager->add(new FakeStory());
 
         $context = $this->mock(Context::class);
         $message = $this->mock(ReceivedMessage::class);

@@ -4,23 +4,29 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use FondBot\Channels\DriverManager;
 use Tests\TestCase;
 use Tests\Classes\Fakes\FakeDriver;
-use FondBot\Contracts\Database\Entities\Channel;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class FallbackTest extends TestCase
 {
-    use DatabaseMigrations;
-
     public function test()
     {
         $driver = $this->spy(FakeDriver::class);
 
-        /** @var Channel $channel */
-        $channel = $this->factory(Channel::class)->save();
+        $this->app[DriverManager::class]->add('fake', $driver);
 
-        $response = $this->post('/fondbot/'.$channel->id);
+        config([
+            'fondbot' => [
+                'channels' => [
+                    'test' => [
+                        'driver' => 'fake',
+                    ],
+                ],
+            ],
+        ]);
+
+        $response = $this->post('/fondbot/test');
 
         $response->assertStatus(200);
         $response->assertSee('OK');

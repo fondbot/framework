@@ -14,7 +14,6 @@ use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Facebook\FacebookUser;
 use FondBot\Channels\Facebook\FacebookDriver;
 use FondBot\Contracts\Channels\Message\Location;
-use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Channels\Facebook\FacebookOutgoingMessage;
@@ -22,8 +21,8 @@ use FondBot\Channels\Facebook\FacebookReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
- * @property Channel                                    channel
- * @property FacebookDriver                             facebook
+ * @property array                                      $parameters
+ * @property \FondBot\Channels\Facebook\FacebookDriver  facebook
  */
 class FacebookDriverTest extends TestCase
 {
@@ -32,19 +31,12 @@ class FacebookDriverTest extends TestCase
         parent::setUp();
 
         $this->guzzle = $this->mock(Client::class);
-
-        $this->channel = $this->factory(Channel::class)->create([
-            'driver' => FacebookDriver::class,
-            'name' => $this->faker()->name,
-            'parameters' => [
-                'page_token' => str_random(),
-                'verify_token' => str_random(),
-                'app_secret' => str_random(),
-            ],
-        ]);
-
         $this->facebook = new FacebookDriver($this->guzzle);
-        $this->facebook->setParameters($this->channel->parameters);
+        $this->facebook->setParameters($this->parameters = [
+            'page_token' => str_random(),
+            'verify_token' => str_random(),
+            'app_secret' => str_random(),
+        ]);
         $this->facebook->setRequest([]);
         $this->facebook->setHeaders([]);
     }
@@ -99,7 +91,7 @@ class FacebookDriverTest extends TestCase
     public function test_verifyRequest_valid_header()
     {
         $this->facebook->setRequest($data = $this->generateResponse());
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
+        $this->facebook->setHeaders($this->generateHeaders($data, $this->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
@@ -115,7 +107,7 @@ class FacebookDriverTest extends TestCase
         ];
 
         $this->facebook->setRequest($data);
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
+        $this->facebook->setHeaders($this->generateHeaders($data, $this->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
@@ -140,7 +132,7 @@ class FacebookDriverTest extends TestCase
             ],
         ];
 
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
+        $this->facebook->setHeaders($this->generateHeaders($data, $this->parameters['app_secret']));
         $this->facebook->setRequest($data);
 
         $this->facebook->verifyRequest();
@@ -150,7 +142,7 @@ class FacebookDriverTest extends TestCase
     {
         $data = $this->generateResponse();
 
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
+        $this->facebook->setHeaders($this->generateHeaders($data, $this->parameters['app_secret']));
         $this->facebook->setRequest($data);
 
         $this->facebook->verifyRequest();
@@ -177,7 +169,7 @@ class FacebookDriverTest extends TestCase
         $this->guzzle->shouldReceive('get')
             ->with('https://graph.facebook.com/v2.6/'.$senderId, [
                 'query' => [
-                    'access_token' => $this->channel->parameters['page_token'],
+                    'access_token' => $this->parameters['page_token'],
                 ],
             ])
             ->andReturn($stream)
@@ -206,7 +198,7 @@ class FacebookDriverTest extends TestCase
         $this->guzzle->shouldReceive('get')
             ->with('https://graph.facebook.com/v2.6/'.$senderId, [
                 'query' => [
-                    'access_token' => $this->channel->parameters['page_token'],
+                    'access_token' => $this->parameters['page_token'],
                 ],
             ])
             ->andThrow(new RequestException('Invalid request', $this->mock(RequestInterface::class)));
@@ -261,7 +253,9 @@ class FacebookDriverTest extends TestCase
     {
         $text = $this->faker()->text;
 
-        $recipient = $this->factory()->sender();
+        $recipient = $this->mock(User::class);
+        $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
+
         $keyboard = new BasicKeyboard([
             new Button($this->faker()->word),
             new Button($this->faker()->word),
@@ -272,7 +266,7 @@ class FacebookDriverTest extends TestCase
             [
                 'form_params' => [
                     'recipient' => [
-                        'id' => $recipient->getId(),
+                        'id' => $recipientId,
                     ],
                     'message' => [
                         'text' => $text,
@@ -291,7 +285,7 @@ class FacebookDriverTest extends TestCase
                     ],
                 ],
                 'query' => [
-                    'access_token' => $this->channel->parameters['page_token'],
+                    'access_token' => $this->parameters['page_token'],
                 ],
             ]
         );
@@ -307,7 +301,8 @@ class FacebookDriverTest extends TestCase
     public function test_sendMessage_request_exception()
     {
         $text = $this->faker()->text;
-        $sender = $this->factory()->sender();
+        $sender = $this->mock(User::class);
+        $sender->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
 
         $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request',
             $this->mock(RequestInterface::class)));
@@ -319,7 +314,7 @@ class FacebookDriverTest extends TestCase
     {
         $this->facebook->setRequest([
             'hub_mode' => 'subscribe',
-            'hub_verify_token' => $this->channel->parameters['verify_token'],
+            'hub_verify_token' => $this->parameters['verify_token'],
             'hub_challenge' => $challenge = $this->faker()->randomNumber(),
         ]);
 

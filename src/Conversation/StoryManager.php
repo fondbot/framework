@@ -5,18 +5,15 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Contracts\Channels\ReceivedMessage;
-use FondBot\Conversation\Fallback\FallbackStory;
 
 class StoryManager
 {
-    private $stories;
+    /** @var Story[] */
+    private $stories = [];
+
+    /** @var Story */
     private $fallbackStory;
 
-    public function __construct(array $stories = [], string $fallbackStory = FallbackStory::class)
-    {
-        $this->stories = $stories;
-        $this->fallbackStory = $fallbackStory;
-    }
 
     /**
      * Find story.
@@ -42,8 +39,8 @@ class StoryManager
             return $story;
         }
 
-        // Otherwise, run fallback story
-        return resolve($this->fallbackStory);
+        // Otherwise, return fallback story
+        return $this->fallbackStory;
     }
 
     /**
@@ -56,8 +53,6 @@ class StoryManager
     private function findByMessage(ReceivedMessage $message): ?Story
     {
         foreach ($this->stories as $story) {
-            $story = resolve($story);
-
             /** @var Story $story */
             if (in_array($message->getText(), $story->activations(), true)) {
                 return $story;
@@ -70,9 +65,9 @@ class StoryManager
     /**
      * Add story.
      *
-     * @param string $story
+     * @param Story $story
      */
-    public function add(string $story): void
+    public function add(Story $story): void
     {
         if (!in_array($story, $this->stories, true)) {
             $this->stories[] = $story;
@@ -82,9 +77,9 @@ class StoryManager
     /**
      * Set fallback story.
      *
-     * @param string $story
+     * @param Story $story
      */
-    public function setFallbackStory(string $story): void
+    public function setFallbackStory(Story $story): void
     {
         $this->fallbackStory = $story;
     }

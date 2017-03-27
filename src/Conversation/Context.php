@@ -7,7 +7,6 @@ namespace FondBot\Conversation;
 use FondBot\Contracts\Channels\User;
 use Illuminate\Contracts\Support\Arrayable;
 use FondBot\Contracts\Channels\ReceivedMessage;
-use FondBot\Contracts\Database\Entities\Channel;
 
 class Context implements Arrayable
 {
@@ -19,7 +18,7 @@ class Context implements Arrayable
     private $values;
 
     public function __construct(
-        Channel $channel,
+        string $channel,
         User $user,
         ReceivedMessage $message,
         Story $story = null,
@@ -34,7 +33,7 @@ class Context implements Arrayable
         $this->values = $values;
     }
 
-    public function getChannel(): Channel
+    public function getChannel(): string
     {
         return $this->channel;
     }

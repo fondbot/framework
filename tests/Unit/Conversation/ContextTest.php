@@ -10,16 +10,15 @@ use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\User;
 use FondBot\Conversation\Interaction;
 use FondBot\Contracts\Channels\ReceivedMessage;
-use FondBot\Contracts\Database\Entities\Channel;
 
 /**
- * @property \FondBot\Contracts\Database\Entities\Channel $channel
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $sender
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $message
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $story
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $interaction
- * @property array                                        $values
- * @property Context                                      $context
+ * @property string                                     $channel
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $sender
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $message
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $story
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $interaction
+ * @property array                                      $values
+ * @property Context                                    $context
  */
 class ContextTest extends TestCase
 {
@@ -27,7 +26,7 @@ class ContextTest extends TestCase
     {
         parent::setUp();
 
-        $this->channel = $this->factory(Channel::class)->create();
+        $this->channel = $this->faker()->userName;
         $this->sender = $this->mock(User::class);
         $this->message = $this->mock(ReceivedMessage::class);
         $this->story = $this->mock(Story::class);

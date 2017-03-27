@@ -4,17 +4,26 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Bot;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Channels\User;
-use Illuminate\Contracts\Bus\Dispatcher;
 use FondBot\Conversation\Traits\Transitions;
-use FondBot\Conversation\Commands\SendMessage;
-use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
 abstract class Interaction implements InteractionContract
 {
     use Transitions, Loggable;
+
+    /**
+     * Remember value in context.
+     *
+     * @param string $key
+     * @param        $value
+     */
+    protected function remember(string $key, $value): void
+    {
+        $this->bot->getContext()->setValue($key, $value);
+    }
 
     /**
      * Get user.
@@ -23,17 +32,7 @@ abstract class Interaction implements InteractionContract
      */
     public function getUser(): User
     {
-        return $this->getContext()->getUser();
-    }
-
-    /**
-     * Get user's message.
-     *
-     * @return ReceivedMessage
-     */
-    public function getUserMessage(): ReceivedMessage
-    {
-        return $this->getContext()->getMessage();
+        return $this->bot->getContext()->getUser();
     }
 
     /**
@@ -50,10 +49,14 @@ abstract class Interaction implements InteractionContract
     {
     }
 
-    /**
-     * Run interaction.
-     */
-    public function run(): void
+    public function handle(Bot $bot): void
+    {
+        $this->bot = $bot;
+
+        $this->run();
+    }
+
+    private function run(): void
     {
         $this->debug('run');
 
@@ -62,13 +65,14 @@ abstract class Interaction implements InteractionContract
 
         // Process reply if current interaction in context
         // Reply to participant if not
-        if ($this->context->getInteraction() instanceof $this) {
+        if ($this->bot->getContext()->getInteraction() instanceof $this) {
             $this->debug('run.process');
-            $this->process();
+
+            $this->process($this->bot->getContext()->getMessage());
 
             // If no transition run we need to clear context.
             if (!$this->transitioned) {
-                $this->clearContext();
+                $this->bot->clearContext();
             }
 
             $this->after();
@@ -77,31 +81,12 @@ abstract class Interaction implements InteractionContract
         }
 
         // Set current interaction in context
-        $this->context->setInteraction($this);
+        $this->bot->getContext()->setInteraction($this);
 
         // Send message to participant
-        $this->getDispatcher()->dispatch(
-            (new SendMessage(
-                $this->getContext()->getChannel(),
-                $this->getUser(),
-                $this->text(),
-                $this->keyboard()
-            ))->onQueue('fondbot')
-        );
-
-        $this->updateContext();
+        $this->bot->sendMessage($this->getUser(), $this->text(), $this->keyboard());
 
         // Perform actions after running interaction
         $this->after();
-    }
-
-    /**
-     * Process reply.
-     */
-    abstract protected function process(): void;
-
-    private function getDispatcher(): Dispatcher
-    {
-        return resolve(Dispatcher::class);
     }
 }

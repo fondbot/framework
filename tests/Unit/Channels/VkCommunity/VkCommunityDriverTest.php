@@ -8,7 +8,6 @@ use Tests\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use FondBot\Contracts\Channels\User;
-use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Channels\VkCommunity\VkCommunityUser;
 use FondBot\Channels\VkCommunity\VkCommunityDriver;
 use FondBot\Channels\VkCommunity\VkCommunityOutgoingMessage;
@@ -16,7 +15,7 @@ use FondBot\Channels\VkCommunity\VkCommunityReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
- * @property Channel                                    channel
+ * @property array                                      parameters
  * @property VkCommunityDriver                          vkCommunity
  */
 class VkCommunityDriverTest extends TestCase
@@ -26,17 +25,11 @@ class VkCommunityDriverTest extends TestCase
         parent::setUp();
 
         $this->guzzle = $this->mock(Client::class);
-        $this->channel = $this->factory(Channel::class)->create([
-            'driver' => VkCommunityDriver::class,
-            'name' => $this->faker()->name,
-            'parameters' => [
-                'access_token' => str_random(),
-                'confirmation_token' => str_random(),
-            ],
-        ]);
-
         $this->vkCommunity = new VkCommunityDriver($this->guzzle);
-        $this->vkCommunity->setParameters($this->channel->parameters);
+        $this->vkCommunity->setParameters($this->parameters = [
+            'access_token' => str_random(),
+            'confirmation_token' => str_random(),
+        ]);
         $this->vkCommunity->setRequest([]);
     }
 
@@ -159,7 +152,8 @@ class VkCommunityDriverTest extends TestCase
 
     public function test_sendMessage()
     {
-        $recipient = $this->factory()->sender();
+        $recipient = $this->mock(User::class);
+        $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
         $text = $this->faker()->text();
 
         $this->guzzle->shouldReceive('get')
@@ -168,8 +162,8 @@ class VkCommunityDriverTest extends TestCase
                 [
                     'query' => [
                         'message' => $text,
-                        'user_id' => $recipient->getId(),
-                        'access_token' => $this->channel->parameters['access_token'],
+                        'user_id' => $recipientId,
+                        'access_token' => $this->parameters['access_token'],
                         'v' => VkCommunityDriver::API_VERSION,
                     ],
                 ]
@@ -210,7 +204,7 @@ class VkCommunityDriverTest extends TestCase
     public function test_verifyWebhook()
     {
         $this->assertEquals(
-            $this->channel->parameters['confirmation_token'],
+            $this->parameters['confirmation_token'],
             $this->vkCommunity->getParameter('confirmation_token')
         );
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Bot;
 use FondBot\Traits\Loggable;
 use FondBot\Conversation\Traits\Transitions;
 
@@ -39,22 +40,26 @@ abstract class Story
     {
     }
 
-    public function run(): void
+    public function handle(Bot $bot): void
+    {
+        $this->bot = $bot;
+        $this->run();
+    }
+
+    private function run(): void
     {
         $this->debug('run', [
             'firstInteraction' => $this->firstInteraction(),
-            'context' => $this->context,
         ]);
 
         $this->before();
-        $interaction = $this->context->getInteraction();
+
+        $interaction = $this->bot->getContext()->getInteraction();
 
         // Story in already running
         // Process interaction from context
         if ($interaction !== null) {
-            $interaction->setDriver($this->driver);
-            $interaction->setContext($this->context);
-            $interaction->run();
+            $interaction->handle($this->bot);
 
             return;
         }

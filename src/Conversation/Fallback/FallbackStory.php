@@ -33,6 +33,6 @@ class FallbackStory extends Story
      */
     protected function after(): void
     {
-        $this->clearContext();
+        $this->bot->clearContext();
     }
 }

@@ -4,39 +4,18 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Conversation;
 
-use FondBot\Conversation\Context;
+use FondBot\Bot;
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\ReceivedMessage;
 
 interface Interaction
 {
     /**
-     * Get current context instance.
-     *
-     * @return Context
-     */
-    public function getContext(): Context;
-
-    /**
-     * Set context.
-     *
-     * @param Context $context
-     */
-    public function setContext(Context $context): void;
-
-    /**
      * Get message receiver.
      *
      * @return User
      */
     public function getUser(): User;
-
-    /**
-     * Get sender's message.
-     *
-     * @return ReceivedMessage
-     */
-    public function getUserMessage(): ReceivedMessage;
 
     /**
      * Message text to be sent to Participant.
@@ -53,7 +32,16 @@ interface Interaction
     public function keyboard(): ?Keyboard;
 
     /**
-     * Run interaction.
+     * Handle interaction.
+     *
+     * @param Bot $bot
      */
-    public function run(): void;
+    public function handle(Bot $bot): void;
+
+    /**
+     * Process received message.
+     *
+     * @param ReceivedMessage $message
+     */
+    public function process(ReceivedMessage $message): void;
 }

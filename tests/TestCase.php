@@ -18,12 +18,9 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Create mock instance.
-     * Should be used for all classes. For models use ModelFactory.
-     *
      * @param string $class
      *
-     * @return Mockery\MockInterface|Mockery\Mock|mixed
+     * @return \Mockery\Mock|mixed
      */
     protected function mock(string $class)
     {
@@ -41,17 +38,5 @@ abstract class TestCase extends BaseTestCase
         $this->app->instance($class, $instance);
 
         return $instance;
-    }
-
-    /**
-     * Get factory for a class.
-     *
-     * @param string $class
-     *
-     * @return Factory
-     */
-    protected function factory(string $class = null): Factory
-    {
-        return new Factory($class);
     }
 }

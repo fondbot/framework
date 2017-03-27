@@ -22,7 +22,7 @@
             <directory suffix=".php">./src</directory>
 
             <exclude>
-                <directory suffix=".php">./src/Console</directory>
+                <directory suffix=".php">./src/Frameworks/Laravel/Console</directory>
                 <file>./src/Conversation/ConversationCreator.php</file>
             </exclude>
         </whitelist>

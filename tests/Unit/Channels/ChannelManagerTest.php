@@ -4,38 +4,41 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels;
 
-use Tests\TestCase;
-use Tests\Classes\Fakes\FakeDriver;
+use FondBot\Channels\Channel;
 use FondBot\Channels\ChannelManager;
-use FondBot\Contracts\Database\Entities\Channel;
+use Tests\TestCase;
 
-/**
- * @property ChannelManager manager
- */
 class ChannelManagerTest extends TestCase
 {
-    protected function setUp()
-    {
-        parent::setUp();
 
-        $this->manager = new ChannelManager();
-        $this->manager->add('fake', FakeDriver::class);
+    public function test_create()
+    {
+        $name = 'fake';
+        $parameters = [
+            'driver' => 'fake',
+            'token' => str_random(16),
+        ];
+
+        $manager = new ChannelManager();
+
+        $manager->add($name, $parameters);
+
+        $result = $manager->create($name);
+
+        $this->assertInstanceOf(Channel::class, $result);
+        $this->assertSame($name, $result->getName());
+        $this->assertSame($parameters, $result->getParameters());
     }
 
-    public function test_createDriver()
+    /**
+     * @expectedException \FondBot\Channels\Exceptions\ChannelNotFoundException
+     * @expectedExceptionMessage Channel `fake` not found.
+     */
+    public function test_create_exception()
     {
-        /** @var Channel $channel */
-        $channel = $this->factory(Channel::class)->create();
+        $manager = new ChannelManager();
 
-        $driver = $this->manager->createDriver($channel, [], []);
-
-        $this->assertInstanceOf(FakeDriver::class, $driver);
+        $manager->create('fake');
     }
 
-    public function test_supportedDrivers()
-    {
-        $expected = ['fake' => FakeDriver::class];
-
-        $this->assertEquals($expected, $this->manager->supportedDrivers());
-    }
 }
