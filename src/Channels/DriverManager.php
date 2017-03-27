@@ -35,20 +35,4 @@ class DriverManager
 
         return $this->drivers[$name];
     }
-
-    /**
-     * List of supported drivers.
-     *
-     * @return array
-     */
-    public function supportedDrivers(): array
-    {
-        $drivers = [];
-
-        foreach ($this->drivers as $alias => $instance) {
-            $drivers[$alias] = get_class($instance);
-        }
-
-        return $drivers;
-    }
 }

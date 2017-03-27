@@ -30,11 +30,4 @@ class DriverManagerTest extends TestCase
 
         $this->assertInstanceOf(FakeDriver::class, $driver);
     }
-
-    public function test_supportedDrivers()
-    {
-        $expected = ['fake' => FakeDriver::class];
-
-        $this->assertEquals($expected, $this->manager->supportedDrivers());
-    }
 }
