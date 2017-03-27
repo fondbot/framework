@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace FondBot;
 
+use FondBot\Traits\Loggable;
 use FondBot\Channels\Channel;
-use FondBot\Contracts\Channels\Driver;
+use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Channels\Driver;
+use FondBot\Conversation\StoryManager;
+use FondBot\Conversation\ContextManager;
+use FondBot\Contracts\Conversation\Story;
+use FondBot\Contracts\Conversation\Keyboard;
+use Illuminate\Contracts\Container\Container;
 use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Contracts\Conversation\Interaction;
-use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Conversation\Story;
-use FondBot\Conversation\Context;
-use FondBot\Conversation\ContextManager;
-use FondBot\Conversation\StoryManager;
-use FondBot\Traits\Loggable;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
-use Illuminate\Contracts\Container\Container;
 
 class Bot
 {

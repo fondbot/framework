@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
-use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Channels\ReceivedMessage;
 
 class FakeInteraction extends Interaction
 {

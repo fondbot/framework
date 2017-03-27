@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use FondBot\Bot;
-use FondBot\Contracts\Channels\ReceivedMessage;
-use FondBot\Contracts\Channels\User;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
+use FondBot\Contracts\Channels\User;
 use Tests\Classes\Fakes\FakeInteraction;
+use FondBot\Contracts\Channels\ReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock                  bot

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Frameworks\Laravel\Providers;
 
-use FondBot\Conversation\Fallback\FallbackStory;
 use FondBot\Conversation\StoryManager;
 use Illuminate\Support\ServiceProvider;
+use FondBot\Conversation\Fallback\FallbackStory;
 
 class ConversationServiceProvider extends ServiceProvider
 {

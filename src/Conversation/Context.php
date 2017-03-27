@@ -6,9 +6,9 @@ namespace FondBot\Conversation;
 
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Conversation\Story;
-use FondBot\Contracts\Conversation\Interaction;
 use Illuminate\Contracts\Support\Arrayable;
 use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Conversation\Interaction;
 
 class Context implements Arrayable
 {

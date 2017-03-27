@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use FondBot\Channels\DriverManager;
-use Tests\Classes\Fakes\FakeStory;
 use Tests\TestCase;
+use Tests\Classes\Fakes\FakeStory;
+use FondBot\Channels\DriverManager;
 use Tests\Classes\Fakes\FakeDriver;
 
 class FallbackTest extends TestCase

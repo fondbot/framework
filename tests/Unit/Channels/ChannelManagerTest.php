@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels;
 
+use Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Channels\ChannelManager;
-use Tests\TestCase;
 
 class ChannelManagerTest extends TestCase
 {
-
     public function test_create()
     {
         $name = 'fake';
