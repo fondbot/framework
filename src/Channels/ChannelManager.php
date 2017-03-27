@@ -11,11 +11,25 @@ class ChannelManager
     /** @var array */
     private $channels;
 
+    /**
+     * Add channel.
+     *
+     * @param string $name
+     * @param array  $parameters
+     */
     public function add(string $name, array $parameters): void
     {
         $this->channels[$name] = $parameters;
     }
 
+    /**
+     * Create channel.
+     *
+     * @param string $name
+     *
+     * @return Channel
+     * @throws ChannelNotFoundException
+     */
     public function create(string $name): Channel
     {
         if (!isset($this->channels[$name])) {
