@@ -10,7 +10,7 @@ use FondBot\Conversation\ConversationCreator;
 class MakeStory extends Command
 {
     protected $signature = 'fondbot:make:story {name}';
-    protected $description = 'Create a new FondBot story class';
+    protected $description = 'Create a new story class';
 
     public function handle(ConversationCreator $creator)
     {

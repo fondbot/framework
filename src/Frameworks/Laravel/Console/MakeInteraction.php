@@ -10,7 +10,7 @@ use FondBot\Conversation\ConversationCreator;
 class MakeInteraction extends Command
 {
     protected $signature = 'fondbot:make:interaction {name}';
-    protected $description = 'Create a new FondBot interaction class';
+    protected $description = 'Create a new interaction class';
 
     public function handle(ConversationCreator $creator)
     {
