@@ -60,7 +60,7 @@ class Bot
      */
     public function clearContext(): void
     {
-        $this->container->make(ContextManager::class)->clear($this->context);
+        $this->contextManager()->clear($this->context);
     }
 
     /**
@@ -88,18 +88,16 @@ class Bot
             $this->driver->verifyRequest();
 
             // Resolve context
-            $this->context = $this->container->make(ContextManager::class)
-                ->resolve($this->channel->getName(), $this->driver);
+            $this->context = $this->contextManager()->resolve($this->channel->getName(), $this->driver);
 
             // Start or resume conversation
-            $story = $this->container->make(StoryManager::class)
-                ->find($this->context, $this->driver->getMessage());
+            $story = $this->storyManager()->find($this->context, $this->driver->getMessage());
 
             if ($story !== null) {
                 $this->converse($story);
             }
 
-            $this->container->make(ContextManager::class)->save($this->context);
+            $this->contextManager()->save($this->context);
 
             return 'OK';
         } catch (InvalidChannelRequest $exception) {
@@ -129,8 +127,8 @@ class Bot
     /**
      * Send message.
      *
-     * @param User $recipient
-     * @param string $text
+     * @param User          $recipient
+     * @param string        $text
      * @param Keyboard|null $keyboard
      */
     public function sendMessage(User $recipient, string $text, Keyboard $keyboard = null): void
@@ -140,5 +138,15 @@ class Bot
             $text,
             $keyboard
         );
+    }
+
+    private function contextManager(): ContextManager
+    {
+        return $this->container->make(ContextManager::class);
+    }
+
+    private function storyManager(): StoryManager
+    {
+        return $this->container->make(StoryManager::class);
     }
 }
