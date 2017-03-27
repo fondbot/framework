@@ -29,10 +29,10 @@ trait Transitions
     protected function move(string $story): void
     {
         /** @var Story $instance */
-        $instance = resolve($story);
+        $instance = $this->bot->get($story);
 
         if (!$instance instanceof Story) {
-            throw new InvalidArgumentException($story.' is not a valid "Story".');
+            throw new InvalidArgumentException('Invalid story `'.$story.'`');
         }
 
         $this->bot->converse($instance);
@@ -50,10 +50,10 @@ trait Transitions
     protected function jump(string $interaction): void
     {
         /** @var Interaction $instance */
-        $instance = resolve($interaction);
+        $instance = $this->bot->get($interaction);
 
         if (!$instance instanceof Interaction) {
-            throw new InvalidArgumentException($interaction.' is not a valid "Interaction".');
+            throw new InvalidArgumentException('Invalid interaction `'.$interaction.'`');
         }
 
         // Run interaction

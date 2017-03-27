@@ -14,7 +14,6 @@ class StoryManager
     /** @var Story */
     private $fallbackStory;
 
-
     /**
      * Find story.
      *
@@ -33,7 +32,7 @@ class StoryManager
         }
 
         // Find Story by message
-        $story = $this->findByMessage($message);
+        $story = $this->findActivation($message);
 
         if ($story !== null) {
             return $story;
@@ -50,7 +49,7 @@ class StoryManager
      *
      * @return Story|null
      */
-    private function findByMessage(ReceivedMessage $message): ?Story
+    private function findActivation(ReceivedMessage $message): ?Story
     {
         foreach ($this->stories as $story) {
             /** @var Story $story */

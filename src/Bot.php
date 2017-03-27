@@ -64,6 +64,18 @@ class Bot
     }
 
     /**
+     * Resolve from container.
+     *
+     * @param string $class
+     *
+     * @return mixed
+     */
+    public function get(string $class)
+    {
+        return $this->container->make($class);
+    }
+
+    /**
      * Process webhook request.
      *
      * @return mixed
@@ -140,13 +152,23 @@ class Bot
         );
     }
 
+    /**
+     * Get context manager.
+     *
+     * @return ContextManager
+     */
     private function contextManager(): ContextManager
     {
-        return $this->container->make(ContextManager::class);
+        return $this->get(ContextManager::class);
     }
 
+    /**
+     * Get story manager.
+     *
+     * @return StoryManager
+     */
     private function storyManager(): StoryManager
     {
-        return $this->container->make(StoryManager::class);
+        return $this->get(StoryManager::class);
     }
 }

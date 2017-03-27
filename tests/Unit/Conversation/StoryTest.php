@@ -34,6 +34,7 @@ class StoryTest extends TestCase
 
     public function test_run_no_interaction_in_context()
     {
+        $this->bot->shouldReceive('get')->with(FakeInteraction::class)->andReturn($this->interaction)->once();
         $this->context->shouldReceive('getInteraction')->andReturn(null)->once();
         $this->interaction->shouldReceive('handle')->with($this->bot)->once();
 
