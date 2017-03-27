@@ -24,7 +24,7 @@ class DriverManagerTest extends TestCase
 
     public function test_get()
     {
-        $channel = new Channel('fake', ['driver' => 'fake']);
+        $channel = new Channel('test', 'fake', ['token' => str_random()]);
 
         $driver = $this->manager->get($channel);
 

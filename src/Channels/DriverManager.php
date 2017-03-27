@@ -27,12 +27,18 @@ class DriverManager
      *
      * @param Channel $channel
      *
+     * @param array   $request
+     * @param array   $headers
+     * @param array   $parameters
+     *
      * @return Driver
      */
-    public function get(Channel $channel): Driver
+    public function get(Channel $channel, array $request = [], array $headers = [], array $parameters = []): Driver
     {
-        $name = $channel->getParameters()['driver'];
+        $driver = $this->drivers[$channel->getDriver()];
 
-        return $this->drivers[$name];
+        $driver->fill($parameters, $request, $headers);
+
+        return $driver;
     }
 }

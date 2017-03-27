@@ -7,11 +7,13 @@ namespace FondBot\Channels;
 class Channel
 {
     private $name;
+    private $driver;
     private $parameters;
 
-    public function __construct(string $name, array $parameters)
+    public function __construct(string $name, string $driver, array $parameters)
     {
         $this->name = $name;
+        $this->driver = $driver;
         $this->parameters = $parameters;
     }
 
@@ -23,6 +25,16 @@ class Channel
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Get driver name.
+     *
+     * @return string
+     */
+    public function getDriver(): string
+    {
+        return $this->driver;
     }
 
     /**

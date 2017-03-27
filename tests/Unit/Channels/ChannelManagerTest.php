@@ -27,7 +27,7 @@ class ChannelManagerTest extends TestCase
 
         $this->assertInstanceOf(Channel::class, $result);
         $this->assertSame($name, $result->getName());
-        $this->assertSame($parameters, $result->getParameters());
+        $this->assertSame(collect($parameters)->except('driver')->toArray(), $result->getParameters());
     }
 
     /**
@@ -40,5 +40,4 @@ class ChannelManagerTest extends TestCase
 
         $manager->create('fake');
     }
-
 }

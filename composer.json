@@ -24,7 +24,7 @@
         "php": ">=7.1",
         "guzzlehttp/guzzle": "^6.2",
         "laravel/framework": "^5.4",
-        "spatie/emoji": "^1.0"
+      "tightenco/collect": "^5.4"
     },
     "require-dev": {
         "doctrine/dbal": "^2.5",

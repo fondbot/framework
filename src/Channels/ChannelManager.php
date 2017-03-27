@@ -36,6 +36,11 @@ class ChannelManager
             throw new ChannelNotFoundException('Channel `'.$name.'` not found.');
         }
 
-        return new Channel($name, $this->channels[$name]);
+        $data = collect($this->channels[$name]);
+
+        $driver = $data->get('driver');
+        $parameters = $data->except('driver')->toArray();
+
+        return new Channel($name, $driver, $parameters);
     }
 }

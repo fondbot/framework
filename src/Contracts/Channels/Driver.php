@@ -6,24 +6,79 @@ namespace FondBot\Contracts\Channels;
 
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\ContainsRequestInformation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 abstract class Driver
 {
-    use ContainsRequestInformation, Loggable;
+    use Loggable;
+
+    /** @var array */
+    private $request = [];
+
+    /** @var array */
+    private $headers = [];
 
     /** @var array */
     private $parameters;
 
     /**
-     * Set parameters.
+     * Set driver data.
      *
      * @param array $parameters
+     * @param array $request
+     * @param array $headers
      */
-    public function setParameters(array $parameters): void
+    public function fill(array $parameters, array $request = [], array $headers = []): void
     {
         $this->parameters = $parameters;
+        $this->request = $request;
+        $this->headers = $headers;
+    }
+
+    /**
+     * Get request value.
+     *
+     * @param string|null $key
+     *
+     * @return mixed
+     */
+    public function getRequest(string $key = null)
+    {
+        return array_get($this->request, $key);
+    }
+
+    /**
+     * If request has key.
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function hasRequest(string $key): bool
+    {
+        return array_has($this->request, $key);
+    }
+
+    /**
+     * Get all headers.
+     *
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /**
+     * Get header.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function getHeader(string $name)
+    {
+        return array_get($this->headers, $name);
     }
 
     /**
@@ -35,7 +90,7 @@ abstract class Driver
      */
     public function getParameter(string $name)
     {
-        return $this->parameters[$name] ?? '';
+        return array_get($this->parameters, $name);
     }
 
     /**
@@ -69,8 +124,8 @@ abstract class Driver
     /**
      * Send reply to participant.
      *
-     * @param User $sender
-     * @param string $text
+     * @param User          $sender
+     * @param string        $text
      * @param Keyboard|null $keyboard
      *
      * @return OutgoingMessage

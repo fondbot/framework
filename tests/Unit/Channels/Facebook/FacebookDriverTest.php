@@ -32,13 +32,11 @@ class FacebookDriverTest extends TestCase
 
         $this->guzzle = $this->mock(Client::class);
         $this->facebook = new FacebookDriver($this->guzzle);
-        $this->facebook->setParameters($this->parameters = [
+        $this->facebook->fill($this->parameters = [
             'page_token' => str_random(),
             'verify_token' => str_random(),
             'app_secret' => str_random(),
         ]);
-        $this->facebook->setRequest([]);
-        $this->facebook->setHeaders([]);
     }
 
     public function test_getConfig()
@@ -65,9 +63,7 @@ class FacebookDriverTest extends TestCase
     {
         $data = $this->generateResponse();
 
-        $this->facebook->setHeaders($this->generateHeaders($data, str_random()));
-        $this->facebook->setRequest($data);
-        $this->facebook->setParameters([]);
+        $this->facebook->fill([], $data, $this->generateHeaders($data, str_random()));
 
         $this->facebook->verifyRequest();
     }
@@ -82,16 +78,15 @@ class FacebookDriverTest extends TestCase
             'foo' => 'bar',
         ];
 
-        $this->facebook->setRequest($data);
-        $this->facebook->setHeaders($this->generateHeaders($data, str_random()));
+        $this->facebook->fill($this->parameters, $data, $this->generateHeaders($data, str_random()));
 
         $this->facebook->verifyRequest();
     }
 
     public function test_verifyRequest_valid_header()
     {
-        $this->facebook->setRequest($data = $this->generateResponse());
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->parameters['app_secret']));
+        $this->facebook->fill([], $data = $this->generateResponse(),
+            $this->generateHeaders($data, $this->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
@@ -106,8 +101,7 @@ class FacebookDriverTest extends TestCase
             'foo' => 'bar',
         ];
 
-        $this->facebook->setRequest($data);
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->parameters['app_secret']));
+        $this->facebook->fill($this->parameters, $data, $this->generateHeaders($data, $this->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
@@ -132,8 +126,7 @@ class FacebookDriverTest extends TestCase
             ],
         ];
 
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->parameters['app_secret']));
-        $this->facebook->setRequest($data);
+        $this->facebook->fill($this->parameters, $data, $this->generateHeaders($data, $this->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
@@ -142,8 +135,7 @@ class FacebookDriverTest extends TestCase
     {
         $data = $this->generateResponse();
 
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->parameters['app_secret']));
-        $this->facebook->setRequest($data);
+        $this->facebook->fill($this->parameters, $data, $this->generateHeaders($data, $this->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
@@ -161,7 +153,7 @@ class FacebookDriverTest extends TestCase
             'gender' => $this->faker()->word,
         ];
 
-        $this->facebook->setRequest($this->generateResponse($senderId));
+        $this->facebook->fill($this->parameters, $this->generateResponse($senderId));
 
         $stream = $this->mock(ResponseInterface::class);
 
@@ -193,7 +185,8 @@ class FacebookDriverTest extends TestCase
     public function test_getSender_exception()
     {
         $senderId = $this->faker()->uuid;
-        $this->facebook->setRequest($this->generateResponse($senderId));
+
+        $this->facebook->fill($this->parameters, $this->generateResponse($senderId));
 
         $this->guzzle->shouldReceive('get')
             ->with('https://graph.facebook.com/v2.6/'.$senderId, [
@@ -209,7 +202,7 @@ class FacebookDriverTest extends TestCase
 
     public function test_getMessage()
     {
-        $this->facebook->setRequest($this->generateResponse(null, $text = $this->faker()->text()));
+        $this->facebook->fill($this->parameters, $this->generateResponse(null, $text = $this->faker()->text()));
 
         $message = $this->facebook->getMessage();
         $this->assertInstanceOf(FacebookReceivedMessage::class, $message);
@@ -222,7 +215,7 @@ class FacebookDriverTest extends TestCase
         $latitude = $this->faker()->latitude;
         $longitude = $this->faker()->longitude;
 
-        $this->facebook->setRequest($this->generateLocationResponse($latitude, $longitude));
+        $this->facebook->fill($this->parameters, $this->generateLocationResponse($latitude, $longitude));
 
         $message = $this->facebook->getMessage();
         $this->assertInstanceOf(FacebookReceivedMessage::class, $message);
@@ -235,17 +228,18 @@ class FacebookDriverTest extends TestCase
 
     public function test_getMessageAttachments()
     {
-        $this->facebook->setRequest($this->generateAttachmentResponse('audio'));
+        $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('audio'));
+
         $this->assertInstanceOf(Attachment::class, $this->facebook->getMessage()->getAttachment());
         $this->assertSame(Attachment::TYPE_AUDIO, $this->facebook->getMessage()->getAttachment()->getType());
 
-        $this->facebook->setRequest($this->generateAttachmentResponse('image'));
+        $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('image'));
         $this->assertSame(Attachment::TYPE_IMAGE, $this->facebook->getMessage()->getAttachment()->getType());
 
-        $this->facebook->setRequest($this->generateAttachmentResponse('video'));
+        $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('video'));
         $this->assertSame(Attachment::TYPE_VIDEO, $this->facebook->getMessage()->getAttachment()->getType());
 
-        $this->facebook->setRequest($this->generateAttachmentResponse('file'));
+        $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('file'));
         $this->assertSame(Attachment::TYPE_FILE, $this->facebook->getMessage()->getAttachment()->getType());
     }
 
@@ -312,7 +306,7 @@ class FacebookDriverTest extends TestCase
 
     public function test_verify_webhook_check()
     {
-        $this->facebook->setRequest([
+        $this->facebook->fill($this->parameters, [
             'hub_mode' => 'subscribe',
             'hub_verify_token' => $this->parameters['verify_token'],
             'hub_challenge' => $challenge = $this->faker()->randomNumber(),
@@ -328,7 +322,7 @@ class FacebookDriverTest extends TestCase
      */
     public function test_verifyWebhook_invalid_token()
     {
-        $this->facebook->setRequest([
+        $this->facebook->fill($this->parameters, [
             'hub_mode' => 'subscribe',
             'hub_verify_token' => $this->faker()->word,
             'hub_challenge' => $challenge = $this->faker()->randomNumber(),

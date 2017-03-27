@@ -34,8 +34,7 @@ class TelegramDriverTest extends TestCase
         $this->guzzle = $this->mock(Client::class);
 
         $this->telegram = new TelegramDriver($this->guzzle);
-        $this->telegram->setParameters($this->parameters = ['token' => str_random()]);
-        $this->telegram->setRequest([]);
+        $this->telegram->fill($this->parameters = ['token' => str_random()]);
     }
 
     public function test_getConfig()
@@ -47,7 +46,7 @@ class TelegramDriverTest extends TestCase
 
     public function test_getHeaders()
     {
-        $this->telegram->setHeaders($headers = ['Token' => $this->faker()->uuid]);
+        $this->telegram->fill($this->parameters, [], $headers = ['Token' => $this->faker()->uuid]);
 
         $this->assertSame($headers['Token'], $this->telegram->getHeader('Token'));
         $this->assertSame($headers, $this->telegram->getHeaders());
@@ -68,14 +67,15 @@ class TelegramDriverTest extends TestCase
      */
     public function test_verifyRequest_no_sender()
     {
-        $this->telegram->setRequest(['message' => []]);
+        $this->telegram->fill($this->parameters, ['message' => []]);
 
         $this->telegram->verifyRequest();
     }
 
     public function test_verifyRequest()
     {
-        $this->telegram->setRequest(['message' => ['from' => $this->faker()->name, 'text' => $this->faker()->word]]);
+        $this->telegram->fill($this->parameters,
+            ['message' => ['from' => $this->faker()->name, 'text' => $this->faker()->word]]);
 
         $this->telegram->verifyRequest();
     }
@@ -98,7 +98,7 @@ class TelegramDriverTest extends TestCase
 
     public function test_getSender()
     {
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'from' => $response = [
                     'id' => str_random(),
@@ -119,7 +119,7 @@ class TelegramDriverTest extends TestCase
 
     public function test_getMessage()
     {
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'text' => $text = $this->faker()->text,
             ],
@@ -156,7 +156,7 @@ class TelegramDriverTest extends TestCase
             $id = collect($result)->pluck('file_id')->last();
         }
 
-        $this->telegram->setRequest(['message' => [$type => $result]]);
+        $this->telegram->fill($this->parameters, ['message' => [$type => $result]]);
 
         // Get file path from Telegram
         $response = $this->mock(ResponseInterface::class);
@@ -203,7 +203,7 @@ class TelegramDriverTest extends TestCase
 
     public function test_getMessage_with_contact_full()
     {
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'contact' => $contact = [
                     'phone_number' => $phoneNumber = $this->faker()->phoneNumber,
@@ -228,7 +228,7 @@ class TelegramDriverTest extends TestCase
 
     public function test_getMessage_with_contact_partial()
     {
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'contact' => $contact = [
                     'phone_number' => $phoneNumber = $this->faker()->phoneNumber,
@@ -256,7 +256,7 @@ class TelegramDriverTest extends TestCase
         $latitude = $this->faker()->latitude;
         $longitude = $this->faker()->longitude;
 
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'text' => $this->faker()->text,
                 'location' => [
@@ -280,7 +280,7 @@ class TelegramDriverTest extends TestCase
         $latitude = $this->faker()->latitude;
         $longitude = $this->faker()->longitude;
 
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'text' => $this->faker()->text,
                 'venue' => $venue = [
@@ -318,7 +318,7 @@ class TelegramDriverTest extends TestCase
         $latitude = $this->faker()->latitude;
         $longitude = $this->faker()->longitude;
 
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'text' => $this->faker()->text,
                 'venue' => $venue = [
