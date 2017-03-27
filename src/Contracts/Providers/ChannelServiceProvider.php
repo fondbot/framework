@@ -21,6 +21,7 @@ class ChannelServiceProvider extends ServiceProvider
         'Facebook' => Facebook\FacebookDriver::class,
         'Telegram' => Telegram\TelegramDriver::class,
         'VK Communities' => VkCommunity\VkCommunityDriver::class,
+        'Slack'    => Slack\SlackDriver::class
     ];
 
     public function register()
