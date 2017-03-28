@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Channels\Drivers;
 
-use FondBot\Contracts\Filesystem\File;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Filesystem\File;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Conversation\Keyboards\Button;

@@ -9,7 +9,7 @@ $finder = PhpCsFixer\Finder::create()
     ->ignoreVCS(true);
 
 return PhpCsFixer\Config::create()
-    ->setRules(array(
+    ->setRules([
         '@PSR1' => false,
         '@PSR2' => true,
         'strict_param' => true,
@@ -81,6 +81,6 @@ return PhpCsFixer\Config::create()
         'unary_operator_spaces' => true,
         'visibility_required' => ['method', 'property'],
         'whitespace_after_comma_in_array' => true,
-    ))
+    ])
     ->setFinder($finder)
     ->setUsingCache(false);
