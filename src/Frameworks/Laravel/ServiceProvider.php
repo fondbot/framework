@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Frameworks\Laravel;
 
 use FondBot\Contracts\Cache\Cache as CacheContract;
-use FondBot\Contracts\Container\Container as ContainerContract;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use FondBot\Contracts\Container\Container as ContainerContract;
 
 class ServiceProvider extends BaseServiceProvider
 {

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Core\Arrayable;
 use FondBot\Contracts\Conversation\Story;
 use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Conversation\Interaction;
-use FondBot\Contracts\Core\Arrayable;
 
 class Context implements Arrayable
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Cache\Cache;
 use FondBot\Traits\Loggable;
+use FondBot\Contracts\Cache\Cache;
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\Driver;
 

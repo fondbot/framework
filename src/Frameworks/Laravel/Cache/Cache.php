@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Frameworks\Laravel\Cache;
 
-use FondBot\Contracts\Cache\Cache as CacheContract;
 use Illuminate\Contracts\Cache\Repository;
+use FondBot\Contracts\Cache\Cache as CacheContract;
 
 class Cache implements CacheContract
 {

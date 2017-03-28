@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Contracts\Container\Container;
 use FondBot\Traits\Loggable;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
@@ -13,6 +12,7 @@ use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\StoryManager;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Conversation\Story;
+use FondBot\Contracts\Container\Container;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Contracts\Conversation\Interaction;
