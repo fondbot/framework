@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Frameworks\Laravel;
 
 use FondBot\Contracts\Cache\Cache as CacheContract;
-use FondBot\Frameworks\Laravel\Cache\Cache;
+use FondBot\Contracts\Container\Container as ContainerContract;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
@@ -26,6 +26,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     private function bindContracts(): void
     {
-        $this->app->bind(CacheContract::class, Cache::class);
+        $this->app->bind(CacheContract::class, Cache\Cache::class);
+        $this->app->bind(ContainerContract::class, Container\Container::class);
     }
 }

@@ -6,7 +6,7 @@ namespace FondBot;
 
 use FondBot\Channels\Channel;
 use FondBot\Channels\DriverManager;
-use Illuminate\Contracts\Container\Container;
+use FondBot\Contracts\Container\Container;
 
 class BotFactory
 {

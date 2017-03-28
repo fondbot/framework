@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use FondBot\Contracts\Container\Container;
 use Mockery;
 use FondBot\Bot;
 use Tests\TestCase;
@@ -13,7 +14,6 @@ use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\StoryManager;
 use FondBot\Conversation\ContextManager;
-use Illuminate\Contracts\Container\Container;
 use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
