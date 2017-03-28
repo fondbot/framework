@@ -21,6 +21,10 @@ return [
             'access_token' => '',
             'confirmation_token' => '',
         ],
+        'viber' => [
+            'driver' => 'viber',
+            'token' => ''
+        ],
     ],
 
     /*
