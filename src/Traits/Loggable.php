@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Traits;
 
-use Illuminate\Contracts\Support\Arrayable;
+use FondBot\Contracts\Core\Arrayable;
 
 trait Loggable
 {
@@ -31,7 +31,7 @@ trait Loggable
     {
         return collect($context)
             ->map(function ($item) {
-                if ($item instanceof Arrayable) {
+                if ($item instanceof Arrayable || method_exists($item, 'toArray')) {
                     return $item->toArray();
                 }
 

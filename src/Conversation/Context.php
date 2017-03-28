@@ -6,9 +6,9 @@ namespace FondBot\Conversation;
 
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Conversation\Story;
-use Illuminate\Contracts\Support\Arrayable;
 use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Conversation\Interaction;
+use FondBot\Contracts\Core\Arrayable;
 
 class Context implements Arrayable
 {
@@ -90,7 +90,7 @@ class Context implements Arrayable
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'story' => $this->story !== null ? get_class($this->story) : null,

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Channels\Message;
 
+use FondBot\Contracts\Core\Arrayable;
+use FondBot\Contracts\Filesystem\File;
 use GuzzleHttp\Client;
-use Illuminate\Http\File;
-use Illuminate\Contracts\Support\Arrayable;
 
 class Attachment implements Arrayable
 {
@@ -78,7 +78,7 @@ class Attachment implements Arrayable
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'type' => $this->type,
