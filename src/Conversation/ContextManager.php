@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Contracts\Cache\Cache;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\Driver;
-use Illuminate\Contracts\Cache\Repository as Cache;
 
 class ContextManager
 {
@@ -61,7 +61,7 @@ class ContextManager
 
         $key = $this->key($context->getChannel(), $context->getUser());
 
-        $this->cache->forever($key, $context->toArray());
+        $this->cache->store($key, $context->toArray());
     }
 
     /**

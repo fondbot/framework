@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
+use FondBot\Contracts\Cache\Cache;
 use Tests\TestCase;
-use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\Driver;
@@ -30,7 +30,7 @@ class ContextManagerTest extends TestCase
         $this->sender = $this->mock(User::class);
         $this->receivedMessage = $this->mock(ReceivedMessage::class);
         $this->driver = $this->mock(Driver::class);
-        $this->cache = $this->mock(Repository::class);
+        $this->cache = $this->mock(Cache::class);
 
         $this->manager = new ContextManager($this->cache);
     }
@@ -73,7 +73,7 @@ class ContextManagerTest extends TestCase
 
         $key = 'context.'.$this->channel.'.'.$senderId;
 
-        $this->cache->shouldReceive('forever')->with($key, $contextArray)->once();
+        $this->cache->shouldReceive('store')->with($key, $contextArray)->once();
 
         $this->manager->save($context);
     }
