@@ -5,9 +5,10 @@
 [![Codecov](https://img.shields.io/codecov/c/github/fondbot/fondbot.svg?style=flat-square)](https://codecov.io/gh/fondbot/fondbot)
 [![License](https://poser.pugx.org/fondbot/fondbot/license?format=flat-square)](https://packagist.org/packages/fondbot/fondbot)
 
-FondBot is a Laravel framework library for creating chat bots.
-
 **WARNING! THIS PACKAGE IS STILL IN DEVELOPMENT. API AND USAGE MAY CHANGE DRAMATICALLY UNTIL v1.0.0**
+
+## About Fondbot
+FondBot is a library for building chat bots with built-in Laravel framework integration.
 
 ## Installation and usage
 
