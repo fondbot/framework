@@ -122,7 +122,7 @@ class ConversationCreator
         $namespace = collect(config('app.providers'))->first(function ($item) {
             return str_contains($item, ['AppServiceProvider']);
         });
-        $namespace = str_replace('Providers\\AppServiceProvider', '', $namespace);
+        $namespace = str_replace('\\Providers\\AppServiceProvider', '', $namespace);
 
         if ($postfix !== null) {
             $namespace .= '\\'.$postfix;
@@ -146,7 +146,7 @@ class ConversationCreator
 
         /** @noinspection PhpUnusedParameterInspection */
         $directory = collect($namespaces)->first(function ($item, $namespace) {
-            return $namespace === $this->applicationNamespace();
+            return $namespace === $this->applicationNamespace().'\\';
         });
 
         if ($postfix !== null) {
