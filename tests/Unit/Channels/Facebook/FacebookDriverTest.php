@@ -6,6 +6,7 @@ namespace Tests\Unit\Channels\Facebook;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
+use FondBot\Helpers\Str;
 use FondBot\Contracts\Channels\User;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -33,9 +34,9 @@ class FacebookDriverTest extends TestCase
         $this->guzzle = $this->mock(Client::class);
         $this->facebook = new FacebookDriver($this->guzzle);
         $this->facebook->fill($this->parameters = [
-            'page_token' => str_random(),
-            'verify_token' => str_random(),
-            'app_secret' => str_random(),
+            'page_token' => Str::random(),
+            'verify_token' => Str::random(),
+            'app_secret' => Str::random(),
         ]);
     }
 
@@ -63,7 +64,7 @@ class FacebookDriverTest extends TestCase
     {
         $data = $this->generateResponse();
 
-        $this->facebook->fill([], $data, $this->generateHeaders($data, str_random()));
+        $this->facebook->fill([], $data, $this->generateHeaders($data, Str::random()));
 
         $this->facebook->verifyRequest();
     }
@@ -78,7 +79,7 @@ class FacebookDriverTest extends TestCase
             'foo' => 'bar',
         ];
 
-        $this->facebook->fill($this->parameters, $data, $this->generateHeaders($data, str_random()));
+        $this->facebook->fill($this->parameters, $data, $this->generateHeaders($data, Str::random()));
 
         $this->facebook->verifyRequest();
     }

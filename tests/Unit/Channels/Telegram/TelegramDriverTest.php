@@ -6,6 +6,7 @@ namespace Tests\Unit\Channels\Drivers;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
+use FondBot\Helpers\Str;
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Filesystem\File;
 use Psr\Http\Message\RequestInterface;
@@ -34,7 +35,7 @@ class TelegramDriverTest extends TestCase
         $this->guzzle = $this->mock(Client::class);
 
         $this->telegram = new TelegramDriver($this->guzzle);
-        $this->telegram->fill($this->parameters = ['token' => str_random()]);
+        $this->telegram->fill($this->parameters = ['token' => Str::random()]);
     }
 
     public function test_getConfig()
@@ -101,7 +102,7 @@ class TelegramDriverTest extends TestCase
         $this->telegram->fill($this->parameters, [
             'message' => [
                 'from' => $response = [
-                    'id' => str_random(),
+                    'id' => Str::random(),
                     'first_name' => $this->faker()->firstName,
                     'last_name' => $this->faker()->lastName,
                     'username' => $this->faker()->userName,

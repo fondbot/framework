@@ -21,7 +21,7 @@ class StoryManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->manager = resolve(StoryManager::class);
+        $this->manager = new StoryManager();
     }
 
     public function test_find_has_story_in_context()

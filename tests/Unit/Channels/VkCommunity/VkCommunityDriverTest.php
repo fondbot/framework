@@ -6,6 +6,7 @@ namespace Unit\Channels\VkCommunity;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
+use FondBot\Helpers\Str;
 use GuzzleHttp\Psr7\Response;
 use FondBot\Contracts\Channels\User;
 use FondBot\Channels\VkCommunity\VkCommunityUser;
@@ -27,8 +28,8 @@ class VkCommunityDriverTest extends TestCase
         $this->guzzle = $this->mock(Client::class);
         $this->vkCommunity = new VkCommunityDriver($this->guzzle);
         $this->vkCommunity->fill($this->parameters = [
-            'access_token' => str_random(),
-            'confirmation_token' => str_random(),
+            'access_token' => Str::random(),
+            'confirmation_token' => Str::random(),
         ]);
     }
 
@@ -79,7 +80,7 @@ class VkCommunityDriverTest extends TestCase
      */
     public function test_verifyRequest_empty_object_body()
     {
-        $this->vkCommunity->fill($this->parameters, ['type' => 'message_new', 'object' => ['user_id' => str_random()]]);
+        $this->vkCommunity->fill($this->parameters, ['type' => 'message_new', 'object' => ['user_id' => Str::random()]]);
 
         $this->vkCommunity->verifyRequest();
     }
@@ -89,7 +90,7 @@ class VkCommunityDriverTest extends TestCase
         $this->vkCommunity->fill($this->parameters, [
             'type' => 'message_new',
             'object' => [
-                'user_id' => str_random(),
+                'user_id' => Str::random(),
                 'body' => $this->faker()->word,
             ],
         ]);

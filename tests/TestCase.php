@@ -11,6 +11,7 @@ use Faker\Generator;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
 use Tests\Classes\FakeContainer;
+use FondBot\Contracts\Filesystem\Filesystem;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
@@ -19,6 +20,9 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     /** @var Mockery\Mock */
     protected $guzzle;
+
+    /** @var Mockery\Mock */
+    protected $filesystem;
 
     protected function setUp()
     {
@@ -31,6 +35,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         $logger->shouldReceive('debug', 'error');
 
         $this->guzzle = $this->mock(Client::class);
+        $this->filesystem = $this->mock(Filesystem::class);
 
         $bot = $this->mock(Bot::class);
         $bot->shouldReceive('get')->with(LoggerInterface::class)->andReturn($this->container->make(LoggerInterface::class));

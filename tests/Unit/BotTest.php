@@ -7,6 +7,7 @@ namespace Tests\Unit;
 use Mockery;
 use FondBot\Bot;
 use Tests\TestCase;
+use FondBot\Helpers\Str;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
@@ -92,7 +93,7 @@ class BotTest extends TestCase
         $this->driver = Mockery::mock(Driver::class, WebhookVerification::class);
         Bot::createInstance($this->container, $this->channel, $this->driver, [], []);
 
-        $request = ['verification' => str_random()];
+        $request = ['verification' => Str::random()];
         $bot = Bot::getInstance();
 
         $this->channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName);

@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use Exception;
-use RuntimeException;
 use FondBot\Helpers\Str;
+use FondBot\Contracts\Filesystem\Filesystem;
 
 class ConversationCreator
 {
+    private $filesystem;
+
+    public function __construct(Filesystem $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
+
     /**
      * Create new story.
      *
@@ -19,18 +25,18 @@ class ConversationCreator
      */
     public function createStory(string $directory, string $namespace, string $name): void
     {
-        $contents = file_get_contents(__DIR__.'/../../resources/stubs/Story.stub');
+        $contents = $this->filesystem->read(__DIR__.'/../../resources/stubs/Story.stub');
 
         $className = $this->className($name, 'Story');
 
         // Replace stub placeholders
-        $this->replacePlaceholder($contents, 'namespace', $namespace);
+        $this->replacePlaceholder($contents, 'namespace', $this->namespace($namespace));
         $this->replacePlaceholder($contents, 'className', $className);
         $this->replacePlaceholder($contents, 'name', $this->formatName($name));
 
         $path = $directory.'/'.$this->filename($className);
 
-        $this->write($path, $contents);
+        $this->filesystem->write($path, $contents);
     }
 
     /**
@@ -42,17 +48,17 @@ class ConversationCreator
      */
     public function createInteraction(string $directory, string $namespace, string $name): void
     {
-        $contents = file_get_contents(__DIR__.'/../../resources/stubs/Interaction.stub');
+        $contents = $this->filesystem->read(__DIR__.'/../../resources/stubs/Interaction.stub');
 
         $className = $this->className($name, 'Interaction');
 
         // Replace stub placeholders
-        $this->replacePlaceholder($contents, 'namespace', $namespace.'\\Interactions.');
+        $this->replacePlaceholder($contents, 'namespace', $this->namespace($namespace, 'Interactions'));
         $this->replacePlaceholder($contents, 'className', $className);
 
         $path = $directory.'/Interactions/'.$this->filename($className);
 
-        $this->write($path, $contents);
+        $this->filesystem->write($path, $contents);
     }
 
     /**
@@ -93,6 +99,28 @@ class ConversationCreator
     }
 
     /**
+     * Get formatted namespace.
+     *
+     * @param string      $value
+     *
+     * @param string|null $postfix
+     *
+     * @return string
+     */
+    private function namespace(string $value, string $postfix = null): string
+    {
+        if (Str::endsWith($value, '\\')) {
+            $value = mb_substr($value, 0, -1);
+        }
+
+        if ($postfix !== null) {
+            $value .= '\\'.$postfix;
+        }
+
+        return $value;
+    }
+
+    /**
      * Get name of class.
      *
      * @param string $name
@@ -108,22 +136,5 @@ class ConversationCreator
         }
 
         return $name;
-    }
-
-    /**
-     * Write contents to file.
-     *
-     * @param string $path
-     * @param string $contents
-     *
-     * @throws Exception
-     */
-    private function write(string $path, string $contents): void
-    {
-        if (file_exists($path)) {
-            throw new RuntimeException('File already exists.');
-        }
-
-        file_put_contents($path, $contents);
     }
 }

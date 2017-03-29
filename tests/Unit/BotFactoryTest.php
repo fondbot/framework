@@ -7,6 +7,7 @@ namespace Tests\Unit;
 use FondBot\Bot;
 use Tests\TestCase;
 use FondBot\BotFactory;
+use FondBot\Helpers\Str;
 use FondBot\Channels\Channel;
 use FondBot\Channels\DriverManager;
 use FondBot\Contracts\Channels\Driver;
@@ -32,7 +33,7 @@ class BotFactoryTest extends TestCase
 
     public function test_create()
     {
-        $parameters = ['token' => str_random()];
+        $parameters = ['token' => Str::random()];
 
         $this->driverManager->shouldReceive('get')->with($this->channel)->andReturn($this->driver)->once();
         $this->channel->shouldReceive('getParameters')->andReturn($parameters)->once();
