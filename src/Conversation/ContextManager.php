@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Bot;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Cache\Cache;
 use FondBot\Contracts\Channels\User;
@@ -37,8 +38,8 @@ class ContextManager
         $key = $this->key($channel, $sender);
         $value = $this->cache->get($key);
 
-        $story = $value['story'] !== null ? resolve($value['story']) : null;
-        $interaction = $value['interaction'] !== null ? resolve($value['interaction']) : null;
+        $story = $value['story'] !== null ? Bot::getInstance()->get($value['story']) : null;
+        $interaction = $value['interaction'] !== null ? Bot::getInstance()->get($value['interaction']) : null;
 
         return new Context(
             $channel,

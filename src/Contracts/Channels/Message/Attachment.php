@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Channels\Message;
 
+use FondBot\Bot;
 use GuzzleHttp\Client;
+use FondBot\Filesystem\File;
 use FondBot\Contracts\Core\Arrayable;
-use FondBot\Contracts\Filesystem\File;
 
 class Attachment implements Arrayable
 {
@@ -18,11 +19,13 @@ class Attachment implements Arrayable
     protected $type;
     protected $path;
     protected $contents;
+    protected $guzzle;
 
-    public function __construct(string $type, string $path)
+    public function __construct(string $type, string $path, Client $guzzle = null)
     {
         $this->type = $type;
         $this->path = $path;
+        $this->guzzle = $guzzle ?? Bot::getInstance()->get(Client::class);
     }
 
     /**
@@ -53,7 +56,7 @@ class Attachment implements Arrayable
     public function getContents(): string
     {
         if ($this->contents === null) {
-            $this->contents = $this->getGuzzle()->get($this->path)->getBody()->getContents();
+            $this->contents = $this->guzzle->get($this->path)->getBody()->getContents();
         }
 
         return $this->contents;
@@ -84,10 +87,5 @@ class Attachment implements Arrayable
             'type' => $this->type,
             'path' => $this->path,
         ];
-    }
-
-    private function getGuzzle(): Client
-    {
-        return resolve(Client::class);
     }
 }

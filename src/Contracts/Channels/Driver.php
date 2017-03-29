@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Channels;
 
+use FondBot\Helpers\Arr;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
@@ -44,7 +45,7 @@ abstract class Driver
      */
     public function getRequest(string $key = null)
     {
-        return array_get($this->request, $key);
+        return Arr::get($this->request, $key);
     }
 
     /**
@@ -56,7 +57,7 @@ abstract class Driver
      */
     public function hasRequest(string $key): bool
     {
-        return array_has($this->request, $key);
+        return Arr::has($this->request, [$key]);
     }
 
     /**
@@ -78,7 +79,7 @@ abstract class Driver
      */
     public function getHeader(string $name)
     {
-        return array_get($this->headers, $name);
+        return Arr::get($this->headers, $name);
     }
 
     /**
@@ -90,7 +91,7 @@ abstract class Driver
      */
     public function getParameter(string $name)
     {
-        return array_get($this->parameters, $name);
+        return Arr::get($this->parameters, $name);
     }
 
     /**

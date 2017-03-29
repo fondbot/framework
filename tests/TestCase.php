@@ -5,16 +5,49 @@ declare(strict_types=1);
 namespace Tests;
 
 use Mockery;
+use FondBot\Bot;
+use Faker\Factory;
 use Faker\Generator;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use GuzzleHttp\Client;
+use Psr\Log\LoggerInterface;
+use Tests\Classes\FakeContainer;
 
-abstract class TestCase extends BaseTestCase
+abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    use CreatesApplication;
+    /** @var FakeContainer */
+    protected $container;
+
+    /** @var Mockery\Mock */
+    protected $guzzle;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        // Set up container
+        $this->container = new Classes\FakeContainer();
+
+        $logger = $this->mock(LoggerInterface::class);
+        $logger->shouldReceive('debug', 'error');
+
+        $this->guzzle = $this->mock(Client::class);
+
+        $bot = $this->mock(Bot::class);
+        $bot->shouldReceive('get')->with(LoggerInterface::class)->andReturn($this->container->make(LoggerInterface::class));
+        $bot->shouldReceive('get')->with(Client::class)->andReturn($this->container->make(Client::class));
+        Bot::setInstance($bot);
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        Mockery::close();
+    }
 
     protected function faker(): Generator
     {
-        return \Faker\Factory::create();
+        return Factory::create();
     }
 
     /**
@@ -26,7 +59,7 @@ abstract class TestCase extends BaseTestCase
     {
         $instance = Mockery::mock($class);
 
-        $this->app->instance($class, $instance);
+        $this->container->singleton($class, $instance);
 
         return $instance;
     }
@@ -35,7 +68,7 @@ abstract class TestCase extends BaseTestCase
     {
         $instance = Mockery::spy($class)->makePartial();
 
-        $this->app->instance($class, $instance);
+        $this->container->singleton($class, $instance);
 
         return $instance;
     }

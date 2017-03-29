@@ -23,6 +23,9 @@ class Bot
 {
     use Loggable;
 
+    /** @var Bot */
+    private static $instance;
+
     private $container;
     private $channel;
     private $driver;
@@ -32,7 +35,7 @@ class Bot
     /** @var Context|null */
     private $context;
 
-    public function __construct(
+    protected function __construct(
         Container $container,
         Channel $channel,
         Driver $driver,
@@ -47,6 +50,47 @@ class Bot
     }
 
     /**
+     * Create new bot instance.
+     *
+     * @param Container $container
+     * @param Channel   $channel
+     * @param Driver    $driver
+     * @param array     $request
+     * @param array     $headers
+     */
+    public static function createInstance(
+        Container $container,
+        Channel $channel,
+        Driver $driver,
+        array $request,
+        array $headers
+    ): void {
+        static::setInstance(
+            new static($container, $channel, $driver, $request, $headers)
+        );
+    }
+
+    /**
+     * Get current instance.
+     *
+     * @return Bot
+     */
+    public static function getInstance(): Bot
+    {
+        return static::$instance;
+    }
+
+    /**
+     * Set instance of the bot.
+     *
+     * @param Bot $instance
+     */
+    public static function setInstance(Bot $instance): void
+    {
+        static::$instance = $instance;
+    }
+
+    /**
      * Get context instance.
      *
      * @return Context
@@ -54,6 +98,16 @@ class Bot
     public function getContext(): Context
     {
         return $this->context;
+    }
+
+    /**
+     * Set context instance.
+     *
+     * @param Context $context
+     */
+    public function setContext(Context $context): void
+    {
+        $this->context = $context;
     }
 
     /**

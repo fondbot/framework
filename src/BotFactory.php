@@ -27,6 +27,8 @@ class BotFactory
 
         $driver->fill($channel->getParameters(), $request, $headers);
 
-        return new Bot($container, $channel, $driver, $request, $headers);
+        Bot::createInstance($container, $channel, $driver, $request, $headers);
+
+        return Bot::getInstance();
     }
 }

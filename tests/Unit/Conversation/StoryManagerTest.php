@@ -39,17 +39,13 @@ class StoryManagerTest extends TestCase
     public function test_find_fallback_story()
     {
         $this->manager->add(new FakeStory());
+        $this->manager->setFallbackStory(new FallbackStory());
 
         $context = $this->mock(Context::class);
         $message = $this->mock(ReceivedMessage::class);
 
         $context->shouldReceive('getStory')->andReturn(null);
         $message->shouldReceive('getText')->andReturn('/start');
-
-        $result = $this->manager->find($context, $message);
-        $this->assertInstanceOf(FallbackStory::class, $result);
-
-        $this->manager->setFallbackStory(new FallbackStory());
 
         $result = $this->manager->find($context, $message);
         $this->assertInstanceOf(FallbackStory::class, $result);

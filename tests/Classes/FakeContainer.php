@@ -2,18 +2,28 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Frameworks\Laravel\Container;
+namespace Tests\Classes;
 
 use FondBot\Contracts\Container\Container as ContainerContract;
-use Illuminate\Contracts\Container\Container as LaravelContainer;
 
-class Container implements ContainerContract
+class FakeContainer implements ContainerContract
 {
-    private $container;
+    private static $instance;
 
-    public function __construct(LaravelContainer $container)
+    private $binds = [];
+
+    /**
+     * Get instance of the container.
+     *
+     * @return ContainerContract
+     */
+    public static function instance(): ContainerContract
     {
-        $this->container = $container;
+        if (self::$instance === null) {
+            return new static;
+        }
+
+        return self::$instance;
     }
 
     /**
@@ -24,7 +34,7 @@ class Container implements ContainerContract
      */
     public function bind($abstract, $concrete = null): void
     {
-        $this->container->bind($abstract, $concrete);
+        $this->binds[$abstract] = $concrete;
     }
 
     /**
@@ -35,7 +45,7 @@ class Container implements ContainerContract
      */
     public function singleton($abstract, $concrete = null): void
     {
-        $this->container->singleton($abstract, $concrete);
+        $this->binds[$abstract] = $concrete;
     }
 
     /**
@@ -47,6 +57,12 @@ class Container implements ContainerContract
      */
     public function make(string $abstract)
     {
-        return $this->container->make($abstract);
+        $instance = $this->binds[$abstract];
+
+        if ($instance instanceof \Closure) {
+            return $instance();
+        }
+
+        return $instance;
     }
 }

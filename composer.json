@@ -1,56 +1,54 @@
 {
-  "name": "fondbot/fondbot",
-  "description": "FondBot is a library for building chat bots with built-in Laravel framework integration.",
-  "type": "library",
-  "keywords": [
-    "fondbot",
-    "bot",
-    "bots",
-    "chatbots",
-    "laravel",
-    "telegram",
-    "facebook messenger",
-    "vk"
-  ],
-  "license": "MIT",
-  "homepage": "https://fondbot.com",
-  "authors": [
-    {
-      "name": "Vladimir Yuldashev",
-      "email": "vladimir@fondbot.com"
-    }
-  ],
-  "require": {
-    "php": ">=7.1",
-    "guzzlehttp/guzzle": "^6.2",
-    "laravel/framework": "^5.4",
-    "tightenco/collect": "^5.4"
-  },
-  "require-dev": {
-    "fzaninotto/faker": "^1.6",
-    "laravel/laravel": "^5.4",
-    "mockery/mockery": "^0.9.9",
-    "phpunit/phpunit": "^5",
-    "sllh/php-cs-fixer-styleci-bridge": "^2.1"
-  },
-  "autoload": {
-    "psr-4": {
-      "FondBot\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\": "tests/"
-    }
-  },
-  "scripts": {
-    "test": "vendor/bin/phpunit --stop-on-failure --no-coverage",
-    "cs": "php-cs-fixer fix --allow-risky=yes"
-  },
-  "config": {
-    "preferred-install": "dist",
-    "sort-packages": true
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "name": "fondbot/fondbot",
+    "description": "FondBot is a library for building chat bots with built-in Laravel framework integration.",
+    "type": "library",
+    "keywords": [
+        "fondbot",
+        "bot",
+        "bots",
+        "chatbots",
+        "laravel",
+        "telegram",
+        "facebook messenger",
+        "vk"
+    ],
+    "license": "MIT",
+    "homepage": "https://fondbot.com",
+    "authors": [
+        {
+            "name": "Vladimir Yuldashev",
+            "email": "vladimir@fondbot.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "^6.2",
+        "tightenco/collect": "^5.4"
+    },
+    "require-dev": {
+        "fzaninotto/faker": "^1.6",
+        "mockery/mockery": "^0.9.9",
+        "phpunit/phpunit": "^5",
+        "sllh/php-cs-fixer-styleci-bridge": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "FondBot\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --stop-on-failure --no-coverage",
+        "cs": "php-cs-fixer fix --allow-risky=yes"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

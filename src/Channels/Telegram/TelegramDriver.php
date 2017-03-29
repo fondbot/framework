@@ -82,6 +82,7 @@ class TelegramDriver extends Driver implements WebhookInstallation
     public function getMessage(): ReceivedMessage
     {
         return new TelegramReceivedMessage(
+            $this->guzzle,
             $this->getParameter('token'),
             $this->getRequest('message')
         );

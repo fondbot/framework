@@ -228,6 +228,8 @@ class FacebookDriverTest extends TestCase
 
     public function test_getMessageAttachments()
     {
+        $this->mock(Client::class);
+
         $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('audio'));
 
         $this->assertInstanceOf(Attachment::class, $this->facebook->getMessage()->getAttachment());

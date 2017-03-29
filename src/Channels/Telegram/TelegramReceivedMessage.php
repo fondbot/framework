@@ -11,11 +11,13 @@ use FondBot\Contracts\Channels\Message\Attachment;
 
 class TelegramReceivedMessage implements ReceivedMessage
 {
+    private $guzzle;
     private $token;
     private $payload;
 
-    public function __construct(string $token, array $payload)
+    public function __construct(Client $guzzle, string $token, array $payload)
     {
+        $this->guzzle = $guzzle;
         $this->token = $token;
         $this->payload = $payload;
     }
@@ -59,7 +61,8 @@ class TelegramReceivedMessage implements ReceivedMessage
 
         return new Attachment(
             Attachment::TYPE_AUDIO,
-            $this->getFilePath($this->payload['audio']['file_id'])
+            $this->getFilePath($this->payload['audio']['file_id']),
+            $this->guzzle
         );
     }
 
@@ -76,7 +79,8 @@ class TelegramReceivedMessage implements ReceivedMessage
 
         return new Attachment(
             'document',
-            $this->getFilePath($this->payload['document']['file_id'])
+            $this->getFilePath($this->payload['document']['file_id']),
+            $this->guzzle
         );
     }
 
@@ -96,7 +100,8 @@ class TelegramReceivedMessage implements ReceivedMessage
 
         return new Attachment(
             'photo',
-            $this->getFilePath($photo['file_id'])
+            $this->getFilePath($photo['file_id']),
+            $this->guzzle
         );
     }
 
@@ -113,7 +118,8 @@ class TelegramReceivedMessage implements ReceivedMessage
 
         return new Attachment(
             'sticker',
-            $this->getFilePath($this->payload['sticker']['file_id'])
+            $this->getFilePath($this->payload['sticker']['file_id']),
+            $this->guzzle
         );
     }
 
@@ -130,7 +136,8 @@ class TelegramReceivedMessage implements ReceivedMessage
 
         return new Attachment(
             Attachment::TYPE_VIDEO,
-            $this->getFilePath($this->payload['video']['file_id'])
+            $this->getFilePath($this->payload['video']['file_id']),
+            $this->guzzle
         );
     }
 
@@ -147,7 +154,8 @@ class TelegramReceivedMessage implements ReceivedMessage
 
         return new Attachment(
             'voice',
-            $this->getFilePath($this->payload['voice']['file_id'])
+            $this->getFilePath($this->payload['voice']['file_id']),
+            $this->guzzle
         );
     }
 
@@ -232,7 +240,7 @@ class TelegramReceivedMessage implements ReceivedMessage
      */
     private function getFilePath(string $fileId): string
     {
-        $response = $this->guzzle()->post(
+        $response = $this->guzzle->post(
             'https://api.telegram.org/bot'.$this->token.'/getFile',
             [
                 'form_params' => [
@@ -245,10 +253,5 @@ class TelegramReceivedMessage implements ReceivedMessage
         $response = json_decode($response, true);
 
         return 'https://api.telegram.org/file/bot'.$this->token.'/'.$response['result']['file_path'];
-    }
-
-    private function guzzle(): Client
-    {
-        return resolve(Client::class);
     }
 }
