@@ -1,6 +1,6 @@
 {
     "name": "fondbot/fondbot",
-    "description": "FondBot is a library for building chat bots with built-in Laravel framework integration.",
+    "description": "FondBot is a library for building chat bots.",
     "type": "library",
     "keywords": [
         "fondbot",
