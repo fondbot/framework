@@ -115,7 +115,10 @@ class Bot
      */
     public function clearContext(): void
     {
-        $this->contextManager()->clear($this->context);
+        if ($this->context !== null) {
+            $this->contextManager()->clear($this->context);
+            $this->context = null;
+        }
     }
 
     /**
@@ -157,14 +160,20 @@ class Bot
             // Resolve context
             $this->context = $this->contextManager()->resolve($this->channel->getName(), $this->driver);
 
-            // Start or resume conversation
-            $story = $this->storyManager()->find($this->context, $this->driver->getMessage());
+            if ($this->context->getStory() !== null && $this->context->getInteraction() !== null) {
+                $this->converse($this->context->getInteraction());
+            } else {
+                // Start or resume conversation
+                $story = $this->storyManager()->find($this->context, $this->driver->getMessage());
 
-            if ($story !== null) {
-                $this->converse($story);
+                if ($story !== null) {
+                    $this->converse($story);
+                }
             }
 
-            $this->contextManager()->save($this->context);
+            if ($this->context !== null) {
+                $this->contextManager()->save($this->context);
+            }
 
             return 'OK';
         } catch (InvalidChannelRequest $exception) {
@@ -190,7 +199,10 @@ class Bot
         } elseif ($conversable instanceof Interaction) {
             $conversable->handle($this);
 
-            $this->context->setInteraction($conversable);
+            // If context is not cleared remember interaction
+            if ($this->context !== null) {
+                $this->context->setInteraction($conversable);
+            }
         }
     }
 
