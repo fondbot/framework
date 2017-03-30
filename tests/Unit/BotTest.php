@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use FondBot\Contracts\Channels\OutgoingMessage;
 use Mockery;
 use FondBot\Bot;
 use Tests\TestCase;
@@ -141,6 +142,7 @@ class BotTest extends TestCase
 
         $this->driver->shouldReceive('sendMessage')->with($recipient, $text, $keyboard)->once();
 
-        Bot::getInstance()->sendMessage($recipient, $text, $keyboard);
+        $result = Bot::getInstance()->sendMessage($recipient, $text, $keyboard);
+        $this->assertInstanceOf(OutgoingMessage::class, $result);
     }
 }

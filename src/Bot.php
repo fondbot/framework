@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot;
 
+use FondBot\Contracts\Channels\OutgoingMessage;
 use FondBot\Traits\Loggable;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
@@ -212,10 +213,12 @@ class Bot
      * @param User          $recipient
      * @param string        $text
      * @param Keyboard|null $keyboard
+     *
+     * @return OutgoingMessage
      */
-    public function sendMessage(User $recipient, string $text, Keyboard $keyboard = null): void
+    public function sendMessage(User $recipient, string $text, Keyboard $keyboard = null): OutgoingMessage
     {
-        $this->driver->sendMessage(
+        return $this->driver->sendMessage(
             $recipient,
             $text,
             $keyboard
