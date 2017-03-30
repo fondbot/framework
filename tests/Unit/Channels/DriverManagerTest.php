@@ -36,7 +36,8 @@ class DriverManagerTest extends TestCase
      * @expectedException \FondBot\Channels\Exceptions\InvalidConfiguration
      * @expectedExceptionMessage Invalid `test` channel configuration.
      */
-    public function test_get_invalid_configuration() {
+    public function test_get_invalid_configuration()
+    {
         $channel = new Channel('test', 'fake', ['old' => Str::random()]);
 
         $this->manager->get($channel);
