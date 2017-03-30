@@ -9,6 +9,14 @@ use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 class FakeStory extends Story
 {
+    protected function before(): void
+    {
+    }
+
+    protected function after(): void
+    {
+    }
+
     /**
      * Story activations.
      *

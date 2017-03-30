@@ -17,20 +17,6 @@ abstract class Story implements StoryContract, Conversable
     use InteractsWithContext, Activators, Transitions, Loggable;
 
     /**
-     * Do something before running Story.
-     */
-    protected function before(): void
-    {
-    }
-
-    /**
-     * Do something after running Story.
-     */
-    protected function after(): void
-    {
-    }
-
-    /**
      * Handle story.
      *
      * @param Bot $bot
@@ -40,11 +26,15 @@ abstract class Story implements StoryContract, Conversable
         $this->debug('handle');
         $this->bot = $bot;
 
-        $this->before();
+        if (method_exists($this, 'before')) {
+            $this->before();
+        }
 
         // Run first interaction of the story
         $this->jump($this->firstInteraction());
 
-        $this->after();
+        if (method_exists($this, 'after')) {
+            $this->after();
+        }
     }
 }
