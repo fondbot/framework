@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
+use FondBot\Contracts\Cache\Cache;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
 use FondBot\Conversation\ContextManager;
-use Tests\Classes\Fakes\FakeSenderMessage;
-use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Channels\ReceivedMessage;
 
 /**
+ * @property string                                     $channel
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $sender
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $receivedMessage
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
- * @property Channel                                    $channel
- * @property Sender                                     $sender
- * @property \Tests\Classes\Fakes\FakeSenderMessage     $message
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $cache
- * @property ContextManager                             manager
+ * @property ContextManager                             $manager
  */
 class ContextManagerTest extends TestCase
 {
@@ -27,23 +26,22 @@ class ContextManagerTest extends TestCase
     {
         parent::setUp();
 
+        $this->channel = $this->faker()->userName;
+        $this->sender = $this->mock(User::class);
+        $this->receivedMessage = $this->mock(ReceivedMessage::class);
         $this->driver = $this->mock(Driver::class);
-        $this->channel = new Channel([
-            'name' => $this->faker()->word,
-        ]);
-        $this->sender = Sender::create($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
-        $this->message = FakeSenderMessage::create();
-        $this->cache = $this->mock(Repository::class);
+        $this->cache = $this->mock(Cache::class);
 
         $this->manager = new ContextManager($this->cache);
     }
 
     public function test_resolve()
     {
-        $this->driver->shouldReceive('getSender')->andReturn($this->sender)->once();
-        $this->driver->shouldReceive('getMessage')->andReturn($this->message)->once();
+        $this->driver->shouldReceive('getUser')->andReturn($this->sender)->once();
+        $this->driver->shouldReceive('getMessage')->andReturn($this->receivedMessage)->once();
+        $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
-        $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
+        $key = 'context.'.$this->channel.'.'.$senderId;
 
         $this->cache->shouldReceive('get')->with($key)->andReturn([
             'story' => null,
@@ -69,12 +67,13 @@ class ContextManagerTest extends TestCase
 
         $context = $this->mock(Context::class);
         $context->shouldReceive('getChannel')->andReturn($this->channel)->atLeast()->once();
-        $context->shouldReceive('getSender')->andReturn($this->sender)->atLeast()->once();
+        $context->shouldReceive('getUser')->andReturn($this->sender)->atLeast()->once();
         $context->shouldReceive('toArray')->andReturn($contextArray)->atLeast()->once();
+        $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
-        $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
+        $key = 'context.'.$this->channel.'.'.$senderId;
 
-        $this->cache->shouldReceive('forever')->with($key, $contextArray)->once();
+        $this->cache->shouldReceive('store')->with($key, $contextArray)->once();
 
         $this->manager->save($context);
     }
@@ -83,16 +82,18 @@ class ContextManagerTest extends TestCase
     {
         $contextArray = [
             'story' => null,
+
             'interaction' => null,
             'values' => ['key1' => 'value1'],
         ];
 
         $context = $this->mock(Context::class);
         $context->shouldReceive('getChannel')->andReturn($this->channel)->once();
-        $context->shouldReceive('getSender')->andReturn($this->sender)->once();
+        $context->shouldReceive('getUser')->andReturn($this->sender)->once();
         $context->shouldReceive('toArray')->andReturn($contextArray)->atLeast()->once();
+        $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
-        $key = 'context.'.$this->channel->name.'.'.$this->sender->getIdentifier();
+        $key = 'context.'.$this->channel.'.'.$senderId;
 
         $this->cache->shouldReceive('forget')->with($key)->once();
 

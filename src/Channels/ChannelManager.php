@@ -4,46 +4,43 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Channels\Exceptions\ChannelNotFoundException;
 
 class ChannelManager
 {
-    private $drivers;
+    /** @var array */
+    private $channels;
 
-    public function __construct(array $drivers = [])
+    /**
+     * Add channel.
+     *
+     * @param string $name
+     * @param array  $parameters
+     */
+    public function add(string $name, array $parameters): void
     {
-        $this->drivers = $drivers;
+        $this->channels[$name] = $parameters;
     }
 
     /**
-     * Create driver instance.
+     * Create channel.
      *
-     * @param Channel $channel
+     * @param string $name
      *
-     * @param array   $request
-     * @param array   $headers
-     *
-     * @return \FondBot\Contracts\Channels\Driver
+     * @return Channel
+     * @throws ChannelNotFoundException
      */
-    public function createDriver(Channel $channel, array $request = [], array $headers = []): Driver
+    public function create(string $name): Channel
     {
-        /** @var Driver $driver */
-        $driver = resolve($channel->driver);
-        $driver->setParameters($channel->parameters);
-        $driver->setRequest($request);
-        $driver->setHeaders($headers);
+        if (!isset($this->channels[$name])) {
+            throw new ChannelNotFoundException('Channel `'.$name.'` not found.');
+        }
 
-        return $driver;
-    }
+        $data = collect($this->channels[$name]);
 
-    /**
-     * List of supported drivers.
-     *
-     * @return array
-     */
-    public function supportedDrivers(): array
-    {
-        return $this->drivers;
+        $driver = $data->get('driver');
+        $parameters = $data->except('driver')->toArray();
+
+        return new Channel($name, $driver, $parameters);
     }
 }

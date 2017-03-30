@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace FondBot\Channels\Telegram;
 
 use GuzzleHttp\Client;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\SenderMessage;
-use FondBot\Contracts\Channels\ReceiverMessage;
+use FondBot\Contracts\Channels\OutgoingMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookInstallation;
 
@@ -68,27 +67,22 @@ class TelegramDriver extends Driver implements WebhookInstallation
     /**
      * Get message sender.
      *
-     * @return Sender
+     * @return User
      */
-    public function getSender(): Sender
+    public function getUser(): User
     {
-        $from = $this->getRequest('message.from');
-
-        return Sender::create(
-            (string) $from['id'],
-            $from['first_name'].' '.$from['last_name'],
-            $from['username']
-        );
+        return new TelegramUser($this->getRequest('message.from'));
     }
 
     /**
      * Get message received from sender.
      *
-     * @return SenderMessage
+     * @return ReceivedMessage
      */
-    public function getMessage(): SenderMessage
+    public function getMessage(): ReceivedMessage
     {
-        return new TelegramSenderMessage(
+        return new TelegramReceivedMessage(
+            $this->guzzle,
             $this->getParameter('token'),
             $this->getRequest('message')
         );
@@ -97,15 +91,15 @@ class TelegramDriver extends Driver implements WebhookInstallation
     /**
      * Send reply to participant.
      *
-     * @param Receiver      $receiver
+     * @param User          $sender
      * @param string        $text
      * @param Keyboard|null $keyboard
      *
-     * @return ReceiverMessage
+     * @return OutgoingMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
+    public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage
     {
-        $message = new TelegramReceiverMessage($receiver, $text, $keyboard);
+        $message = new TelegramOutgoingMessage($sender, $text, $keyboard);
 
         try {
             $this->guzzle->post($this->getBaseUrl().'/sendMessage', [

@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
+use FondBot\Helpers\Str;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
+use FondBot\Contracts\Channels\User;
 use FondBot\Conversation\Interaction;
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\SenderMessage;
-use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Channels\ReceivedMessage;
 
 /**
- * @property \FondBot\Contracts\Database\Entities\Channel $channel
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $sender
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $message
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $story
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface   $interaction
- * @property array                                        $values
- * @property Context                                      $context
+ * @property string                                     $channel
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $sender
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $message
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $story
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $interaction
+ * @property array                                      $values
+ * @property Context                                    $context
  */
 class ContextTest extends TestCase
 {
@@ -27,14 +27,14 @@ class ContextTest extends TestCase
     {
         parent::setUp();
 
-        $this->channel = new Channel();
-        $this->sender = $this->mock(Sender::class);
-        $this->message = $this->mock(SenderMessage::class);
+        $this->channel = $this->faker()->userName;
+        $this->sender = $this->mock(User::class);
+        $this->message = $this->mock(ReceivedMessage::class);
         $this->story = $this->mock(Story::class);
         $this->interaction = $this->mock(Interaction::class);
         $this->values = [
-            'key_1' => str_random(),
-            'key_2' => str_random(),
+            'foo' => Str::random(),
+            'bar' => Str::random(),
         ];
 
         $this->context = new Context(
@@ -54,7 +54,7 @@ class ContextTest extends TestCase
 
     public function test_getSender()
     {
-        $this->assertSame($this->sender, $this->context->getSender());
+        $this->assertSame($this->sender, $this->context->getUser());
     }
 
     public function test_getMessage()

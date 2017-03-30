@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Fallback;
 
-use FondBot\Nifty\Emoji;
 use FondBot\Conversation\Interaction;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Channels\ReceivedMessage;
 
 class FallbackInteraction extends Interaction
 {
@@ -29,15 +29,17 @@ class FallbackInteraction extends Interaction
     {
         return collect([
             'Sorry, I could not understand you.',
-            'Oops, I can\'t do that '.Emoji::pensiveFace(),
+            'Oops, I can\'t do that 😔',
             'My developer did not teach to do that.',
         ])->random();
     }
 
     /**
-     * Process reply.
+     * Process received message.
+     *
+     * @param ReceivedMessage $message
      */
-    protected function process(): void
+    public function process(ReceivedMessage $message): void
     {
     }
 }

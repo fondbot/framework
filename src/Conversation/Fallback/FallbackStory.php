@@ -8,8 +8,6 @@ use FondBot\Conversation\Story;
 
 class FallbackStory extends Story
 {
-    protected $name = 'defaultFallbackStory';
-
     /**
      * Story activations.
      *
@@ -35,6 +33,6 @@ class FallbackStory extends Story
      */
     protected function after(): void
     {
-        $this->clearContext();
+        $this->bot->clearContext();
     }
 }

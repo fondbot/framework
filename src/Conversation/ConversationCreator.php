@@ -4,54 +4,61 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use Exception;
-use Illuminate\Support\Str;
+use FondBot\Helpers\Str;
+use FondBot\Contracts\Filesystem\Filesystem;
 
 class ConversationCreator
 {
+    private $filesystem;
+
+    public function __construct(Filesystem $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
+
     /**
      * Create new story.
      *
+     * @param string $directory
+     * @param string $namespace
      * @param string $name
-     *
-     * @throws Exception
      */
-    public function createStory(string $name): void
+    public function createStory(string $directory, string $namespace, string $name): void
     {
-        $contents = file_get_contents(__DIR__.'/../../resources/stubs/Story.stub');
+        $contents = $this->filesystem->read(__DIR__.'/../../resources/stubs/Story.stub');
 
         $className = $this->className($name, 'Story');
 
         // Replace stub placeholders
-        $this->replacePlaceholder($contents, 'namespace', $this->botNamespace());
+        $this->replacePlaceholder($contents, 'namespace', $this->namespace($namespace));
         $this->replacePlaceholder($contents, 'className', $className);
         $this->replacePlaceholder($contents, 'name', $this->formatName($name));
 
-        $path = $this->botDirectory().'/'.$this->filename($className);
+        $path = $directory.'/'.$this->filename($className);
 
-        $this->write($path, $contents);
+        $this->filesystem->write($path, $contents);
     }
 
     /**
      * Create new interaction.
      *
+     * @param string $directory
+     * @param string $namespace
      * @param string $name
-     *
-     * @throws Exception
      */
-    public function createInteraction(string $name): void
+    public function createInteraction(string $directory, string $namespace, string $name): void
     {
-        $contents = file_get_contents(__DIR__.'/../../resources/stubs/Interaction.stub');
+        $contents = $this->filesystem->read(__DIR__.'/../../resources/stubs/Interaction.stub');
 
         $className = $this->className($name, 'Interaction');
 
         // Replace stub placeholders
-        $this->replacePlaceholder($contents, 'namespace', $this->botNamespace('Interactions'));
+        $this->replacePlaceholder($contents, 'namespace', $this->namespace($namespace, 'Interactions'));
         $this->replacePlaceholder($contents, 'className', $className);
 
-        $path = $this->botDirectory('Interactions').'/'.$this->filename($className);
+        $path = $directory.'/Interactions/'.$this->filename($className);
 
-        $this->write($path, $contents);
+        $this->filesystem->write($path, $contents);
     }
 
     /**
@@ -63,7 +70,7 @@ class ConversationCreator
      */
     private function replacePlaceholder(string &$input, string $key, string $value): void
     {
-        $key = Str::upper($key);
+        $key = mb_strtoupper($key);
         $input = str_replace('___'.$key.'___', $value, $input);
     }
 
@@ -88,7 +95,29 @@ class ConversationCreator
      */
     private function formatName(string $name): string
     {
-        return Str::lower(trim($name));
+        return mb_strtolower(trim($name));
+    }
+
+    /**
+     * Get formatted namespace.
+     *
+     * @param string      $value
+     *
+     * @param string|null $postfix
+     *
+     * @return string
+     */
+    private function namespace(string $value, string $postfix = null): string
+    {
+        if (Str::endsWith($value, '\\')) {
+            $value = mb_substr($value, 0, -1);
+        }
+
+        if ($postfix !== null) {
+            $value .= '\\'.$postfix;
+        }
+
+        return $value;
     }
 
     /**
@@ -102,105 +131,10 @@ class ConversationCreator
     private function className(string $name, string $postfix): string
     {
         $name = trim($name);
-        if (!ends_with($name, $postfix)) {
+        if (!Str::endsWith($name, $postfix)) {
             $name .= $postfix;
         }
 
         return $name;
-    }
-
-    /**
-     * Get application namespace.
-     *
-     * @return string
-     */
-    private function applicationNamespace(): string
-    {
-        $namespace = collect(config('app.providers'))->first(function ($item) {
-            return str_contains($item, ['AppServiceProvider']);
-        });
-        $namespace = str_replace('Providers\\AppServiceProvider', '', $namespace);
-
-        return $namespace;
-    }
-
-    /**
-     * Get application directory.
-     *
-     * @return string
-     */
-    private function applicationDirectory(): string
-    {
-        $composer = file_get_contents(base_path('composer.json'));
-        $composer = json_decode($composer, true);
-        $namespaces = array_merge($composer['autoload']['psr-0'] ?? [], $composer['autoload']['psr-4'] ?? []);
-
-        /** @noinspection PhpUnusedParameterInspection */
-        $directory = collect($namespaces)->first(function ($item, $namespace) {
-            return $namespace === $this->applicationNamespace();
-        });
-
-        return $directory;
-    }
-
-    /**
-     * Get bot namespace.
-     *
-     * @param string|null $additional
-     *
-     * @return string
-     */
-    private function botNamespace(string $additional = null): string
-    {
-        $namespace = $this->applicationNamespace().config('fondbot.namespace');
-
-        if ($additional !== null) {
-            $namespace .= '\\'.$additional;
-        }
-
-        return $namespace;
-    }
-
-    /**
-     * Creates bot directory if not exists and returns its path.
-     *
-     * @param string|null $additional
-     *
-     * @return string
-     *
-     * @throws Exception
-     */
-    private function botDirectory(string $additional = null): string
-    {
-        $path = $this->applicationDirectory().config('fondbot.namespace');
-
-        if ($additional !== null) {
-            $path .= '/'.$additional;
-        }
-
-        $path = base_path($path);
-
-        if (!@mkdir($path, 0755, true) && !is_dir($path)) {
-            throw new Exception('Could not create Bot directory.');
-        }
-
-        return $path;
-    }
-
-    /**
-     * Write contents to file.
-     *
-     * @param string $path
-     * @param string $contents
-     *
-     * @throws Exception
-     */
-    private function write(string $path, string $contents): void
-    {
-        if (file_exists($path)) {
-            throw new Exception('File already exists.');
-        }
-
-        file_put_contents($path, $contents);
     }
 }

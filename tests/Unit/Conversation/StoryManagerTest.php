@@ -9,8 +9,7 @@ use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use Tests\Classes\Fakes\FakeStory;
 use FondBot\Conversation\StoryManager;
-use Tests\Classes\Fakes\FakeFallbackStory;
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Conversation\Fallback\FallbackStory;
 
 /**
@@ -22,13 +21,13 @@ class StoryManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->manager = resolve(StoryManager::class);
+        $this->manager = new StoryManager();
     }
 
     public function test_find_has_story_in_context()
     {
         $context = $this->mock(Context::class);
-        $message = $this->mock(SenderMessage::class);
+        $message = $this->mock(ReceivedMessage::class);
         $story = $this->mock(Story::class);
 
         $context->shouldReceive('getStory')->andReturn($story);
@@ -39,18 +38,14 @@ class StoryManagerTest extends TestCase
 
     public function test_find_fallback_story()
     {
-        $this->manager->add(FakeStory::class);
+        $this->manager->add(new FakeStory());
+        $this->manager->setFallbackStory(new FallbackStory());
 
         $context = $this->mock(Context::class);
-        $message = $this->mock(SenderMessage::class);
+        $message = $this->mock(ReceivedMessage::class);
 
         $context->shouldReceive('getStory')->andReturn(null);
         $message->shouldReceive('getText')->andReturn('/start');
-
-        $result = $this->manager->find($context, $message);
-        $this->assertInstanceOf(FallbackStory::class, $result);
-
-        $this->manager->setFallbackStory(FakeFallbackStory::class);
 
         $result = $this->manager->find($context, $message);
         $this->assertInstanceOf(FallbackStory::class, $result);
@@ -58,10 +53,10 @@ class StoryManagerTest extends TestCase
 
     public function test_find_no_story_in_context_activation_found()
     {
-        $this->manager->add(FakeStory::class);
+        $this->manager->add(new FakeStory());
 
         $context = $this->mock(Context::class);
-        $message = $this->mock(SenderMessage::class);
+        $message = $this->mock(ReceivedMessage::class);
 
         $context->shouldReceive('getStory')->andReturn(null);
         $message->shouldReceive('getText')->andReturn('/example');

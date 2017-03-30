@@ -6,24 +6,24 @@ namespace Tests\Unit\Channels\Facebook;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Helpers\Str;
+use FondBot\Contracts\Channels\User;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
+use FondBot\Channels\Facebook\FacebookUser;
 use FondBot\Channels\Facebook\FacebookDriver;
 use FondBot\Contracts\Channels\Message\Location;
-use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
-use FondBot\Channels\Facebook\FacebookSenderMessage;
-use FondBot\Channels\Facebook\FacebookReceiverMessage;
+use FondBot\Channels\Facebook\FacebookOutgoingMessage;
+use FondBot\Channels\Facebook\FacebookReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
- * @property Channel                                    channel
- * @property FacebookDriver                             facebook
+ * @property array                                      $parameters
+ * @property \FondBot\Channels\Facebook\FacebookDriver  facebook
  */
 class FacebookDriverTest extends TestCase
 {
@@ -32,20 +32,12 @@ class FacebookDriverTest extends TestCase
         parent::setUp();
 
         $this->guzzle = $this->mock(Client::class);
-        $this->channel = new Channel([
-            'driver' => FacebookDriver::class,
-            'name' => $this->faker()->name,
-            'parameters' => [
-                'page_token' => str_random(),
-                'verify_token' => str_random(),
-                'app_secret' => str_random(),
-            ],
-        ]);
-
         $this->facebook = new FacebookDriver($this->guzzle);
-        $this->facebook->setParameters($this->channel->parameters);
-        $this->facebook->setRequest([]);
-        $this->facebook->setHeaders([]);
+        $this->facebook->fill($this->parameters = [
+            'page_token' => Str::random(),
+            'verify_token' => Str::random(),
+            'app_secret' => Str::random(),
+        ]);
     }
 
     public function test_getConfig()
@@ -56,7 +48,7 @@ class FacebookDriverTest extends TestCase
             'app_secret',
         ];
 
-        $this->assertEquals($expected, $this->facebook->getConfig());
+        $this->assertSame($expected, $this->facebook->getConfig());
     }
 
     /**
@@ -71,11 +63,8 @@ class FacebookDriverTest extends TestCase
     public function test_verifyRequest_skip_signature()
     {
         $data = $this->generateResponse();
-        $this->shouldReturnAttribute($channel = $this->mock(Channel::class), 'parameters', []);
 
-        $this->facebook->setHeaders($this->generateHeaders($data, str_random()));
-        $this->facebook->setRequest($data);
-        $this->facebook->setParameters([]);
+        $this->facebook->fill([], $data, $this->generateHeaders($data, Str::random()));
 
         $this->facebook->verifyRequest();
     }
@@ -90,16 +79,15 @@ class FacebookDriverTest extends TestCase
             'foo' => 'bar',
         ];
 
-        $this->facebook->setRequest($data);
-        $this->facebook->setHeaders($this->generateHeaders($data, str_random()));
+        $this->facebook->fill($this->parameters, $data, $this->generateHeaders($data, Str::random()));
 
         $this->facebook->verifyRequest();
     }
 
     public function test_verifyRequest_valid_header()
     {
-        $this->facebook->setRequest($data = $this->generateResponse());
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
+        $this->facebook->fill([], $data = $this->generateResponse(),
+            $this->generateHeaders($data, $this->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
@@ -114,8 +102,7 @@ class FacebookDriverTest extends TestCase
             'foo' => 'bar',
         ];
 
-        $this->facebook->setRequest($data);
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
+        $this->facebook->fill($this->parameters, $data, $this->generateHeaders($data, $this->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
@@ -140,8 +127,7 @@ class FacebookDriverTest extends TestCase
             ],
         ];
 
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
-        $this->facebook->setRequest($data);
+        $this->facebook->fill($this->parameters, $data, $this->generateHeaders($data, $this->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
@@ -150,8 +136,7 @@ class FacebookDriverTest extends TestCase
     {
         $data = $this->generateResponse();
 
-        $this->facebook->setHeaders($this->generateHeaders($data, $this->channel->parameters['app_secret']));
-        $this->facebook->setRequest($data);
+        $this->facebook->fill($this->parameters, $data, $this->generateHeaders($data, $this->parameters['app_secret']));
 
         $this->facebook->verifyRequest();
     }
@@ -160,6 +145,7 @@ class FacebookDriverTest extends TestCase
     {
         $senderId = $this->faker()->uuid;
         $response = [
+            'id' => $senderId,
             'first_name' => $this->faker()->firstName,
             'last_name' => $this->faker()->lastName,
             'profile_pic' => $this->faker()->url,
@@ -168,18 +154,29 @@ class FacebookDriverTest extends TestCase
             'gender' => $this->faker()->word,
         ];
 
-        $this->facebook->setRequest($this->generateResponse($senderId));
+        $this->facebook->fill($this->parameters, $this->generateResponse($senderId));
 
         $stream = $this->mock(ResponseInterface::class);
 
-        $stream->shouldReceive('getBody')->andReturn(json_encode($response));
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
-            'query' => [
-                'access_token' => $this->channel->parameters['page_token'],
-            ],
-        ])->andReturn($stream);
+        $stream->shouldReceive('getBody')->andReturn(json_encode($response))->atLeast()->once();
+        $this->guzzle->shouldReceive('get')
+            ->with('https://graph.facebook.com/v2.6/'.$senderId, [
+                'query' => [
+                    'access_token' => $this->parameters['page_token'],
+                ],
+            ])
+            ->andReturn($stream)
+            ->atLeast()->once();
 
-        $this->assertInstanceOf(Sender::class, $this->facebook->getSender());
+        $sender = $this->facebook->getUser();
+
+        $this->assertInstanceOf(User::class, $sender);
+        $this->assertInstanceOf(FacebookUser::class, $sender);
+        $this->assertSame($senderId, $sender->getId());
+        $this->assertSame($response['first_name'].' '.$response['last_name'], $sender->getName());
+        $this->assertNull($sender->getUsername());
+
+        $this->assertSame($sender, $this->facebook->getUser());
     }
 
     /**
@@ -189,23 +186,27 @@ class FacebookDriverTest extends TestCase
     public function test_getSender_exception()
     {
         $senderId = $this->faker()->uuid;
-        $this->facebook->setRequest($this->generateResponse($senderId));
 
-        $this->guzzle->shouldReceive('get')->with('https://graph.facebook.com/v2.6/'.$senderId, [
-            'query' => [
-                'access_token' => $this->channel->parameters['page_token'],
-            ],
-        ])->andThrow(new RequestException('Invalid request', $this->mock(RequestInterface::class)));
+        $this->facebook->fill($this->parameters, $this->generateResponse($senderId));
 
-        $this->facebook->getSender();
+        $this->guzzle->shouldReceive('get')
+            ->with('https://graph.facebook.com/v2.6/'.$senderId, [
+                'query' => [
+                    'access_token' => $this->parameters['page_token'],
+                ],
+            ])
+            ->andThrow(new RequestException('Invalid request', $this->mock(RequestInterface::class)));
+
+        $result = $this->facebook->getUser();
+        $this->assertInstanceOf(User::class, $result);
     }
 
     public function test_getMessage()
     {
-        $this->facebook->setRequest($this->generateResponse(null, $text = $this->faker()->text()));
+        $this->facebook->fill($this->parameters, $this->generateResponse(null, $text = $this->faker()->text()));
 
         $message = $this->facebook->getMessage();
-        $this->assertInstanceOf(FacebookSenderMessage::class, $message);
+        $this->assertInstanceOf(FacebookReceivedMessage::class, $message);
         $this->assertSame($text, $message->getText());
         $this->assertNull($message->getLocation());
     }
@@ -215,10 +216,10 @@ class FacebookDriverTest extends TestCase
         $latitude = $this->faker()->latitude;
         $longitude = $this->faker()->longitude;
 
-        $this->facebook->setRequest($this->generateLocationResponse($latitude, $longitude));
+        $this->facebook->fill($this->parameters, $this->generateLocationResponse($latitude, $longitude));
 
         $message = $this->facebook->getMessage();
-        $this->assertInstanceOf(FacebookSenderMessage::class, $message);
+        $this->assertInstanceOf(FacebookReceivedMessage::class, $message);
         $this->assertInstanceOf(Location::class, $location = $message->getLocation());
         $this->assertSame($latitude, $location->getLatitude());
         $this->assertSame($longitude, $location->getLongitude());
@@ -228,17 +229,20 @@ class FacebookDriverTest extends TestCase
 
     public function test_getMessageAttachments()
     {
-        $this->facebook->setRequest($this->generateAttachmentResponse('audio'));
+        $this->mock(Client::class);
+
+        $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('audio'));
+
         $this->assertInstanceOf(Attachment::class, $this->facebook->getMessage()->getAttachment());
         $this->assertSame(Attachment::TYPE_AUDIO, $this->facebook->getMessage()->getAttachment()->getType());
 
-        $this->facebook->setRequest($this->generateAttachmentResponse('image'));
+        $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('image'));
         $this->assertSame(Attachment::TYPE_IMAGE, $this->facebook->getMessage()->getAttachment()->getType());
 
-        $this->facebook->setRequest($this->generateAttachmentResponse('video'));
+        $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('video'));
         $this->assertSame(Attachment::TYPE_VIDEO, $this->facebook->getMessage()->getAttachment()->getType());
 
-        $this->facebook->setRequest($this->generateAttachmentResponse('file'));
+        $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('file'));
         $this->assertSame(Attachment::TYPE_FILE, $this->facebook->getMessage()->getAttachment()->getType());
     }
 
@@ -246,7 +250,9 @@ class FacebookDriverTest extends TestCase
     {
         $text = $this->faker()->text;
 
-        $receiver = new Receiver($this->faker()->uuid);
+        $recipient = $this->mock(User::class);
+        $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
+
         $keyboard = new BasicKeyboard([
             new Button($this->faker()->word),
             new Button($this->faker()->word),
@@ -257,7 +263,7 @@ class FacebookDriverTest extends TestCase
             [
                 'form_params' => [
                     'recipient' => [
-                        'id' => $receiver->getIdentifier(),
+                        'id' => $recipientId,
                     ],
                     'message' => [
                         'text' => $text,
@@ -276,15 +282,15 @@ class FacebookDriverTest extends TestCase
                     ],
                 ],
                 'query' => [
-                    'access_token' => $this->channel->parameters['page_token'],
+                    'access_token' => $this->parameters['page_token'],
                 ],
             ]
         );
 
-        $result = $this->facebook->sendMessage($receiver, $text, $keyboard);
+        $result = $this->facebook->sendMessage($recipient, $text, $keyboard);
 
-        $this->assertInstanceOf(FacebookReceiverMessage::class, $result);
-        $this->assertSame($receiver, $result->getReceiver());
+        $this->assertInstanceOf(FacebookOutgoingMessage::class, $result);
+        $this->assertSame($recipient, $result->getRecipient());
         $this->assertSame($text, $result->getText());
         $this->assertSame($keyboard, $result->getKeyboard());
     }
@@ -292,20 +298,20 @@ class FacebookDriverTest extends TestCase
     public function test_sendMessage_request_exception()
     {
         $text = $this->faker()->text;
-        $receiver = $this->mock(Receiver::class);
-        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
+        $sender = $this->mock(User::class);
+        $sender->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
 
         $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request',
             $this->mock(RequestInterface::class)));
 
-        $this->facebook->sendMessage($receiver, $text);
+        $this->facebook->sendMessage($sender, $text);
     }
 
     public function test_verify_webhook_check()
     {
-        $this->facebook->setRequest([
+        $this->facebook->fill($this->parameters, [
             'hub_mode' => 'subscribe',
-            'hub_verify_token' => $this->channel->parameters['verify_token'],
+            'hub_verify_token' => $this->parameters['verify_token'],
             'hub_challenge' => $challenge = $this->faker()->randomNumber(),
         ]);
 
@@ -319,7 +325,7 @@ class FacebookDriverTest extends TestCase
      */
     public function test_verifyWebhook_invalid_token()
     {
-        $this->facebook->setRequest([
+        $this->facebook->fill($this->parameters, [
             'hub_mode' => 'subscribe',
             'hub_verify_token' => $this->faker()->word,
             'hub_challenge' => $challenge = $this->faker()->randomNumber(),

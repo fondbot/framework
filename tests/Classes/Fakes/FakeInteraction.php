@@ -6,6 +6,7 @@ namespace Tests\Classes\Fakes;
 
 use FondBot\Conversation\Interaction;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Channels\ReceivedMessage;
 
 class FakeInteraction extends Interaction
 {
@@ -30,9 +31,11 @@ class FakeInteraction extends Interaction
     }
 
     /**
-     * Process reply.
+     * Process received message.
+     *
+     * @param ReceivedMessage $message
      */
-    protected function process(): void
+    public function process(ReceivedMessage $message): void
     {
         $this->remember('key', 'value');
     }

@@ -5,43 +5,39 @@ declare(strict_types=1);
 namespace Tests\Unit\Channels;
 
 use Tests\TestCase;
+use FondBot\Helpers\Str;
+use FondBot\Channels\Channel;
 use FondBot\Channels\ChannelManager;
-use FondBot\Channels\Telegram\TelegramDriver;
-use FondBot\Contracts\Database\Entities\Channel;
 
-/**
- * @property ChannelManager manager
- */
 class ChannelManagerTest extends TestCase
 {
-    protected function setUp()
+    public function test_create()
     {
-        parent::setUp();
-
-        $this->manager = new ChannelManager([
-            'Telegram' => TelegramDriver::class,
-        ]);
-    }
-
-    public function test_createDriver()
-    {
-        $channel = new Channel([
-            'driver' => TelegramDriver::class,
-            'name' => $this->faker()->name,
-            'parameters' => ['token' => str_random()],
-        ]);
-
-        $driver = $this->manager->createDriver($channel, [], []);
-
-        $this->assertInstanceOf(TelegramDriver::class, $driver);
-    }
-
-    public function test_supportedDrivers()
-    {
-        $expected = [
-            'Telegram' => TelegramDriver::class,
+        $name = 'fake';
+        $parameters = [
+            'driver' => 'fake',
+            'token' => Str::random(),
         ];
 
-        $this->assertEquals($expected, $this->manager->supportedDrivers());
+        $manager = new ChannelManager();
+
+        $manager->add($name, $parameters);
+
+        $result = $manager->create($name);
+
+        $this->assertInstanceOf(Channel::class, $result);
+        $this->assertSame($name, $result->getName());
+        $this->assertSame(collect($parameters)->except('driver')->toArray(), $result->getParameters());
+    }
+
+    /**
+     * @expectedException \FondBot\Channels\Exceptions\ChannelNotFoundException
+     * @expectedExceptionMessage Channel `fake` not found.
+     */
+    public function test_create_exception()
+    {
+        $manager = new ChannelManager();
+
+        $manager->create('fake');
     }
 }
