@@ -8,11 +8,12 @@ use FondBot\Bot;
 use FondBot\Traits\Loggable;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Contracts\Conversation\Conversable;
+use FondBot\Conversation\Traits\InteractsWithContext;
 use FondBot\Contracts\Conversation\Story as StoryContract;
 
 abstract class Story implements StoryContract, Conversable
 {
-    use Transitions, Loggable;
+    use InteractsWithContext, Transitions, Loggable;
 
     /**
      * Do something before running Story.

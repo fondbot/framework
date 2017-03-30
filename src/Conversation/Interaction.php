@@ -6,35 +6,14 @@ namespace FondBot\Conversation;
 
 use FondBot\Bot;
 use FondBot\Traits\Loggable;
-use FondBot\Contracts\Channels\User;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Contracts\Conversation\Conversable;
+use FondBot\Conversation\Traits\InteractsWithContext;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
 abstract class Interaction implements InteractionContract, Conversable
 {
-    use Transitions, Loggable;
-
-    /**
-     * Remember value in context.
-     *
-     * @param string $key
-     * @param        $value
-     */
-    protected function remember(string $key, $value): void
-    {
-        $this->bot->getContext()->setValue($key, $value);
-    }
-
-    /**
-     * Get user.
-     *
-     * @return User
-     */
-    public function getUser(): User
-    {
-        return $this->bot->getContext()->getUser();
-    }
+    use InteractsWithContext, Transitions, Loggable;
 
     /**
      * Do something before running Interaction.
