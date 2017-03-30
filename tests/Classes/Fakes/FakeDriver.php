@@ -26,7 +26,7 @@ class FakeDriver extends Driver implements WebhookVerification
      */
     public function getConfig(): array
     {
-        return [];
+        return ['token'];
     }
 
     /**
