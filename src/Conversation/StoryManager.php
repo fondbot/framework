@@ -53,7 +53,7 @@ class StoryManager
     {
         foreach ($this->stories as $story) {
             foreach ($story->activations() as $activator) {
-                if ($activator->matches($message)) {
+                if ($activator->matches($message) && $story->passesAuthorization()) {
                     return $story;
                 }
             }

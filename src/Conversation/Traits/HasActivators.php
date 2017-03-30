@@ -10,7 +10,7 @@ use FondBot\Conversation\Activators\InArray;
 use FondBot\Conversation\Activators\Pattern;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
-trait Activators
+trait HasActivators
 {
     /**
      * Create "Exact" activator.
