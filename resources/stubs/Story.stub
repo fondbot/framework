@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ___NAMESPACE___;
 
+use FondBot\Contracts\Conversation\Activator;
 use FondBot\Conversation\Story;
 
 class ___CLASSNAME___ extends Story
@@ -11,7 +12,7 @@ class ___CLASSNAME___ extends Story
     /**
      * Story activations.
      *
-     * @return array
+     * @return Activator[]
      */
     public function activations(): array
     {

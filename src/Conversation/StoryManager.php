@@ -52,9 +52,10 @@ class StoryManager
     private function findActivation(ReceivedMessage $message): ?Story
     {
         foreach ($this->stories as $story) {
-            /** @var Story $story */
-            if (in_array($message->getText(), $story->activations(), true)) {
-                return $story;
+            foreach ($story->activations() as $activator) {
+                if ($activator->matches($message)) {
+                    return $story;
+                }
             }
         }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Classes\Fakes;
 
 use FondBot\Conversation\Story;
+use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 class FakeStory extends Story
 {
@@ -16,7 +17,11 @@ class FakeStory extends Story
     public function activations(): array
     {
         return [
-            '/example',
+            $this->exact('/example'),
+            $this->pattern('/\/example/'),
+            $this->pattern((new VerbalExpressions())->startOfLine()->then('/example')->endOfLine()),
+            $this->inArray(['/example']),
+            $this->inArray(collect(['/example'])),
         ];
     }
 

@@ -6,6 +6,7 @@ namespace FondBot\Conversation;
 
 use FondBot\Bot;
 use FondBot\Traits\Loggable;
+use FondBot\Conversation\Traits\Activators;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Conversation\Traits\InteractsWithContext;
@@ -13,7 +14,7 @@ use FondBot\Contracts\Conversation\Story as StoryContract;
 
 abstract class Story implements StoryContract, Conversable
 {
-    use InteractsWithContext, Transitions, Loggable;
+    use InteractsWithContext, Activators, Transitions, Loggable;
 
     /**
      * Do something before running Story.

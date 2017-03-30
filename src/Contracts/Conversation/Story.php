@@ -9,7 +9,7 @@ interface Story
     /**
      * Story activations.
      *
-     * @return array
+     * @return Activator[]
      */
     public function activations(): array;
 

@@ -12,10 +12,20 @@ use FondBot\Contracts\Channels\Message\Attachment;
 class FakeReceivedMessage implements ReceivedMessage
 {
     private $faker;
+    private $text;
+    private $location;
+    private $attachment;
 
-    public function __construct(Generator $faker)
-    {
+    public function __construct(
+        Generator $faker = null,
+        string $text = null,
+        Location $location = null,
+        Attachment $attachment = null
+    ) {
         $this->faker = $faker;
+        $this->text = $text;
+        $this->location = $location;
+        $this->attachment = $attachment;
     }
 
     /**
@@ -25,7 +35,7 @@ class FakeReceivedMessage implements ReceivedMessage
      */
     public function getText(): ?string
     {
-        return $this->faker->text;
+        return $this->text ?? $this->faker->text;
     }
 
     /**
@@ -35,7 +45,7 @@ class FakeReceivedMessage implements ReceivedMessage
      */
     public function getLocation(): ?Location
     {
-        return new Location($this->faker->latitude, $this->faker->longitude);
+        return $this->location ?? new Location($this->faker->latitude, $this->faker->longitude);
     }
 
     /**
@@ -45,6 +55,6 @@ class FakeReceivedMessage implements ReceivedMessage
      */
     public function getAttachment(): ?Attachment
     {
-        return new Attachment('image', $this->faker->imageUrl());
+        return $this->attachment ?? new Attachment('image', $this->faker->imageUrl());
     }
 }
