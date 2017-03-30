@@ -4,47 +4,48 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Channels\Sender;
-use Illuminate\Contracts\Support\Arrayable;
-use FondBot\Contracts\Channels\SenderMessage;
-use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Core\Arrayable;
+use FondBot\Contracts\Conversation\Story;
+use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Conversation\Interaction;
 
 class Context implements Arrayable
 {
     private $channel;
-    private $sender;
+    private $user;
     private $message;
     private $story;
     private $interaction;
     private $values;
 
     public function __construct(
-        Channel $channel,
-        Sender $sender,
-        SenderMessage $message,
+        string $channel,
+        User $user,
+        ReceivedMessage $message,
         Story $story = null,
         Interaction $interaction = null,
         array $values = []
     ) {
         $this->channel = $channel;
-        $this->sender = $sender;
+        $this->user = $user;
         $this->message = $message;
         $this->story = $story;
         $this->interaction = $interaction;
         $this->values = $values;
     }
 
-    public function getChannel(): Channel
+    public function getChannel(): string
     {
         return $this->channel;
     }
 
-    public function getSender(): Sender
+    public function getUser(): User
     {
-        return $this->sender;
+        return $this->user;
     }
 
-    public function getMessage(): SenderMessage
+    public function getMessage(): ReceivedMessage
     {
         return $this->message;
     }
@@ -89,7 +90,7 @@ class Context implements Arrayable
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'story' => $this->story !== null ? get_class($this->story) : null,

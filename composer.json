@@ -1,6 +1,6 @@
 {
     "name": "fondbot/fondbot",
-    "description": "Laravel framework library for creating Bots.",
+    "description": "FondBot is a library for building chat bots.",
     "type": "library",
     "keywords": [
         "fondbot",
@@ -23,15 +23,13 @@
     "require": {
         "php": ">=7.1",
         "guzzlehttp/guzzle": "^6.2",
-        "laravel/framework": "^5.4",
-        "spatie/emoji": "^1.0"
+        "tightenco/collect": "^5.4"
     },
     "require-dev": {
-        "doctrine/dbal": "^2.5",
         "fzaninotto/faker": "^1.6",
-        "laravel/laravel": "^5.4",
         "mockery/mockery": "^0.9.9",
-        "phpunit/phpunit": "^5"
+        "phpunit/phpunit": "^5",
+        "sllh/php-cs-fixer-styleci-bridge": "^2.1"
     },
     "autoload": {
         "psr-4": {

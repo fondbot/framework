@@ -4,28 +4,12 @@ declare(strict_types=1);
 
 namespace ___NAMESPACE___;
 
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 use FondBot\Contracts\Conversation\Keyboard;
 
 class ___CLASSNAME___ extends Interaction
 {
-
-    /**
-     * Do something before running Interaction
-     */
-    protected function before(): void
-    {
-
-    }
-
-    /**
-     * Do something after running Interaction
-     */
-    protected function after(): void
-    {
-
-    }
-
     /**
      * Message text to be sent to Participant.
      *
@@ -33,7 +17,7 @@ class ___CLASSNAME___ extends Interaction
      */
     public function text(): string
     {
-        return 'Hello, '.$this->getReceiver()->getName().'!';
+        return 'Hello, '.$this->getUser()->getName().'!';
     }
 
     /**
@@ -47,11 +31,12 @@ class ___CLASSNAME___ extends Interaction
     }
 
     /**
-     * Process reply
+     * Process received message.
+     *
+     * @param ReceivedMessage $message
      */
-    protected function process(): void
+    public function process(ReceivedMessage $message): void
     {
 
     }
-
 }

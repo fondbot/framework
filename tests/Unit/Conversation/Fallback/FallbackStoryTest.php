@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Fallback;
 
+use FondBot\Bot;
 use Tests\TestCase;
+use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
-use Tests\Classes\Fakes\FakeDriver;
+use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\ContextManager;
-use FondBot\Contracts\Events\MessageSent;
 use FondBot\Conversation\Fallback\FallbackStory;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use FondBot\Conversation\Fallback\FallbackInteraction;
 
 /**
- * @property \FondBot\Conversation\Fallback\FallbackStory story
+ * @property FallbackStory story
  */
 class FallbackStoryTest extends TestCase
 {
-    use DatabaseMigrations;
-
     protected function setUp()
     {
         parent::setUp();
@@ -37,19 +35,19 @@ class FallbackStoryTest extends TestCase
         $this->assertSame(FallbackInteraction::class, $this->story->firstInteraction());
     }
 
-    public function test_after()
+    public function test_process()
     {
-        $driver = new FakeDriver();
-        $context = new Context($driver->getChannel(), $driver->getSender(), $driver->getMessage());
-
+        $interaction = $this->mock(FallbackInteraction::class);
         $contextManager = $this->mock(ContextManager::class);
-        $contextManager->shouldReceive('save')->once();
-        $contextManager->shouldReceive('clear')->once();
+        $context = $this->mock(Context::class);
 
-        $this->expectsEvents(MessageSent::class);
+        Bot::createInstance($this->container, $this->mock(Channel::class), $this->mock(Driver::class), [], []);
+        Bot::getInstance()->setContext($context);
 
-        $this->story->setContext($context);
-        $this->story->setDriver($driver);
-        $this->story->run();
+        $interaction->shouldReceive('handle')->once();
+        $context->shouldReceive('setInteraction')->with($interaction)->once();
+        $contextManager->shouldReceive('clear')->with($context)->once();
+
+        $this->story->handle(Bot::getInstance());
     }
 }

@@ -8,9 +8,6 @@ use FondBot\Conversation\Story;
 
 class ___CLASSNAME___ extends Story
 {
-
-    protected $name = '___NAME___';
-
     /**
      * Story activations.
      *
@@ -32,5 +29,4 @@ class ___CLASSNAME___ extends Story
     {
         // return ClassNameOfInteraction::class;
     }
-
 }

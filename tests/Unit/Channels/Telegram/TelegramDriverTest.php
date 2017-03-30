@@ -6,24 +6,24 @@ namespace Tests\Unit\Channels\Drivers;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
-use Illuminate\Http\File;
-use FondBot\Contracts\Channels\Sender;
+use FondBot\Helpers\Str;
+use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Filesystem\File;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use FondBot\Contracts\Channels\Receiver;
 use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
+use FondBot\Channels\Telegram\TelegramUser;
 use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Contracts\Channels\Message\Location;
-use FondBot\Contracts\Database\Entities\Channel;
 use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
-use FondBot\Channels\Telegram\TelegramSenderMessage;
-use FondBot\Channels\Telegram\TelegramReceiverMessage;
+use FondBot\Channels\Telegram\TelegramOutgoingMessage;
+use FondBot\Channels\Telegram\TelegramReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
- * @property Channel                                    channel
+ * @property array                                      parameters
  * @property TelegramDriver                             telegram
  */
 class TelegramDriverTest extends TestCase
@@ -33,15 +33,9 @@ class TelegramDriverTest extends TestCase
         parent::setUp();
 
         $this->guzzle = $this->mock(Client::class);
-        $this->channel = new Channel([
-            'driver' => TelegramDriver::class,
-            'name' => $this->faker()->name,
-            'parameters' => ['token' => str_random()],
-        ]);
 
         $this->telegram = new TelegramDriver($this->guzzle);
-        $this->telegram->setParameters($this->channel->parameters);
-        $this->telegram->setRequest([]);
+        $this->telegram->fill($this->parameters = ['token' => Str::random()]);
     }
 
     public function test_getConfig()
@@ -53,7 +47,7 @@ class TelegramDriverTest extends TestCase
 
     public function test_getHeaders()
     {
-        $this->telegram->setHeaders($headers = ['Token' => $this->faker()->uuid]);
+        $this->telegram->fill($this->parameters, [], $headers = ['Token' => $this->faker()->uuid]);
 
         $this->assertSame($headers['Token'], $this->telegram->getHeader('Token'));
         $this->assertSame($headers, $this->telegram->getHeaders());
@@ -74,14 +68,15 @@ class TelegramDriverTest extends TestCase
      */
     public function test_verifyRequest_no_sender()
     {
-        $this->telegram->setRequest(['message' => []]);
+        $this->telegram->fill($this->parameters, ['message' => []]);
 
         $this->telegram->verifyRequest();
     }
 
     public function test_verifyRequest()
     {
-        $this->telegram->setRequest(['message' => ['from' => $this->faker()->name, 'text' => $this->faker()->word]]);
+        $this->telegram->fill($this->parameters,
+            ['message' => ['from' => $this->faker()->name, 'text' => $this->faker()->word]]);
 
         $this->telegram->verifyRequest();
     }
@@ -91,7 +86,7 @@ class TelegramDriverTest extends TestCase
         $url = $this->faker()->url;
 
         $this->guzzle->shouldReceive('post')->with(
-            'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/setWebhook',
+            'https://api.telegram.org/bot'.$this->parameters['token'].'/setWebhook',
             [
                 'form_params' => [
                     'url' => $url,
@@ -104,10 +99,10 @@ class TelegramDriverTest extends TestCase
 
     public function test_getSender()
     {
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
-                'from' => [
-                    'id' => str_random(),
+                'from' => $response = [
+                    'id' => Str::random(),
                     'first_name' => $this->faker()->firstName,
                     'last_name' => $this->faker()->lastName,
                     'username' => $this->faker()->userName,
@@ -115,20 +110,25 @@ class TelegramDriverTest extends TestCase
             ],
         ]);
 
-        $this->assertInstanceOf(Sender::class, $this->telegram->getSender());
+        $sender = $this->telegram->getUser();
+        $this->assertInstanceOf(User::class, $sender);
+        $this->assertInstanceOf(TelegramUser::class, $sender);
+        $this->assertSame($response['id'], $sender->getId());
+        $this->assertSame($response['first_name'].' '.$response['last_name'], $sender->getName());
+        $this->assertSame($response['username'], $sender->getUsername());
     }
 
     public function test_getMessage()
     {
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'text' => $text = $this->faker()->text,
             ],
         ]);
 
-        /** @var TelegramSenderMessage $message */
+        /** @var TelegramReceivedMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
         $this->assertSame($text, $message->getText());
         $this->assertNull($message->getAttachment());
         $this->assertNull($message->getAudio());
@@ -157,7 +157,7 @@ class TelegramDriverTest extends TestCase
             $id = collect($result)->pluck('file_id')->last();
         }
 
-        $this->telegram->setRequest(['message' => [$type => $result]]);
+        $this->telegram->fill($this->parameters, ['message' => [$type => $result]]);
 
         // Get file path from Telegram
         $response = $this->mock(ResponseInterface::class);
@@ -173,7 +173,7 @@ class TelegramDriverTest extends TestCase
 
         $this->guzzle->shouldReceive('post')
             ->with(
-                'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/getFile',
+                'https://api.telegram.org/bot'.$this->parameters['token'].'/getFile',
                 [
                     'form_params' => [
                         'file_id' => $id,
@@ -184,14 +184,14 @@ class TelegramDriverTest extends TestCase
             ->once();
 
         // Retrieve file contents
-        $path = 'https://api.telegram.org/file/bot'.$this->channel->parameters['token'].'/'.$path;
+        $path = 'https://api.telegram.org/file/bot'.$this->parameters['token'].'/'.$path;
         $response = $this->mock(ResponseInterface::class);
         $response->shouldReceive('getBody')->andReturnSelf();
         $response->shouldReceive('getContents')->andReturn($contents = $this->faker()->text);
         $this->guzzle->shouldReceive('get')->with($path)->andReturn($response)->once();
 
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
 
         $attachment = $this->telegram->getMessage()->getAttachment();
         $this->assertInstanceOf(Attachment::class, $attachment);
@@ -204,7 +204,7 @@ class TelegramDriverTest extends TestCase
 
     public function test_getMessage_with_contact_full()
     {
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'contact' => $contact = [
                     'phone_number' => $phoneNumber = $this->faker()->phoneNumber,
@@ -215,9 +215,9 @@ class TelegramDriverTest extends TestCase
             ],
         ]);
 
-        /** @var TelegramSenderMessage $message */
+        /** @var TelegramReceivedMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
         $this->assertSame($contact, $message->getContact());
 
         $contact = $message->getContact();
@@ -229,7 +229,7 @@ class TelegramDriverTest extends TestCase
 
     public function test_getMessage_with_contact_partial()
     {
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'contact' => $contact = [
                     'phone_number' => $phoneNumber = $this->faker()->phoneNumber,
@@ -240,9 +240,9 @@ class TelegramDriverTest extends TestCase
 
         $contact = array_merge($contact, ['last_name' => null, 'user_id' => null]);
 
-        /** @var TelegramSenderMessage $message */
+        /** @var TelegramReceivedMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
         $this->assertSame($contact, $message->getContact());
 
         $contact = $message->getContact();
@@ -257,7 +257,7 @@ class TelegramDriverTest extends TestCase
         $latitude = $this->faker()->latitude;
         $longitude = $this->faker()->longitude;
 
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'text' => $this->faker()->text,
                 'location' => [
@@ -268,7 +268,7 @@ class TelegramDriverTest extends TestCase
         ]);
 
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
 
         $location = $message->getLocation();
         $this->assertInstanceOf(Location::class, $location);
@@ -281,7 +281,7 @@ class TelegramDriverTest extends TestCase
         $latitude = $this->faker()->latitude;
         $longitude = $this->faker()->longitude;
 
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'text' => $this->faker()->text,
                 'venue' => $venue = [
@@ -298,9 +298,9 @@ class TelegramDriverTest extends TestCase
 
         $venue['location'] = new Location($venue['location']['latitude'], $venue['location']['longitude']);
 
-        /** @var TelegramSenderMessage $message */
+        /** @var TelegramReceivedMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
         $this->assertEquals($venue, $message->getVenue());
 
         $venue = $message->getVenue();
@@ -319,7 +319,7 @@ class TelegramDriverTest extends TestCase
         $latitude = $this->faker()->latitude;
         $longitude = $this->faker()->longitude;
 
-        $this->telegram->setRequest([
+        $this->telegram->fill($this->parameters, [
             'message' => [
                 'text' => $this->faker()->text,
                 'venue' => $venue = [
@@ -336,9 +336,9 @@ class TelegramDriverTest extends TestCase
         $venue['location'] = new Location($venue['location']['latitude'], $venue['location']['longitude']);
         $venue['foursquare_id'] = null;
 
-        /** @var TelegramSenderMessage $message */
+        /** @var TelegramReceivedMessage $message */
         $message = $this->telegram->getMessage();
-        $this->assertInstanceOf(TelegramSenderMessage::class, $message);
+        $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
         $this->assertEquals($venue, $message->getVenue());
 
         $venue = $message->getVenue();
@@ -356,7 +356,8 @@ class TelegramDriverTest extends TestCase
     {
         $text = $this->faker()->text;
 
-        $receiver = new Receiver($this->faker()->uuid);
+        $recipient = $this->mock(User::class);
+        $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
         $keyboard = new BasicKeyboard([
             new Button($this->faker()->word),
             new Button($this->faker()->word),
@@ -373,20 +374,20 @@ class TelegramDriverTest extends TestCase
         ]);
 
         $this->guzzle->shouldReceive('post')->with(
-            'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/sendMessage',
+            'https://api.telegram.org/bot'.$this->parameters['token'].'/sendMessage',
             [
                 'form_params' => [
-                    'chat_id' => $receiver->getIdentifier(),
+                    'chat_id' => $recipientId,
                     'text' => $text,
                     'reply_markup' => $replyMarkup,
                 ],
             ]
         )->once();
 
-        $result = $this->telegram->sendMessage($receiver, $text, $keyboard);
+        $result = $this->telegram->sendMessage($recipient, $text, $keyboard);
 
-        $this->assertInstanceOf(TelegramReceiverMessage::class, $result);
-        $this->assertSame($receiver, $result->getReceiver());
+        $this->assertInstanceOf(TelegramOutgoingMessage::class, $result);
+        $this->assertSame($recipient, $result->getRecipient());
         $this->assertSame($text, $result->getText());
         $this->assertSame($keyboard, $result->getKeyboard());
     }
@@ -395,33 +396,32 @@ class TelegramDriverTest extends TestCase
     {
         $text = $this->faker()->text;
 
-        $receiver = $this->mock(Receiver::class);
-        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
+        $recipient = $this->mock(User::class);
+        $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
 
         $this->guzzle->shouldReceive('post')->with(
-            'https://api.telegram.org/bot'.$this->channel->parameters['token'].'/sendMessage',
+            'https://api.telegram.org/bot'.$this->parameters['token'].'/sendMessage',
             [
                 'form_params' => [
-                    'chat_id' => $chatId,
+                    'chat_id' => $recipientId,
                     'text' => $text,
-                    'reply_markup' => 'null',
                 ],
             ]
         )->once();
 
-        $this->telegram->sendMessage($receiver, $text);
+        $this->telegram->sendMessage($recipient, $text);
     }
 
     public function test_sendMessage_request_exception()
     {
         $text = $this->faker()->text;
-        $receiver = $this->mock(Receiver::class);
-        $receiver->shouldReceive('getIdentifier')->andReturn($chatId = $this->faker()->uuid);
+        $recipient = $this->mock(User::class);
+        $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
 
         $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request',
             $this->mock(RequestInterface::class)));
 
-        $this->telegram->sendMessage($receiver, $text);
+        $this->telegram->sendMessage($recipient, $text);
     }
 
     public function attachments(): array

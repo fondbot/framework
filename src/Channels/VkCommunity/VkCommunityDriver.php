@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace FondBot\Channels\VkCommunity;
 
 use GuzzleHttp\Client;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\SenderMessage;
-use FondBot\Contracts\Channels\ReceiverMessage;
+use FondBot\Contracts\Channels\OutgoingMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 
@@ -21,9 +20,7 @@ class VkCommunityDriver extends Driver implements WebhookVerification
 
     private $guzzle;
 
-    /**
-     * @var Sender
-     */
+    /** @var User|null */
     private $sender;
 
     public function __construct(Client $guzzle)
@@ -74,10 +71,10 @@ class VkCommunityDriver extends Driver implements WebhookVerification
     /**
      * Get message sender.
      *
-     * @return Sender
+     * @return User
      * @throws \FondBot\Channels\Exceptions\InvalidChannelRequest
      */
-    public function getSender(): Sender
+    public function getUser(): User
     {
         if ($this->sender !== null) {
             return $this->sender;
@@ -92,34 +89,31 @@ class VkCommunityDriver extends Driver implements WebhookVerification
         ]);
         $response = json_decode($request->getBody()->getContents(), true);
 
-        return $this->sender = Sender::create(
-            (string) $response['response'][0]['id'],
-            $response['response'][0]['first_name'].' '.$response['response'][0]['last_name']
-        );
+        return $this->sender = new VkCommunityUser($response['response'][0]);
     }
 
     /**
      * Get message received from sender.
      *
-     * @return SenderMessage
+     * @return ReceivedMessage
      */
-    public function getMessage(): SenderMessage
+    public function getMessage(): ReceivedMessage
     {
-        return new VkCommunitySenderMessage($this->getRequest('object'));
+        return new VkCommunityReceivedMessage($this->getRequest('object'));
     }
 
     /**
      * Send reply to participant.
      *
-     * @param Receiver      $receiver
+     * @param User          $sender
      * @param string        $text
      * @param Keyboard|null $keyboard
      *
-     * @return ReceiverMessage
+     * @return OutgoingMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
+    public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage
     {
-        $message = new VkCommunityReceiverMessage($receiver, $text, $keyboard);
+        $message = new VkCommunityOutgoingMessage($sender, $text, $keyboard);
         $query = array_merge($message->toArray(), [
             'access_token' => $this->getParameter('access_token'),
             'v' => self::API_VERSION,

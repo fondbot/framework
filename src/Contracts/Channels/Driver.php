@@ -4,26 +4,82 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Channels;
 
+use FondBot\Helpers\Arr;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\ContainsRequestInformation;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 abstract class Driver
 {
-    use ContainsRequestInformation, Loggable;
+    use Loggable;
+
+    /** @var array */
+    private $request = [];
+
+    /** @var array */
+    private $headers = [];
 
     /** @var array */
     private $parameters;
 
     /**
-     * Set parameters.
+     * Set driver data.
      *
      * @param array $parameters
+     * @param array $request
+     * @param array $headers
      */
-    public function setParameters(array $parameters): void
+    public function fill(array $parameters, array $request = [], array $headers = []): void
     {
         $this->parameters = $parameters;
+        $this->request = $request;
+        $this->headers = $headers;
+    }
+
+    /**
+     * Get request value.
+     *
+     * @param string|null $key
+     *
+     * @return mixed
+     */
+    public function getRequest(string $key = null)
+    {
+        return Arr::get($this->request, $key);
+    }
+
+    /**
+     * If request has key.
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function hasRequest(string $key): bool
+    {
+        return Arr::has($this->request, [$key]);
+    }
+
+    /**
+     * Get all headers.
+     *
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /**
+     * Get header.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function getHeader(string $name)
+    {
+        return Arr::get($this->headers, $name);
     }
 
     /**
@@ -35,7 +91,7 @@ abstract class Driver
      */
     public function getParameter(string $name)
     {
-        return $this->parameters[$name] ?? '';
+        return Arr::get($this->parameters, $name);
     }
 
     /**
@@ -53,27 +109,27 @@ abstract class Driver
     abstract public function verifyRequest(): void;
 
     /**
-     * Get message sender.
+     * Get user.
      *
-     * @return Sender
+     * @return User
      */
-    abstract public function getSender(): Sender;
+    abstract public function getUser(): User;
 
     /**
      * Get message received from sender.
      *
-     * @return SenderMessage
+     * @return ReceivedMessage
      */
-    abstract public function getMessage(): SenderMessage;
+    abstract public function getMessage(): ReceivedMessage;
 
     /**
      * Send reply to participant.
      *
-     * @param Receiver      $receiver
+     * @param User          $sender
      * @param string        $text
      * @param Keyboard|null $keyboard
      *
-     * @return ReceiverMessage
+     * @return OutgoingMessage
      */
-    abstract public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage;
+    abstract public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage;
 }

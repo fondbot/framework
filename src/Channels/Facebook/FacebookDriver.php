@@ -5,19 +5,23 @@ declare(strict_types=1);
 namespace FondBot\Channels\Facebook;
 
 use GuzzleHttp\Client;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\SenderMessage;
-use FondBot\Contracts\Channels\ReceiverMessage;
+use FondBot\Contracts\Channels\OutgoingMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 
 class FacebookDriver extends Driver implements WebhookVerification
 {
+    const API_URL = 'https://graph.facebook.com/v2.6/';
+
     private $guzzle;
+
+    /** @var User|null */
+    private $sender;
 
     public function __construct(Client $guzzle)
     {
@@ -54,59 +58,57 @@ class FacebookDriver extends Driver implements WebhookVerification
 
     /**
      * Get message sender.
-     * @return Sender
+     * @return User
      * @throws InvalidChannelRequest
      */
-    public function getSender(): Sender
+    public function getUser(): User
     {
-        // todo When bot can process with multiple messages, rewrite to looping
+        if ($this->sender !== null) {
+            return $this->sender;
+        }
+
         $id = $this->getRequest('entry.0.messaging.0.sender.id');
 
         try {
-            $response = $this->guzzle->get($this->getBaseUrl().$id, $this->getDefaultRequestParameters());
+            $response = $this->guzzle->get(self::API_URL.$id, $this->getDefaultRequestParameters());
+            $user = json_decode((string) $response->getBody(), true);
+
+            $user['id'] = $id;
+
+            return $this->sender = new FacebookUser($user);
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
 
             throw new InvalidChannelRequest('Can not get user profile', 0, $exception);
         }
-
-        $user = json_decode((string) $response->getBody());
-
-        $username = "{$user->first_name} {$user->last_name}";
-
-        return Sender::create(
-            (string) $id,
-            $username,
-            $username
-        );
     }
 
     /**
      * Get message received from sender.
      *
-     * @return SenderMessage
+     * @return ReceivedMessage
      */
-    public function getMessage(): SenderMessage
+    public function getMessage(): ReceivedMessage
     {
-        return new FacebookSenderMessage($this->getRequest('entry.0.messaging.0.message'));
+        return new FacebookReceivedMessage($this->getRequest('entry.0.messaging.0.message'));
     }
 
     /**
      * Send reply to participant.
      *
-     * @param Receiver      $receiver
+     * @param User          $sender
      * @param string        $text
      * @param Keyboard|null $keyboard
      *
-     * @return ReceiverMessage
+     * @return OutgoingMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
+    public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage
     {
-        $message = new FacebookReceiverMessage($receiver, $text, $keyboard);
+        $message = new FacebookOutgoingMessage($sender, $text, $keyboard);
 
         try {
             $this->guzzle->post(
-                $this->getBaseUrl().'me/messages',
+                self::API_URL.'me/messages',
                 $this->getDefaultRequestParameters() + ['form_params' => $message->toArray()]
             );
         } catch (RequestException $exception) {
@@ -138,11 +140,6 @@ class FacebookDriver extends Driver implements WebhookVerification
         }
 
         throw new InvalidChannelRequest('Invalid verify token');
-    }
-
-    private function getBaseUrl(): string
-    {
-        return 'https://graph.facebook.com/v2.6/';
     }
 
     private function getDefaultRequestParameters(): array

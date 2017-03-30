@@ -4,38 +4,36 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Bot;
 use FondBot\Traits\Loggable;
-use FondBot\Contracts\Channels\Receiver;
-use FondBot\Contracts\Events\MessageSent;
-use Illuminate\Contracts\Events\Dispatcher;
+use FondBot\Contracts\Channels\User;
 use FondBot\Conversation\Traits\Transitions;
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Contracts\Conversation\Interaction as InteractionContract;
 
-abstract class Interaction implements InteractionContract
+abstract class Interaction implements InteractionContract, Conversable
 {
     use Transitions, Loggable;
 
     /**
-     * Get message receiver.
+     * Remember value in context.
      *
-     * @return Receiver
+     * @param string $key
+     * @param        $value
      */
-    public function getReceiver(): Receiver
+    protected function remember(string $key, $value): void
     {
-        $sender = $this->getContext()->getSender();
-
-        return new Receiver($sender->getIdentifier(), $sender->getName(), $sender->getUsername());
+        $this->bot->getContext()->setValue($key, $value);
     }
 
     /**
-     * Get sender's message.
+     * Get user.
      *
-     * @return SenderMessage
+     * @return User
      */
-    public function getSenderMessage(): SenderMessage
+    public function getUser(): User
     {
-        return $this->getContext()->getMessage();
+        return $this->bot->getContext()->getUser();
     }
 
     /**
@@ -53,24 +51,27 @@ abstract class Interaction implements InteractionContract
     }
 
     /**
-     * Run interaction.
+     * Handle interaction.
+     *
+     * @param Bot $bot
      */
-    public function run(): void
+    public function handle(Bot $bot): void
     {
-        $this->debug('run');
+        $this->bot = $bot;
 
         // Perform actions before running interaction
         $this->before();
 
         // Process reply if current interaction in context
         // Reply to participant if not
-        if ($this->context->getInteraction() instanceof $this) {
+        if ($this->bot->getContext()->getInteraction() instanceof $this) {
             $this->debug('run.process');
-            $this->process();
+
+            $this->process($this->bot->getContext()->getMessage());
 
             // If no transition run we need to clear context.
             if (!$this->transitioned) {
-                $this->clearContext();
+                $this->bot->clearContext();
             }
 
             $this->after();
@@ -79,37 +80,12 @@ abstract class Interaction implements InteractionContract
         }
 
         // Set current interaction in context
-        $this->context->setInteraction($this);
+        $this->bot->getContext()->setInteraction($this);
 
         // Send message to participant
-        $message = $this->getDriver()->sendMessage(
-            $this->getReceiver(),
-            $this->text(),
-            $this->keyboard()
-        );
-
-        // Fire event that message was sent
-//        dispatch(new StoreMessage(
-//            null,
-//            $this->context->getSender(),
-//            $this->context->getMessage()
-//        ));
-
-        $this->getEventDispatcher()->dispatch(new MessageSent($this->context, $message));
-
-        $this->updateContext();
+        $this->bot->sendMessage($this->getUser(), $this->text(), $this->keyboard());
 
         // Perform actions after running interaction
         $this->after();
-    }
-
-    /**
-     * Process reply.
-     */
-    abstract protected function process(): void;
-
-    private function getEventDispatcher(): Dispatcher
-    {
-        return resolve(Dispatcher::class);
     }
 }

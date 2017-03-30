@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
+use FondBot\Bot;
 use InvalidArgumentException;
 use FondBot\Conversation\Story;
 use FondBot\Conversation\Interaction;
-use FondBot\Contracts\Channels\Driver;
-use FondBot\Conversation\ConversationManager;
 
 trait Transitions
 {
-    use InteractsWithContext;
-
-    /** @var Driver */
-    protected $driver;
+    /** @var Bot */
+    protected $bot;
 
     /**
      * Whether any transition run.
@@ -23,16 +20,6 @@ trait Transitions
      * @var bool
      */
     protected $transitioned = false;
-
-    public function getDriver(): Driver
-    {
-        return $this->driver;
-    }
-
-    public function setDriver(Driver $driver): void
-    {
-        $this->driver = $driver;
-    }
 
     /**
      * Move to another story.
@@ -42,20 +29,13 @@ trait Transitions
     protected function move(string $story): void
     {
         /** @var Story $instance */
-        $instance = resolve($story);
+        $instance = $this->bot->get($story);
 
         if (!$instance instanceof Story) {
-            throw new InvalidArgumentException($story.' is not a valid "Story".');
+            throw new InvalidArgumentException('Invalid story `'.$story.'`');
         }
 
-        $this->getContext()->setStory($instance);
-        $this->getContext()->setInteraction(null);
-        $this->getContext()->setValues([]);
-        $this->updateContext();
-
-        /** @var ConversationManager $conversationManager */
-        $conversationManager = resolve(ConversationManager::class);
-        $conversationManager->start($this->driver, $this->context, $instance);
+        $this->bot->converse($instance);
 
         $this->transitioned = true;
     }
@@ -70,16 +50,14 @@ trait Transitions
     protected function jump(string $interaction): void
     {
         /** @var Interaction $instance */
-        $instance = resolve($interaction);
+        $instance = $this->bot->get($interaction);
 
         if (!$instance instanceof Interaction) {
-            throw new InvalidArgumentException($interaction.' is not a valid "Interaction".');
+            throw new InvalidArgumentException('Invalid interaction `'.$interaction.'`');
         }
 
         // Run interaction
-        $instance->setContext($this->context);
-        $instance->setDriver($this->driver);
-        $instance->run();
+        $this->bot->converse($instance);
 
         $this->transitioned = true;
     }

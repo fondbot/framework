@@ -6,13 +6,11 @@ namespace Tests\Classes\Fakes;
 
 use Faker\Factory;
 use Faker\Generator;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\SenderMessage;
-use FondBot\Contracts\Channels\ReceiverMessage;
-use FondBot\Contracts\Database\Entities\Channel;
+use FondBot\Contracts\Channels\OutgoingMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\Extensions\WebhookVerification;
 
@@ -20,20 +18,6 @@ class FakeDriver extends Driver implements WebhookVerification
 {
     private $sender;
     private $message;
-
-    /**
-     * Get channel.
-     *
-     * @return Channel|\Illuminate\Database\Eloquent\Model
-     */
-    public function getChannel(): Channel
-    {
-        return Channel::firstOrCreate([
-            'driver' => self::class,
-            'name' => $this->faker()->name,
-            'parameters' => $this->getConfig(),
-        ]);
-    }
 
     /**
      * Configuration parameters.
@@ -57,44 +41,35 @@ class FakeDriver extends Driver implements WebhookVerification
     /**
      * Get message sender.
      *
-     * @return Sender
+     * @return User
      */
-    public function getSender(): Sender
+    public function getUser(): User
     {
-        return $this->sender ?? $this->sender = Sender::create(
-                $this->faker()->uuid,
-                $this->faker()->name,
-                $this->faker()->userName
-            );
+        return $this->sender ?? $this->sender = new FakeUser($this->faker());
     }
 
     /**
      * Get message received from sender.
      *
-     * @return SenderMessage
+     * @return ReceivedMessage
      */
-    public function getMessage(): SenderMessage
+    public function getMessage(): ReceivedMessage
     {
-        return $this->message ?? $this->message = new FakeSenderMessage($this->faker()->text());
+        return $this->message ?? $this->message = new FakeReceivedMessage($this->faker());
     }
 
     /**
      * Send reply to participant.
      *
-     * @param Receiver      $receiver
+     * @param User          $sender
      * @param string        $text
      * @param Keyboard|null $keyboard
      *
-     * @return ReceiverMessage
+     * @return OutgoingMessage
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
+    public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage
     {
-        return new FakeReceiverMessage($receiver, $text, $keyboard);
-    }
-
-    private function faker(): Generator
-    {
-        return Factory::create();
+        return new FakeOutgoingMessage($sender, $text, $keyboard);
     }
 
     /**
@@ -115,5 +90,10 @@ class FakeDriver extends Driver implements WebhookVerification
     public function verifyWebhook()
     {
         return $this->getRequest('verification');
+    }
+
+    private function faker(): Generator
+    {
+        return Factory::create();
     }
 }

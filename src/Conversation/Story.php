@@ -4,29 +4,15 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Bot;
 use FondBot\Traits\Loggable;
 use FondBot\Conversation\Traits\Transitions;
+use FondBot\Contracts\Conversation\Conversable;
+use FondBot\Contracts\Conversation\Story as StoryContract;
 
-abstract class Story
+abstract class Story implements StoryContract, Conversable
 {
     use Transitions, Loggable;
-
-    /** @var string */
-    protected $name;
-
-    /**
-     * Story activations.
-     *
-     * @return array
-     */
-    abstract public function activations(): array;
-
-    /**
-     * Interaction class name which will be run when activation is triggered.
-     *
-     * @return string
-     */
-    abstract public function firstInteraction(): string;
 
     /**
      * Do something before running Story.
@@ -42,29 +28,21 @@ abstract class Story
     {
     }
 
-    public function run(): void
+    /**
+     * Handle story.
+     *
+     * @param Bot $bot
+     */
+    public function handle(Bot $bot): void
     {
-        $this->debug('run', [
-            'name' => $this->name,
-            'firstInteraction' => $this->firstInteraction(),
-            'context' => $this->context,
-        ]);
+        $this->debug('handle');
+        $this->bot = $bot;
 
         $this->before();
-        $interaction = $this->context->getInteraction();
 
-        // Story in already running
-        // Process interaction from context
-        if ($interaction !== null) {
-            $interaction->setDriver($this->driver);
-            $interaction->setContext($this->context);
-            $interaction->run();
-
-            return;
-        }
-
-        // Run first interaction of story
+        // Run first interaction of the story
         $this->jump($this->firstInteraction());
+
         $this->after();
     }
 }
