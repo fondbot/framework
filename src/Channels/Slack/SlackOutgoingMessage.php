@@ -7,7 +7,7 @@ use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\ReceiverMessage;
 
-class SlackReceiverMessage implements ReceiverMessage
+class SlackOutgoingMessage implements ReceiverMessage
 {
     private $receiver;
     private $text;

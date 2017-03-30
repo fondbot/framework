@@ -4,17 +4,21 @@ declare(strict_types = 1);
 
 namespace FondBot\Channels\Slack;
 
-use FondBot\Contracts\Channels\SenderMessage;
+use GuzzleHttp\Client;
+use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 
-class SlackSenderMessage implements SenderMessage
+class SlackReceivedMessage implements ReceivedMessage
 {
-
+    private $guzzle;
+    private $token;
     private $payload;
 
-    public function __construct(array $payload)
+    public function __construct(Client $guzzle, string $token, array $payload)
     {
+        $this->guzzle  = $guzzle;
+        $this->token   = $token;
         $this->payload = $payload;
     }
 

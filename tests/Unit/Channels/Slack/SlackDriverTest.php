@@ -6,7 +6,7 @@ namespace Tests\Unit\Channels\Slack;
 
 use FondBot\Channels\Slack\SlackDriver;
 
-use FondBot\Channels\Slack\SlackSenderMessage;
+use FondBot\Channels\Slack\SlackReceivedMessage;
 use FondBot\Contracts\Channels\Receiver;
 use FondBot\Contracts\Channels\ReceiverMessage;
 use GuzzleHttp\Exception\RequestException;
@@ -120,7 +120,7 @@ class SlackDriverTest extends TestCase
 
         /** @var TelegramMessage $message */
         $message = $this->slack->getMessage();
-        $this->assertInstanceOf(SlackSenderMessage::class, $message);
+        $this->assertInstanceOf(SlackReceivedMessage::class, $message);
         $this->assertSame($text, $message->getText());
     }
 

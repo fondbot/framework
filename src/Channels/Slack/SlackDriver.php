@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace FondBot\Channels\Slack;
 
+use FondBot\Contracts\Channels\User;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
@@ -12,7 +13,7 @@ use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\SenderMessage;
-use FondBot\Contracts\Channels\ReceiverMessage;
+use FondBot\Contracts\Channels\ReceivedMessage;
 
 class SlackDriver extends Driver
 {
@@ -43,9 +44,9 @@ class SlackDriver extends Driver
     public function verifyRequest(): void
     {
         if (
-            is_null( $this->getRequest('type') ) ||
-            is_null( $this->getRequest('user') ) ||
-            is_null( $this->getRequest('text') ) &&
+            !$this->hasRequest('type')  ||
+            !$this->hasRequest('user')  ||
+            !$this->hasRequest('text')  ||
             $this->getRequest('type') !== 'message'
         ) {
             throw new InvalidChannelRequest('Invalid payload');
@@ -84,13 +85,26 @@ class SlackDriver extends Driver
     }
 
     /**
+     * Get user.
+     *
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return new TelegramUser($this->getRequest('message.from'));
+    }
+
+    /**
      * Get message received from sender.
      *
-     * @return SenderMessage
+     * @return ReceivedMessage
      */
-    public function getMessage(): SenderMessage
+    public function getMessage(): ReceivedMessage
     {
-        return new SlackSenderMessage($this->getRequest());
+        return new SlackReceivedMessage(
+            $this->guzzle,
+            $this->getParameter('token'),
+            $this->getRequest());
     }
 
     /**
@@ -103,7 +117,7 @@ class SlackDriver extends Driver
      */
     public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
     {
-        $message = new SlackReceiverMessage($receiver, $text, $keyboard);
+        $message = new SlackOutgoingMessage($receiver, $text, $keyboard);
 
         $query   = array_merge($message->toArray(), [
             'token'   => $this->getParameter('token')
@@ -158,4 +172,6 @@ class SlackDriver extends Driver
         }
 
     }
+
+
 }
