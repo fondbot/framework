@@ -3,31 +3,32 @@ declare(strict_types = 1);
 
 namespace FondBot\Channels\Slack;
 
-use FondBot\Contracts\Channels\Receiver;
+use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\ReceiverMessage;
+use FondBot\Contracts\Channels\OutgoingMessage;
 
-class SlackOutgoingMessage implements ReceiverMessage
+class SlackOutgoingMessage implements OutgoingMessage
 {
-    private $receiver;
+    private $recipient;
     private $text;
     private $keyboard;
 
-    public function __construct(Receiver $receiver, $text, Keyboard $keyboard = null)
+    public function __construct(User $recipient, $text, Keyboard $keyboard = null)
     {
-        $this->receiver = $receiver;
-        $this->text     = $text;
-        $this->keyboard = $keyboard;
+        $this->recipient = $recipient;
+        $this->text      = $text;
+        $this->keyboard  = $keyboard;
     }
 
+
     /**
-     * Get receiver.
+     * Get recipient.
      *
-     * @return Receiver
+     * @return User
      */
-    public function getReceiver(): Receiver
+    public function getRecipient(): User
     {
-        return $this->receiver;
+        return $this->recipient;
     }
 
     /**
@@ -58,7 +59,7 @@ class SlackOutgoingMessage implements ReceiverMessage
     public function toArray(): array
     {
         return [
-            'channel' => $this->receiver->getIdentifier(),
+            'channel' => $this->recipient->getId(),
             'text'    => $this->text
         ];
     }

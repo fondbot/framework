@@ -9,10 +9,9 @@ use GuzzleHttp\Client;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Contracts\Channels\Sender;
-use FondBot\Contracts\Channels\Receiver;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
-use FondBot\Contracts\Channels\SenderMessage;
+use FondBot\Contracts\Channels\OutgoingMessage;
 use FondBot\Contracts\Channels\ReceivedMessage;
 
 class SlackDriver extends Driver
@@ -91,7 +90,7 @@ class SlackDriver extends Driver
      */
     public function getUser(): User
     {
-        return new TelegramUser($this->getRequest('message.from'));
+        return new SlackUser($this->getRequest());
     }
 
     /**
@@ -110,22 +109,22 @@ class SlackDriver extends Driver
     /**
      *  Send reply to participant.
      *
-     * @param Receiver      $receiver
-     * @param string        $text
+     * @param User $sender
+     * @param string $text
      * @param Keyboard|null $keyboard
-     * @return ReceiverMessage
+     * @return OutgoingMessage|ReceiverMessage
+     * @internal param Receiver $receiver
      */
-    public function sendMessage(Receiver $receiver, string $text, Keyboard $keyboard = null): ReceiverMessage
+    public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage
     {
-        $message = new SlackOutgoingMessage($receiver, $text, $keyboard);
-
+        $message = new SlackOutgoingMessage($sender, $text, $keyboard);
         $query   = array_merge($message->toArray(), [
             'token'   => $this->getParameter('token')
         ]);
 
         try {
             $this->guzzle->post($this->getBaseUrl() . $this->mapDriver('postMessage'), [
-                'query' => $query
+                'form_params' => $query
             ]);
         } catch (RequestException $exception) {
             $this->error(get_class($exception), [$exception->getMessage()]);
@@ -133,6 +132,7 @@ class SlackDriver extends Driver
 
         return $message;
     }
+
 
     private function getBaseUrl(): string
     {

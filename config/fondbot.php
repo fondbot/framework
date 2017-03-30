@@ -21,6 +21,10 @@ return [
             'access_token' => '',
             'confirmation_token' => '',
         ],
+        'slack' => [
+            'driver' => 'slack',
+            'access_token' => 'xoxb-157566427844-tXQpGvWsMtHXELTNz37kfpU3',
+        ]
     ],
 
     /*

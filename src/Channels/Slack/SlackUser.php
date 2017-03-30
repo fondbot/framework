@@ -20,7 +20,7 @@ class SlackUser implements User
      */
     public function getId(): string
     {
-        return (string) $this->payload['id'];
+        return (string) $this->payload['user']['id'];
     }
 
     /**
@@ -30,7 +30,7 @@ class SlackUser implements User
      */
     public function getName(): ?string
     {
-        return $this->payload['first_name'].' '.$this->payload['last_name'];
+        return $this->payload['user']['profile']['first_name'] . ' ' . $this->payload['user']['profile']['last_name'];
     }
 
     /**
@@ -40,7 +40,7 @@ class SlackUser implements User
      */
     public function getUsername(): ?string
     {
-        return $this->payload['username'];
+        return $this->payload['user']['name'];
     }
 }
 
