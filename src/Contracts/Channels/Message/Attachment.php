@@ -77,6 +77,21 @@ class Attachment implements Arrayable
     }
 
     /**
+     * Get all types.
+     *
+     * @return array
+     */
+    public static function possibleTypes(): array
+    {
+        return [
+            static::TYPE_FILE,
+            static::TYPE_IMAGE,
+            static::TYPE_AUDIO,
+            static::TYPE_VIDEO,
+        ];
+    }
+
+    /**
      * Get the instance as an array.
      *
      * @return array

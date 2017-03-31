@@ -38,6 +38,16 @@ class VkCommunityReceivedMessage implements ReceivedMessage
     }
 
     /**
+     * Determine if message has attachment.
+     *
+     * @return bool
+     */
+    public function hasAttachment(): bool
+    {
+        return false;
+    }
+
+    /**
      * Get attachment.
      *
      * @return Attachment|null

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
+use FondBot\Conversation\Activators\WithAttachment;
 use Illuminate\Support\Collection;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\InArray;
@@ -46,5 +47,17 @@ trait HasActivators
     protected function inArray($values): InArray
     {
         return new InArray($values);
+    }
+
+    /**
+     * Create "WithAttachment" activator.
+     *
+     * @param string|null $type
+     *
+     * @return WithAttachment
+     */
+    protected function withAttachment(string $type = null): WithAttachment
+    {
+        return new WithAttachment($type);
     }
 }

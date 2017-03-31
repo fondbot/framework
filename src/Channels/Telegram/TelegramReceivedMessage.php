@@ -33,6 +33,43 @@ class TelegramReceivedMessage implements ReceivedMessage
     }
 
     /**
+     * Get location.
+     *
+     * @return Location|null
+     */
+    public function getLocation(): ?Location
+    {
+        if (!isset($this->payload['location'])) {
+            return null;
+        }
+
+        return new Location(
+            $this->payload['location']['latitude'],
+            $this->payload['location']['longitude']
+        );
+    }
+
+    /**
+     * Determine if message has attachment.
+     *
+     * @return bool
+     */
+    public function hasAttachment(): bool
+    {
+        return collect($this->payload)
+                ->keys()
+                ->intersect([
+                    'audio',
+                    'document',
+                    'photo',
+                    'sticker',
+                    'video',
+                    'voice',
+                ])
+                ->count() > 0;
+    }
+
+    /**
      * Get attachment.
      *
      * @return Attachment|null
@@ -183,23 +220,6 @@ class TelegramReceivedMessage implements ReceivedMessage
             'last_name' => $lastName,
             'user_id' => $userId,
         ];
-    }
-
-    /**
-     * Get location.
-     *
-     * @return Location|null
-     */
-    public function getLocation(): ?Location
-    {
-        if (!isset($this->payload['location'])) {
-            return null;
-        }
-
-        return new Location(
-            $this->payload['location']['latitude'],
-            $this->payload['location']['longitude']
-        );
     }
 
     /**

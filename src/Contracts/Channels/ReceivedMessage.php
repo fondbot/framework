@@ -24,6 +24,13 @@ interface ReceivedMessage
     public function getLocation(): ?Location;
 
     /**
+     * Determine if message has attachment.
+     *
+     * @return bool
+     */
+    public function hasAttachment(): bool;
+
+    /**
      * Get attachment.
      *
      * @return Attachment|null
