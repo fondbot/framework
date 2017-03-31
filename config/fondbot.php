@@ -23,7 +23,7 @@ return [
         ],
         'slack' => [
             'driver' => 'slack',
-            'token' => 'xoxb-157566427844-tXQpGvWsMtHXELTNz37kfpU3',
+            'token' => '',
         ]
     ],
 

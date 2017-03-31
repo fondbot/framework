@@ -8,7 +8,6 @@ use FondBot\Contracts\Channels\User;
 use GuzzleHttp\Client;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Contracts\Channels\Sender;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 use FondBot\Contracts\Channels\OutgoingMessage;

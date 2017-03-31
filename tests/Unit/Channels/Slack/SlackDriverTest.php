@@ -5,22 +5,16 @@ declare(strict_types = 1);
 namespace Tests\Unit\Channels\Slack;
 
 use FondBot\Channels\Slack\SlackDriver;
-
 use FondBot\Channels\Slack\SlackReceivedMessage;
 use FondBot\Channels\Slack\SlackUser;
 use FondBot\Contracts\Channels\OutgoingMessage;
-use FondBot\Contracts\Channels\Receiver;
-use FondBot\Contracts\Channels\ReceiverMessage;
 use FondBot\Contracts\Channels\User;
 use FondBot\Helpers\Str;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\RequestInterface;
 use Tests\TestCase;
 use GuzzleHttp\Client;
-use FondBot\Contracts\Channels\Sender;
 use Psr\Http\Message\ResponseInterface;
-use FondBot\Contracts\Database\Entities\Channel;
-use Mockery as m;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface guzzle
@@ -139,24 +133,9 @@ class SlackDriverTest extends TestCase
 
     public function test_sendMessage_request_exception()
     {
-//        $this->slack->fill([],    $preData = [
-//            "type" => "message",
-//            "text" => "Hello world",
-//            "user" => $senderId,
-//        ]);
-//        $this->slack->fill([], $response = [
-//            'ok'         => true,
-//            'user' => [
-//                'id'          =>  Str::random(),
-//                'name'       => $this->faker()->userName,
-//                'profile'    => [
-//                    'first_name' => $this->faker()->firstName,
-//                    'last_name'  => $this->faker()->lastName,
-//                ]
-//            ]
-//        ]);
-        $text     = $this->faker()->text;
         $senderId =  Str::random();
+        $text     =  $this->faker()->text;
+
         $response = [
             'ok'         => true,
             'user' => [
@@ -169,7 +148,13 @@ class SlackDriverTest extends TestCase
             ]
         ];
 
-        $stream   = $this->mock(ResponseInterface::class);
+        $preData = [
+            "type" => "message",
+            "text" => "Hello world",
+            "user" => $senderId,
+        ];
+        $this->slack->fill($this->parameters, $preData);
+        $stream = $this->mock(ResponseInterface::class);
 
         $stream->shouldReceive('getBody')->andReturn(json_encode($response))->atLeast()->once();
         $this->guzzle->shouldReceive('get')
@@ -181,51 +166,60 @@ class SlackDriverTest extends TestCase
             ])
             ->andReturn($stream)
             ->atLeast()->once();
-
-
-        $this->slack->fill([],  [
-            "type" => "message",
-            "text" => $text,
-            "user" => $senderId,
-        ]);
-
-        $sender   = $this->slack->getUser();
-
+        $sender = $this->slack->getUser();
         $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request',
             $this->mock(RequestInterface::class)));
 
         $this->slack->sendMessage($sender, $text);
-        var_dump($this->parameters);die();
+
     }
 
     public function test_sendMessage()
     {
-        $this->slack->fill($this->parameters, $response = [
+        $senderId =  Str::random();
+        $text     =  $this->faker()->text;
+        $response = [
+            'ok'         => true,
             'user' => [
-                'id'          =>  Str::random(),
+                'id'         =>  $senderId,
                 'name'       => $this->faker()->userName,
                 'profile'    => [
                     'first_name' => $this->faker()->firstName,
                     'last_name'  => $this->faker()->lastName,
                 ]
             ]
-        ],  $headers = ['token' => $this->faker()->uuid]);
-//        $this->slack->fill($this->parameters, [], $headers = ['token' => $this->faker()->uuid]);
-//var_dump($this->slack->getHeader('token'));die();
+        ];
+        $preData  = [
+            "type" => "message",
+            "text" => $text,
+            "user" => $senderId,
+        ];
+
+        $this->slack->fill($this->parameters, $preData);
+
+        $stream = $this->mock(ResponseInterface::class);
+
+        $stream->shouldReceive('getBody')->andReturn(json_encode($response))->atLeast()->once();
+
+        $this->guzzle->shouldReceive('get')
+            ->with('https://slack.com/api/users.info', [
+                'query' => [
+                    'token' => $this->parameters['token'],
+                    'user'  => $senderId
+                ],
+            ])
+            ->andReturn($stream)
+            ->atLeast()->once();
+
         $sender = $this->slack->getUser();
-        $text   = $this->faker()->text();
-        $this->guzzle->shouldReceive('post')
-            ->with(
-                'https://slack.com/api/chat.postMessage',
-                [
-                    'form_params' => [
-                        'channel' => $sender->getId(),
-                        'text'    => $this->faker()->text(),
-                        'token'   => $this->slack->getHeader('token')
-                    ]
-                ]
-            )
-            ->once();
+
+        $this->guzzle->shouldReceive('post')->with('https://slack.com/api/chat.postMessage', [
+            'form_params' => [
+                'token'   => $this->parameters['token'],
+                'channel' => $senderId,
+                'text'    => $text,
+            ]
+        ]);
 
         $senderObject = $this->slack->sendMessage($sender, $text);
         $this->assertInstanceOf(OutgoingMessage::class, $senderObject);
