@@ -52,16 +52,16 @@ class SlackDriver extends Driver
         }
     }
 
+
     /**
-     * Get message sender.
+     * Get user.
      *
-     * @return Sender
+     * @return User
      * @throws \Exception
      */
-    public function getSender(): Sender
+    public function getUser(): User
     {
         $from     = $this->getRequest('user');
-
         $userData = $this->guzzle->get($this->getBaseUrl() . $this->mapDriver('infoAboutUser'),
             [
                 'query' => [
@@ -75,22 +75,12 @@ class SlackDriver extends Driver
         {
             throw new \Exception($responseUser->error);
         }
+        $user['user']['id'] = $responseUser->user->id;
+        $user['user']['profile']['first_name']  =   $responseUser->user->profile->first_name;
+        $user['user']['profile']['last_name']   =   $responseUser->user->profile->last_name;
+        $user['user']['name']                   =   $responseUser->user->name;
 
-        return Sender::create(
-            (string) $responseUser->user->id,
-            $responseUser->user->profile->first_name .' '. $responseUser->user->profile->last_name,
-            $responseUser->user->name
-        );
-    }
-
-    /**
-     * Get user.
-     *
-     * @return User
-     */
-    public function getUser(): User
-    {
-        return new SlackUser($this->getRequest());
+        return new SlackUser($user);
     }
 
     /**
