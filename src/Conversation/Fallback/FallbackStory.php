@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Fallback;
 
 use FondBot\Conversation\Story;
+use FondBot\Contracts\Conversation\Activator;
 
 class FallbackStory extends Story
 {
     /**
-     * Story activations.
+     * Story activators.
      *
-     * @return array
+     * @return Activator[]
      */
-    public function activations(): array
+    public function activators(): array
     {
         return [];
     }

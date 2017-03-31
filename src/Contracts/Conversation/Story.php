@@ -7,14 +7,14 @@ namespace FondBot\Contracts\Conversation;
 interface Story
 {
     /**
-     * Story activations.
+     * Story activators.
      *
      * @return Activator[]
      */
-    public function activations(): array;
+    public function activators(): array;
 
     /**
-     * Interaction class name which will be run when activation is triggered.
+     * Interaction should be run firstly.
      *
      * @return string
      */

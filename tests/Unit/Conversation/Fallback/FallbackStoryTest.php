@@ -25,9 +25,9 @@ class FallbackStoryTest extends TestCase
         $this->story = new FallbackStory;
     }
 
-    public function test_activations()
+    public function test_activators()
     {
-        $this->assertSame([], $this->story->activations());
+        $this->assertSame([], $this->story->activators());
     }
 
     public function test_firstInteraction()

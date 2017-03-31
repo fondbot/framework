@@ -10,19 +10,19 @@ use FondBot\Conversation\Story;
 class ___CLASSNAME___ extends Story
 {
     /**
-     * Story activations.
+     * Story activators.
      *
      * @return Activator[]
      */
-    public function activations(): array
+    public function activators(): array
     {
         return [
-            '/___NAME___',
+            $this->exact('/___NAME___'),
         ];
     }
 
     /**
-     * Interaction class name which will be run when activation is triggered.
+     * Interaction should be run firstly.
      *
      * @return string
      */

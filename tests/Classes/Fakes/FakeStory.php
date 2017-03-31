@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Classes\Fakes;
 
 use FondBot\Conversation\Story;
+use FondBot\Contracts\Conversation\Activator;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 class FakeStory extends Story
@@ -18,11 +19,11 @@ class FakeStory extends Story
     }
 
     /**
-     * Story activations.
+     * Story activators.
      *
-     * @return array
+     * @return Activator[]
      */
-    public function activations(): array
+    public function activators(): array
     {
         return [
             $this->exact('/example'),
