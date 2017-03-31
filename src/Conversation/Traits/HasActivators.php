@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Conversation\Activators\WithAttachment;
 use Illuminate\Support\Collection;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\InArray;
 use FondBot\Conversation\Activators\Pattern;
+use FondBot\Conversation\Activators\WithAttachment;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 trait HasActivators

@@ -191,6 +191,7 @@ class VkCommunityDriverTest extends TestCase
         $message = $this->vkCommunity->getMessage();
         $this->assertInstanceOf(VkCommunityReceivedMessage::class, $message);
         $this->assertSame($text, $message->getText());
+        $this->assertFalse($message->hasAttachment());
         $this->assertNull($message->getLocation());
         $this->assertNull($message->getAttachment());
     }

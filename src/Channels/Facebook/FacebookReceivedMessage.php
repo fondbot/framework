@@ -51,7 +51,9 @@ class FacebookReceivedMessage implements ReceivedMessage
      */
     public function hasAttachment(): bool
     {
-        return count($this->payload['attachments']) > 0;
+        return isset($this->payload['attachments']) && collect($this->payload['attachments'])
+                ->whereIn('type', ['audio', 'file', 'image', 'video'])
+                ->count() > 0;
     }
 
     /**
@@ -131,7 +133,7 @@ class FacebookReceivedMessage implements ReceivedMessage
 
         // Is it real to send many locations or something in one request?
         return collect($attachments)->first(function ($attachment) use ($type) {
-                return $attachment['type'] === $type;
-            })['payload'] ?? null;
+            return $attachment['type'] === $type;
+        })['payload'] ?? null;
     }
 }

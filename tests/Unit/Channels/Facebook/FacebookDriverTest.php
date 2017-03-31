@@ -207,6 +207,7 @@ class FacebookDriverTest extends TestCase
 
         $message = $this->facebook->getMessage();
         $this->assertInstanceOf(FacebookReceivedMessage::class, $message);
+        $this->assertFalse($message->hasAttachment());
         $this->assertSame($text, $message->getText());
         $this->assertNull($message->getLocation());
     }
@@ -220,6 +221,7 @@ class FacebookDriverTest extends TestCase
 
         $message = $this->facebook->getMessage();
         $this->assertInstanceOf(FacebookReceivedMessage::class, $message);
+        $this->assertFalse($message->hasAttachment());
         $this->assertInstanceOf(Location::class, $location = $message->getLocation());
         $this->assertSame($latitude, $location->getLatitude());
         $this->assertSame($longitude, $location->getLongitude());
@@ -232,18 +234,21 @@ class FacebookDriverTest extends TestCase
         $this->mock(Client::class);
 
         $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('audio'));
-
         $this->assertInstanceOf(Attachment::class, $this->facebook->getMessage()->getAttachment());
         $this->assertSame(Attachment::TYPE_AUDIO, $this->facebook->getMessage()->getAttachment()->getType());
+        $this->assertTrue($this->facebook->getMessage()->hasAttachment());
 
         $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('image'));
         $this->assertSame(Attachment::TYPE_IMAGE, $this->facebook->getMessage()->getAttachment()->getType());
+        $this->assertTrue($this->facebook->getMessage()->hasAttachment());
 
         $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('video'));
         $this->assertSame(Attachment::TYPE_VIDEO, $this->facebook->getMessage()->getAttachment()->getType());
+        $this->assertTrue($this->facebook->getMessage()->hasAttachment());
 
         $this->facebook->fill($this->parameters, $this->generateAttachmentResponse('file'));
         $this->assertSame(Attachment::TYPE_FILE, $this->facebook->getMessage()->getAttachment()->getType());
+        $this->assertTrue($this->facebook->getMessage()->hasAttachment());
     }
 
     public function test_sendMessage_with_keyboard()

@@ -130,6 +130,7 @@ class TelegramDriverTest extends TestCase
         $message = $this->telegram->getMessage();
         $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
         $this->assertSame($text, $message->getText());
+        $this->assertFalse($message->hasAttachment());
         $this->assertNull($message->getAttachment());
         $this->assertNull($message->getAudio());
         $this->assertNull($message->getDocument());
@@ -193,7 +194,9 @@ class TelegramDriverTest extends TestCase
         $message = $this->telegram->getMessage();
         $this->assertInstanceOf(TelegramReceivedMessage::class, $message);
 
-        $attachment = $this->telegram->getMessage()->getAttachment();
+        $this->assertTrue($message->hasAttachment());
+
+        $attachment = $message->getAttachment();
         $this->assertInstanceOf(Attachment::class, $attachment);
         $this->assertSame($type, $attachment->getType());
         $this->assertSame($path, $attachment->getPath());

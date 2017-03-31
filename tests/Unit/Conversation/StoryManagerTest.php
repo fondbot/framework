@@ -43,6 +43,7 @@ class StoryManagerTest extends TestCase
 
         $context = $this->mock(Context::class);
         $message = $this->mock(ReceivedMessage::class);
+        $message->shouldReceive('hasAttachment')->andReturn(false);
 
         $context->shouldReceive('getStory')->andReturn(null);
         $message->shouldReceive('getText')->andReturn('/start');

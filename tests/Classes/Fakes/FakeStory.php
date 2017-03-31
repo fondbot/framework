@@ -6,6 +6,7 @@ namespace Tests\Classes\Fakes;
 
 use FondBot\Conversation\Story;
 use FondBot\Contracts\Conversation\Activator;
+use FondBot\Contracts\Channels\Message\Attachment;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 class FakeStory extends Story
@@ -31,6 +32,8 @@ class FakeStory extends Story
             $this->pattern((new VerbalExpressions())->startOfLine()->then('/example')->endOfLine()),
             $this->inArray(['/example']),
             $this->inArray(collect(['/example'])),
+            $this->withAttachment(Attachment::TYPE_IMAGE),
+            $this->withAttachment(),
         ];
     }
 
