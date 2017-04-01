@@ -7,6 +7,7 @@ namespace Tests\Unit\Channels\Drivers;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use FondBot\Helpers\Str;
+use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Filesystem\File;
 use Psr\Http\Message\RequestInterface;
@@ -16,7 +17,6 @@ use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Telegram\TelegramUser;
 use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Contracts\Channels\Message\Location;
-use FondBot\Conversation\Keyboards\BasicKeyboard;
 use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Channels\Telegram\TelegramOutgoingMessage;
 use FondBot\Channels\Telegram\TelegramReceivedMessage;
@@ -361,7 +361,7 @@ class TelegramDriverTest extends TestCase
 
         $recipient = $this->mock(User::class);
         $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
-        $keyboard = new BasicKeyboard([
+        $keyboard = new Keyboard([
             new Button($this->faker()->word),
             new Button($this->faker()->word),
         ]);

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation\Keyboards;
+namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
+use FondBot\Conversation\Keyboard;
 use FondBot\Conversation\Keyboards\Button;
-use FondBot\Conversation\Keyboards\BasicKeyboard;
 
-class BasicKeyboardTest extends TestCase
+class KeyboardTest extends TestCase
 {
     public function test_create()
     {
@@ -16,10 +16,9 @@ class BasicKeyboardTest extends TestCase
             new Button('Click me'),
         ];
 
-        $keyboard = new BasicKeyboard($buttons);
+        $keyboard = new Keyboard($buttons);
 
-        $this->assertInstanceOf(BasicKeyboard::class, $keyboard);
-        $this->assertEquals('basic', $keyboard->getType());
+        $this->assertInstanceOf(Keyboard::class, $keyboard);
         $this->assertSame($buttons, $keyboard->getButtons());
         $this->assertEquals('Click me', $keyboard->getButtons()[0]->getLabel());
     }

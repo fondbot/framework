@@ -14,7 +14,7 @@ class TelegramOutgoingMessage implements OutgoingMessage
     private $text;
     private $keyboard;
 
-    public function __construct(User $recipient, $text, Keyboard $keyboard = null)
+    public function __construct(User $recipient, string $text, Keyboard $keyboard = null)
     {
         $this->recipient = $recipient;
         $this->text = $text;

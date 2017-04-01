@@ -2,28 +2,19 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation\Keyboards;
+namespace FondBot\Conversation;
 
 use FondBot\Contracts\Conversation\Button;
-use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Conversation\Keyboard as KeyboardContract;
 
-class BasicKeyboard implements Keyboard
+class Keyboard implements KeyboardContract
 {
+    /** @var Button[] */
     private $buttons;
 
     public function __construct(array $buttons)
     {
         $this->buttons = $buttons;
-    }
-
-    /**
-     * Get keyboard type.
-     *
-     * @return string
-     */
-    public function getType(): string
-    {
-        return self::TYPE_BASIC;
     }
 
     /**

@@ -7,7 +7,6 @@ namespace FondBot\Channels\Facebook;
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\OutgoingMessage;
-use FondBot\Conversation\Keyboards\BasicKeyboard;
 
 class FacebookOutgoingMessage implements OutgoingMessage
 {
@@ -68,7 +67,7 @@ class FacebookOutgoingMessage implements OutgoingMessage
             ],
         ];
 
-        if ($this->keyboard instanceof BasicKeyboard) {
+        if ($this->keyboard instanceof Keyboard) {
             $payload['message']['quick_replies'] = $this->compileBasicKeyboard();
         }
 
