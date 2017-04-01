@@ -22,7 +22,7 @@ abstract class Story implements StoryContract, Conversable
      *
      * @param Bot $bot
      */
-    public function handle(Bot $bot): void
+    final public function handle(Bot $bot): void
     {
         $this->debug('handle');
         $this->bot = $bot;

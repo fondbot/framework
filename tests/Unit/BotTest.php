@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use FondBot\Contracts\Conversation\Conversable;
+use FondBot\Contracts\Conversation\Interaction;
+use FondBot\Contracts\Conversation\Story;
 use Mockery;
 use FondBot\Bot;
 use Tests\TestCase;
 use FondBot\Helpers\Str;
 use FondBot\Channels\Channel;
-use FondBot\Conversation\Story;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\User;
-use FondBot\Conversation\Interaction;
 use FondBot\Contracts\Channels\Driver;
 use FondBot\Conversation\StoryManager;
 use FondBot\Conversation\ContextManager;
@@ -44,8 +45,8 @@ class BotTest extends TestCase
         $this->channel = $this->mock(Channel::class);
         $this->context = $this->mock(Context::class);
         $this->receivedMessage = $this->mock(ReceivedMessage::class);
-        $this->story = $this->mock(Story::class);
-        $this->interaction = $this->mock(Interaction::class);
+        $this->story = Mockery::mock(Story::class, Conversable::class);
+        $this->interaction = Mockery::mock(Interaction::class, Conversable::class);
 
         Bot::createInstance($this->container, $this->channel, $this->driver, [], []);
     }
@@ -54,6 +55,15 @@ class BotTest extends TestCase
     {
         Bot::getInstance()->setContext($this->context);
         $this->assertSame($this->context, Bot::getInstance()->getContext());
+    }
+
+    public function test_clearContext() {
+        Bot::getInstance()->setContext($this->context);
+
+        $this->contextManager->shouldReceive('clear')->with($this->context)->once();
+
+        Bot::getInstance()->clearContext();
+        $this->assertNull(Bot::getInstance()->getContext());
     }
 
     public function test_process_new_dialog()

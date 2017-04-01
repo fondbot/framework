@@ -7,6 +7,13 @@ namespace FondBot\Contracts\Conversation;
 interface Story
 {
     /**
+     * Determine if story passes the authorization check.
+     *
+     * @return bool
+     */
+    public function passesAuthorization(): bool;
+
+    /**
      * Story activators.
      *
      * @return Activator[]

@@ -34,7 +34,7 @@ abstract class Interaction implements InteractionContract, Conversable
      *
      * @param Bot $bot
      */
-    public function handle(Bot $bot): void
+    final public function handle(Bot $bot): void
     {
         $this->bot = $bot;
 

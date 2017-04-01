@@ -94,9 +94,9 @@ class Bot
     /**
      * Get context instance.
      *
-     * @return Context
+     * @return Context|null
      */
-    public function getContext(): Context
+    public function getContext(): ?Context
     {
         return $this->context;
     }
@@ -187,7 +187,7 @@ class Bot
     /**
      * Start conversation.
      *
-     * @param Conversable $conversable
+     * @param Conversable|Story|Interaction $conversable
      */
     public function converse(Conversable $conversable): void
     {
