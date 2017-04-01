@@ -4,23 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
-use FondBot\Conversation\Story;
+use FondBot\Conversation\Intent;
 use FondBot\Contracts\Conversation\Activator;
 use FondBot\Contracts\Channels\Message\Attachment;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
-class FakeStory extends Story
+class FakeIntent extends Intent
 {
-    protected function before(): void
-    {
-    }
-
-    protected function after(): void
-    {
-    }
-
     /**
-     * Story activators.
+     * Intent activators.
      *
      * @return Activator[]
      */
@@ -38,12 +30,10 @@ class FakeStory extends Story
     }
 
     /**
-     * Interaction class name which will be run when activation is triggered.
-     *
-     * @return string
+     * Process intent.
      */
-    public function firstInteraction(): string
+    public function process(): void
     {
-        return FakeInteraction::class;
+        $this->jump(FakeInteraction::class);
     }
 }

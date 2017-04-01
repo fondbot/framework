@@ -6,7 +6,7 @@ namespace FondBot\Conversation;
 
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Core\Arrayable;
-use FondBot\Contracts\Conversation\Story;
+use FondBot\Contracts\Conversation\Intent;
 use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Conversation\Interaction;
 
@@ -15,7 +15,7 @@ class Context implements Arrayable
     private $channel;
     private $user;
     private $message;
-    private $story;
+    private $intent;
     private $interaction;
     private $values;
 
@@ -23,14 +23,14 @@ class Context implements Arrayable
         string $channel,
         User $user,
         ReceivedMessage $message,
-        Story $story = null,
+        Intent $intent = null,
         Interaction $interaction = null,
         array $values = []
     ) {
         $this->channel = $channel;
         $this->user = $user;
         $this->message = $message;
-        $this->story = $story;
+        $this->intent = $intent;
         $this->interaction = $interaction;
         $this->values = $values;
     }
@@ -66,23 +66,23 @@ class Context implements Arrayable
     }
 
     /**
-     * Get current story instance.
+     * Get current intent instance.
      *
-     * @return Story|null
+     * @return Intent|null
      */
-    public function getStory(): ?Story
+    public function getIntent(): ?Intent
     {
-        return $this->story;
+        return $this->intent;
     }
 
     /**
-     * Set story instance.
+     * Set intent instance.
      *
-     * @param Story $story
+     * @param Intent $intent
      */
-    public function setStory(Story $story): void
+    public function setIntent(Intent $intent): void
     {
-        $this->story = $story;
+        $this->intent = $intent;
     }
 
     /**
@@ -144,7 +144,7 @@ class Context implements Arrayable
     public function toArray(): array
     {
         return [
-            'story' => $this->story !== null ? get_class($this->story) : null,
+            'intent' => $this->intent !== null ? get_class($this->intent) : null,
             'interaction' => $this->interaction !== null ? get_class($this->interaction) : null,
             'values' => $this->values,
         ];

@@ -24,20 +24,20 @@ return [
     ],
 
     /*
-     * Here you define all stories which be used.
+     * Here you define all intents which be used.
      *
-     * Example: App\Bot\StartStory::class
+     * Example: App\StartIntent::class
      */
-    'stories' => [
+    'intents' => [
 
     ],
 
     /*
-     * Define fallback story.
+     * Define fallback intent.
      *
-     * If no story found based on your configuration this story will be run.
+     * If no intent found based on your configuration this intent will be run.
      * You can send some helpful information in it.
      */
-    'fallback_story' => FondBot\Conversation\Fallback\FallbackStory::class,
+    'fallback_intent' => FondBot\Conversation\Fallback\FallbackIntent::class,
 
 ];

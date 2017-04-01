@@ -7,7 +7,7 @@ namespace FondBot\Conversation\Traits;
 trait Authorization
 {
     /**
-     * Determine if story passes the authorization check.
+     * Determine if intent passes the authorization check.
      *
      * @return bool
      */

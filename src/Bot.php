@@ -9,10 +9,10 @@ use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Channels\Driver;
-use FondBot\Conversation\StoryManager;
+use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
-use FondBot\Contracts\Conversation\Story;
 use FondBot\Contracts\Container\Container;
+use FondBot\Contracts\Conversation\Intent;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\OutgoingMessage;
 use FondBot\Contracts\Conversation\Conversable;
@@ -161,14 +161,14 @@ class Bot
             // Resolve context
             $this->context = $this->contextManager()->resolve($this->channel->getName(), $this->driver);
 
-            if ($this->context->getStory() !== null && $this->context->getInteraction() !== null) {
+            if ($this->context->getIntent() !== null && $this->context->getInteraction() !== null) {
                 $this->converse($this->context->getInteraction());
             } else {
                 // Start or resume conversation
-                $story = $this->storyManager()->find($this->context, $this->driver->getMessage());
+                $intent = $this->intentManager()->find($this->context, $this->driver->getMessage());
 
-                if ($story !== null) {
-                    $this->converse($story);
+                if ($intent !== null) {
+                    $this->converse($intent);
                 }
             }
 
@@ -187,12 +187,12 @@ class Bot
     /**
      * Start conversation.
      *
-     * @param Conversable|Story|Interaction $conversable
+     * @param Conversable|Intent|Interaction $conversable
      */
     public function converse(Conversable $conversable): void
     {
-        if ($conversable instanceof Story) {
-            $this->context->setStory($conversable);
+        if ($conversable instanceof Intent) {
+            $this->context->setIntent($conversable);
             $this->context->setInteraction(null);
             $this->context->setValues([]);
 
@@ -236,12 +236,12 @@ class Bot
     }
 
     /**
-     * Get story manager.
+     * Get intent manager.
      *
-     * @return StoryManager
+     * @return IntentManager
      */
-    private function storyManager(): StoryManager
+    private function intentManager(): IntentManager
     {
-        return $this->get(StoryManager::class);
+        return $this->get(IntentManager::class);
     }
 }

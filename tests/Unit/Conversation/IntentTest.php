@@ -6,19 +6,19 @@ namespace Tests\Unit\Conversation;
 
 use FondBot\Bot;
 use Tests\TestCase;
-use FondBot\Conversation\Story;
+use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
-use Tests\Classes\Fakes\FakeStory;
+use Tests\Classes\Fakes\FakeIntent;
 use Tests\Classes\Fakes\FakeInteraction;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $bot
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $context
- * @property Story                                      $story
+ * @property Intent                                     $intent
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $interaction
  */
-class StoryTest extends TestCase
+class IntentTest extends TestCase
 {
     protected function setUp()
     {
@@ -28,7 +28,7 @@ class StoryTest extends TestCase
         $this->context = $this->mock(Context::class);
         $this->bot->shouldReceive('getContext')->andReturn($this->context);
 
-        $this->story = new FakeStory;
+        $this->intent = new FakeIntent;
         $this->interaction = $this->mock(FakeInteraction::class);
     }
 
@@ -37,6 +37,6 @@ class StoryTest extends TestCase
         $this->bot->shouldReceive('get')->with(FakeInteraction::class)->andReturn($this->interaction)->once();
         $this->bot->shouldReceive('converse')->with($this->interaction)->once();
 
-        $this->story->handle($this->bot);
+        $this->intent->handle($this->bot);
     }
 }

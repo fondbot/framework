@@ -38,14 +38,14 @@ class ContextManager
         $key = $this->key($channel, $sender);
         $value = $this->cache->get($key);
 
-        $story = $value['story'] !== null ? Bot::getInstance()->get($value['story']) : null;
+        $intent = $value['intent'] !== null ? Bot::getInstance()->get($value['intent']) : null;
         $interaction = $value['interaction'] !== null ? Bot::getInstance()->get($value['interaction']) : null;
 
         return new Context(
             $channel,
             $sender,
             $message,
-            $story,
+            $intent,
             $interaction,
             $value['values'] ?? []
         );

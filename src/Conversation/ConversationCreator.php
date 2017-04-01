@@ -17,17 +17,17 @@ class ConversationCreator
     }
 
     /**
-     * Create new story.
+     * Create new intent.
      *
      * @param string $directory
      * @param string $namespace
      * @param string $name
      */
-    public function createStory(string $directory, string $namespace, string $name): void
+    public function createIntent(string $directory, string $namespace, string $name): void
     {
-        $contents = $this->filesystem->read(__DIR__.'/../../resources/stubs/Story.stub');
+        $contents = $this->filesystem->read(__DIR__.'/../../resources/stubs/Intent.stub');
 
-        $className = $this->className($name, 'Story');
+        $className = $this->className($name, 'Intent');
 
         // Replace stub placeholders
         $this->replacePlaceholder($contents, 'namespace', $this->namespace($namespace));

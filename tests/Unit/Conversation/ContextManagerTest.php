@@ -44,7 +44,7 @@ class ContextManagerTest extends TestCase
         $key = 'context.'.$this->channel.'.'.$senderId;
 
         $this->cache->shouldReceive('get')->with($key)->andReturn([
-            'story' => null,
+            'intent' => null,
             'interaction' => null,
             'values' => $values = [
                 'username' => $this->faker()->userName,
@@ -60,7 +60,7 @@ class ContextManagerTest extends TestCase
     public function test_save()
     {
         $contextArray = [
-            'story' => null,
+            'intent' => null,
             'interaction' => null,
             'values' => ['key1' => 'value1'],
         ];
@@ -81,8 +81,7 @@ class ContextManagerTest extends TestCase
     public function test_clear()
     {
         $contextArray = [
-            'story' => null,
-
+            'intent' => null,
             'interaction' => null,
             'values' => ['key1' => 'value1'],
         ];

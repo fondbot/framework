@@ -6,7 +6,7 @@ namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
 use FondBot\Helpers\Str;
-use FondBot\Conversation\Story;
+use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\User;
 use FondBot\Conversation\Interaction;
@@ -16,7 +16,7 @@ use FondBot\Contracts\Channels\ReceivedMessage;
  * @property string                                     $channel
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $sender
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $message
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $story
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $intent
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $interaction
  * @property array                                      $values
  * @property Context                                    $context
@@ -30,7 +30,7 @@ class ContextTest extends TestCase
         $this->channel = $this->faker()->userName;
         $this->sender = $this->mock(User::class);
         $this->message = $this->mock(ReceivedMessage::class);
-        $this->story = $this->mock(Story::class);
+        $this->intent = $this->mock(Intent::class);
         $this->interaction = $this->mock(Interaction::class);
         $this->values = [
             'foo' => Str::random(),
@@ -41,7 +41,7 @@ class ContextTest extends TestCase
             $this->channel,
             $this->sender,
             $this->message,
-            $this->story,
+            $this->intent,
             $this->interaction,
             $this->values
         );
@@ -62,15 +62,15 @@ class ContextTest extends TestCase
         $this->assertSame($this->message, $this->context->getMessage());
     }
 
-    public function test_story()
+    public function test_intent()
     {
-        $this->assertSame($this->story, $this->context->getStory());
+        $this->assertSame($this->intent, $this->context->getIntent());
 
-        $story = $this->mock(Story::class);
+        $intent = $this->mock(Intent::class);
 
-        $this->context->setStory($story);
-        $this->assertSame($story, $this->context->getStory());
-        $this->assertNotSame($this->story, $this->context->getStory());
+        $this->context->setIntent($intent);
+        $this->assertSame($intent, $this->context->getIntent());
+        $this->assertNotSame($this->intent, $this->context->getIntent());
     }
 
     public function test_interaction()
@@ -105,7 +105,7 @@ class ContextTest extends TestCase
     public function test_toArray()
     {
         $expected = [
-            'story' => get_class($this->story),
+            'intent' => get_class($this->intent),
             'interaction' => get_class($this->interaction),
             'values' => $this->values,
         ];

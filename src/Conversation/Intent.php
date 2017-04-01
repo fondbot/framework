@@ -11,14 +11,14 @@ use FondBot\Conversation\Traits\Authorization;
 use FondBot\Conversation\Traits\HasActivators;
 use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Conversation\Traits\InteractsWithContext;
-use FondBot\Contracts\Conversation\Story as StoryContract;
+use FondBot\Contracts\Conversation\Intent as IntentContract;
 
-abstract class Story implements StoryContract, Conversable
+abstract class Intent implements IntentContract, Conversable
 {
     use Authorization, InteractsWithContext, HasActivators, Transitions, Loggable;
 
     /**
-     * Handle story.
+     * Handle intent.
      *
      * @param Bot $bot
      */
@@ -26,16 +26,6 @@ abstract class Story implements StoryContract, Conversable
     {
         $this->debug('handle');
         $this->bot = $bot;
-
-        if (method_exists($this, 'before')) {
-            $this->before();
-        }
-
-        // Run first interaction of the story
-        $this->jump($this->firstInteraction());
-
-        if (method_exists($this, 'after')) {
-            $this->after();
-        }
+        $this->process();
     }
 }

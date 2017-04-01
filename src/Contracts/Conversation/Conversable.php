@@ -9,7 +9,7 @@ use FondBot\Bot;
 interface Conversable
 {
     /**
-     * Handle story.
+     * Handle intent.
      *
      * @param Bot $bot
      */
