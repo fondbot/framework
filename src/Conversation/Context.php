@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Contracts\Core\Arrayable;
 use FondBot\Contracts\Conversation\Intent;
 use FondBot\Contracts\Channels\ReceivedMessage;
@@ -68,7 +69,7 @@ class Context implements Arrayable
     /**
      * Get current intent instance.
      *
-     * @return Intent|null
+     * @return Intent|Conversable|null
      */
     public function getIntent(): ?Intent
     {
@@ -88,7 +89,7 @@ class Context implements Arrayable
     /**
      * Get current interaction instance.
      *
-     * @return Interaction|null
+     * @return Interaction|Conversable|null
      */
     public function getInteraction(): ?Interaction
     {

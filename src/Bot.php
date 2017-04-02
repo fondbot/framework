@@ -25,7 +25,7 @@ class Bot
     use Loggable;
 
     /** @var Bot */
-    private static $instance;
+    protected static $instance;
 
     private $container;
     private $channel;
