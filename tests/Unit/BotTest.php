@@ -111,7 +111,6 @@ class BotTest extends TestCase
         $this->intentManager->shouldReceive('find')->never();
         $this->interaction->shouldReceive('handle')->with($bot)->once();
 
-        $this->context->shouldReceive('setInteraction')->with($this->interaction)->once();
         $this->contextManager->shouldReceive('save')->with($this->context)->once();
 
         $bot->process();

@@ -198,11 +198,6 @@ class Bot
             $conversable->handle($this);
         } elseif ($conversable instanceof Interaction) {
             $conversable->handle($this);
-
-            // If context is not cleared remember interaction
-            if ($this->context !== null) {
-                $this->context->setInteraction($conversable);
-            }
         }
     }
 
