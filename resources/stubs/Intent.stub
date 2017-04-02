@@ -10,7 +10,7 @@ use FondBot\Conversation\Intent;
 class ___CLASSNAME___ extends Intent
 {
     /**
-     * Story activators.
+     * Intent activators.
      *
      * @return Activator[]
      */
