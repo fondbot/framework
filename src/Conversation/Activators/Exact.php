@@ -25,6 +25,11 @@ class Exact implements Activator
      */
     public function matches(ReceivedMessage $message): bool
     {
-        return hash_equals($this->value, $message->getText());
+        $text = $message->getText();
+        if($text === null) {
+            return false;
+        }
+
+        return hash_equals($this->value, $text);
     }
 }

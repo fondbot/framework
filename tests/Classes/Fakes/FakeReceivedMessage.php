@@ -35,7 +35,7 @@ class FakeReceivedMessage implements ReceivedMessage
      */
     public function getText(): ?string
     {
-        return $this->text ?? $this->faker->text;
+        return $this->text;
     }
 
     /**

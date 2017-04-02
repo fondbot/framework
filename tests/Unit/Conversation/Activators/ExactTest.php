@@ -25,4 +25,12 @@ class ExactTest extends TestCase
             $activator->matches(new FakeReceivedMessage(null, '/stop'))
         );
     }
+
+    public function test_empty_message()
+    {
+        $activator = new Exact('/start');
+        $this->assertFalse(
+            $activator->matches(new FakeReceivedMessage(null, null))
+        );
+    }
 }
