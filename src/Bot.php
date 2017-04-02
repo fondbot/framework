@@ -161,11 +161,10 @@ class Bot
             // Resolve context
             $this->context = $this->contextManager()->resolve($this->channel->getName(), $this->driver);
 
-            if ($this->context->getIntent() !== null && $this->context->getInteraction() !== null) {
+            if ($this->context->getInteraction() !== null) {
                 $this->converse($this->context->getInteraction());
             } else {
-                // Start or resume conversation
-                $intent = $this->intentManager()->find($this->context, $this->driver->getMessage());
+                $intent = $this->intentManager()->find($this->driver->getMessage());
 
                 if ($intent !== null) {
                     $this->converse($intent);

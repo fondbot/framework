@@ -32,7 +32,7 @@ class FakeIntent extends Intent
     /**
      * Process intent.
      */
-    public function process(): void
+    public function run(): void
     {
         $this->jump(FakeInteraction::class);
     }

@@ -19,12 +19,14 @@ class FallbackIntent extends Intent
         return [];
     }
 
-    /**
-     * Process intent.
-     */
-    public function process(): void
+    public function run(): void
     {
-        $this->jump(FallbackInteraction::class);
-        $this->bot->clearContext();
+        $text = collect([
+            'Sorry, I could not understand you.',
+            'Oops, I can\'t do that 😔',
+            'My developer did not teach to do that.',
+        ])->random();
+
+        $this->sendMessage($text);
     }
 }

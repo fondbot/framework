@@ -21,11 +21,8 @@ class ___CLASSNAME___ extends Intent
         ];
     }
 
-    /**
-     * Process intent.
-     */
-    public function process(): void
+    public function run(): void
     {
-        // Jump to interaction or do something else...
+        // Send reply to user, jump to interaction or do something else...
     }
 }

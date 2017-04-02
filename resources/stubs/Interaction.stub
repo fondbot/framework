@@ -6,37 +6,24 @@ namespace ___NAMESPACE___;
 
 use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Conversation\Interaction;
-use FondBot\Contracts\Conversation\Keyboard;
 
 class ___CLASSNAME___ extends Interaction
 {
     /**
-     * Message text to be sent to Participant.
-     *
-     * @return string
+     * Run interaction.
      */
-    public function text(): string
+    public function run(): void
     {
-        return 'Hello, '.$this->getUser()->getName().'!';
-    }
-
-    /**
-     * Keyboard to be shown to Participant
-     *
-     * @return Keyboard|null
-     */
-    public function keyboard(): ?Keyboard
-    {
-        return null;
+        // Here you can send message, show keyboard or something else...
     }
 
     /**
      * Process received message.
      *
-     * @param ReceivedMessage $message
+     * @param ReceivedMessage $reply
      */
-    public function process(ReceivedMessage $message): void
+    public function process(ReceivedMessage $reply): void
     {
-
+        // In this method you will process reply to the message you sent in method run.
     }
 }

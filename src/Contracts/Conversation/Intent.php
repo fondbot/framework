@@ -21,7 +21,7 @@ interface Intent
     public function activators(): array;
 
     /**
-     * Process intent.
+     * Run intent.
      */
-    public function process(): void;
+    public function run(): void;
 }

@@ -18,39 +18,11 @@ class IntentManager
     /**
      * Find intent.
      *
-     * @param Context         $context
      * @param ReceivedMessage $message
      *
      * @return Intent|null
      */
-    public function find(Context $context, ReceivedMessage $message): ?Intent
-    {
-        $intent = $context->getIntent();
-
-        // Context has intent
-        if ($intent !== null) {
-            return $intent;
-        }
-
-        // Find intent by activator
-        $intent = $this->findActivator($message);
-
-        if ($intent !== null) {
-            return $intent;
-        }
-
-        // Otherwise, return fallback intent
-        return $this->fallbackIntent;
-    }
-
-    /**
-     * Find intent by message.
-     *
-     * @param ReceivedMessage $message
-     *
-     * @return Intent|null
-     */
-    private function findActivator(ReceivedMessage $message): ?Intent
+    public function find(ReceivedMessage $message): ?Intent
     {
         foreach ($this->intents as $intent) {
             foreach ($intent->activators() as $activator) {
@@ -60,7 +32,8 @@ class IntentManager
             }
         }
 
-        return null;
+        // Otherwise, return fallback intent
+        return $this->fallbackIntent;
     }
 
     /**

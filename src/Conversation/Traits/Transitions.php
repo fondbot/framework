@@ -6,7 +6,6 @@ namespace FondBot\Conversation\Traits;
 
 use FondBot\Bot;
 use InvalidArgumentException;
-use FondBot\Conversation\Intent;
 use FondBot\Conversation\Interaction;
 
 trait Transitions
@@ -20,25 +19,6 @@ trait Transitions
      * @var bool
      */
     protected $transitioned = false;
-
-    /**
-     * Move to another intent.
-     *
-     * @param string $intent
-     */
-    protected function move(string $intent): void
-    {
-        /** @var Intent $instance */
-        $instance = $this->bot->get($intent);
-
-        if (!$instance instanceof Intent) {
-            throw new InvalidArgumentException('Invalid intent `'.$intent.'`');
-        }
-
-        $this->bot->converse($instance);
-
-        $this->transitioned = true;
-    }
 
     /**
      * Jump to another interaction.

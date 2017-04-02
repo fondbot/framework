@@ -28,7 +28,7 @@ trait InteractsWithContext
      *
      * @return User
      */
-    public function getUser(): User
+    public function user(): User
     {
         return $this->bot->getContext()->getUser();
     }

@@ -78,11 +78,11 @@ class BotTest extends TestCase
             ->andReturn($this->context)
             ->once();
 
-        $this->context->shouldReceive('getIntent')->andReturn(null)->once();
+        $this->context->shouldReceive('getInteraction')->andReturn(null)->once();
 
         $this->driver->shouldReceive('getMessage')->andReturn($this->receivedMessage)->once();
         $this->intentManager->shouldReceive('find')
-            ->with($this->context, $this->receivedMessage)
+            ->with($this->receivedMessage)
             ->andReturn($this->intent)
             ->once();
 
@@ -106,7 +106,6 @@ class BotTest extends TestCase
             ->andReturn($this->context)
             ->once();
 
-        $this->context->shouldReceive('getIntent')->andReturn($this->intent)->once();
         $this->context->shouldReceive('getInteraction')->andReturn($this->interaction)->atLeast()->once();
 
         $this->intentManager->shouldReceive('find')->never();

@@ -26,7 +26,7 @@ return [
     /*
      * Here you define all intents which be used.
      *
-     * Example: App\StartIntent::class
+     * Example: App\WeatherIntent::class
      */
     'intents' => [
 

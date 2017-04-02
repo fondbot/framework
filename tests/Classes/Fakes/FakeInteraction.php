@@ -4,38 +4,33 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
+use FondBot\Bot;
+use FondBot\Helpers\Str;
 use FondBot\Conversation\Interaction;
-use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Channels\ReceivedMessage;
 
 class FakeInteraction extends Interaction
 {
     /**
-     * Message text to be sent to Participant.
-     *
-     * @return string
+     * Run interaction.
      */
-    public function text(): string
+    public function run(): void
     {
-        return 'example';
     }
 
-    /**
-     * Keyboard to be shown to Participant.
-     *
-     * @return Keyboard|null
-     */
-    public function keyboard(): ?Keyboard
+    public function runIncorrect(Bot $bot): void
     {
-        return null;
+        $this->bot = $bot;
+
+        $this->jump(Str::random());
     }
 
     /**
      * Process received message.
      *
-     * @param ReceivedMessage $message
+     * @param ReceivedMessage $reply
      */
-    public function process(ReceivedMessage $message): void
+    public function process(ReceivedMessage $reply): void
     {
         $this->remember('key', 'value');
     }

@@ -7,7 +7,6 @@ namespace Tests\Unit\Conversation;
 use FondBot\Bot;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Channels\User;
 use Tests\Classes\Fakes\FakeInteraction;
 use FondBot\Contracts\Channels\ReceivedMessage;
 
@@ -44,15 +43,20 @@ class InteractionTest extends TestCase
 
     public function test_run_current_interaction_not_in_context()
     {
-        $sender = $this->mock(User::class);
-
-        $this->context->shouldReceive('getUser')->andReturn($sender)->once();
         $this->context->shouldReceive('getInteraction')->andReturnNull()->once();
         $this->context->shouldReceive('setInteraction')->with($this->interaction)->once();
-        $this->bot->shouldReceive('sendMessage')
-            ->with($sender, $this->interaction->text(), $this->interaction->keyboard())
-            ->once();
 
         $this->interaction->handle($this->bot);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessageRegExp /^Invalid interaction `(.*)`$/
+     */
+    public function test_run_transition_exception()
+    {
+        $this->bot->shouldReceive('get')->andReturn(null)->once();
+
+        $this->interaction->runIncorrect($this->bot);
     }
 }
