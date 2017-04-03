@@ -36,4 +36,18 @@ interface ReceivedMessage
      * @return Attachment|null
      */
     public function getAttachment(): ?Attachment;
+
+    /**
+     * Determine if message has payload.
+     *
+     * @return bool
+     */
+    public function hasData(): bool;
+
+    /**
+     * Get payload.
+     *
+     * @return string|null
+     */
+    public function getData(): ?string;
 }

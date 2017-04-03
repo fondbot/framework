@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Channels\Telegram;
 
 use GuzzleHttp\Client;
+use FondBot\Helpers\Arr;
 use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
@@ -29,7 +30,11 @@ class TelegramReceivedMessage implements ReceivedMessage
      */
     public function getText(): ?string
     {
-        return $this->payload['text'] ?? null;
+        if (Arr::has($this->payload, ['callback_query'])) {
+            return Arr::get($this->payload, 'callback_query.message.text');
+        }
+
+        return $this->payload['message']['text'] ?? null;
     }
 
     /**
@@ -39,13 +44,13 @@ class TelegramReceivedMessage implements ReceivedMessage
      */
     public function getLocation(): ?Location
     {
-        if (!isset($this->payload['location'])) {
+        if (!isset($this->payload['message']['location'])) {
             return null;
         }
 
         return new Location(
-            $this->payload['location']['latitude'],
-            $this->payload['location']['longitude']
+            $this->payload['message']['location']['latitude'],
+            $this->payload['message']['location']['longitude']
         );
     }
 
@@ -56,7 +61,7 @@ class TelegramReceivedMessage implements ReceivedMessage
      */
     public function hasAttachment(): bool
     {
-        return collect($this->payload)
+        return collect($this->payload['message'])
                 ->keys()
                 ->intersect([
                     'audio',
@@ -86,19 +91,39 @@ class TelegramReceivedMessage implements ReceivedMessage
     }
 
     /**
+     * Determine if message has data payload.
+     *
+     * @return bool
+     */
+    public function hasData(): bool
+    {
+        return Arr::has($this->payload, ['callback_query']);
+    }
+
+    /**
+     * Get data payload.
+     *
+     * @return string|null
+     */
+    public function getData(): ?string
+    {
+        return $this->hasData() ? Arr::get($this->payload, 'callback_query.data') : null;
+    }
+
+    /**
      * Get audio.
      *
      * @return Attachment|null
      */
     public function getAudio(): ?Attachment
     {
-        if (!isset($this->payload['audio'])) {
+        if (!isset($this->payload['message']['audio'])) {
             return null;
         }
 
         return new Attachment(
             Attachment::TYPE_AUDIO,
-            $this->getFilePath($this->payload['audio']['file_id']),
+            $this->getFilePath($this->payload['message']['audio']['file_id']),
             $this->guzzle
         );
     }
@@ -110,13 +135,13 @@ class TelegramReceivedMessage implements ReceivedMessage
      */
     public function getDocument(): ?Attachment
     {
-        if (!isset($this->payload['document'])) {
+        if (!isset($this->payload['message']['document'])) {
             return null;
         }
 
         return new Attachment(
             'document',
-            $this->getFilePath($this->payload['document']['file_id']),
+            $this->getFilePath($this->payload['message']['document']['file_id']),
             $this->guzzle
         );
     }
@@ -128,12 +153,12 @@ class TelegramReceivedMessage implements ReceivedMessage
      */
     public function getPhoto(): ?Attachment
     {
-        if (!isset($this->payload['photo'])) {
+        if (!isset($this->payload['message']['photo'])) {
             return null;
         }
 
         /** @var array $photo */
-        $photo = collect($this->payload['photo'])->sortByDesc('file_size')->first();
+        $photo = collect($this->payload['message']['photo'])->sortByDesc('file_size')->first();
 
         return new Attachment(
             'photo',
@@ -149,13 +174,13 @@ class TelegramReceivedMessage implements ReceivedMessage
      */
     public function getSticker(): ?Attachment
     {
-        if (!isset($this->payload['sticker'])) {
+        if (!isset($this->payload['message']['sticker'])) {
             return null;
         }
 
         return new Attachment(
             'sticker',
-            $this->getFilePath($this->payload['sticker']['file_id']),
+            $this->getFilePath($this->payload['message']['sticker']['file_id']),
             $this->guzzle
         );
     }
@@ -167,13 +192,13 @@ class TelegramReceivedMessage implements ReceivedMessage
      */
     public function getVideo(): ?Attachment
     {
-        if (!isset($this->payload['video'])) {
+        if (!isset($this->payload['message']['video'])) {
             return null;
         }
 
         return new Attachment(
             Attachment::TYPE_VIDEO,
-            $this->getFilePath($this->payload['video']['file_id']),
+            $this->getFilePath($this->payload['message']['video']['file_id']),
             $this->guzzle
         );
     }
@@ -185,13 +210,13 @@ class TelegramReceivedMessage implements ReceivedMessage
      */
     public function getVoice(): ?Attachment
     {
-        if (!isset($this->payload['voice'])) {
+        if (!isset($this->payload['message']['voice'])) {
             return null;
         }
 
         return new Attachment(
             'voice',
-            $this->getFilePath($this->payload['voice']['file_id']),
+            $this->getFilePath($this->payload['message']['voice']['file_id']),
             $this->guzzle
         );
     }
@@ -203,11 +228,11 @@ class TelegramReceivedMessage implements ReceivedMessage
      */
     public function getContact(): ?array
     {
-        if (!isset($this->payload['contact'])) {
+        if (!isset($this->payload['message']['contact'])) {
             return null;
         }
 
-        $contact = $this->payload['contact'];
+        $contact = $this->payload['message']['contact'];
 
         $phoneNumber = $contact['phone_number'];
         $firstName = $contact['first_name'];
@@ -229,14 +254,14 @@ class TelegramReceivedMessage implements ReceivedMessage
      */
     public function getVenue(): ?array
     {
-        if (!isset($this->payload['venue'])) {
+        if (!isset($this->payload['message']['venue'])) {
             return null;
         }
 
-        $venue = $this->payload['venue'];
+        $venue = $this->payload['message']['venue'];
         $location = new Location(
-            $this->payload['venue']['location']['latitude'],
-            $this->payload['venue']['location']['longitude']
+            $this->payload['message']['venue']['location']['latitude'],
+            $this->payload['message']['venue']['location']['longitude']
         );
 
         $title = $venue['title'];

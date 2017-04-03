@@ -12,7 +12,7 @@ use FondBot\Contracts\Core\Arrayable;
 class Attachment implements Arrayable
 {
     public const TYPE_FILE = 'file';
-    public const TYPE_IMAGE = 'photo';
+    public const TYPE_IMAGE = 'image';
     public const TYPE_AUDIO = 'audio';
     public const TYPE_VIDEO = 'video';
 

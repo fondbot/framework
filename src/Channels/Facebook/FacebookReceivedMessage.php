@@ -70,6 +70,26 @@ class FacebookReceivedMessage implements ReceivedMessage
     }
 
     /**
+     * Determine if message has data payload.
+     *
+     * @return bool
+     */
+    public function hasData(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Get data payload.
+     *
+     * @return string|null
+     */
+    public function getData(): ?string
+    {
+        return null;
+    }
+
+    /**
      * Get image.
      *
      * @return Attachment|null

@@ -67,4 +67,24 @@ class FakeReceivedMessage implements ReceivedMessage
     {
         return $this->attachment ?? new Attachment('image', $this->faker->imageUrl());
     }
+
+    /**
+     * Determine if message has data payload.
+     *
+     * @return bool
+     */
+    public function hasData(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Get data payload.
+     *
+     * @return string|null
+     */
+    public function getData(): ?string
+    {
+        return null;
+    }
 }

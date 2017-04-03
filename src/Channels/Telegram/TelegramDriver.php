@@ -42,6 +42,10 @@ class TelegramDriver extends Driver implements WebhookInstallation
      */
     public function verifyRequest(): void
     {
+        if ($this->hasRequest('callback_query')) {
+            return;
+        }
+
         if (
             !$this->hasRequest('message') ||
             !$this->hasRequest('message.from')
@@ -71,7 +75,13 @@ class TelegramDriver extends Driver implements WebhookInstallation
      */
     public function getUser(): User
     {
-        return new TelegramUser($this->getRequest('message.from'));
+        if ($this->hasRequest('callback_query')) {
+            $from = $this->getRequest('callback_query.from');
+        } else {
+            $from = $this->getRequest('message.from');
+        }
+
+        return new TelegramUser($from);
     }
 
     /**
@@ -84,7 +94,7 @@ class TelegramDriver extends Driver implements WebhookInstallation
         return new TelegramReceivedMessage(
             $this->guzzle,
             $this->getParameter('token'),
-            $this->getRequest('message')
+            $this->getRequest()
         );
     }
 
