@@ -207,11 +207,20 @@ class Bot
      * @param User          $recipient
      * @param string        $text
      * @param Keyboard|null $keyboard
+     * @param string|null   $driver
      *
-     * @return OutgoingMessage
+     * @return OutgoingMessage|null
      */
-    public function sendMessage(User $recipient, string $text, Keyboard $keyboard = null): OutgoingMessage
-    {
+    public function sendMessage(
+        User $recipient,
+        string $text,
+        Keyboard $keyboard = null,
+        string $driver = null
+    ): ?OutgoingMessage {
+        if ($driver !== null && !$this->driver instanceof $driver) {
+            return null;
+        }
+
         return $this->driver->sendMessage(
             $recipient,
             $text,

@@ -6,14 +6,14 @@ namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
 use FondBot\Conversation\Keyboard;
-use FondBot\Conversation\Keyboards\Button;
+use FondBot\Conversation\Buttons\ReplyButton;
 
 class KeyboardTest extends TestCase
 {
     public function test_create()
     {
         $buttons = [
-            new Button('Click me'),
+            new ReplyButton('Click me'),
         ];
 
         $keyboard = new Keyboard($buttons);

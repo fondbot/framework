@@ -102,6 +102,8 @@ class TelegramDriver extends Driver implements WebhookInstallation
         $message = new TelegramOutgoingMessage($sender, $text, $keyboard);
 
         try {
+            $this->debug('sendMessage', $message->toArray());
+
             $this->guzzle->post($this->getBaseUrl().'/sendMessage', [
                 'form_params' => $message->toArray(),
             ]);

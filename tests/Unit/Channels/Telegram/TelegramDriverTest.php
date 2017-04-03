@@ -12,10 +12,10 @@ use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Filesystem\File;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Telegram\TelegramUser;
 use FondBot\Channels\Telegram\TelegramDriver;
+use FondBot\Conversation\Buttons\ReplyButton;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Channels\Telegram\TelegramOutgoingMessage;
@@ -355,15 +355,15 @@ class TelegramDriverTest extends TestCase
         $this->assertNull($venue['foursquare_id']);
     }
 
-    public function test_sendMessage_with_keyboard()
+    public function test_sendMessage_with_reply_keyboard()
     {
         $text = $this->faker()->text;
 
         $recipient = $this->mock(User::class);
         $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
         $keyboard = new Keyboard([
-            new Button($this->faker()->word),
-            new Button($this->faker()->word),
+            new ReplyButton($this->faker()->word),
+            new ReplyButton($this->faker()->word),
         ]);
 
         $replyMarkup = json_encode([
@@ -373,7 +373,7 @@ class TelegramDriverTest extends TestCase
                     (object) ['text' => $keyboard->getButtons()[1]->getLabel()],
                 ],
             ],
-            'resize_keyboard' => true,
+            'one_time_keyboard' => true,
         ]);
 
         $this->guzzle->shouldReceive('post')->with(

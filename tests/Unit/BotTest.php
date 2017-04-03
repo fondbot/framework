@@ -16,6 +16,7 @@ use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Conversation\Intent;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Contracts\Channels\OutgoingMessage;
 use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Conversation\Conversable;
@@ -153,5 +154,17 @@ class BotTest extends TestCase
 
         $result = Bot::getInstance()->sendMessage($recipient, $text, $keyboard);
         $this->assertInstanceOf(OutgoingMessage::class, $result);
+    }
+
+    public function test_sendMessage_driver_does_not_match()
+    {
+        $recipient = $this->mock(User::class);
+        $text = $this->faker()->text;
+        $keyboard = $this->mock(Keyboard::class);
+
+        $this->driver->shouldReceive('sendMessage')->never();
+
+        $result = Bot::getInstance()->sendMessage($recipient, $text, $keyboard, TelegramDriver::class);
+        $this->assertNull($result);
     }
 }

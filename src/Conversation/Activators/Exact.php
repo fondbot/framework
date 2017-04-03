@@ -26,7 +26,7 @@ class Exact implements Activator
     public function matches(ReceivedMessage $message): bool
     {
         $text = $message->getText();
-        if($text === null) {
+        if ($text === null) {
             return false;
         }
 

@@ -11,10 +11,10 @@ use FondBot\Conversation\Keyboard;
 use FondBot\Contracts\Channels\User;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use FondBot\Conversation\Keyboards\Button;
 use GuzzleHttp\Exception\RequestException;
 use FondBot\Channels\Facebook\FacebookUser;
 use FondBot\Channels\Facebook\FacebookDriver;
+use FondBot\Conversation\Buttons\ReplyButton;
 use FondBot\Contracts\Channels\Message\Location;
 use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Channels\Facebook\FacebookOutgoingMessage;
@@ -259,8 +259,8 @@ class FacebookDriverTest extends TestCase
         $recipient->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
 
         $keyboard = new Keyboard([
-            new Button($this->faker()->word),
-            new Button($this->faker()->word),
+            new ReplyButton($this->faker()->word),
+            new ReplyButton($this->faker()->word),
         ]);
 
         $this->guzzle->shouldReceive('post')->with(

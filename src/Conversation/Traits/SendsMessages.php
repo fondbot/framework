@@ -25,9 +25,10 @@ trait SendsMessages
      *
      * @param string        $text
      * @param Keyboard|null $keyboard
+     * @param string|null   $driver Sends only if driver matches.
      */
-    public function sendMessage(string $text, Keyboard $keyboard = null): void
+    public function sendMessage(string $text, Keyboard $keyboard = null, string $driver = null): void
     {
-        $this->bot->sendMessage($this->user(), $text, $keyboard);
+        $this->bot->sendMessage($this->user(), $text, $keyboard, $driver);
     }
 }

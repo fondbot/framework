@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation\Keyboards;
+namespace FondBot\Channels\Telegram\Buttons;
 
-use FondBot\Contracts\Conversation\Button as ButtonContract;
+use FondBot\Contracts\Conversation\Button;
 
-class Button implements ButtonContract
+class RequestContactButton implements Button
 {
     private $label;
 
