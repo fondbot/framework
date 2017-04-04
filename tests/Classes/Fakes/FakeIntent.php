@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Classes\Fakes;
 
 use FondBot\Conversation\Intent;
+use FondBot\Drivers\Message\Attachment;
 use FondBot\Contracts\Conversation\Activator;
-use FondBot\Contracts\Channels\Message\Attachment;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 class FakeIntent extends Intent

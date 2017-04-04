@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Channels;
+namespace FondBot\Drivers;
 
-use FondBot\Contracts\Channels\Driver;
+use FondBot\Channels\Channel;
+use FondBot\Contracts\Drivers\Driver;
 use FondBot\Channels\Exceptions\InvalidConfiguration;
 
 class DriverManager

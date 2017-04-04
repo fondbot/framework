@@ -8,7 +8,7 @@ use FondBot\Bot;
 use FondBot\Traits\Loggable;
 use FondBot\Contracts\Cache\Cache;
 use FondBot\Contracts\Channels\User;
-use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Drivers\Driver;
 
 class ContextManager
 {

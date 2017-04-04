@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Contracts\Channels\Message;
+namespace FondBot\Drivers\Message;
 
-class Location
+use FondBot\Contracts\Drivers\Message\Location as LocationContract;
+
+class Location implements LocationContract
 {
     protected $latitude;
     protected $longitude;
@@ -15,11 +17,21 @@ class Location
         $this->longitude = $longitude;
     }
 
+    /**
+     * Get latitude.
+     *
+     * @return float
+     */
     public function getLatitude(): float
     {
         return $this->latitude;
     }
 
+    /**
+     * Get longitude.
+     *
+     * @return float
+     */
     public function getLongitude(): float
     {
         return $this->longitude;

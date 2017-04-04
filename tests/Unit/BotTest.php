@@ -11,12 +11,11 @@ use FondBot\Helpers\Str;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\User;
-use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Drivers\Driver;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Conversation\Intent;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Channels\Telegram\TelegramDriver;
 use FondBot\Contracts\Channels\OutgoingMessage;
 use FondBot\Contracts\Channels\ReceivedMessage;
 use FondBot\Contracts\Conversation\Conversable;
@@ -164,7 +163,7 @@ class BotTest extends TestCase
 
         $this->driver->shouldReceive('sendMessage')->never();
 
-        $result = Bot::getInstance()->sendMessage($recipient, $text, $keyboard, TelegramDriver::class);
+        $result = Bot::getInstance()->sendMessage($recipient, $text, $keyboard, 'some-driver');
         $this->assertNull($result);
     }
 }

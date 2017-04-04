@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Channels;
+namespace Tests\Unit\Drivers;
 
 use Tests\TestCase;
 use FondBot\Helpers\Str;
 use FondBot\Channels\Channel;
-use FondBot\Channels\DriverManager;
+use FondBot\Drivers\DriverManager;
 use Tests\Classes\Fakes\FakeDriver;
 
 /**

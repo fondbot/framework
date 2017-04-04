@@ -8,7 +8,7 @@ use Tests\TestCase;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Cache\Cache;
 use FondBot\Contracts\Channels\User;
-use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Drivers\Driver;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Channels\ReceivedMessage;
 

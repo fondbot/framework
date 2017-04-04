@@ -9,8 +9,8 @@ use Tests\TestCase;
 use FondBot\BotFactory;
 use FondBot\Helpers\Str;
 use FondBot\Channels\Channel;
-use FondBot\Channels\DriverManager;
-use FondBot\Contracts\Channels\Driver;
+use FondBot\Drivers\DriverManager;
+use FondBot\Contracts\Drivers\Driver;
 
 /**
  * @property mixed|\Mockery\Mock channel

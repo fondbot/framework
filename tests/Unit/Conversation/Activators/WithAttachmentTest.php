@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation\Activators;
 
 use Tests\TestCase;
+use FondBot\Drivers\Message\Attachment;
 use Tests\Classes\Fakes\FakeReceivedMessage;
-use FondBot\Contracts\Channels\Message\Attachment;
 use FondBot\Conversation\Activators\WithAttachment;
 
 class WithAttachmentTest extends TestCase

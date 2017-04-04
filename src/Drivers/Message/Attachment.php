@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Contracts\Channels\Message;
+namespace FondBot\Drivers\Message;
 
 use FondBot\Bot;
 use GuzzleHttp\Client;
-use FondBot\Filesystem\File;
 use FondBot\Contracts\Core\Arrayable;
+use FondBot\Contracts\Filesystem\File;
+use FondBot\Filesystem\File as LocalFile;
+use FondBot\Contracts\Drivers\Message\Attachment as AttachmentContract;
 
-class Attachment implements Arrayable
+class Attachment implements AttachmentContract, Arrayable
 {
     public const TYPE_FILE = 'file';
     public const TYPE_IMAGE = 'image';
@@ -73,7 +75,7 @@ class Attachment implements Arrayable
         $path = sys_get_temp_dir().'/'.uniqid('attachment', true);
         file_put_contents($path, $this->getContents());
 
-        return new File($path);
+        return new LocalFile($path);
     }
 
     /**

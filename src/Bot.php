@@ -8,7 +8,7 @@ use FondBot\Traits\Loggable;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
 use FondBot\Contracts\Channels\User;
-use FondBot\Contracts\Channels\Driver;
+use FondBot\Contracts\Drivers\Driver;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Container\Container;
