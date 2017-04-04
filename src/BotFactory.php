@@ -18,9 +18,9 @@ class BotFactory
      * @param array     $request
      * @param array     $headers
      *
-     * @return \FondBot\Bot
+     * @return Bot|Contracts\Bot
      */
-    public function create(Container $container, Channel $channel, array $request, array $headers): Bot
+    public function create(Container $container, Channel $channel, array $request, array $headers)
     {
         /** @var \FondBot\Contracts\Drivers\Driver $driver */
         $driver = $container->make(DriverManager::class)->get($channel);

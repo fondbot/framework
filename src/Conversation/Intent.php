@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Bot;
-use FondBot\Traits\Loggable;
+use FondBot\Contracts\Bot;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Conversation\Traits\Authorization;
 use FondBot\Conversation\Traits\HasActivators;
@@ -20,8 +19,7 @@ abstract class Intent implements IntentContract, Conversable
         SendsMessages,
         Authorization,
         HasActivators,
-        Transitions,
-        Loggable;
+        Transitions;
 
     /**
      * Handle intent.
@@ -30,7 +28,6 @@ abstract class Intent implements IntentContract, Conversable
      */
     final public function handle(Bot $bot): void
     {
-        $this->debug('handle');
         $this->bot = $bot;
         $this->run();
     }

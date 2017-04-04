@@ -32,7 +32,7 @@ class ContextManagerTest extends TestCase
         $this->driver = $this->mock(Driver::class);
         $this->cache = $this->mock(Cache::class);
 
-        $this->manager = new ContextManager($this->cache);
+        $this->manager = new ContextManager($this->container, $this->cache);
     }
 
     public function test_resolve()
@@ -80,16 +80,9 @@ class ContextManagerTest extends TestCase
 
     public function test_clear()
     {
-        $contextArray = [
-            'intent' => null,
-            'interaction' => null,
-            'values' => ['key1' => 'value1'],
-        ];
-
         $context = $this->mock(Context::class);
         $context->shouldReceive('getChannel')->andReturn($this->channel)->once();
         $context->shouldReceive('getUser')->andReturn($this->sender)->once();
-        $context->shouldReceive('toArray')->andReturn($contextArray)->atLeast()->once();
         $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
         $key = 'context.'.$this->channel.'.'.$senderId;

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Contracts\Drivers\User;
-use FondBot\Contracts\Core\Arrayable;
 use FondBot\Contracts\Conversation\Intent;
 use FondBot\Contracts\Drivers\ReceivedMessage;
 use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Contracts\Conversation\Interaction;
+use FondBot\Contracts\Conversation\Context as ContextContract;
 
-class Context implements Arrayable
+class Context implements ContextContract
 {
     private $channel;
     private $user;

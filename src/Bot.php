@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Traits\Loggable;
 use FondBot\Channels\Channel;
-use FondBot\Conversation\Context;
 use FondBot\Contracts\Drivers\User;
 use FondBot\Contracts\Drivers\Driver;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
+use FondBot\Contracts\Bot as BotContract;
 use FondBot\Contracts\Container\Container;
 use FondBot\Contracts\Conversation\Intent;
+use FondBot\Contracts\Conversation\Context;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Contracts\Drivers\InvalidRequest;
 use FondBot\Contracts\Drivers\OutgoingMessage;
@@ -20,18 +20,14 @@ use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Contracts\Conversation\Interaction;
 use FondBot\Contracts\Drivers\Extensions\WebhookVerification;
 
-class Bot
+class Bot implements BotContract
 {
-    use Loggable;
-
     /** @var Bot */
     protected static $instance;
 
     private $container;
     private $channel;
     private $driver;
-    private $request;
-    private $headers;
 
     /** @var Context|null */
     private $context;
@@ -39,15 +35,11 @@ class Bot
     protected function __construct(
         Container $container,
         Channel $channel,
-        Driver $driver,
-        array $request,
-        array $headers
+        Driver $driver
     ) {
         $this->container = $container;
         $this->channel = $channel;
         $this->driver = $driver;
-        $this->request = $request;
-        $this->headers = $headers;
     }
 
     /**
@@ -74,9 +66,9 @@ class Bot
     /**
      * Get current instance.
      *
-     * @return Bot
+     * @return BotContract
      */
-    public static function getInstance(): Bot
+    public static function getInstance(): BotContract
     {
         return static::$instance;
     }
@@ -96,7 +88,7 @@ class Bot
      *
      * @return Context|null
      */
-    public function getContext(): ?Context
+    public function getContext(): ?Contracts\Conversation\Context
     {
         return $this->context;
     }
@@ -142,16 +134,8 @@ class Bot
     public function process()
     {
         try {
-            $this->debug('process', [
-                'channel' => $this->channel->getName(),
-                'request' => $this->request,
-                'headers' => $this->headers,
-            ]);
-
             // Driver has webhook verification
             if ($this->driver instanceof WebhookVerification && $this->driver->isVerificationRequest()) {
-                $this->debug('process.verifyWebhook');
-
                 return $this->driver->verifyWebhook();
             }
 
@@ -177,8 +161,6 @@ class Bot
 
             return 'OK';
         } catch (InvalidRequest $exception) {
-            $this->error($exception->getMessage());
-
             return $exception->getMessage();
         }
     }

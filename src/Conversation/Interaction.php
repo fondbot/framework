@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Bot;
-use FondBot\Traits\Loggable;
+use FondBot\Contracts\Bot;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Conversation\Traits\SendsMessages;
 use FondBot\Contracts\Conversation\Conversable;
@@ -16,8 +15,7 @@ abstract class Interaction implements InteractionContract, Conversable
 {
     use InteractsWithContext,
         SendsMessages,
-        Transitions,
-        Loggable;
+        Transitions;
 
     /**
      * Handle interaction.

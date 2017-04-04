@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Bot;
-use FondBot\Traits\Loggable;
 use FondBot\Contracts\Cache\Cache;
 use FondBot\Contracts\Drivers\User;
 use FondBot\Contracts\Drivers\Driver;
+use FondBot\Contracts\Container\Container;
+use FondBot\Contracts\Conversation\Context as ContextContract;
 
 class ContextManager
 {
-    use Loggable;
-
+    private $container;
     private $cache;
 
-    public function __construct(Cache $cache)
+    public function __construct(Container $container, Cache $cache)
     {
+        $this->container = $container;
         $this->cache = $cache;
     }
 
@@ -31,15 +31,13 @@ class ContextManager
      */
     public function resolve(string $channel, Driver $driver): Context
     {
-        $this->debug('resolve', ['driver' => get_class($driver)]);
-
         $sender = $driver->getUser();
         $message = $driver->getMessage();
         $key = $this->key($channel, $sender);
         $value = $this->cache->get($key);
 
-        $intent = $value['intent'] !== null ? Bot::getInstance()->get($value['intent']) : null;
-        $interaction = $value['interaction'] !== null ? Bot::getInstance()->get($value['interaction']) : null;
+        $intent = $value['intent'] !== null ? $this->container->make($value['intent']) : null;
+        $interaction = $value['interaction'] !== null ? $this->container->make($value['interaction']) : null;
 
         return new Context(
             $channel,
@@ -54,12 +52,10 @@ class ContextManager
     /**
      * Save updated context.
      *
-     * @param Context $context
+     * @param ContextContract $context
      */
-    public function save(Context $context): void
+    public function save(ContextContract $context): void
     {
-        $this->debug('save', ['context' => $context]);
-
         $key = $this->key($context->getChannel(), $context->getUser());
 
         $this->cache->store($key, $context->toArray());
@@ -68,12 +64,10 @@ class ContextManager
     /**
      * Clear context.
      *
-     * @param Context $context
+     * @param ContextContract $context
      */
-    public function clear(Context $context): void
+    public function clear(ContextContract $context): void
     {
-        $this->debug('clear', ['context' => $context]);
-
         $key = $this->key($context->getChannel(), $context->getUser());
 
         $this->cache->forget($key);
