@@ -22,7 +22,6 @@
     ],
     "require": {
         "php": ">=7.1",
-        "fondbot/contracts": "dev-master",
         "spatie/regex": "^1.1",
         "tightenco/collect": "^5.4",
         "verbalexpressions/php-verbal-expressions": "dev-master"

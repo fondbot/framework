@@ -6,8 +6,8 @@ namespace Tests\Classes\Fakes;
 
 use FondBot\Bot;
 use FondBot\Helpers\Str;
+use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
-use FondBot\Contracts\Drivers\ReceivedMessage;
 
 class FakeInteraction extends Interaction
 {

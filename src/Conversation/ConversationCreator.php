@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Helpers\Str;
-use FondBot\Contracts\Filesystem\Filesystem;
+use FondBot\Contracts\Filesystem;
 
 class ConversationCreator
 {

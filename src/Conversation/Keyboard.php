@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Conversation\Button;
-use FondBot\Contracts\Conversation\Keyboard as KeyboardContract;
+use FondBot\Conversation\Buttons\Button;
 
-class Keyboard implements KeyboardContract
+class Keyboard
 {
     /** @var Button[] */
     private $buttons;

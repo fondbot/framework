@@ -33,7 +33,7 @@ class DriverManagerTest extends TestCase
     }
 
     /**
-     * @expectedException \FondBot\Contracts\Drivers\InvalidConfiguration
+     * @expectedException \FondBot\Drivers\Exceptions\InvalidConfiguration
      * @expectedExceptionMessage Invalid `test` channel configuration.
      */
     public function test_get_invalid_configuration()

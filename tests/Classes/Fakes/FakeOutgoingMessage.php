@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
-use FondBot\Contracts\Drivers\User;
-use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Drivers\OutgoingMessage;
+use FondBot\Drivers\User;
+use FondBot\Conversation\Keyboard;
+use FondBot\Drivers\OutgoingMessage;
 
 class FakeOutgoingMessage implements OutgoingMessage
 {

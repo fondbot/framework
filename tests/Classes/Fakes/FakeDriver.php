@@ -6,13 +6,13 @@ namespace Tests\Classes\Fakes;
 
 use Faker\Factory;
 use Faker\Generator;
+use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
-use FondBot\Contracts\Drivers\User;
-use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Drivers\InvalidRequest;
-use FondBot\Contracts\Drivers\OutgoingMessage;
-use FondBot\Contracts\Drivers\ReceivedMessage;
-use FondBot\Contracts\Drivers\Extensions\WebhookVerification;
+use FondBot\Conversation\Keyboard;
+use FondBot\Drivers\OutgoingMessage;
+use FondBot\Drivers\ReceivedMessage;
+use FondBot\Drivers\Exceptions\InvalidRequest;
+use FondBot\Drivers\Extensions\WebhookVerification;
 
 class FakeDriver extends Driver implements WebhookVerification
 {
@@ -45,7 +45,8 @@ class FakeDriver extends Driver implements WebhookVerification
      */
     public function getUser(): User
     {
-        return $this->sender ?? $this->sender = new FakeUser($this->faker());
+        return $this->sender ??
+            $this->sender = new User($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
     }
 
     /**

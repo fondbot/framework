@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Buttons;
 
-use FondBot\Contracts\Conversation\Button;
-
 class PayloadButton implements Button
 {
     private $label;

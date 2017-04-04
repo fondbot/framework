@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes\Fakes;
+namespace FondBot\Drivers;
 
-use Faker\Generator;
-use FondBot\Contracts\Drivers\User;
-
-class FakeUser implements User
+class User
 {
-    private $faker;
+    private $id;
+    private $name;
+    private $username;
 
-    public function __construct(Generator $faker)
+    public function __construct(string $id, string $name = null, string $username = null)
     {
-        $this->faker = $faker;
+        $this->id = $id;
+        $this->name = $name;
+        $this->username = $username;
     }
 
     /**
@@ -23,7 +24,7 @@ class FakeUser implements User
      */
     public function getId(): string
     {
-        return $this->faker->uuid;
+        return $this->id;
     }
 
     /**
@@ -33,7 +34,7 @@ class FakeUser implements User
      */
     public function getName(): ?string
     {
-        return $this->faker->name;
+        return $this->name;
     }
 
     /**
@@ -43,6 +44,6 @@ class FakeUser implements User
      */
     public function getUsername(): ?string
     {
-        return $this->faker->userName;
+        return $this->username;
     }
 }

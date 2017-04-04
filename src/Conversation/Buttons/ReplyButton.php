@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Buttons;
 
-use FondBot\Contracts\Conversation\Button as ButtonContract;
-
-class ReplyButton implements ButtonContract
+class ReplyButton implements Button
 {
     private $label;
 

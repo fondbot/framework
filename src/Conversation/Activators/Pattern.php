@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Activators;
 
 use Spatie\Regex\Regex;
-use FondBot\Contracts\Conversation\Activator;
-use FondBot\Contracts\Drivers\ReceivedMessage;
+use FondBot\Drivers\ReceivedMessage;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 class Pattern implements Activator

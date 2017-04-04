@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Traits;
 
 use FondBot\Bot;
-use FondBot\Contracts\Drivers\User;
+use FondBot\Drivers\User;
 
 trait InteractsWithContext
 {

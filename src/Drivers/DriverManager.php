@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Drivers;
 
 use FondBot\Channels\Channel;
-use FondBot\Contracts\Drivers\Driver;
-use FondBot\Contracts\Drivers\InvalidConfiguration;
+use FondBot\Drivers\Exceptions\InvalidConfiguration;
 
 class DriverManager
 {

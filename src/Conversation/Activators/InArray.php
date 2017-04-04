@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Activators;
 
 use Illuminate\Support\Collection;
-use FondBot\Contracts\Conversation\Activator;
-use FondBot\Contracts\Drivers\ReceivedMessage;
+use FondBot\Drivers\ReceivedMessage;
 
 class InArray implements Activator
 {

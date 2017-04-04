@@ -8,20 +8,20 @@ use Mockery;
 use FondBot\Bot;
 use Tests\TestCase;
 use FondBot\Helpers\Str;
+use FondBot\Drivers\User;
+use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
+use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Drivers\User;
-use FondBot\Contracts\Drivers\Driver;
+use FondBot\Conversation\Keyboard;
+use FondBot\Drivers\OutgoingMessage;
+use FondBot\Drivers\ReceivedMessage;
+use FondBot\Conversation\Conversable;
+use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
-use FondBot\Contracts\Conversation\Intent;
-use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Drivers\InvalidRequest;
-use FondBot\Contracts\Drivers\OutgoingMessage;
-use FondBot\Contracts\Drivers\ReceivedMessage;
-use FondBot\Contracts\Conversation\Conversable;
-use FondBot\Contracts\Conversation\Interaction;
-use FondBot\Contracts\Drivers\Extensions\WebhookVerification;
+use FondBot\Drivers\Exceptions\InvalidRequest;
+use FondBot\Drivers\Extensions\WebhookVerification;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface contextManager

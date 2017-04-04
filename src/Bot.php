@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace FondBot;
 
+use FondBot\Drivers\User;
+use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
-use FondBot\Contracts\Drivers\User;
-use FondBot\Contracts\Drivers\Driver;
+use FondBot\Contracts\Container;
+use FondBot\Conversation\Intent;
+use FondBot\Conversation\Context;
+use FondBot\Conversation\Keyboard;
+use FondBot\Drivers\OutgoingMessage;
+use FondBot\Conversation\Conversable;
+use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
-use FondBot\Contracts\Bot as BotContract;
-use FondBot\Contracts\Container\Container;
-use FondBot\Contracts\Conversation\Intent;
-use FondBot\Contracts\Conversation\Context;
-use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Drivers\InvalidRequest;
-use FondBot\Contracts\Drivers\OutgoingMessage;
-use FondBot\Contracts\Conversation\Conversable;
-use FondBot\Contracts\Conversation\Interaction;
-use FondBot\Contracts\Drivers\Extensions\WebhookVerification;
+use FondBot\Drivers\Exceptions\InvalidRequest;
+use FondBot\Drivers\Extensions\WebhookVerification;
 
-class Bot implements BotContract
+class Bot
 {
     /** @var Bot */
     protected static $instance;
@@ -66,9 +65,9 @@ class Bot implements BotContract
     /**
      * Get current instance.
      *
-     * @return BotContract
+     * @return Bot
      */
-    public static function getInstance(): BotContract
+    public static function getInstance(): Bot
     {
         return static::$instance;
     }
@@ -88,7 +87,7 @@ class Bot implements BotContract
      *
      * @return Context|null
      */
-    public function getContext(): ?Contracts\Conversation\Context
+    public function getContext(): ?Context
     {
         return $this->context;
     }
@@ -168,7 +167,7 @@ class Bot implements BotContract
     /**
      * Start conversation.
      *
-     * @param Conversable|Intent|Interaction $conversable
+     * @param Conversable $conversable
      */
     public function converse(Conversable $conversable): void
     {

@@ -6,11 +6,11 @@ namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
 use FondBot\Helpers\Str;
+use FondBot\Drivers\User;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Drivers\User;
+use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
-use FondBot\Contracts\Drivers\ReceivedMessage;
 
 /**
  * @property string                                     $channel

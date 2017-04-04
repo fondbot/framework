@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
+use FondBot\Drivers\User;
+use FondBot\Drivers\Driver;
+use FondBot\Contracts\Cache;
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Cache\Cache;
-use FondBot\Contracts\Drivers\User;
-use FondBot\Contracts\Drivers\Driver;
+use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\ContextManager;
-use FondBot\Contracts\Drivers\ReceivedMessage;
 
 /**
  * @property string                                     $channel

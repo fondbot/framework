@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Classes;
 
-use FondBot\Contracts\Container\Container as ContainerContract;
+use FondBot\Contracts\Container;
 
-class FakeContainer implements ContainerContract
+class FakeContainer implements Container
 {
     private static $instance;
 
@@ -15,9 +15,9 @@ class FakeContainer implements ContainerContract
     /**
      * Get instance of the container.
      *
-     * @return ContainerContract
+     * @return Container
      */
-    public static function instance(): ContainerContract
+    public static function instance(): Container
     {
         if (self::$instance === null) {
             return new static;

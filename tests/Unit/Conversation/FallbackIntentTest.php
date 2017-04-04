@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation\Fallback;
+namespace Tests\Unit\Conversation;
 
 use FondBot\Bot;
 use Tests\TestCase;
+use FondBot\Drivers\User;
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Drivers\User;
-use FondBot\Conversation\Fallback\FallbackIntent;
+use FondBot\Conversation\FallbackIntent;
 
 /**
  * @property FallbackIntent $intent

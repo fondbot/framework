@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Conversation\Intent;
-use FondBot\Contracts\Drivers\ReceivedMessage;
+use FondBot\Drivers\ReceivedMessage;
 
 class IntentManager
 {

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Drivers;
 
 use FondBot\Helpers\Arr;
-use FondBot\Contracts\Drivers\Driver as DriverContract;
+use FondBot\Conversation\Keyboard;
+use FondBot\Drivers\Exceptions\InvalidRequest;
 
-abstract class Driver implements DriverContract
+abstract class Driver
 {
     /** @var array */
     private $request = [];
@@ -89,4 +90,43 @@ abstract class Driver implements DriverContract
     {
         return Arr::get($this->parameters, $name);
     }
+
+    /**
+     * Configuration parameters.
+     *
+     * @return array
+     */
+    abstract public function getConfig(): array;
+
+    /**
+     * Verify incoming request data.
+     *
+     * @throws InvalidRequest
+     */
+    abstract public function verifyRequest(): void;
+
+    /**
+     * Get user.
+     *
+     * @return User
+     */
+    abstract public function getUser(): User;
+
+    /**
+     * Get message received from sender.
+     *
+     * @return ReceivedMessage
+     */
+    abstract public function getMessage(): ReceivedMessage;
+
+    /**
+     * Send reply to participant.
+     *
+     * @param User          $sender
+     * @param string        $text
+     * @param Keyboard|null $keyboard
+     *
+     * @return OutgoingMessage
+     */
+    abstract public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage;
 }

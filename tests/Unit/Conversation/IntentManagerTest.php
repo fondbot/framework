@@ -6,9 +6,9 @@ namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
 use Tests\Classes\Fakes\FakeIntent;
+use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\IntentManager;
-use FondBot\Contracts\Drivers\ReceivedMessage;
-use FondBot\Conversation\Fallback\FallbackIntent;
+use FondBot\Conversation\FallbackIntent;
 
 /**
  * @property IntentManager manager

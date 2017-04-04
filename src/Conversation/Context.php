@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Drivers\User;
-use FondBot\Contracts\Conversation\Intent;
-use FondBot\Contracts\Drivers\ReceivedMessage;
-use FondBot\Contracts\Conversation\Conversable;
-use FondBot\Contracts\Conversation\Interaction;
-use FondBot\Contracts\Conversation\Context as ContextContract;
+use FondBot\Drivers\User;
+use FondBot\Drivers\ReceivedMessage;
 
-class Context implements ContextContract
+class Context
 {
     private $channel;
     private $user;

@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation\Fallback;
+namespace FondBot\Conversation;
 
-use FondBot\Conversation\Intent;
-use FondBot\Contracts\Conversation\Activator;
+use FondBot\Conversation\Activators\Activator;
 
 class FallbackIntent extends Intent
 {

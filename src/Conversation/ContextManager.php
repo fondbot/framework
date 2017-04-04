@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Cache\Cache;
-use FondBot\Contracts\Drivers\User;
-use FondBot\Contracts\Drivers\Driver;
-use FondBot\Contracts\Container\Container;
-use FondBot\Contracts\Conversation\Context as ContextContract;
+use FondBot\Drivers\User;
+use FondBot\Drivers\Driver;
+use FondBot\Contracts\Cache;
+use FondBot\Contracts\Container;
 
 class ContextManager
 {
@@ -52,9 +51,9 @@ class ContextManager
     /**
      * Save updated context.
      *
-     * @param ContextContract $context
+     * @param Context $context
      */
-    public function save(ContextContract $context): void
+    public function save(Context $context): void
     {
         $key = $this->key($context->getChannel(), $context->getUser());
 
@@ -64,9 +63,9 @@ class ContextManager
     /**
      * Clear context.
      *
-     * @param ContextContract $context
+     * @param Context $context
      */
-    public function clear(ContextContract $context): void
+    public function clear(Context $context): void
     {
         $key = $this->key($context->getChannel(), $context->getUser());
 

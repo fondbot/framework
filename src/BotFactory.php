@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot;
 
+use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
+use FondBot\Contracts\Container;
 use FondBot\Drivers\DriverManager;
-use FondBot\Contracts\Container\Container;
 
 class BotFactory
 {
@@ -18,11 +19,11 @@ class BotFactory
      * @param array     $request
      * @param array     $headers
      *
-     * @return Bot|Contracts\Bot
+     * @return Bot
      */
     public function create(Container $container, Channel $channel, array $request, array $headers)
     {
-        /** @var \FondBot\Contracts\Drivers\Driver $driver */
+        /** @var Driver $driver */
         $driver = $container->make(DriverManager::class)->get($channel);
 
         $driver->fill($channel->getParameters(), $request, $headers);

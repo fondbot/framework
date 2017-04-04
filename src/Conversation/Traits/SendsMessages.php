@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Traits;
 
 use FondBot\Bot;
-use FondBot\Contracts\Drivers\User;
-use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Drivers\User;
+use FondBot\Conversation\Keyboard;
 
 trait SendsMessages
 {
