@@ -4,41 +4,59 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Activators;
 
+use FondBot\Contracts\Channels\ReceivedMessage;
 use Tests\TestCase;
 use FondBot\Conversation\Activators\InArray;
-use Tests\Classes\Fakes\FakeReceivedMessage;
 
+/**
+ * @property mixed|\Mockery\Mock message
+ */
 class InArrayTest extends TestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->message = $this->mock(ReceivedMessage::class);
+    }
+
     public function test_array_matches()
     {
+        $this->message->shouldReceive('getText')->andReturn('/start');
+
         $activator = new InArray(['/bye', '/start', '/test']);
         $this->assertTrue(
-            $activator->matches(new FakeReceivedMessage(null, '/start'))
+            $activator->matches($this->message)
         );
     }
 
     public function test_array_does_not_match()
     {
+        $this->message->shouldReceive('getText')->andReturn('/stop');
+
         $activator = new InArray(['/bye', '/start', '/test']);
         $this->assertFalse(
-            $activator->matches(new FakeReceivedMessage(null, '/stop'))
+            $activator->matches($this->message)
         );
     }
 
     public function test_collection_matches()
     {
+        $this->message->shouldReceive('getText')->andReturn('/start');
+
         $activator = new InArray(collect(['/bye', '/start', '/test']));
         $this->assertTrue(
-            $activator->matches(new FakeReceivedMessage(null, '/start'))
+            $activator->matches($this->message)
         );
     }
 
     public function test_collection_does_not_match()
     {
+        $this->message->shouldReceive('getText')->andReturn('/stop');
+
         $activator = new InArray(collect(['/bye', '/start', '/test']));
         $this->assertFalse(
-            $activator->matches(new FakeReceivedMessage(null, '/stop'))
+            $activator->matches($this->message)
         );
     }
 }

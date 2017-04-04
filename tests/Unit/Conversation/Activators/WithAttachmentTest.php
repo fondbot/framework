@@ -4,20 +4,31 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Activators;
 
+use FondBot\Contracts\Channels\ReceivedMessage;
 use Tests\TestCase;
 use FondBot\Drivers\Message\Attachment;
-use Tests\Classes\Fakes\FakeReceivedMessage;
 use FondBot\Conversation\Activators\WithAttachment;
 
+/**
+ * @property mixed|\Mockery\Mock message
+ */
 class WithAttachmentTest extends TestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->message = $this->mock(ReceivedMessage::class);
+    }
+
     public function test_matches_without_type()
     {
         $activator = new WithAttachment;
-        $attachment = new Attachment($this->faker()->word, $this->faker()->imageUrl());
+
+        $this->message->shouldReceive('hasAttachment')->andReturn(true)->atLeast()->once();
 
         $this->assertTrue(
-            $activator->matches(new FakeReceivedMessage(null, null, null, $attachment))
+            $activator->matches($this->message)
         );
     }
 
@@ -25,8 +36,10 @@ class WithAttachmentTest extends TestCase
     {
         $activator = new WithAttachment;
 
+        $this->message->shouldReceive('hasAttachment')->andReturn(false)->atLeast()->once();
+
         $this->assertFalse(
-            $activator->matches(new FakeReceivedMessage)
+            $activator->matches($this->message)
         );
     }
 
@@ -40,8 +53,11 @@ class WithAttachmentTest extends TestCase
         $activator = new WithAttachment($type);
         $attachment = new Attachment($type, $this->faker()->imageUrl());
 
+        $this->message->shouldReceive('hasAttachment')->andReturn(true)->atLeast()->once();
+        $this->message->shouldReceive('getAttachment')->andReturn($attachment)->atLeast()->once();
+
         $this->assertTrue(
-            $activator->matches(new FakeReceivedMessage(null, null, null, $attachment))
+            $activator->matches($this->message)
         );
     }
 
@@ -61,8 +77,11 @@ class WithAttachmentTest extends TestCase
 
         $attachment = new Attachment($otherType, $this->faker()->imageUrl());
 
+        $this->message->shouldReceive('hasAttachment')->andReturn(true)->atLeast()->once();
+        $this->message->shouldReceive('getAttachment')->andReturn($attachment)->atLeast()->once();
+
         $this->assertFalse(
-            $activator->matches(new FakeReceivedMessage(null, null, null, $attachment))
+            $activator->matches($this->message)
         );
     }
 

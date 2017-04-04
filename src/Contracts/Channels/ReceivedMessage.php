@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Channels;
 
-use FondBot\Drivers\Message\Location;
-use FondBot\Drivers\Message\Attachment;
+use FondBot\Contracts\Drivers\Message\Attachment;
+use FondBot\Contracts\Drivers\Message\Location;
 
 interface ReceivedMessage
 {
