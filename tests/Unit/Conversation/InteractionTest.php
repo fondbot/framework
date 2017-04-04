@@ -8,7 +8,7 @@ use FondBot\Bot;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
 use Tests\Classes\Fakes\FakeInteraction;
-use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Drivers\ReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock                  bot

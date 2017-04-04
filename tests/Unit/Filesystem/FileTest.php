@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Filesystem;
 
 use Tests\TestCase;
-use FondBot\Filesystem\File;
+use FondBot\Contracts\Filesystem\File;
 
 class FileTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Channels\Exceptions;
+namespace FondBot\Contracts\Drivers;
 
 use RuntimeException;
 

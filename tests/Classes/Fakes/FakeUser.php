@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Classes\Fakes;
 
 use Faker\Generator;
-use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Drivers\User;
 
 class FakeUser implements User
 {

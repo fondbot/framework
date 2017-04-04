@@ -6,7 +6,7 @@ namespace FondBot\Conversation\Activators;
 
 use Spatie\Regex\Regex;
 use FondBot\Contracts\Conversation\Activator;
-use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Drivers\ReceivedMessage;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 class Pattern implements Activator

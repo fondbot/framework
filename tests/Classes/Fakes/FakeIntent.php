@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Classes\Fakes;
 
+use FondBot\Contracts\Drivers\Message\Attachment;
 use FondBot\Conversation\Intent;
-use FondBot\Drivers\Message\Attachment;
 use FondBot\Contracts\Conversation\Activator;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 

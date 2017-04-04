@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Drivers;
 
-use FondBot\Contracts\Channels\User;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\OutgoingMessage;
-use FondBot\Contracts\Channels\ReceivedMessage;
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 interface Driver
 {
@@ -74,7 +70,7 @@ interface Driver
     /**
      * Verify incoming request data.
      *
-     * @throws InvalidChannelRequest
+     * @throws InvalidRequest
      */
     public function verifyRequest(): void;
 

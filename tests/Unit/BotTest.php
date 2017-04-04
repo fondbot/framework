@@ -10,18 +10,18 @@ use Tests\TestCase;
 use FondBot\Helpers\Str;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Drivers\User;
 use FondBot\Contracts\Drivers\Driver;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Conversation\Intent;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\OutgoingMessage;
-use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Drivers\OutgoingMessage;
+use FondBot\Contracts\Drivers\ReceivedMessage;
 use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Contracts\Conversation\Interaction;
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
-use FondBot\Contracts\Channels\Extensions\WebhookVerification;
+use FondBot\Contracts\Drivers\InvalidRequest;
+use FondBot\Contracts\Drivers\Extensions\WebhookVerification;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface contextManager
@@ -121,7 +121,7 @@ class BotTest extends TestCase
         $bot = Bot::getInstance();
 
         $this->channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName);
-        $this->driver->shouldReceive('verifyRequest')->andThrow(new InvalidChannelRequest('Invalid request.'));
+        $this->driver->shouldReceive('verifyRequest')->andThrow(new InvalidRequest('Invalid request.'));
 
         $this->assertSame('Invalid request.', $bot->process());
     }

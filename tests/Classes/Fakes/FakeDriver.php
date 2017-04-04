@@ -7,12 +7,12 @@ namespace Tests\Classes\Fakes;
 use Faker\Factory;
 use Faker\Generator;
 use FondBot\Drivers\Driver;
-use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Drivers\User;
 use FondBot\Contracts\Conversation\Keyboard;
-use FondBot\Contracts\Channels\OutgoingMessage;
-use FondBot\Contracts\Channels\ReceivedMessage;
-use FondBot\Channels\Exceptions\InvalidChannelRequest;
-use FondBot\Contracts\Channels\Extensions\WebhookVerification;
+use FondBot\Contracts\Drivers\OutgoingMessage;
+use FondBot\Contracts\Drivers\ReceivedMessage;
+use FondBot\Contracts\Drivers\InvalidRequest;
+use FondBot\Contracts\Drivers\Extensions\WebhookVerification;
 
 class FakeDriver extends Driver implements WebhookVerification
 {
@@ -32,7 +32,7 @@ class FakeDriver extends Driver implements WebhookVerification
     /**
      * Verify incoming request data.
      *
-     * @throws InvalidChannelRequest
+     * @throws InvalidRequest
      */
     public function verifyRequest(): void
     {
@@ -55,7 +55,7 @@ class FakeDriver extends Driver implements WebhookVerification
      */
     public function getMessage(): ReceivedMessage
     {
-        return $this->message ?? $this->message = new FakeReceivedMessage($this->faker());
+        return $this->message;
     }
 
     /**

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Contracts\Conversation\Intent;
-use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Drivers\ReceivedMessage;
 
 class IntentManager
 {

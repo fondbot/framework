@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Contracts\Channels;
+namespace FondBot\Contracts\Drivers;
 
 use FondBot\Contracts\Drivers\Message\Attachment;
 use FondBot\Contracts\Drivers\Message\Location;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ___NAMESPACE___;
 
-use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 
 class ___CLASSNAME___ extends Interaction

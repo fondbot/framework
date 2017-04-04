@@ -7,7 +7,7 @@ namespace Tests\Unit\Conversation;
 use Tests\TestCase;
 use Tests\Classes\Fakes\FakeIntent;
 use FondBot\Conversation\IntentManager;
-use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Drivers\ReceivedMessage;
 use FondBot\Conversation\Fallback\FallbackIntent;
 
 /**

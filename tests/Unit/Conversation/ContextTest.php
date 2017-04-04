@@ -8,9 +8,9 @@ use Tests\TestCase;
 use FondBot\Helpers\Str;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Drivers\User;
 use FondBot\Conversation\Interaction;
-use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Drivers\ReceivedMessage;
 
 /**
  * @property string                                     $channel

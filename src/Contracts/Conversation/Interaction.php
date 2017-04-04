@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Conversation;
 
-use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Drivers\ReceivedMessage;
 
 interface Interaction
 {

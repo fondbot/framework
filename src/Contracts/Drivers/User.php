@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Contracts\Channels;
+namespace FondBot\Contracts\Drivers;
 
 interface User
 {

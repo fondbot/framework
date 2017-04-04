@@ -7,7 +7,7 @@ namespace Tests\Unit\Conversation\Fallback;
 use FondBot\Bot;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
-use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Drivers\User;
 use FondBot\Conversation\Fallback\FallbackIntent;
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Contracts\Channels\Extensions;
+namespace FondBot\Contracts\Drivers\Extensions;
 
 /**
  * Driver supports automatic webhook installation.

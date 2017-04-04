@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Channels\User;
+use FondBot\Contracts\Drivers\User;
 use FondBot\Contracts\Core\Arrayable;
 use FondBot\Contracts\Conversation\Intent;
-use FondBot\Contracts\Channels\ReceivedMessage;
+use FondBot\Contracts\Drivers\ReceivedMessage;
 use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Contracts\Conversation\Interaction;
 
