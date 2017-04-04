@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ___NAMESPACE___;
 
-use FondBot\Contracts\Conversation\Activator;
+use FondBot\Conversation\Activators\Activator;
 use FondBot\Conversation\Intent;
 
 class ___CLASSNAME___ extends Intent
