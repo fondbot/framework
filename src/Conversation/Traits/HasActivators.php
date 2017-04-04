@@ -8,11 +8,19 @@ use Illuminate\Support\Collection;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\InArray;
 use FondBot\Conversation\Activators\Pattern;
+use FondBot\Conversation\Activators\Activator;
 use FondBot\Conversation\Activators\WithAttachment;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 trait HasActivators
 {
+    /**
+     * Intent activators.
+     *
+     * @return Activator[]
+     */
+    abstract public function activators(): array;
+
     /**
      * Create "Exact" activator.
      *

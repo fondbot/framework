@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Channels;
 
 use Tests\TestCase;
-use FondBot\Helpers\Str;
 use FondBot\Channels\Channel;
 use FondBot\Channels\ChannelManager;
 
@@ -16,7 +15,7 @@ class ChannelManagerTest extends TestCase
         $name = 'fake';
         $parameters = [
             'driver' => 'fake',
-            'token' => Str::random(),
+            'token' => $this->faker()->sha1,
         ];
 
         $manager = new ChannelManager();

@@ -14,21 +14,21 @@ trait SendsMessages
     protected $bot;
 
     /**
-     * Get user.
-     *
-     * @return User
-     */
-    abstract protected function user(): User;
-
-    /**
      * Send reply to user.
      *
      * @param string        $text
      * @param Keyboard|null $keyboard
      * @param string|null   $driver Sends only if driver matches.
      */
-    public function sendMessage(string $text, Keyboard $keyboard = null, string $driver = null): void
+    protected function sendMessage(string $text, Keyboard $keyboard = null, string $driver = null): void
     {
         $this->bot->sendMessage($this->user(), $text, $keyboard, $driver);
     }
+
+    /**
+     * Get user.
+     *
+     * @return User
+     */
+    abstract protected function user(): User;
 }

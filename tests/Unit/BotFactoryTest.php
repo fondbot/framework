@@ -7,39 +7,28 @@ namespace Tests\Unit;
 use FondBot\Bot;
 use Tests\TestCase;
 use FondBot\BotFactory;
-use FondBot\Helpers\Str;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use FondBot\Drivers\DriverManager;
 
-/**
- * @property mixed|\Mockery\Mock channel
- * @property mixed|\Mockery\Mock driverManager
- * @property mixed|\Mockery\Mock driver
- * @property BotFactory          factory
- */
 class BotFactoryTest extends TestCase
 {
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->channel = $this->mock(Channel::class);
-        $this->driverManager = $this->mock(DriverManager::class);
-        $this->driver = $this->mock(Driver::class);
-
-        $this->factory = new BotFactory();
-    }
-
     public function test_create()
     {
-        $parameters = ['token' => Str::random()];
+        $parameters = ['token' => $this->faker()->sha1];
 
-        $this->driverManager->shouldReceive('get')->with($this->channel)->andReturn($this->driver)->once();
-        $this->channel->shouldReceive('getParameters')->andReturn($parameters)->once();
-        $this->driver->shouldReceive('fill')->with($parameters, [], []);
+        $this->container->bind(DriverManager::class, $driverManager = $this->mock(DriverManager::class));
 
-        $bot = $this->factory->create($this->container, $this->channel, [], []);
+        $driverManager->shouldReceive('get')
+            ->with($channel = $this->mock(Channel::class))
+            ->andReturn($driver = $this->mock(Driver::class))
+            ->once();
+        $channel->shouldReceive('getParameters')->andReturn($parameters)->once();
+        $driver->shouldReceive('fill')->with($parameters, [], []);
+
+        $factory = new BotFactory();
+
+        $bot = $factory->create($this->container, $channel, [], []);
         $this->assertInstanceOf(Bot::class, $bot);
     }
 }

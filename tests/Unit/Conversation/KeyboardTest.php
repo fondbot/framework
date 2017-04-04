@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Conversation\Buttons\Button;
 use Tests\TestCase;
 use FondBot\Conversation\Keyboard;
+use FondBot\Conversation\Buttons\Button;
 
 class KeyboardTest extends TestCase
 {

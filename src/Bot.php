@@ -47,18 +47,14 @@ class Bot
      * @param Container $container
      * @param Channel   $channel
      * @param Driver    $driver
-     * @param array     $request
-     * @param array     $headers
      */
     public static function createInstance(
         Container $container,
         Channel $channel,
-        Driver $driver,
-        array $request,
-        array $headers
+        Driver $driver
     ): void {
         static::setInstance(
-            new static($container, $channel, $driver, $request, $headers)
+            new static($container, $channel, $driver)
         );
     }
 

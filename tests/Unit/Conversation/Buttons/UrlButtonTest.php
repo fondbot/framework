@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Buttons;
 
-use FondBot\Conversation\Buttons\UrlButton;
 use Tests\TestCase;
+use FondBot\Conversation\Buttons\UrlButton;
 
 class UrlButtonTest extends TestCase
 {
-    public function test() {
+    public function test()
+    {
         $label = $this->faker()->word;
         $url = $this->faker()->url;
 

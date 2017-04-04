@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use FondBot\Helpers\Str;
 use FondBot\Drivers\User;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
@@ -33,8 +32,8 @@ class ContextTest extends TestCase
         $this->intent = $this->mock(Intent::class);
         $this->interaction = $this->mock(Interaction::class);
         $this->values = [
-            'foo' => Str::random(),
-            'bar' => Str::random(),
+            'foo' => $this->faker()->sha1,
+            'bar' => $this->faker()->sha1,
         ];
 
         $this->context = new Context(

@@ -7,8 +7,8 @@ namespace Tests\Unit\Conversation;
 use FondBot\Bot;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
-use FondBot\Drivers\ReceivedMessage;
 use Tests\Classes\TestInteraction;
+use FondBot\Drivers\ReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock            bot

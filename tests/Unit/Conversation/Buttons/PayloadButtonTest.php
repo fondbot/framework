@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Buttons;
 
-use FondBot\Conversation\Buttons\PayloadButton;
 use Tests\TestCase;
+use FondBot\Conversation\Buttons\PayloadButton;
 
 class PayloadButtonTest extends TestCase
 {
