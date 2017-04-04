@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot;
 
+use FondBot\Drivers\ReceivedMessage\Attachment;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
@@ -193,7 +194,8 @@ class Bot
         string $text,
         Keyboard $keyboard = null,
         string $driver = null
-    ): ?OutgoingMessage {
+    ): ?OutgoingMessage
+    {
         if ($driver !== null && !$this->driver instanceof $driver) {
             return null;
         }
@@ -203,6 +205,17 @@ class Bot
             $text,
             $keyboard
         );
+    }
+
+    /**
+     * Send attachment.
+     *
+     * @param User       $recipient
+     * @param Attachment $attachment
+     */
+    public function sendAttachment(User $recipient, Attachment $attachment): void
+    {
+        $this->driver->sendAttachment($recipient, $attachment);
     }
 
     /**

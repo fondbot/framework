@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use FondBot\Drivers\ReceivedMessage\Attachment;
 use Mockery;
 use FondBot\Bot;
 use Tests\TestCase;
@@ -152,7 +153,7 @@ class BotTest extends TestCase
     {
         Bot::createInstance(
             $this->container,
-            $channel = $this->mock(Channel::class),
+            $this->mock(Channel::class),
             $driver = $this->mock(Driver::class)
         );
 
@@ -184,5 +185,23 @@ class BotTest extends TestCase
             'foo'
         );
         $this->assertNull($result);
+    }
+
+    public function test_sendAttachment()
+    {
+        Bot::createInstance(
+            $this->container,
+            $this->mock(Channel::class),
+            $driver = $this->mock(Driver::class)
+        );
+
+        $driver->shouldReceive('sendAttachment')
+            ->with(
+                $recipient = $this->mock(User::class),
+                $attachment = $this->mock(Attachment::class)
+            )
+            ->once();
+
+        Bot::getInstance()->sendAttachment($recipient, $attachment);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Drivers;
 
+use FondBot\Drivers\ReceivedMessage\Attachment;
 use FondBot\Helpers\Arr;
 use FondBot\Conversation\Keyboard;
 use FondBot\Drivers\Exceptions\InvalidRequest;
@@ -120,7 +121,7 @@ abstract class Driver
     abstract public function getMessage(): ReceivedMessage;
 
     /**
-     * Send reply to participant.
+     * Send message to recipient.
      *
      * @param User          $sender
      * @param string        $text
@@ -129,4 +130,12 @@ abstract class Driver
      * @return OutgoingMessage
      */
     abstract public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage;
+
+    /**
+     * Send attachment to recipient.
+     *
+     * @param User       $recipient
+     * @param Attachment $attachment
+     */
+    abstract public function sendAttachment(User $recipient, Attachment $attachment): void;
 }

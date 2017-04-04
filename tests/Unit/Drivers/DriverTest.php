@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Drivers;
 
+use FondBot\Drivers\ReceivedMessage\Attachment;
 use Tests\TestCase;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
@@ -96,6 +97,16 @@ class DriverTestClass extends Driver
      * @return OutgoingMessage
      */
     public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage
+    {
+    }
+
+    /**
+     * Send attachment to recipient.
+     *
+     * @param User       $recipient
+     * @param Attachment $attachment
+     */
+    public function sendAttachment(User $recipient, Attachment $attachment): void
     {
     }
 }
