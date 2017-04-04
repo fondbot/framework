@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Drivers;
 
-use FondBot\Drivers\ReceivedMessage\Attachment;
 use FondBot\Helpers\Arr;
 use FondBot\Conversation\Keyboard;
 use FondBot\Drivers\Exceptions\InvalidRequest;
+use FondBot\Drivers\ReceivedMessage\Attachment;
 
 abstract class Driver
 {

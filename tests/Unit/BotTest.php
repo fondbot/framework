@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use FondBot\Drivers\ReceivedMessage\Attachment;
 use Mockery;
 use FondBot\Bot;
 use Tests\TestCase;
@@ -20,6 +19,7 @@ use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
 use FondBot\Drivers\Exceptions\InvalidRequest;
+use FondBot\Drivers\ReceivedMessage\Attachment;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
 class BotTest extends TestCase

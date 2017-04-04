@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Drivers;
 
-use FondBot\Drivers\ReceivedMessage\Attachment;
 use Tests\TestCase;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
@@ -12,6 +11,7 @@ use FondBot\Conversation\Keyboard;
 use FondBot\Drivers\OutgoingMessage;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Drivers\Exceptions\InvalidRequest;
+use FondBot\Drivers\ReceivedMessage\Attachment;
 
 class DriverTest extends TestCase
 {

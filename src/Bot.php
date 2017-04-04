@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Drivers\ReceivedMessage\Attachment;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
@@ -18,6 +17,7 @@ use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
 use FondBot\Drivers\Exceptions\InvalidRequest;
+use FondBot\Drivers\ReceivedMessage\Attachment;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
 class Bot
@@ -194,8 +194,7 @@ class Bot
         string $text,
         Keyboard $keyboard = null,
         string $driver = null
-    ): ?OutgoingMessage
-    {
+    ): ?OutgoingMessage {
         if ($driver !== null && !$this->driver instanceof $driver) {
             return null;
         }
