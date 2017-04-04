@@ -300,18 +300,6 @@ class FacebookDriverTest extends TestCase
         $this->assertSame($keyboard, $result->getKeyboard());
     }
 
-    public function test_sendMessage_request_exception()
-    {
-        $text = $this->faker()->text;
-        $sender = $this->mock(User::class);
-        $sender->shouldReceive('getId')->andReturn($recipientId = $this->faker()->uuid)->atLeast()->once();
-
-        $this->guzzle->shouldReceive('post')->andThrow(new RequestException('Invalid request',
-            $this->mock(RequestInterface::class)));
-
-        $this->facebook->sendMessage($sender, $text);
-    }
-
     public function test_verify_webhook_check()
     {
         $this->facebook->fill($this->parameters, [

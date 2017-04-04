@@ -77,8 +77,6 @@ class FacebookDriver extends Driver implements WebhookVerification
 
             return $this->sender = new FacebookUser($user);
         } catch (RequestException $exception) {
-            $this->error(get_class($exception), [$exception->getMessage()]);
-
             throw new InvalidChannelRequest('Can not get user profile', 0, $exception);
         }
     }
@@ -106,14 +104,10 @@ class FacebookDriver extends Driver implements WebhookVerification
     {
         $message = new FacebookOutgoingMessage($sender, $text, $keyboard);
 
-        try {
-            $this->guzzle->post(
-                self::API_URL.'me/messages',
-                $this->getDefaultRequestParameters() + ['form_params' => $message->toArray()]
-            );
-        } catch (RequestException $exception) {
-            $this->error(get_class($exception), [$exception->getMessage()]);
-        }
+        $this->guzzle->post(
+            self::API_URL.'me/messages',
+            $this->getDefaultRequestParameters() + ['form_params' => $message->toArray()]
+        );
 
         return $message;
     }

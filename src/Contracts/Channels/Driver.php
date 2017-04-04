@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Channels;
 
 use FondBot\Helpers\Arr;
-use FondBot\Traits\Loggable;
 use FondBot\Contracts\Conversation\Keyboard;
 use FondBot\Channels\Exceptions\InvalidChannelRequest;
 
 abstract class Driver
 {
-    use Loggable;
-
     /** @var array */
     private $request = [];
 
