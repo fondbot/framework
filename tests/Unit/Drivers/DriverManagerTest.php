@@ -8,7 +8,7 @@ use Tests\TestCase;
 use FondBot\Helpers\Str;
 use FondBot\Channels\Channel;
 use FondBot\Drivers\DriverManager;
-use Tests\Classes\Fakes\FakeDriver;
+use Tests\Classes\TestDriver;
 
 /**
  * @property DriverManager manager
@@ -20,7 +20,7 @@ class DriverManagerTest extends TestCase
         parent::setUp();
 
         $this->manager = new DriverManager();
-        $this->manager->add('fake', new FakeDriver());
+        $this->manager->add('fake', new TestDriver());
     }
 
     public function test_get()
@@ -29,7 +29,7 @@ class DriverManagerTest extends TestCase
 
         $driver = $this->manager->get($channel);
 
-        $this->assertInstanceOf(FakeDriver::class, $driver);
+        $this->assertInstanceOf(TestDriver::class, $driver);
     }
 
     /**

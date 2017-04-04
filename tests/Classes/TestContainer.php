@@ -6,7 +6,7 @@ namespace Tests\Classes;
 
 use FondBot\Contracts\Container;
 
-class FakeContainer implements Container
+class TestContainer implements Container
 {
     private static $instance;
 

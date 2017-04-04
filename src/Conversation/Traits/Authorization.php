@@ -13,6 +13,10 @@ trait Authorization
      */
     public function passesAuthorization(): bool
     {
+        if (method_exists($this, 'authorize')) {
+            return $this->authorize();
+        }
+
         return true;
     }
 }

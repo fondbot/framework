@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes\Fakes;
+namespace Tests\Classes;
 
 use FondBot\Bot;
 use FondBot\Helpers\Str;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 
-class FakeInteraction extends Interaction
+class TestInteraction extends Interaction
 {
     /**
      * Run interaction.

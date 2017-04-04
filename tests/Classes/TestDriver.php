@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes\Fakes;
+namespace Tests\Classes;
 
 use Faker\Factory;
 use Faker\Generator;
@@ -14,7 +14,7 @@ use FondBot\Drivers\ReceivedMessage;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
-class FakeDriver extends Driver implements WebhookVerification
+class TestDriver extends Driver implements WebhookVerification
 {
     private $sender;
     private $message;
@@ -70,7 +70,7 @@ class FakeDriver extends Driver implements WebhookVerification
      */
     public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage
     {
-        return new FakeOutgoingMessage($sender, $text, $keyboard);
+        return new TestOutgoingMessage($sender, $text, $keyboard);
     }
 
     /**

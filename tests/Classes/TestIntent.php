@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes\Fakes;
+namespace Tests\Classes;
 
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Activators\Activator;
 use FondBot\Drivers\ReceivedMessage\Attachment;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
-class FakeIntent extends Intent
+class TestIntent extends Intent
 {
     /**
      * Intent activators.
@@ -34,6 +34,6 @@ class FakeIntent extends Intent
      */
     public function run(): void
     {
-        $this->jump(FakeInteraction::class);
+        $this->jump(TestInteraction::class);
     }
 }

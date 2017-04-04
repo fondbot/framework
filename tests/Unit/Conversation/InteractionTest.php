@@ -8,12 +8,12 @@ use FondBot\Bot;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
 use FondBot\Drivers\ReceivedMessage;
-use Tests\Classes\Fakes\FakeInteraction;
+use Tests\Classes\TestInteraction;
 
 /**
- * @property mixed|\Mockery\Mock                  bot
- * @property mixed|\Mockery\Mock                  context
- * @property \Tests\Classes\Fakes\FakeInteraction interaction
+ * @property mixed|\Mockery\Mock            bot
+ * @property mixed|\Mockery\Mock            context
+ * @property \Tests\Classes\TestInteraction interaction
  */
 class InteractionTest extends TestCase
 {
@@ -26,7 +26,7 @@ class InteractionTest extends TestCase
 
         $this->bot->shouldReceive('getContext')->andReturn($this->context);
 
-        $this->interaction = new FakeInteraction;
+        $this->interaction = new TestInteraction;
     }
 
     public function test_run_current_interaction_in_context_and_do_not_run_another_interaction()

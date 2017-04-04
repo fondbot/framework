@@ -8,14 +8,12 @@ use Mockery;
 use FondBot\Bot;
 use Faker\Factory;
 use Faker\Generator;
-use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
-use Tests\Classes\FakeContainer;
-use FondBot\Contracts\Filesystem\Filesystem;
+use Tests\Classes\TestContainer;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    /** @var FakeContainer */
+    /** @var TestContainer */
     protected $container;
 
     /** @var Mockery\Mock */
@@ -29,17 +27,12 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         parent::setUp();
 
         // Set up container
-        $this->container = new Classes\FakeContainer();
+        $this->container = new Classes\TestContainer();
 
         $logger = $this->mock(LoggerInterface::class);
         $logger->shouldReceive('debug', 'error');
 
-        $this->guzzle = $this->mock(Client::class);
-        $this->filesystem = $this->mock(Filesystem::class);
-
         $bot = $this->mock(Bot::class);
-        $bot->shouldReceive('get')->with(LoggerInterface::class)->andReturn($this->container->make(LoggerInterface::class));
-        $bot->shouldReceive('get')->with(Client::class)->andReturn($this->container->make(Client::class));
         Bot::setInstance($bot);
     }
 

@@ -8,8 +8,8 @@ use FondBot\Bot;
 use Tests\TestCase;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
-use Tests\Classes\Fakes\FakeIntent;
-use Tests\Classes\Fakes\FakeInteraction;
+use Tests\Classes\TestIntent;
+use Tests\Classes\TestInteraction;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $bot
@@ -28,13 +28,13 @@ class IntentTest extends TestCase
         $this->context = $this->mock(Context::class);
         $this->bot->shouldReceive('getContext')->andReturn($this->context);
 
-        $this->intent = new FakeIntent;
-        $this->interaction = $this->mock(FakeInteraction::class);
+        $this->intent = new TestIntent;
+        $this->interaction = $this->mock(TestInteraction::class);
     }
 
     public function test_handle()
     {
-        $this->bot->shouldReceive('get')->with(FakeInteraction::class)->andReturn($this->interaction)->once();
+        $this->bot->shouldReceive('get')->with(TestInteraction::class)->andReturn($this->interaction)->once();
         $this->bot->shouldReceive('converse')->with($this->interaction)->once();
 
         $this->intent->handle($this->bot);

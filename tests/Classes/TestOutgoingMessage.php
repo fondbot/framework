@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes\Fakes;
+namespace Tests\Classes;
 
 use FondBot\Drivers\User;
 use FondBot\Conversation\Keyboard;
 use FondBot\Drivers\OutgoingMessage;
 
-class FakeOutgoingMessage implements OutgoingMessage
+class TestOutgoingMessage implements OutgoingMessage
 {
     private $recipient;
     private $text;

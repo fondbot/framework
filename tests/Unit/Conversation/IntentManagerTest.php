@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
-use Tests\Classes\Fakes\FakeIntent;
+use Tests\Classes\TestIntent;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\FallbackIntent;
@@ -24,7 +24,7 @@ class IntentManagerTest extends TestCase
 
     public function test_find_fallback_intent()
     {
-        $this->manager->add(new FakeIntent());
+        $this->manager->add(new TestIntent());
         $this->manager->setFallbackIntent(new FallbackIntent());
 
         $message = $this->mock(ReceivedMessage::class);
@@ -37,12 +37,12 @@ class IntentManagerTest extends TestCase
 
     public function test_find_no_intent_in_context_activator_found()
     {
-        $this->manager->add(new FakeIntent());
+        $this->manager->add(new TestIntent());
 
         $message = $this->mock(ReceivedMessage::class);
         $message->shouldReceive('getText')->andReturn('/example');
 
         $result = $this->manager->find($message);
-        $this->assertInstanceOf(FakeIntent::class, $result);
+        $this->assertInstanceOf(TestIntent::class, $result);
     }
 }

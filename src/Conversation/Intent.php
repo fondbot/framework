@@ -21,16 +21,6 @@ abstract class Intent implements Conversable
         Transitions;
 
     /**
-     * Determine if intent passes the authorization check.
-     *
-     * @return bool
-     */
-    public function passesAuthorization(): bool
-    {
-        return true;
-    }
-
-    /**
      * Intent activators.
      *
      * @return Activator[]
