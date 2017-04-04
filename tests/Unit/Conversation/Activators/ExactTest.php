@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Activators;
 
-use FondBot\Contracts\Drivers\ReceivedMessage;
 use Tests\TestCase;
 use FondBot\Conversation\Activators\Exact;
+use FondBot\Contracts\Drivers\ReceivedMessage;
 
 /**
  * @property mixed|\Mockery\Mock message

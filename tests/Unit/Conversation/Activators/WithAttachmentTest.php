@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Activators;
 
-use FondBot\Contracts\Drivers\Message\Attachment;
-use FondBot\Contracts\Drivers\ReceivedMessage;
 use Tests\TestCase;
+use FondBot\Contracts\Drivers\ReceivedMessage;
+use FondBot\Contracts\Drivers\Message\Attachment;
 use FondBot\Conversation\Activators\WithAttachment;
 
 /**

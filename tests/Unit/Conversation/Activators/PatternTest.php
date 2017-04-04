@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Activators;
 
-use FondBot\Contracts\Drivers\ReceivedMessage;
 use Tests\TestCase;
 use FondBot\Conversation\Activators\Pattern;
+use FondBot\Contracts\Drivers\ReceivedMessage;
 use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 /**

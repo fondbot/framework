@@ -9,9 +9,9 @@ use Faker\Generator;
 use FondBot\Drivers\Driver;
 use FondBot\Contracts\Drivers\User;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Drivers\InvalidRequest;
 use FondBot\Contracts\Drivers\OutgoingMessage;
 use FondBot\Contracts\Drivers\ReceivedMessage;
-use FondBot\Contracts\Drivers\InvalidRequest;
 use FondBot\Contracts\Drivers\Extensions\WebhookVerification;
 
 class FakeDriver extends Driver implements WebhookVerification

@@ -16,11 +16,11 @@ use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
 use FondBot\Contracts\Conversation\Intent;
 use FondBot\Contracts\Conversation\Keyboard;
+use FondBot\Contracts\Drivers\InvalidRequest;
 use FondBot\Contracts\Drivers\OutgoingMessage;
 use FondBot\Contracts\Drivers\ReceivedMessage;
 use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Contracts\Conversation\Interaction;
-use FondBot\Contracts\Drivers\InvalidRequest;
 use FondBot\Contracts\Drivers\Extensions\WebhookVerification;
 
 /**
