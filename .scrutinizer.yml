@@ -6,21 +6,6 @@ build:
         coverage: 
           file: clover.xml
           format: clover
-checks: 
-  php: 
-    fix_doc_comments: true
-    fix_identation_4spaces: true
-    fix_line_ending: true
-    fix_linefeed: true
-    fix_php_opening_tag: true
-    fix_use_statements: 
-      order_alphabetically: true
-      preserve_blanklines: true
-      preserve_multiple: false
-      remove_unused: true
-    remove_extra_empty_lines: true
-    remove_php_closing_tag: true
-    remove_trailing_whitespace: true
 filter: 
   excluded_paths: 
     - tests/*
