@@ -18,6 +18,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
         parent::setUp();
+        Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
 
         // Set up container
         $this->container = new Classes\TestContainer();
