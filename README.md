@@ -10,7 +10,7 @@
 **WARNING! THIS PACKAGE IS STILL IN DEVELOPMENT. API AND USAGE MAY CHANGE DRAMATICALLY UNTIL v1.0.0**
 
 ## About Fondbot
-FondBot is a library for building chat bots with built-in Laravel framework integration.
+FondBot is a frameworks for building chat bots.
 
 The main goal of this project is to provide elegant and flexible architecture to develop and maintain chatbot projects from small to the big ones.
 
