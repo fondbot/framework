@@ -11,13 +11,13 @@ use FondBot\Drivers\Exceptions\InvalidRequest;
 abstract class Driver implements SerializableForQueue
 {
     /** @var array */
-    private $request = [];
+    protected $request = [];
 
     /** @var array */
-    private $headers = [];
+    protected $headers = [];
 
     /** @var array */
-    private $parameters;
+    protected $parameters;
 
     /**
      * Set driver data.
