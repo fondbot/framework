@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Queue;
 
-use FondBot\Drivers\Command;
 use FondBot\Drivers\Driver;
+use FondBot\Drivers\Command;
 
 abstract class Queue
 {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Drivers;
 
 use FondBot\Helpers\Arr;
-use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Queue\SerializableForQueue;
+use FondBot\Drivers\Exceptions\InvalidRequest;
 
 abstract class Driver implements SerializableForQueue
 {

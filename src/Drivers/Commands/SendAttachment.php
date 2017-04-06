@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Drivers\Commands;
 
+use FondBot\Drivers\User;
 use FondBot\Drivers\Command;
 use FondBot\Drivers\ReceivedMessage\Attachment;
-use FondBot\Drivers\User;
 
 class SendAttachment implements Command
 {

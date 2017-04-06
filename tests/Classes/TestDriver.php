@@ -6,9 +6,9 @@ namespace Tests\Classes;
 
 use Faker\Factory;
 use Faker\Generator;
-use FondBot\Drivers\Command;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
+use FondBot\Drivers\Command;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Drivers\Extensions\WebhookVerification;
@@ -87,7 +87,6 @@ class TestDriver extends Driver implements WebhookVerification
     {
         return $this->getRequest('verification');
     }
-
 
     private function faker(): Generator
     {

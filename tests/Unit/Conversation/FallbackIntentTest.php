@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use FondBot\Bot;
-use FondBot\Drivers\Driver;
-use FondBot\Queue\Queue;
 use Tests\TestCase;
+use FondBot\Queue\Queue;
 use FondBot\Drivers\User;
+use FondBot\Drivers\Driver;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\FallbackIntent;
 

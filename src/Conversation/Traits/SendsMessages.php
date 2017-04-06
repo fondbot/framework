@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Traits;
 
 use FondBot\Bot;
-use FondBot\Drivers\Commands\SendAttachment;
-use FondBot\Drivers\Commands\SendMessage;
-use FondBot\Drivers\ReceivedMessage\Attachment;
+use FondBot\Queue\Queue;
 use FondBot\Drivers\User;
 use FondBot\Conversation\Keyboard;
-use FondBot\Queue\Queue;
+use FondBot\Drivers\Commands\SendMessage;
+use FondBot\Drivers\Commands\SendAttachment;
+use FondBot\Drivers\ReceivedMessage\Attachment;
 
 trait SendsMessages
 {

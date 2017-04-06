@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Drivers\Commands;
 
-use FondBot\Conversation\Keyboard;
-use FondBot\Drivers\Command;
 use FondBot\Drivers\User;
+use FondBot\Drivers\Command;
+use FondBot\Conversation\Keyboard;
 
 class SendMessage implements Command
 {

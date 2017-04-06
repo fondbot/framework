@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Drivers;
 
-use FondBot\Drivers\Command;
 use Tests\TestCase;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
+use FondBot\Drivers\Command;
 use FondBot\Conversation\Keyboard;
 use FondBot\Drivers\OutgoingMessage;
 use FondBot\Drivers\ReceivedMessage;

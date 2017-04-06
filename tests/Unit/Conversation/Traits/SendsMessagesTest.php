@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation\Traits;
 
 use FondBot\Bot;
-use FondBot\Queue\Queue;
 use Tests\TestCase;
+use FondBot\Queue\Queue;
 use FondBot\Drivers\User;
 use FondBot\Conversation\Keyboard;
 use FondBot\Conversation\Traits\SendsMessages;
