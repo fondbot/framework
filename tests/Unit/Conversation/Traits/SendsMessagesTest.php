@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation\Traits;
 
 use FondBot\Bot;
+use FondBot\Queue\Queue;
 use Tests\TestCase;
 use FondBot\Drivers\User;
 use FondBot\Conversation\Keyboard;
@@ -16,17 +17,12 @@ class SendsMessagesTest extends TestCase
     {
         $bot = $this->mock(Bot::class);
 
-        $bot->shouldReceive('sendMessage')
-            ->with(
-                $user = $this->mock(User::class),
-                $text = $this->faker()->text,
-                $keyboard = $this->mock(Keyboard::class),
-                $driver = $this->faker()->word
-            )
-            ->once();
+        $bot->shouldReceive('get')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
+        $bot->shouldReceive('getDriver');
+        $queue->shouldReceive('push')->once();
 
-        $class = new SendsMessagesTraitTestClass($bot, $user);
-        $class->sendMessage($text, $keyboard, $driver);
+        $class = new SendsMessagesTraitTestClass($bot, $this->mock(User::class));
+        $class->sendMessage($this->faker()->text, $this->mock(Keyboard::class));
     }
 }
 

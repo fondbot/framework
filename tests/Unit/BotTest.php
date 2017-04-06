@@ -7,30 +7,27 @@ namespace Tests\Unit;
 use Mockery;
 use FondBot\Bot;
 use Tests\TestCase;
-use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
-use FondBot\Conversation\Keyboard;
-use FondBot\Drivers\OutgoingMessage;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
 use FondBot\Drivers\Exceptions\InvalidRequest;
-use FondBot\Drivers\ReceivedMessage\Attachment;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
 class BotTest extends TestCase
 {
-    public function test_context()
+    public function test_context_and_driver()
     {
-        Bot::createInstance($this->container, $this->mock(Channel::class), $this->mock(Driver::class));
+        Bot::createInstance($this->container, $this->mock(Channel::class), $driver = $this->mock(Driver::class));
 
         Bot::getInstance()->setContext($context = $this->mock(Context::class));
 
         $this->assertSame($context, Bot::getInstance()->getContext());
+        $this->assertSame($driver, Bot::getInstance()->getDriver());
     }
 
     public function test_clearContext()
@@ -147,61 +144,5 @@ class BotTest extends TestCase
         $result = $bot->process();
 
         $this->assertSame($request['verification'], $result);
-    }
-
-    public function test_sendMessage()
-    {
-        Bot::createInstance(
-            $this->container,
-            $this->mock(Channel::class),
-            $driver = $this->mock(Driver::class)
-        );
-
-        $driver->shouldReceive('sendMessage')
-            ->with(
-                $recipient = $this->mock(User::class),
-                $text = $this->faker()->text,
-                $keyboard = $this->mock(Keyboard::class))
-            ->once();
-
-        $result = Bot::getInstance()->sendMessage($recipient, $text, $keyboard);
-        $this->assertInstanceOf(OutgoingMessage::class, $result);
-    }
-
-    public function test_sendMessage_driver_does_not_match()
-    {
-        Bot::createInstance(
-            $this->container,
-            $channel = $this->mock(Channel::class),
-            $driver = $this->mock(Driver::class)
-        );
-
-        $driver->shouldReceive('sendMessage')->never();
-
-        $result = Bot::getInstance()->sendMessage(
-            $this->mock(User::class),
-            $this->faker()->text,
-            $this->mock(Keyboard::class),
-            'foo'
-        );
-        $this->assertNull($result);
-    }
-
-    public function test_sendAttachment()
-    {
-        Bot::createInstance(
-            $this->container,
-            $this->mock(Channel::class),
-            $driver = $this->mock(Driver::class)
-        );
-
-        $driver->shouldReceive('sendAttachment')
-            ->with(
-                $recipient = $this->mock(User::class),
-                $attachment = $this->mock(Attachment::class)
-            )
-            ->once();
-
-        Bot::getInstance()->sendAttachment($recipient, $attachment);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Drivers;
 
+use FondBot\Drivers\Command;
 use Tests\TestCase;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
@@ -84,6 +85,15 @@ class DriverTestClass extends Driver
      * @return ReceivedMessage
      */
     public function getMessage(): ReceivedMessage
+    {
+    }
+
+    /**
+     * Handle command.
+     *
+     * @param Command $command
+     */
+    public function handle(Command $command): void
     {
     }
 

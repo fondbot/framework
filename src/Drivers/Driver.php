@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Drivers;
 
 use FondBot\Helpers\Arr;
-use FondBot\Conversation\Keyboard;
 use FondBot\Drivers\Exceptions\InvalidRequest;
-use FondBot\Drivers\ReceivedMessage\Attachment;
+use FondBot\Queue\SerializableForQueue;
 
-abstract class Driver
+abstract class Driver implements SerializableForQueue
 {
     /** @var array */
     private $request = [];
@@ -121,21 +120,9 @@ abstract class Driver
     abstract public function getMessage(): ReceivedMessage;
 
     /**
-     * Send message to recipient.
+     * Handle command.
      *
-     * @param User          $sender
-     * @param string        $text
-     * @param Keyboard|null $keyboard
-     *
-     * @return OutgoingMessage
+     * @param Command $command
      */
-    abstract public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage;
-
-    /**
-     * Send attachment to recipient.
-     *
-     * @param User       $recipient
-     * @param Attachment $attachment
-     */
-    abstract public function sendAttachment(User $recipient, Attachment $attachment): void;
+    abstract public function handle(Command $command): void;
 }

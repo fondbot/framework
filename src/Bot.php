@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace FondBot;
 
-use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use FondBot\Contracts\Container;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
-use FondBot\Conversation\Keyboard;
-use FondBot\Drivers\OutgoingMessage;
 use FondBot\Conversation\Conversable;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
 use FondBot\Drivers\Exceptions\InvalidRequest;
-use FondBot\Drivers\ReceivedMessage\Attachment;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
 class Bot
@@ -77,6 +73,16 @@ class Bot
     public static function setInstance(Bot $instance): void
     {
         static::$instance = $instance;
+    }
+
+    /**
+     * Get current driver instance.
+     *
+     * @return Driver
+     */
+    public function getDriver(): Driver
+    {
+        return $this->driver;
     }
 
     /**
@@ -177,44 +183,6 @@ class Bot
         } elseif ($conversable instanceof Interaction) {
             $conversable->handle($this);
         }
-    }
-
-    /**
-     * Send message.
-     *
-     * @param User          $recipient
-     * @param string        $text
-     * @param Keyboard|null $keyboard
-     * @param string|null   $driver
-     *
-     * @return OutgoingMessage|null
-     */
-    public function sendMessage(
-        User $recipient,
-        string $text,
-        Keyboard $keyboard = null,
-        string $driver = null
-    ): ?OutgoingMessage {
-        if ($driver !== null && !$this->driver instanceof $driver) {
-            return null;
-        }
-
-        return $this->driver->sendMessage(
-            $recipient,
-            $text,
-            $keyboard
-        );
-    }
-
-    /**
-     * Send attachment.
-     *
-     * @param User       $recipient
-     * @param Attachment $attachment
-     */
-    public function sendAttachment(User $recipient, Attachment $attachment): void
-    {
-        $this->driver->sendAttachment($recipient, $attachment);
     }
 
     /**

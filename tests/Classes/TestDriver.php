@@ -6,10 +6,9 @@ namespace Tests\Classes;
 
 use Faker\Factory;
 use Faker\Generator;
+use FondBot\Drivers\Command;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
-use FondBot\Conversation\Keyboard;
-use FondBot\Drivers\OutgoingMessage;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Drivers\Extensions\WebhookVerification;
@@ -60,17 +59,13 @@ class TestDriver extends Driver implements WebhookVerification
     }
 
     /**
-     * Send reply to participant.
+     * Handle command.
      *
-     * @param User          $sender
-     * @param string        $text
-     * @param Keyboard|null $keyboard
-     *
-     * @return OutgoingMessage
+     * @param Command $command
      */
-    public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage
+    public function handle(Command $command): void
     {
-        return new TestOutgoingMessage($sender, $text, $keyboard);
+        // TODO: Implement handle() method.
     }
 
     /**
@@ -92,6 +87,7 @@ class TestDriver extends Driver implements WebhookVerification
     {
         return $this->getRequest('verification');
     }
+
 
     private function faker(): Generator
     {

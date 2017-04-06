@@ -22,9 +22,11 @@
     ],
     "require": {
         "php": ">=7.1",
+        "jeremeamia/superclosure": "^2.3",
         "spatie/regex": "^1.1",
         "tightenco/collect": "^5.4",
-        "verbalexpressions/php-verbal-expressions": "dev-master"
+        "verbalexpressions/php-verbal-expressions": "dev-master",
+        "zumba/json-serializer": "^2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.6",

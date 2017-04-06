@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Traits;
 
 use FondBot\Bot;
+use FondBot\Drivers\Commands\SendAttachment;
+use FondBot\Drivers\Commands\SendMessage;
+use FondBot\Drivers\ReceivedMessage\Attachment;
 use FondBot\Drivers\User;
 use FondBot\Conversation\Keyboard;
+use FondBot\Queue\Queue;
 
 trait SendsMessages
 {
@@ -14,15 +18,30 @@ trait SendsMessages
     protected $bot;
 
     /**
-     * Send reply to user.
+     * Send message to user.
      *
      * @param string        $text
      * @param Keyboard|null $keyboard
-     * @param string|null   $driver Sends only if driver matches.
      */
-    protected function sendMessage(string $text, Keyboard $keyboard = null, string $driver = null): void
+    protected function sendMessage(string $text, Keyboard $keyboard = null): void
     {
-        $this->bot->sendMessage($this->user(), $text, $keyboard, $driver);
+        /** @var Queue $queue */
+        $queue = $this->bot->get(Queue::class);
+
+        $queue->push($this->bot->getDriver(), new SendMessage($this->user(), $text, $keyboard));
+    }
+
+    /**
+     * Send attachment to user.
+     *
+     * @param Attachment $attachment
+     */
+    protected function sendAttachment(Attachment $attachment): void
+    {
+        /** @var Queue $queue */
+        $queue = $this->bot->get(Queue::class);
+
+        $queue->push($this->bot->getDriver(), new SendAttachment($this->user(), $attachment));
     }
 
     /**
