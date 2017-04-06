@@ -32,16 +32,36 @@ trait SendsMessages
     }
 
     /**
-     * Send attachment to user.
+     * Send message to user with delay.
      *
-     * @param Attachment $attachment
+     * @param int           $delay
+     * @param string        $text
+     * @param Keyboard|null $keyboard
      */
-    protected function sendAttachment(Attachment $attachment): void
+    protected function sendDelayedMessage(int $delay, string $text, Keyboard $keyboard = null): void
     {
         /** @var Queue $queue */
         $queue = $this->bot->get(Queue::class);
 
-        $queue->push($this->bot->getDriver(), new SendAttachment($this->user(), $attachment));
+        $queue->later($this->bot->getDriver(), new SendMessage($this->user(), $text, $keyboard), $delay);
+    }
+
+    /**
+     * Send attachment to user.
+     *
+     * @param Attachment $attachment
+     * @param int        $delay
+     */
+    protected function sendAttachment(Attachment $attachment, int $delay = 0): void
+    {
+        /** @var Queue $queue */
+        $queue = $this->bot->get(Queue::class);
+
+        if ($delay === 0) {
+            $queue->push($this->bot->getDriver(), new SendAttachment($this->user(), $attachment));
+        } else {
+            $queue->later($this->bot->getDriver(), new SendAttachment($this->user(), $attachment), $delay);
+        }
     }
 
     /**
