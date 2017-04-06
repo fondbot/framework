@@ -8,23 +8,7 @@ use FondBot\Contracts\Container;
 
 class TestContainer implements Container
 {
-    private static $instance;
-
     private $binds = [];
-
-    /**
-     * Get instance of the container.
-     *
-     * @return Container
-     */
-    public static function instance(): Container
-    {
-        if (self::$instance === null) {
-            return new static;
-        }
-
-        return self::$instance;
-    }
 
     /**
      * Register a binding with the container.

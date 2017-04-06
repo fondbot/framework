@@ -7,13 +7,6 @@ namespace FondBot\Contracts;
 interface Container
 {
     /**
-     * Get instance of the container.
-     *
-     * @return Container
-     */
-    public static function instance(): Container;
-
-    /**
      * Register a binding with the container.
      *
      * @param string|array         $abstract
