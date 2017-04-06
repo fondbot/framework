@@ -10,13 +10,15 @@
 **WARNING! THIS PACKAGE IS STILL IN DEVELOPMENT. API AND USAGE MAY CHANGE DRAMATICALLY UNTIL v1.0.0**
 
 ## About Fondbot
-FondBot is a framework for building chat bots.
+FondBot is a framework for building chat bots. You can use it with or without framework. 
+
+Currently, we have packages to easily use FondBot with [Laravel](https://github.com/fondbot/frameworks-laravel) and [Lumen](https://github.com/fondbot/frameworks-lumen) frameworks. 
 
 The main goal of this project is to provide elegant and flexible architecture to develop and maintain chatbot projects from small to the big ones.
 
 ## Installation and usage
 
-You can find all installation instructions and full documentation on https://docs.fondbot.com
+You can find all installation instructions and other documentation at https://docs.fondbot.com
 
 ## Community
 
