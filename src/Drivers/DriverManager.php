@@ -54,7 +54,7 @@ class DriverManager
     private function validateParameters(Channel $channel, Driver $driver): void
     {
         collect($driver->getConfig())->each(function (string $parameter) use ($channel) {
-            if (!array_key_exists($parameter, $channel->getParameters())) {
+            if ($channel->getParameter($parameter) === null) {
                 throw new InvalidConfiguration('Invalid `'.$channel->getName().'` channel configuration.');
             }
         });
