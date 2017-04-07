@@ -37,12 +37,13 @@ abstract class Driver implements SerializableForQueue
      * Get request value.
      *
      * @param string|null $key
+     * @param null        $default
      *
      * @return mixed
      */
-    public function getRequest(string $key = null)
+    public function getRequest(string $key = null, $default = null)
     {
-        return Arr::get($this->request, $key);
+        return Arr::get($this->request, $key, $default);
     }
 
     /**
@@ -71,24 +72,26 @@ abstract class Driver implements SerializableForQueue
      * Get header.
      *
      * @param string $name
+     * @param null   $default
      *
      * @return mixed
      */
-    public function getHeader(string $name)
+    public function getHeader(string $name, $default = null)
     {
-        return Arr::get($this->headers, $name);
+        return Arr::get($this->headers, $name, $default);
     }
 
     /**
      * Get parameter value.
      *
      * @param string $name
+     * @param null   $default
      *
      * @return mixed
      */
-    public function getParameter(string $name)
+    public function getParameter(string $name, $default = null)
     {
-        return Arr::get($this->parameters, $name);
+        return Arr::get($this->parameters, $name, $default);
     }
 
     /**
