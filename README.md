@@ -7,8 +7,6 @@
 [![Coverage](https://img.shields.io/scrutinizer/coverage/g/fondbot/fondbot.svg?style=flat-square)](https://scrutinizer-ci.com/g/fondbot/fondbot)
 [![StyleCI](https://styleci.io/repos/78780366/shield)](https://styleci.io/repos/78780366)
 
-**WARNING! THIS PACKAGE IS STILL IN DEVELOPMENT. API AND USAGE MAY CHANGE DRAMATICALLY UNTIL v1.0.0**
-
 ## About Fondbot
 FondBot is a framework for building chat bots. You can use it with or without framework. 
 
