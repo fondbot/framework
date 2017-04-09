@@ -2,7 +2,7 @@
 
 return [
 
-    /**
+    /*
      * FondBot has no built-in drivers.
      * However, there are official and third-party drivers you may plug-in.
      * Here you need to define an alias and driver class
