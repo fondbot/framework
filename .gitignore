@@ -4,6 +4,7 @@
 .DS_Store
 Thumbs.db
 .idea
+.discovery
 .php_cs.cache
 
 clover.xml

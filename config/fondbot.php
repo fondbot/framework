@@ -3,17 +3,6 @@
 return [
 
     /*
-     * FondBot has no built-in drivers.
-     * However, there are official and third-party drivers you may plug-in.
-     * Here you need to define an alias and driver class
-     */
-    'drivers' => [
-        // 'telegram' => FondBot\Drivers\Telegram\TelegramDriver::class,
-        // 'facebook' => FondBot\Drivers\Facebook\FacebookDriver::class,
-        // 'vk-communities' => FondBot\Drivers\VkCommunity\VkCommunityDriver::class,
-    ],
-
-    /*
      * Here you specify channels which FondBot will use when receiving webhooks.
      * Read more about configuring: https://docs.fondbot.com/#/configuration?id=channels
      */

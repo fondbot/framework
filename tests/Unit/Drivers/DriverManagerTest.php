@@ -7,14 +7,29 @@ namespace Tests\Unit\Drivers;
 use Tests\TestCase;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
+use FondBot\Contracts\Container;
 use FondBot\Drivers\DriverManager;
+use TheCodingMachine\Discovery\Asset;
+use TheCodingMachine\Discovery\Discovery;
+use TheCodingMachine\Discovery\ImmutableAssetType;
 
 class DriverManagerTest extends TestCase
 {
     public function test_get()
     {
-        $manager = new DriverManager();
-        $manager->add('fake', $driver = $this->mock(Driver::class));
+        $container = $this->mock(Container::class);
+        $discovery = $this->mock(Discovery::class);
+
+        $discovery->shouldReceive('getAssetType')
+            ->with(Driver::class)
+            ->andReturn(new ImmutableAssetType(Driver::class, [
+                new Asset(Driver::class, '', '', 0, ['name' => 'fake']),
+            ]))
+            ->once();
+
+        $container->shouldReceive('make')->with(Driver::class)->andReturn($driver = $this->mock(Driver::class))->once();
+
+        $manager = new DriverManager($container, $discovery);
 
         $driver->shouldReceive('getConfig')->andReturn(['token'])->atLeast()->once();
         $driver->shouldReceive('fill')->with([], [], [])->once();
@@ -32,8 +47,19 @@ class DriverManagerTest extends TestCase
      */
     public function test_get_invalid_configuration()
     {
-        $manager = new DriverManager();
-        $manager->add('fake', $driver = $this->mock(Driver::class));
+        $container = $this->mock(Container::class);
+        $discovery = $this->mock(Discovery::class);
+
+        $discovery->shouldReceive('getAssetType')
+            ->with(Driver::class)
+            ->andReturn(new ImmutableAssetType(Driver::class, [
+                new Asset(Driver::class, '', '', 0, ['name' => 'fake']),
+            ]))
+            ->once();
+
+        $container->shouldReceive('make')->with(Driver::class)->andReturn($driver = $this->mock(Driver::class))->once();
+
+        $manager = new DriverManager($container, $discovery);
 
         $driver->shouldReceive('getConfig')->andReturn(['token'])->atLeast()->once();
 
