@@ -38,7 +38,7 @@ class UrlButton implements Button
     }
 
     /**
-     * Additional parameters
+     * Additional parameters.
      *
      * @return array
      */
