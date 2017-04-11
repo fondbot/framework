@@ -14,4 +14,3 @@ before_script:
   - COMPOSER_DISCARD_CHANGES=1 composer install --prefer-source --no-interaction
 script:
   - vendor/bin/phpunit
-  - bash <(curl -s https://codecov.io/bash)
