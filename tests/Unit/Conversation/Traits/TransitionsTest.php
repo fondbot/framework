@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Traits;
 
-use FondBot\Bot;
+use FondBot\Kernel;
 use Tests\TestCase;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Interaction;
@@ -14,12 +14,12 @@ class TransitionsTest extends TestCase
 {
     public function test_jump()
     {
-        $bot = $this->mock(Bot::class);
+        $kernel = $this->mock(Kernel::class);
 
-        $bot->shouldReceive('get')->with('foo')->andReturn($interaction = $this->mock(Interaction::class))->once();
-        $bot->shouldReceive('converse')->with($interaction)->once();
+        $kernel->shouldReceive('get')->with('foo')->andReturn($interaction = $this->mock(Interaction::class))->once();
+        $kernel->shouldReceive('converse')->with($interaction)->once();
 
-        $class = new TransitionsTraitTestClass($bot);
+        $class = new TransitionsTraitTestClass($kernel);
         $class->jump('foo');
     }
 
@@ -29,12 +29,12 @@ class TransitionsTest extends TestCase
      */
     public function test_jump_invalid_interaction()
     {
-        $bot = $this->mock(Bot::class);
+        $kernel = $this->mock(Kernel::class);
 
-        $bot->shouldReceive('get')->with('foo')->andReturn($this->mock(Intent::class))->once();
-        $bot->shouldReceive('converse')->never();
+        $kernel->shouldReceive('get')->with('foo')->andReturn($this->mock(Intent::class))->once();
+        $kernel->shouldReceive('converse')->never();
 
-        $class = new TransitionsTraitTestClass($bot);
+        $class = new TransitionsTraitTestClass($kernel);
         $class->jump('foo');
     }
 }
@@ -43,11 +43,11 @@ class TransitionsTraitTestClass
 {
     use Transitions;
 
-    protected $bot;
+    protected $kernel;
 
-    public function __construct(Bot $bot)
+    public function __construct(Kernel $kernel)
     {
-        $this->bot = $bot;
+        $this->kernel = $kernel;
     }
 
     public function __call($name, $arguments)

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Classes;
 
-use FondBot\Bot;
+use FondBot\Kernel;
 use FondBot\Helpers\Str;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
@@ -18,9 +18,9 @@ class TestInteraction extends Interaction
     {
     }
 
-    public function runIncorrect(Bot $bot): void
+    public function runIncorrect(Kernel $kernel): void
     {
-        $this->bot = $bot;
+        $this->kernel = $kernel;
 
         $this->jump(Str::random());
     }

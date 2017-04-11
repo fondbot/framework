@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Bot;
+use FondBot\Kernel;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Conversation\Traits\Authorization;
 use FondBot\Conversation\Traits\HasActivators;
@@ -27,11 +27,11 @@ abstract class Intent implements Conversable
     /**
      * Handle intent.
      *
-     * @param Bot $bot
+     * @param Kernel $kernel
      */
-    public function handle(Bot $bot): void
+    public function handle(Kernel $kernel): void
     {
-        $this->bot = $bot;
+        $this->kernel = $kernel;
         $this->run();
     }
 }

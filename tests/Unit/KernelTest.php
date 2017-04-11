@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Mockery;
-use FondBot\Bot;
+use FondBot\Kernel;
 use Tests\TestCase;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
@@ -18,41 +18,41 @@ use FondBot\Conversation\ContextManager;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
-class BotTest extends TestCase
+class KernelTest extends TestCase
 {
     public function test_context_and_driver()
     {
-        Bot::createInstance($this->container, $this->mock(Channel::class), $driver = $this->mock(Driver::class));
+        Kernel::createInstance($this->container, $this->mock(Channel::class), $driver = $this->mock(Driver::class));
 
-        Bot::getInstance()->setContext($context = $this->mock(Context::class));
+        Kernel::getInstance()->setContext($context = $this->mock(Context::class));
 
-        $this->assertSame($context, Bot::getInstance()->getContext());
-        $this->assertSame($driver, Bot::getInstance()->getDriver());
+        $this->assertSame($context, Kernel::getInstance()->getContext());
+        $this->assertSame($driver, Kernel::getInstance()->getDriver());
     }
 
     public function test_clearContext()
     {
-        Bot::createInstance($this->container, $this->mock(Channel::class), $this->mock(Driver::class));
+        Kernel::createInstance($this->container, $this->mock(Channel::class), $this->mock(Driver::class));
 
-        Bot::getInstance()->setContext($context = $this->mock(Context::class));
+        Kernel::getInstance()->setContext($context = $this->mock(Context::class));
 
         $this->container->bind(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
 
         $contextManager->shouldReceive('clear')->with($context)->once();
 
-        Bot::getInstance()->clearContext();
-        $this->assertNull(Bot::getInstance()->getContext());
+        Kernel::getInstance()->clearContext();
+        $this->assertNull(Kernel::getInstance()->getContext());
     }
 
     public function test_process_new_dialog()
     {
-        Bot::createInstance(
+        Kernel::createInstance(
             $this->container,
             $channel = $this->mock(Channel::class),
             $driver = $this->mock(Driver::class)
         );
 
-        $bot = Bot::getInstance();
+        $kernel = Kernel::getInstance();
 
         $this->container->bind(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
         $this->container->bind(IntentManager::class, $intentManager = $this->mock(IntentManager::class));
@@ -75,21 +75,21 @@ class BotTest extends TestCase
         $context->shouldReceive('setIntent')->with($intent)->once();
         $context->shouldReceive('setInteraction')->with(null)->once();
         $context->shouldReceive('setValues')->with([])->once();
-        $intent->shouldReceive('handle')->with($bot)->once();
+        $intent->shouldReceive('handle')->with($kernel)->once();
         $contextManager->shouldReceive('save')->with($context)->once();
 
-        $bot->process();
+        $kernel->process();
     }
 
     public function test_process_continue_dialog()
     {
-        Bot::createInstance(
+        Kernel::createInstance(
             $this->container,
             $channel = $this->mock(Channel::class),
             $driver = $this->mock(Driver::class)
         );
 
-        $bot = Bot::getInstance();
+        $kernel = Kernel::getInstance();
 
         $this->container->bind(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
         $this->container->bind(IntentManager::class, $intentManager = $this->mock(IntentManager::class));
@@ -104,27 +104,27 @@ class BotTest extends TestCase
         $context->shouldReceive('getInteraction')->andReturn($interaction = $this->mock(Interaction::class))->atLeast()->once();
 
         $intentManager->shouldReceive('find')->never();
-        $interaction->shouldReceive('handle')->with($bot)->once();
+        $interaction->shouldReceive('handle')->with($kernel)->once();
 
         $contextManager->shouldReceive('save')->with($context)->once();
 
-        $bot->process();
+        $kernel->process();
     }
 
     public function test_process_invalid_request()
     {
-        Bot::createInstance(
+        Kernel::createInstance(
             $this->container,
             $channel = $this->mock(Channel::class),
             $driver = $this->mock(Driver::class)
         );
 
-        $bot = Bot::getInstance();
+        $kernel = Kernel::getInstance();
 
         $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName);
         $driver->shouldReceive('verifyRequest')->andThrow(new InvalidRequest('Invalid request.'));
 
-        $this->assertSame('Invalid request.', $bot->process());
+        $this->assertSame('Invalid request.', $kernel->process());
     }
 
     public function test_process_with_webhook_verification()
@@ -132,16 +132,16 @@ class BotTest extends TestCase
         /** @var Mockery\Mock|mixed $driver */
         $driver = Mockery::mock(Driver::class, WebhookVerification::class);
 
-        Bot::createInstance($this->container, $channel = $this->mock(Channel::class), $driver);
+        Kernel::createInstance($this->container, $channel = $this->mock(Channel::class), $driver);
 
         $request = ['verification' => $this->faker()->sha1];
-        $bot = Bot::getInstance();
+        $kernel = Kernel::getInstance();
 
         $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName);
         $driver->shouldReceive('isVerificationRequest')->andReturn(true);
         $driver->shouldReceive('verifyWebhook')->andReturn($request['verification']);
 
-        $result = $bot->process();
+        $result = $kernel->process();
 
         $this->assertSame($request['verification'], $result);
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Bot;
+use FondBot\Kernel;
 use Tests\TestCase;
 use FondBot\Queue\Queue;
 use FondBot\Drivers\Chat;
@@ -32,21 +32,21 @@ class FallbackIntentTest extends TestCase
 
     public function test_run()
     {
-        $bot = $this->mock(Bot::class);
+        $kernel = $this->mock(Kernel::class);
         $queue = $this->mock(Queue::class);
         $driver = $this->mock(Driver::class);
         $context = $this->mock(Context::class);
         $chat = $this->mock(Chat::class);
         $user = $this->mock(User::class);
 
-        $bot->shouldReceive('get')->with(Queue::class)->andReturn($queue)->once();
-        $bot->shouldReceive('getDriver')->andReturn($driver)->once();
-        $bot->shouldReceive('getContext')->andReturn($context)->atLeast()->once();
+        $kernel->shouldReceive('get')->with(Queue::class)->andReturn($queue)->once();
+        $kernel->shouldReceive('getDriver')->andReturn($driver)->once();
+        $kernel->shouldReceive('getContext')->andReturn($context)->atLeast()->once();
         $context->shouldReceive('getChat')->andReturn($chat)->atLeast()->once();
         $context->shouldReceive('getUser')->andReturn($user)->atLeast()->once();
 
         $queue->shouldReceive('push')->once();
 
-        $this->intent->handle($bot);
+        $this->intent->handle($kernel);
     }
 }

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Bot;
+use FondBot\Kernel;
 use Tests\TestCase;
 use FondBot\Conversation\Context;
 use Tests\Classes\TestInteraction;
 use FondBot\Drivers\ReceivedMessage;
 
 /**
- * @property mixed|\Mockery\Mock            bot
+ * @property mixed|\Mockery\Mock            $kernel
  * @property mixed|\Mockery\Mock            context
  * @property \Tests\Classes\TestInteraction interaction
  */
@@ -21,10 +21,10 @@ class InteractionTest extends TestCase
     {
         parent::setUp();
 
-        $this->bot = $this->mock(Bot::class);
+        $this->kernel = $this->mock(Kernel::class);
         $this->context = $this->mock(Context::class);
 
-        $this->bot->shouldReceive('getContext')->andReturn($this->context);
+        $this->kernel->shouldReceive('getContext')->andReturn($this->context);
 
         $this->interaction = new TestInteraction;
     }
@@ -36,9 +36,9 @@ class InteractionTest extends TestCase
         $this->context->shouldReceive('getInteraction')->andReturn($this->interaction)->once();
         $this->context->shouldReceive('getMessage')->andReturn($message)->once();
         $this->context->shouldReceive('setValue')->with('key', 'value')->once();
-        $this->bot->shouldReceive('clearContext')->once();
+        $this->kernel->shouldReceive('clearContext')->once();
 
-        $this->interaction->handle($this->bot);
+        $this->interaction->handle($this->kernel);
     }
 
     public function test_run_current_interaction_not_in_context()
@@ -46,7 +46,7 @@ class InteractionTest extends TestCase
         $this->context->shouldReceive('getInteraction')->andReturnNull()->once();
         $this->context->shouldReceive('setInteraction')->with($this->interaction)->once();
 
-        $this->interaction->handle($this->bot);
+        $this->interaction->handle($this->kernel);
     }
 
     /**
@@ -55,8 +55,8 @@ class InteractionTest extends TestCase
      */
     public function test_run_transition_exception()
     {
-        $this->bot->shouldReceive('get')->andReturn(null)->once();
+        $this->kernel->shouldReceive('get')->andReturn(null)->once();
 
-        $this->interaction->runIncorrect($this->bot);
+        $this->interaction->runIncorrect($this->kernel);
     }
 }

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Bot;
+use FondBot\Kernel;
 
 interface Conversable
 {
     /**
      * Handle.
      *
-     * @param Bot $bot
+     * @param Kernel $kernel
      */
-    public function handle(Bot $bot): void;
+    public function handle(Kernel $kernel): void;
 }

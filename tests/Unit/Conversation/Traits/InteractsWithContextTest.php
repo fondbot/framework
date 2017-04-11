@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Traits;
 
-use FondBot\Bot;
+use FondBot\Kernel;
 use Tests\TestCase;
 use FondBot\Drivers\User;
 use FondBot\Conversation\Context;
@@ -14,26 +14,26 @@ class InteractsWithContextTest extends TestCase
 {
     public function test_remember()
     {
-        $bot = $this->mock(Bot::class);
+        $kernel = $this->mock(Kernel::class);
         $context = $this->mock(Context::class);
 
-        $bot->shouldReceive('getContext')->andReturn($context)->once();
+        $kernel->shouldReceive('getContext')->andReturn($context)->once();
         $context->shouldReceive('setValue')->with('foo', 'bar')->once();
 
-        $class = new InteractsWithContextTraitTestClass($bot);
+        $class = new InteractsWithContextTraitTestClass($kernel);
         $class->remember('foo', 'bar');
     }
 
     public function test_user()
     {
-        $bot = $this->mock(Bot::class);
+        $kernel = $this->mock(Kernel::class);
         $context = $this->mock(Context::class);
         $user = $this->mock(User::class);
 
-        $bot->shouldReceive('getContext')->andReturn($context)->once();
+        $kernel->shouldReceive('getContext')->andReturn($context)->once();
         $context->shouldReceive('getUser')->andReturn($user)->once();
 
-        $class = new InteractsWithContextTraitTestClass($bot);
+        $class = new InteractsWithContextTraitTestClass($kernel);
         $this->assertSame($user, $class->getUser());
     }
 }
@@ -42,11 +42,11 @@ class InteractsWithContextTraitTestClass
 {
     use InteractsWithContext;
 
-    protected $bot;
+    protected $kernel;
 
-    public function __construct(Bot $bot)
+    public function __construct(Kernel $kernel)
     {
-        $this->bot = $bot;
+        $this->kernel = $kernel;
     }
 
     public function __call($name, $arguments)

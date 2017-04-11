@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Bot;
+use FondBot\Kernel;
 use InvalidArgumentException;
 use FondBot\Conversation\Interaction;
 
 trait Transitions
 {
-    /** @var Bot */
-    protected $bot;
+    /** @var Kernel */
+    protected $kernel;
 
     /**
      * Whether any transition run.
@@ -30,14 +30,14 @@ trait Transitions
     protected function jump(string $interaction): void
     {
         /** @var Interaction $instance */
-        $instance = $this->bot->get($interaction);
+        $instance = $this->kernel->get($interaction);
 
         if (!$instance instanceof Interaction) {
             throw new InvalidArgumentException('Invalid interaction `'.$interaction.'`');
         }
 
         // Run interaction
-        $this->bot->converse($instance);
+        $this->kernel->converse($instance);
 
         $this->transitioned = true;
     }

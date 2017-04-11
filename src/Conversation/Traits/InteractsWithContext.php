@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Bot;
+use FondBot\Kernel;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 
 trait InteractsWithContext
 {
-    /** @var Bot */
-    protected $bot;
+    /** @var Kernel */
+    protected $kernel;
 
     /**
      * Remember value in context.
@@ -21,7 +21,7 @@ trait InteractsWithContext
      */
     protected function remember(string $key, $value): void
     {
-        $this->bot->getContext()->setValue($key, $value);
+        $this->kernel->getContext()->setValue($key, $value);
     }
 
     /**
@@ -31,7 +31,7 @@ trait InteractsWithContext
      */
     protected function getChat(): Chat
     {
-        return $this->bot->getContext()->getChat();
+        return $this->kernel->getContext()->getChat();
     }
 
     /**
@@ -41,6 +41,6 @@ trait InteractsWithContext
      */
     protected function getUser(): User
     {
-        return $this->bot->getContext()->getUser();
+        return $this->kernel->getContext()->getUser();
     }
 }

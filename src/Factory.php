@@ -9,17 +9,17 @@ use FondBot\Channels\Channel;
 use FondBot\Contracts\Container;
 use FondBot\Drivers\DriverManager;
 
-class BotFactory
+class Factory
 {
     /**
-     * Create bot instance.
+     * Create kernel instance.
      *
      * @param Container $container
      * @param Channel   $channel
      * @param array     $request
      * @param array     $headers
      *
-     * @return Bot
+     * @return Kernel
      */
     public function create(Container $container, Channel $channel, array $request, array $headers)
     {
@@ -28,8 +28,8 @@ class BotFactory
 
         $driver->fill($channel->getParameters(), $request, $headers);
 
-        Bot::createInstance($container, $channel, $driver);
+        Kernel::createInstance($container, $channel, $driver);
 
-        return Bot::getInstance();
+        return Kernel::getInstance();
     }
 }

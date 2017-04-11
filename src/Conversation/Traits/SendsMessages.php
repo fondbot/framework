@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Bot;
+use FondBot\Kernel;
 use FondBot\Queue\Queue;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
@@ -15,8 +15,8 @@ use FondBot\Drivers\ReceivedMessage\Attachment;
 
 trait SendsMessages
 {
-    /** @var Bot */
-    protected $bot;
+    /** @var Kernel */
+    protected $kernel;
 
     /**
      * Send message to user.
@@ -27,10 +27,10 @@ trait SendsMessages
     protected function sendMessage(string $text, Keyboard $keyboard = null): void
     {
         /** @var Queue $queue */
-        $queue = $this->bot->get(Queue::class);
+        $queue = $this->kernel->get(Queue::class);
 
         $command = new SendMessage($this->getChat(), $this->getUser(), $text, $keyboard);
-        $queue->push($this->bot->getDriver(), $command);
+        $queue->push($this->kernel->getDriver(), $command);
     }
 
     /**
@@ -43,10 +43,10 @@ trait SendsMessages
     protected function sendDelayedMessage(int $delay, string $text, Keyboard $keyboard = null): void
     {
         /** @var Queue $queue */
-        $queue = $this->bot->get(Queue::class);
+        $queue = $this->kernel->get(Queue::class);
 
         $command = new SendMessage($this->getChat(), $this->getUser(), $text, $keyboard);
-        $queue->later($this->bot->getDriver(), $command, $delay);
+        $queue->later($this->kernel->getDriver(), $command, $delay);
     }
 
     /**
@@ -58,14 +58,14 @@ trait SendsMessages
     protected function sendAttachment(Attachment $attachment, int $delay = 0): void
     {
         /** @var Queue $queue */
-        $queue = $this->bot->get(Queue::class);
+        $queue = $this->kernel->get(Queue::class);
 
         $command = new SendAttachment($this->getChat(), $this->getUser(), $attachment);
 
         if ($delay === 0) {
-            $queue->push($this->bot->getDriver(), $command);
+            $queue->push($this->kernel->getDriver(), $command);
         } else {
-            $queue->later($this->bot->getDriver(), $command, $delay);
+            $queue->later($this->kernel->getDriver(), $command, $delay);
         }
     }
 

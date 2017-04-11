@@ -16,9 +16,9 @@ use FondBot\Conversation\ContextManager;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
-class Bot
+class Kernel
 {
-    /** @var Bot */
+    /** @var Kernel */
     protected static $instance;
 
     private $container;
@@ -39,7 +39,7 @@ class Bot
     }
 
     /**
-     * Create new bot instance.
+     * Create new kernel instance.
      *
      * @param Container $container
      * @param Channel   $channel
@@ -58,19 +58,19 @@ class Bot
     /**
      * Get current instance.
      *
-     * @return Bot
+     * @return Kernel
      */
-    public static function getInstance(): Bot
+    public static function getInstance(): Kernel
     {
         return static::$instance;
     }
 
     /**
-     * Set instance of the bot.
+     * Set kernel instance.
      *
-     * @param Bot $instance
+     * @param Kernel $instance
      */
-    public static function setInstance(Bot $instance): void
+    public static function setInstance(Kernel $instance): void
     {
         static::$instance = $instance;
     }

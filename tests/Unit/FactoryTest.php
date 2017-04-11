@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use FondBot\Bot;
+use FondBot\Kernel;
 use Tests\TestCase;
-use FondBot\BotFactory;
+use FondBot\Factory;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use FondBot\Drivers\DriverManager;
 
-class BotFactoryTest extends TestCase
+class FactoryTest extends TestCase
 {
     public function test_create()
     {
@@ -26,9 +26,9 @@ class BotFactoryTest extends TestCase
         $channel->shouldReceive('getParameters')->andReturn($parameters)->once();
         $driver->shouldReceive('fill')->with($parameters, [], []);
 
-        $factory = new BotFactory();
+        $factory = new Factory();
 
-        $bot = $factory->create($this->container, $channel, [], []);
-        $this->assertInstanceOf(Bot::class, $bot);
+        $kernel = $factory->create($this->container, $channel, [], []);
+        $this->assertInstanceOf(Kernel::class, $kernel);
     }
 }

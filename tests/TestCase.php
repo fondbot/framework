@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests;
 
 use Mockery;
-use FondBot\Bot;
 use Faker\Factory;
+use FondBot\Kernel;
 use Faker\Generator;
 use Tests\Classes\TestContainer;
 
@@ -23,8 +23,8 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         // Set up container
         $this->container = new Classes\TestContainer();
 
-        $bot = $this->mock(Bot::class);
-        Bot::setInstance($bot);
+        $kernel = $this->mock(Kernel::class);
+        Kernel::setInstance($kernel);
     }
 
     protected function tearDown()
