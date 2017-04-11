@@ -34,7 +34,7 @@ class InteractsWithContextTest extends TestCase
         $context->shouldReceive('getUser')->andReturn($user)->once();
 
         $class = new InteractsWithContextTraitTestClass($bot);
-        $this->assertSame($user, $class->user());
+        $this->assertSame($user, $class->getUser());
     }
 }
 

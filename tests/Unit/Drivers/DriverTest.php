@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Drivers;
 
 use Tests\TestCase;
+use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Drivers\Command;
-use FondBot\Conversation\Keyboard;
-use FondBot\Drivers\OutgoingMessage;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Drivers\Exceptions\InvalidRequest;
-use FondBot\Drivers\ReceivedMessage\Attachment;
 
 class DriverTest extends TestCase
 {
@@ -71,6 +69,15 @@ class DriverTestClass extends Driver
     }
 
     /**
+     * Get chat.
+     *
+     * @return Chat
+     */
+    public function getChat(): Chat
+    {
+    }
+
+    /**
      * Get user.
      *
      * @return User
@@ -94,29 +101,6 @@ class DriverTestClass extends Driver
      * @param Command $command
      */
     public function handle(Command $command): void
-    {
-    }
-
-    /**
-     * Send reply to participant.
-     *
-     * @param User          $sender
-     * @param string        $text
-     * @param Keyboard|null $keyboard
-     *
-     * @return OutgoingMessage
-     */
-    public function sendMessage(User $sender, string $text, Keyboard $keyboard = null): OutgoingMessage
-    {
-    }
-
-    /**
-     * Send attachment to recipient.
-     *
-     * @param User       $recipient
-     * @param Attachment $attachment
-     */
-    public function sendAttachment(User $recipient, Attachment $attachment): void
     {
     }
 }

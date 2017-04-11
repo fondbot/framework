@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Contracts\Cache;
@@ -30,9 +31,10 @@ class ContextManager
      */
     public function resolve(string $channel, Driver $driver): Context
     {
+        $chat = $driver->getChat();
         $sender = $driver->getUser();
         $message = $driver->getMessage();
-        $key = $this->key($channel, $sender);
+        $key = $this->key($channel, $chat, $sender);
         $value = $this->cache->get($key);
 
         $intent = $value['intent'] !== null ? $this->container->make($value['intent']) : null;
@@ -40,6 +42,7 @@ class ContextManager
 
         return new Context(
             $channel,
+            $chat,
             $sender,
             $message,
             $intent,
@@ -55,7 +58,7 @@ class ContextManager
      */
     public function save(Context $context): void
     {
-        $key = $this->key($context->getChannel(), $context->getUser());
+        $key = $this->key($context->getChannel(), $context->getChat(), $context->getUser());
 
         $this->cache->store($key, $context->toArray());
     }
@@ -67,7 +70,7 @@ class ContextManager
      */
     public function clear(Context $context): void
     {
-        $key = $this->key($context->getChannel(), $context->getUser());
+        $key = $this->key($context->getChannel(), $context->getChat(), $context->getUser());
 
         $this->cache->forget($key);
     }
@@ -76,12 +79,13 @@ class ContextManager
      * Get key of current context in storage (Cache, Memory, etc.).
      *
      * @param string $channel
+     * @param Chat   $chat
      * @param User   $sender
      *
      * @return string
      */
-    private function key(string $channel, User $sender): string
+    private function key(string $channel, Chat $chat, User $sender): string
     {
-        return 'context.'.$channel.'.'.$sender->getId();
+        return 'context.'.$channel.'.'.$chat->getId().'.'.$sender->getId();
     }
 }

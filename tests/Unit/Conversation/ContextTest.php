@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Conversation;
 
 use Tests\TestCase;
+use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
@@ -13,6 +14,7 @@ use FondBot\Conversation\Interaction;
 
 /**
  * @property string                                     $channel
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $chat
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $sender
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $message
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $intent
@@ -27,6 +29,7 @@ class ContextTest extends TestCase
         parent::setUp();
 
         $this->channel = $this->faker()->userName;
+        $this->chat = $this->mock(Chat::class);
         $this->sender = $this->mock(User::class);
         $this->message = $this->mock(ReceivedMessage::class);
         $this->intent = $this->mock(Intent::class);
@@ -38,6 +41,7 @@ class ContextTest extends TestCase
 
         $this->context = new Context(
             $this->channel,
+            $this->chat,
             $this->sender,
             $this->message,
             $this->intent,
@@ -49,6 +53,11 @@ class ContextTest extends TestCase
     public function test_getChannel()
     {
         $this->assertSame($this->channel, $this->context->getChannel());
+    }
+
+    public function test_getChat()
+    {
+        $this->assertSame($this->chat, $this->context->getChat());
     }
 
     public function test_getSender()

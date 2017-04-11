@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\ReceivedMessage;
 
 class Context
 {
     private $channel;
+    private $chat;
     private $user;
     private $message;
     private $intent;
@@ -18,6 +20,7 @@ class Context
 
     public function __construct(
         string $channel,
+        Chat $chat,
         User $user,
         ReceivedMessage $message,
         Intent $intent = null,
@@ -25,6 +28,7 @@ class Context
         array $values = []
     ) {
         $this->channel = $channel;
+        $this->chat = $chat;
         $this->user = $user;
         $this->message = $message;
         $this->intent = $intent;
@@ -40,6 +44,16 @@ class Context
     public function getChannel(): string
     {
         return $this->channel;
+    }
+
+    /**
+     * Get chat.
+     *
+     * @return Chat
+     */
+    public function getChat(): Chat
+    {
+        return $this->chat;
     }
 
     /**

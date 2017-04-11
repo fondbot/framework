@@ -6,6 +6,7 @@ namespace FondBot\Conversation\Traits;
 
 use FondBot\Bot;
 use FondBot\Queue\Queue;
+use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Conversation\Keyboard;
 use FondBot\Drivers\Commands\SendMessage;
@@ -28,7 +29,8 @@ trait SendsMessages
         /** @var Queue $queue */
         $queue = $this->bot->get(Queue::class);
 
-        $queue->push($this->bot->getDriver(), new SendMessage($this->user(), $text, $keyboard));
+        $command = new SendMessage($this->getChat(), $this->getUser(), $text, $keyboard);
+        $queue->push($this->bot->getDriver(), $command);
     }
 
     /**
@@ -43,7 +45,8 @@ trait SendsMessages
         /** @var Queue $queue */
         $queue = $this->bot->get(Queue::class);
 
-        $queue->later($this->bot->getDriver(), new SendMessage($this->user(), $text, $keyboard), $delay);
+        $command = new SendMessage($this->getChat(), $this->getUser(), $text, $keyboard);
+        $queue->later($this->bot->getDriver(), $command, $delay);
     }
 
     /**
@@ -57,17 +60,26 @@ trait SendsMessages
         /** @var Queue $queue */
         $queue = $this->bot->get(Queue::class);
 
+        $command = new SendAttachment($this->getChat(), $this->getUser(), $attachment);
+
         if ($delay === 0) {
-            $queue->push($this->bot->getDriver(), new SendAttachment($this->user(), $attachment));
+            $queue->push($this->bot->getDriver(), $command);
         } else {
-            $queue->later($this->bot->getDriver(), new SendAttachment($this->user(), $attachment), $delay);
+            $queue->later($this->bot->getDriver(), $command, $delay);
         }
     }
+
+    /**
+     * Get chat.
+     *
+     * @return Chat
+     */
+    abstract protected function getChat(): Chat;
 
     /**
      * Get user.
      *
      * @return User
      */
-    abstract protected function user(): User;
+    abstract protected function getUser(): User;
 }

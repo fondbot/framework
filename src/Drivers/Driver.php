@@ -109,6 +109,13 @@ abstract class Driver implements SerializableForQueue
     abstract public function verifyRequest(): void;
 
     /**
+     * Get chat.
+     *
+     * @return Chat
+     */
+    abstract public function getChat(): Chat;
+
+    /**
      * Get user.
      *
      * @return User
