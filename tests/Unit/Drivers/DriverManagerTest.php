@@ -19,19 +19,19 @@ class DriverManagerTest extends TestCase
     {
         $container = $this->mock(Container::class);
         $discovery = $this->mock(Discovery::class);
+        $driver = $this->mock(Driver::class);
 
         $discovery->shouldReceive('getAssetType')
             ->with(Driver::class)
             ->andReturn(new ImmutableAssetType(Driver::class, [
-                new Asset(Driver::class, '', '', 0, ['name' => 'fake']),
+                new Asset(get_class($driver), '', '', 0, ['name' => 'fake']),
             ]))
-            ->once();
+            ->atLeast()->once();
 
-        $container->shouldReceive('make')->with(Driver::class)->andReturn($driver = $this->mock(Driver::class))->once();
+        $container->shouldReceive('make')->with(get_class($driver))->andReturn($driver)->once();
 
         $manager = new DriverManager($container, $discovery);
 
-        $driver->shouldReceive('getConfig')->andReturn(['token'])->atLeast()->once();
         $driver->shouldReceive('fill')->with([], [], [])->once();
 
         $channel = new Channel('test', 'fake', ['token' => $this->faker()->sha1]);
@@ -49,19 +49,18 @@ class DriverManagerTest extends TestCase
     {
         $container = $this->mock(Container::class);
         $discovery = $this->mock(Discovery::class);
+        $driver = $this->mock(Driver::class);
 
         $discovery->shouldReceive('getAssetType')
             ->with(Driver::class)
             ->andReturn(new ImmutableAssetType(Driver::class, [
-                new Asset(Driver::class, '', '', 0, ['name' => 'fake']),
+                new Asset(get_class($driver), '', '', 0, ['name' => 'fake', 'parameters' => ['foo' => 'bar']]),
             ]))
-            ->once();
+            ->atLeast()->once();
 
-        $container->shouldReceive('make')->with(Driver::class)->andReturn($driver = $this->mock(Driver::class))->once();
+        $container->shouldReceive('make')->with(get_class($driver))->andReturn($driver)->once();
 
         $manager = new DriverManager($container, $discovery);
-
-        $driver->shouldReceive('getConfig')->andReturn(['token'])->atLeast()->once();
 
         $channel = new Channel('test', 'fake', ['old' => $this->faker()->sha1]);
 

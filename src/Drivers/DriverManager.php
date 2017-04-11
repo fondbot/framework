@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Drivers;
 
+use FondBot\Helpers\Arr;
 use FondBot\Channels\Channel;
 use FondBot\Contracts\Container;
+use TheCodingMachine\Discovery\Asset;
 use TheCodingMachine\Discovery\Discovery;
 use TheCodingMachine\Discovery\ImmutableAssetType;
 use FondBot\Drivers\Exceptions\InvalidConfiguration;
@@ -69,7 +71,15 @@ class DriverManager
      */
     protected function validateParameters(Channel $channel, Driver $driver): void
     {
-        collect($driver->getConfig())->each(function (string $parameter) use ($channel) {
+        /** @var Asset $asset */
+        $asset = collect($this->discovery->getAssetType(Driver::class)->getAssets())
+            ->first(function (Asset $asset) use ($driver) {
+                return hash_equals($asset->getValue(), get_class($driver));
+            });
+
+        $parameters = Arr::get($asset->getMetadata(), 'parameters', []);
+
+        collect($parameters)->each(function (string $parameter) use ($channel) {
             if ($channel->getParameter($parameter) === null) {
                 throw new InvalidConfiguration('Invalid `'.$channel->getName().'` channel configuration.');
             }

@@ -95,13 +95,6 @@ abstract class Driver implements SerializableForQueue
     }
 
     /**
-     * Configuration parameters.
-     *
-     * @return array
-     */
-    abstract public function getConfig(): array;
-
-    /**
      * Verify incoming request data.
      *
      * @throws InvalidRequest
