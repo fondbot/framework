@@ -25,7 +25,7 @@ return [
     ],
 
     /*
-     * Here you define all intents.
+     * Define all required intents here.
      */
     'intents' => [
         // App\WeatherIntent::class
