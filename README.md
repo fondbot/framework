@@ -22,3 +22,7 @@ You can find all installation instructions and other documentation at https://do
 
 If you have questions or suggestions you are welcome to our Slack channel:
 [https://fondbot.signup.team](https://fondbot.signup.team)
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within FondBot, please send an e-mail to Vladimir Yuldashev at vladimir@fondbot.com. All security vulnerabilities will be promptly addressed.
