@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Kernel;
+use FondBot\Application\Kernel;
 
 interface Conversable
 {

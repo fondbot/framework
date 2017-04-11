@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Traits;
 
-use FondBot\Kernel;
 use Tests\TestCase;
 use FondBot\Drivers\User;
+use FondBot\Application\Kernel;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Traits\InteractsWithContext;
 

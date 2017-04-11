@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation\Traits;
 
-use FondBot\Kernel;
 use Tests\TestCase;
+use FondBot\Application\Kernel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\Traits\Transitions;

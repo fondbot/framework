@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot;
+namespace FondBot\Application;
 
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;

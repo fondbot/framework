@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conversation;
 
-use FondBot\Kernel;
 use Tests\TestCase;
+use FondBot\Application\Kernel;
 use FondBot\Conversation\Intent;
 
 class IntentTest extends TestCase

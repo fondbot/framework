@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Classes;
 
-use FondBot\Kernel;
 use FondBot\Helpers\Str;
+use FondBot\Application\Kernel;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 

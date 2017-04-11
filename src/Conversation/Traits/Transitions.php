@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Kernel;
 use InvalidArgumentException;
+use FondBot\Application\Kernel;
 use FondBot\Conversation\Interaction;
 
 trait Transitions

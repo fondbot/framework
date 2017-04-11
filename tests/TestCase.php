@@ -6,8 +6,8 @@ namespace Tests;
 
 use Mockery;
 use Faker\Factory;
-use FondBot\Kernel;
 use Faker\Generator;
+use FondBot\Application\Kernel;
 use Tests\Classes\TestContainer;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase

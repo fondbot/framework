@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Kernel;
 use FondBot\Queue\Queue;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
+use FondBot\Application\Kernel;
 use FondBot\Conversation\Keyboard;
 use FondBot\Drivers\Commands\SendMessage;
 use FondBot\Drivers\Commands\SendAttachment;

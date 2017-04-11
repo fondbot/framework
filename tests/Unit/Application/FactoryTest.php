@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Tests\Unit\Application;
 
-use FondBot\Kernel;
 use Tests\TestCase;
-use FondBot\Factory;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
+use FondBot\Application\Kernel;
+use FondBot\Application\Factory;
 use FondBot\Drivers\DriverManager;
 
 class FactoryTest extends TestCase

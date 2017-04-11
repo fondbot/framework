@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Tests\Unit\Application;
 
 use Mockery;
-use FondBot\Kernel;
 use Tests\TestCase;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
+use FondBot\Application\Kernel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
 use FondBot\Drivers\ReceivedMessage;
