@@ -32,7 +32,7 @@ class DriverTest extends TestCase
 
         $driver->fill([], [], ['foo' => 'bar']);
 
-        $this->assertSame(['foo' => 'bar'], $driver->getHeaders());
+        $this->assertSame(['foo' => 'bar'], $driver->getHeader());
         $this->assertSame('bar', $driver->getHeader('foo'));
         $this->assertNull($driver->getHeader('bar'));
     }

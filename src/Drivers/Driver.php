@@ -59,16 +59,6 @@ abstract class Driver implements SerializableForQueue
     }
 
     /**
-     * Get all headers.
-     *
-     * @return array
-     */
-    public function getHeaders(): array
-    {
-        return $this->headers;
-    }
-
-    /**
      * Get header.
      *
      * @param string $name
@@ -76,7 +66,7 @@ abstract class Driver implements SerializableForQueue
      *
      * @return mixed
      */
-    public function getHeader(string $name, $default = null)
+    public function getHeader(string $name = null, $default = null)
     {
         return Arr::get($this->headers, $name, $default);
     }
@@ -102,14 +92,14 @@ abstract class Driver implements SerializableForQueue
     abstract public function verifyRequest(): void;
 
     /**
-     * Get chat.
+     * Get current chat.
      *
      * @return Chat
      */
     abstract public function getChat(): Chat;
 
     /**
-     * Get user.
+     * Get current user.
      *
      * @return User
      */
