@@ -16,7 +16,7 @@ class TransitionsTest extends TestCase
     {
         $kernel = $this->mock(Kernel::class);
 
-        $kernel->shouldReceive('get')->with('foo')->andReturn($interaction = $this->mock(Interaction::class))->once();
+        $kernel->shouldReceive('resolve')->with('foo')->andReturn($interaction = $this->mock(Interaction::class))->once();
         $kernel->shouldReceive('converse')->with($interaction)->once();
 
         $class = new TransitionsTraitTestClass($kernel);
@@ -31,7 +31,7 @@ class TransitionsTest extends TestCase
     {
         $kernel = $this->mock(Kernel::class);
 
-        $kernel->shouldReceive('get')->with('foo')->andReturn($this->mock(Intent::class))->once();
+        $kernel->shouldReceive('resolve')->with('foo')->andReturn($this->mock(Intent::class))->once();
         $kernel->shouldReceive('converse')->never();
 
         $class = new TransitionsTraitTestClass($kernel);

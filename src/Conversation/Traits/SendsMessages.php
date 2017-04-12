@@ -27,7 +27,7 @@ trait SendsMessages
     protected function sendMessage(string $text, Keyboard $keyboard = null): void
     {
         /** @var Queue $queue */
-        $queue = $this->kernel->get(Queue::class);
+        $queue = $this->kernel->resolve(Queue::class);
 
         $command = new SendMessage($this->getChat(), $this->getUser(), $text, $keyboard);
         $queue->push($this->kernel->getDriver(), $command);
@@ -43,7 +43,7 @@ trait SendsMessages
     protected function sendDelayedMessage(int $delay, string $text, Keyboard $keyboard = null): void
     {
         /** @var Queue $queue */
-        $queue = $this->kernel->get(Queue::class);
+        $queue = $this->kernel->resolve(Queue::class);
 
         $command = new SendMessage($this->getChat(), $this->getUser(), $text, $keyboard);
         $queue->later($this->kernel->getDriver(), $command, $delay);
@@ -58,7 +58,7 @@ trait SendsMessages
     protected function sendAttachment(Attachment $attachment, int $delay = 0): void
     {
         /** @var Queue $queue */
-        $queue = $this->kernel->get(Queue::class);
+        $queue = $this->kernel->resolve(Queue::class);
 
         $command = new SendAttachment($this->getChat(), $this->getUser(), $attachment);
 

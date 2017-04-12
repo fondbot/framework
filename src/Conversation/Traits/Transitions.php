@@ -30,7 +30,7 @@ trait Transitions
     protected function jump(string $interaction): void
     {
         /** @var Interaction $instance */
-        $instance = $this->kernel->get($interaction);
+        $instance = $this->kernel->resolve($interaction);
 
         if (!$instance instanceof Interaction) {
             throw new InvalidArgumentException('Invalid interaction `'.$interaction.'`');

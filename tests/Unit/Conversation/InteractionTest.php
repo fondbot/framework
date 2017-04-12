@@ -55,7 +55,7 @@ class InteractionTest extends TestCase
      */
     public function test_run_transition_exception()
     {
-        $this->kernel->shouldReceive('get')->andReturn(null)->once();
+        $this->kernel->shouldReceive('resolve')->andReturn(null)->once();
 
         $this->interaction->runIncorrect($this->kernel);
     }

@@ -123,7 +123,7 @@ class Kernel
      *
      * @return mixed
      */
-    public function get(string $class)
+    public function resolve(string $class)
     {
         return $this->container->make($class);
     }
@@ -192,7 +192,7 @@ class Kernel
      */
     private function contextManager(): ContextManager
     {
-        return $this->get(ContextManager::class);
+        return $this->resolve(ContextManager::class);
     }
 
     /**
@@ -202,6 +202,6 @@ class Kernel
      */
     private function intentManager(): IntentManager
     {
-        return $this->get(IntentManager::class);
+        return $this->resolve(IntentManager::class);
     }
 }

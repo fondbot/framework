@@ -19,7 +19,7 @@ class SendsMessagesTest extends TestCase
     {
         $kernel = $this->mock(Kernel::class);
 
-        $kernel->shouldReceive('get')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
+        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
         $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('push')->once();
 
@@ -31,7 +31,7 @@ class SendsMessagesTest extends TestCase
     {
         $kernel = $this->mock(Kernel::class);
 
-        $kernel->shouldReceive('get')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
+        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
         $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('later')->once();
 
@@ -43,7 +43,7 @@ class SendsMessagesTest extends TestCase
     {
         $kernel = $this->mock(Kernel::class);
 
-        $kernel->shouldReceive('get')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
+        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
         $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('push')->once();
 
@@ -55,7 +55,7 @@ class SendsMessagesTest extends TestCase
     {
         $kernel = $this->mock(Kernel::class);
 
-        $kernel->shouldReceive('get')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
+        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
         $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('later')->once();
 

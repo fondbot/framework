@@ -39,7 +39,7 @@ class FallbackIntentTest extends TestCase
         $chat = $this->mock(Chat::class);
         $user = $this->mock(User::class);
 
-        $kernel->shouldReceive('get')->with(Queue::class)->andReturn($queue)->once();
+        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue)->once();
         $kernel->shouldReceive('getDriver')->andReturn($driver)->once();
         $kernel->shouldReceive('getContext')->andReturn($context)->atLeast()->once();
         $context->shouldReceive('getChat')->andReturn($chat)->atLeast()->once();
