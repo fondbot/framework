@@ -7,22 +7,22 @@
 [![Coverage](https://img.shields.io/scrutinizer/coverage/g/fondbot/fondbot.svg?style=flat-square)](https://scrutinizer-ci.com/g/fondbot/fondbot)
 [![StyleCI](https://styleci.io/repos/78780366/shield)](https://styleci.io/repos/78780366)
 
-## About Fondbot
+## About FondBot
 FondBot is a framework for building chat bots. You can use it with or without framework. 
 
 Currently, we have packages to easily use FondBot with [Laravel](https://github.com/fondbot/frameworks-laravel) and [Lumen](https://github.com/fondbot/frameworks-lumen) frameworks. 
 
 The main goal of this project is to provide elegant and flexible architecture to develop and maintain chatbot projects from small to the big ones.
 
-## Installation and usage
+## Installation And Usage
 
 You can find all installation instructions and other documentation at https://docs.fondbot.com
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within FondBot, please send an e-mail to Vladimir Yuldashev at vladimir@fondbot.com. All security vulnerabilities will be promptly addressed.
 
 ## Community
 
 If you have questions or suggestions you are welcome to our Slack channel:
 [https://fondbot.signup.team](https://fondbot.signup.team)
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within FondBot, please send an e-mail to Vladimir Yuldashev at vladimir@fondbot.com. All security vulnerabilities will be promptly addressed.
