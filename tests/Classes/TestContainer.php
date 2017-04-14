@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Classes;
+namespace FondBot\Tests\Classes;
 
 use FondBot\Contracts\Container;
 

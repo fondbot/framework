@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Channels;
+namespace FondBot\Tests\Unit\Channels;
 
-use Tests\TestCase;
+use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Channels\ChannelManager;
 

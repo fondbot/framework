@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Helpers;
+namespace FondBot\Tests\Unit\Helpers;
 
-use Tests\TestCase;
 use FondBot\Helpers\Str;
+use FondBot\Tests\TestCase;
 
 class StrTest extends TestCase
 {

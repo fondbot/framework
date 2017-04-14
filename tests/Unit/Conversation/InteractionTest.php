@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation;
+namespace FondBot\Tests\Unit\Conversation;
 
-use Tests\TestCase;
+use FondBot\Tests\TestCase;
 use FondBot\Application\Kernel;
 use FondBot\Conversation\Context;
-use Tests\Classes\TestInteraction;
 use FondBot\Drivers\ReceivedMessage;
+use FondBot\Tests\Classes\TestInteraction;
 
 /**
  * @property mixed|\Mockery\Mock            $kernel
  * @property mixed|\Mockery\Mock            context
- * @property \Tests\Classes\TestInteraction interaction
+ * @property \FondBot\Tests\Classes\TestInteraction interaction
  */
 class InteractionTest extends TestCase
 {

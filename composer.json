@@ -43,7 +43,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "FondBot\\Tests\\": "tests/"
         }
     },
     "scripts": {

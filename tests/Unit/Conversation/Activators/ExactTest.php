@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation\Activators;
+namespace FondBot\Tests\Unit\Conversation\Activators;
 
-use Tests\TestCase;
+use FondBot\Tests\TestCase;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Activators\Exact;
 

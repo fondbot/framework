@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation;
+namespace FondBot\Tests\Unit\Conversation;
 
-use Tests\TestCase;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
+use FondBot\Tests\TestCase;
 use FondBot\Contracts\Cache;
 use FondBot\Conversation\Context;
 use FondBot\Drivers\ReceivedMessage;

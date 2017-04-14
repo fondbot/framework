@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace FondBot\Tests;
 
 use Mockery;
 use Faker\Factory;
 use Faker\Generator;
 use FondBot\Application\Kernel;
-use Tests\Classes\TestContainer;
+use FondBot\Tests\Classes\TestContainer;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {

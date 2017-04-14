@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Drivers\ReceivedMessage;
+namespace FondBot\Tests\Unit\Drivers\ReceivedMessage;
 
-use Tests\TestCase;
+use FondBot\Tests\TestCase;
 use FondBot\Drivers\ReceivedMessage\Location;
 
 class LocationTest extends TestCase

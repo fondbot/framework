@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Drivers;
+namespace FondBot\Tests\Unit\Drivers;
 
-use Tests\TestCase;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
+use FondBot\Tests\TestCase;
 use FondBot\Drivers\Command;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Drivers\Exceptions\InvalidRequest;

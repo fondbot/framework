@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Queue;
+namespace FondBot\Tests\Unit\Queue;
 
 use stdClass;
-use Tests\TestCase;
+use FondBot\Tests\TestCase;
 use FondBot\Queue\SerializesForQueue;
 use FondBot\Queue\SerializableForQueue;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Application;
+namespace FondBot\Tests\Unit\Application;
 
-use Tests\TestCase;
 use FondBot\Drivers\Driver;
+use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Application\Kernel;
 use FondBot\Application\Factory;

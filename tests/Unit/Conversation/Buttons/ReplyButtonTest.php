@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation\Buttons;
+namespace FondBot\Tests\Unit\Conversation\Buttons;
 
-use Tests\TestCase;
+use FondBot\Tests\TestCase;
 use FondBot\Conversation\Buttons\ReplyButton;
 
 class ReplyButtonTest extends TestCase

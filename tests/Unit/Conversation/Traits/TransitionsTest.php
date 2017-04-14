@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation\Traits;
+namespace FondBot\Tests\Unit\Conversation\Traits;
 
-use Tests\TestCase;
+use FondBot\Tests\TestCase;
 use FondBot\Application\Kernel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Interaction;
