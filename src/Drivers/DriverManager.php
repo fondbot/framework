@@ -9,6 +9,7 @@ use FondBot\Channels\Channel;
 use FondBot\Contracts\Container;
 use TheCodingMachine\Discovery\Asset;
 use TheCodingMachine\Discovery\Discovery;
+use FondBot\Drivers\Exceptions\DriverNotFound;
 use TheCodingMachine\Discovery\ImmutableAssetType;
 use FondBot\Drivers\Exceptions\InvalidConfiguration;
 
@@ -51,10 +52,15 @@ class DriverManager
      * @param array   $parameters
      *
      * @return Driver
+     * @throws DriverNotFound
      */
     public function get(Channel $channel, array $request = [], array $headers = [], array $parameters = []): Driver
     {
         $driver = $this->drivers[$channel->getDriver()];
+
+        if ($driver === null) {
+            throw new DriverNotFound('Driver `'.$channel->getDriver().'` not found.');
+        }
 
         $this->validateParameters($channel, $driver);
 
