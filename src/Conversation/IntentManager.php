@@ -25,7 +25,7 @@ class IntentManager
     {
         foreach ($this->intents as $intent) {
             foreach ($intent->activators() as $activator) {
-                if ($activator->matches($message) && $intent->passesAuthorization()) {
+                if ($activator->matches($message) && $intent->passesAuthorization($message)) {
                     return $intent;
                 }
             }
