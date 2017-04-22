@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Conversation;
+namespace FondBot\Tests\Unit\Conversation\Templates;
 
 use FondBot\Tests\TestCase;
-use FondBot\Conversation\Keyboard;
-use FondBot\Conversation\Buttons\Button;
+use FondBot\Conversation\Templates\Keyboard;
+use FondBot\Conversation\Templates\Keyboard\Button;
 
 class KeyboardTest extends TestCase
 {

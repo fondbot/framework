@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Conversation\Buttons;
+namespace Tests\Unit\Conversation\Templates\Keyboard;
 
 use FondBot\Tests\TestCase;
-use FondBot\Conversation\Buttons\PayloadButton;
+use FondBot\Conversation\Templates\Keyboard\PayloadButton;
 
 class PayloadButtonTest extends TestCase
 {

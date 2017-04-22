@@ -9,7 +9,7 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
 use FondBot\Application\Kernel;
-use FondBot\Conversation\Keyboard;
+use FondBot\Conversation\Templates\Keyboard;
 use FondBot\Conversation\Traits\SendsMessages;
 use FondBot\Drivers\ReceivedMessage\Attachment;
 

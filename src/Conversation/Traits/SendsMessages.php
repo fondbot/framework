@@ -8,7 +8,7 @@ use FondBot\Queue\Queue;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Application\Kernel;
-use FondBot\Conversation\Keyboard;
+use FondBot\Conversation\Template;
 use FondBot\Drivers\Commands\SendMessage;
 use FondBot\Drivers\Commands\SendAttachment;
 use FondBot\Drivers\ReceivedMessage\Attachment;
@@ -22,14 +22,14 @@ trait SendsMessages
      * Send message to user.
      *
      * @param string        $text
-     * @param Keyboard|null $keyboard
+     * @param Template|null $template
      */
-    protected function sendMessage(string $text, Keyboard $keyboard = null): void
+    protected function sendMessage(string $text, Template $template = null): void
     {
         /** @var Queue $queue */
         $queue = $this->kernel->resolve(Queue::class);
 
-        $command = new SendMessage($this->getChat(), $this->getUser(), $text, $keyboard);
+        $command = new SendMessage($this->getChat(), $this->getUser(), $text, $template);
         $queue->push($this->kernel->getDriver(), $command);
     }
 
@@ -38,14 +38,14 @@ trait SendsMessages
      *
      * @param int           $delay
      * @param string        $text
-     * @param Keyboard|null $keyboard
+     * @param Template|null $template
      */
-    protected function sendDelayedMessage(int $delay, string $text, Keyboard $keyboard = null): void
+    protected function sendDelayedMessage(int $delay, string $text, Template $template = null): void
     {
         /** @var Queue $queue */
         $queue = $this->kernel->resolve(Queue::class);
 
-        $command = new SendMessage($this->getChat(), $this->getUser(), $text, $keyboard);
+        $command = new SendMessage($this->getChat(), $this->getUser(), $text, $template);
         $queue->later($this->kernel->getDriver(), $command, $delay);
     }
 

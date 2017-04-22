@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation\Buttons;
+namespace FondBot\Conversation\Templates\Keyboard;
 
 interface Button
 {

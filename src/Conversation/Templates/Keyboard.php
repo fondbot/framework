@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation;
+namespace FondBot\Conversation\Templates;
 
-use FondBot\Conversation\Buttons\Button;
+use FondBot\Conversation\Template;
+use FondBot\Conversation\Templates\Keyboard\Button;
 
-class Keyboard
+class Keyboard implements Template
 {
     /** @var Button[] */
-    private $buttons;
+    protected $buttons;
 
     public function __construct(array $buttons)
     {

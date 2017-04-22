@@ -42,6 +42,30 @@ class DriverManagerTest extends TestCase
     }
 
     /**
+     * @expectedException \FondBot\Drivers\Exceptions\DriverNotFound
+     * @expectedExceptionMessage Driver `fake` not found.
+     */
+    public function test_get_driver_does_not_exist()
+    {
+        $container = $this->mock(Container::class);
+        $discovery = $this->mock(Discovery::class);
+
+        $discovery->shouldReceive('getAssetType')
+            ->with(Driver::class)
+            ->andReturn(new ImmutableAssetType(Driver::class, [
+                new Asset('Foo', '', '', 0, ['name' => 'fake']),
+            ]))
+            ->atLeast()->once();
+        $container->shouldReceive('make')->with('Foo')->once();
+
+        $manager = new DriverManager($container, $discovery);
+
+        $channel = new Channel('test', 'fake', ['token' => $this->faker()->sha1]);
+
+        $manager->get($channel);
+    }
+
+    /**
      * @expectedException \FondBot\Drivers\Exceptions\InvalidConfiguration
      * @expectedExceptionMessage Invalid `test` channel configuration.
      */
