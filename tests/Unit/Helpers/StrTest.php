@@ -9,6 +9,14 @@ use FondBot\Tests\TestCase;
 
 class StrTest extends TestCase
 {
+    public function test_contains()
+    {
+        $string = 'FondBot is a great library for building chatbots.';
+
+        $this->assertTrue(Str::contains($string, ['great', 'for', 'chatbots']));
+        $this->assertFalse(Str::contains($string, ['bad', 'awful', 'human']));
+    }
+
     public function test_endsWith()
     {
         $string = 'FondBot is a great library for building chatbots.';

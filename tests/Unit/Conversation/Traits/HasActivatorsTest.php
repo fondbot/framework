@@ -8,6 +8,7 @@ use FondBot\Tests\TestCase;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\InArray;
 use FondBot\Conversation\Activators\Pattern;
+use FondBot\Conversation\Activators\Contains;
 use FondBot\Conversation\Activators\Activator;
 use FondBot\Conversation\Traits\HasActivators;
 use FondBot\Conversation\Activators\WithAttachment;
@@ -19,6 +20,7 @@ class HasActivatorsTest extends TestCase
         $class = new HasActivatorsTraitTestClass();
 
         $this->assertInstanceOf(Exact::class, $class->exact($this->faker()->word));
+        $this->assertInstanceOf(Contains::class, $class->contains($this->faker()->word));
         $this->assertInstanceOf(Pattern::class, $class->pattern($this->faker()->regexify()));
         $this->assertInstanceOf(InArray::class, $class->inArray([1, 2, 3]));
         $this->assertInstanceOf(WithAttachment::class, $class->withAttachment());
