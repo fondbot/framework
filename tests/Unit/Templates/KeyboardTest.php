@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Conversation\Templates;
+namespace Tests\Unit\Templates;
 
 use FondBot\Tests\TestCase;
-use FondBot\Conversation\Templates\Keyboard;
-use FondBot\Conversation\Templates\Keyboard\Button;
+use FondBot\Templates\Keyboard;
+use FondBot\Templates\Keyboard\Button;
 
 class KeyboardTest extends TestCase
 {
@@ -21,5 +21,7 @@ class KeyboardTest extends TestCase
 
         $this->assertInstanceOf(Keyboard::class, $keyboard);
         $this->assertSame($buttons, $keyboard->getButtons());
+        $this->assertSame(['buttons' => $buttons], $keyboard->toArray());
+        $this->assertSame(json_encode(['buttons' => $buttons]), $keyboard->jsonSerialize());
     }
 }

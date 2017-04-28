@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation\Templates;
+namespace FondBot\Templates;
 
 use FondBot\Conversation\Template;
-use FondBot\Conversation\Templates\Keyboard\Button;
+use FondBot\Templates\Keyboard\Button;
 
 class Keyboard implements Template
 {

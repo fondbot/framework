@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Drivers;
 
-use FondBot\Drivers\ReceivedMessage\Location;
-use FondBot\Drivers\ReceivedMessage\Attachment;
+use FondBot\Templates\Location;
+use FondBot\Templates\Attachment;
 
 interface ReceivedMessage
 {

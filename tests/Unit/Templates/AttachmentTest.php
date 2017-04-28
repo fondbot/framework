@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Drivers\ReceivedMessage;
+namespace FondBot\Tests\Unit\Templates;
 
 use FondBot\Tests\TestCase;
-use FondBot\Drivers\ReceivedMessage\Attachment;
+use FondBot\Templates\Attachment;
 
 class AttachmentTest extends TestCase
 {
@@ -16,12 +16,13 @@ class AttachmentTest extends TestCase
      */
     public function test(string $type)
     {
-        $attachment = new Attachment($type, $url = $this->faker()->url);
+        $attachment = new Attachment($type, $url = $this->faker()->url, $metadata = ['foo' => 'bar']);
 
         $array = ['type' => $type, 'path' => $url];
 
         $this->assertSame($type, $attachment->getType());
         $this->assertSame($url, $attachment->getPath());
+        $this->assertSame($metadata, $attachment->getMetadata());
         $this->assertSame($array, $attachment->toArray());
     }
 

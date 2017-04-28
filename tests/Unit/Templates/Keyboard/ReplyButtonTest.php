@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation\Templates\Keyboard;
+namespace Tests\Unit\Templates\Keyboard;
 
 use FondBot\Tests\TestCase;
-use FondBot\Conversation\Templates\Keyboard\ReplyButton;
+use FondBot\Templates\Keyboard\ReplyButton;
 
 class ReplyButtonTest extends TestCase
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Drivers\ReceivedMessage;
+namespace Tests\Unit\Templates;
 
 use FondBot\Tests\TestCase;
-use FondBot\Drivers\ReceivedMessage\Location;
+use FondBot\Templates\Location;
 
 class LocationTest extends TestCase
 {
@@ -13,7 +13,11 @@ class LocationTest extends TestCase
     {
         $location = new Location($latitude = $this->faker()->latitude, $longitude = $this->faker()->longitude);
 
+        $array = ['latitude' => $latitude, 'longitude' => $longitude];
+
         $this->assertSame($latitude, $location->getLatitude());
         $this->assertSame($longitude, $location->getLongitude());
+        $this->assertSame($array, $location->toArray());
+        $this->assertSame(json_encode($array), $location->jsonSerialize());
     }
 }

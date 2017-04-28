@@ -9,9 +9,9 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
 use FondBot\Application\Kernel;
-use FondBot\Conversation\Templates\Keyboard;
+use FondBot\Templates\Keyboard;
+use FondBot\Templates\Attachment;
 use FondBot\Conversation\Traits\SendsMessages;
-use FondBot\Drivers\ReceivedMessage\Attachment;
 
 class SendsMessagesTest extends TestCase
 {

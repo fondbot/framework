@@ -7,7 +7,7 @@ namespace FondBot\Drivers\Commands;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Command;
-use FondBot\Drivers\ReceivedMessage\Attachment;
+use FondBot\Templates\Attachment;
 
 class SendAttachment implements Command
 {

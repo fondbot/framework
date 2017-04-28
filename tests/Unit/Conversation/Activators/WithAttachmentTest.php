@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Conversation\Activators;
 
 use FondBot\Tests\TestCase;
+use FondBot\Templates\Attachment;
 use FondBot\Drivers\ReceivedMessage;
-use FondBot\Drivers\ReceivedMessage\Attachment;
 use FondBot\Conversation\Activators\WithAttachment;
 
 /**

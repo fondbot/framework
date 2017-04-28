@@ -8,10 +8,10 @@ use FondBot\Queue\Queue;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Application\Kernel;
+use FondBot\Templates\Attachment;
 use FondBot\Conversation\Template;
 use FondBot\Drivers\Commands\SendMessage;
 use FondBot\Drivers\Commands\SendAttachment;
-use FondBot\Drivers\ReceivedMessage\Attachment;
 
 trait SendsMessages
 {

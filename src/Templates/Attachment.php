@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Drivers\ReceivedMessage;
+namespace FondBot\Templates;
 
 use FondBot\Contracts\Arrayable;
 
@@ -15,13 +15,13 @@ class Attachment implements Arrayable
 
     protected $type;
     protected $path;
-    protected $contents;
-    protected $guzzle;
+    protected $metadata;
 
-    public function __construct(string $type, string $path)
+    public function __construct(string $type, string $path, array $metadata = [])
     {
         $this->type = $type;
         $this->path = $path;
+        $this->metadata = $metadata;
     }
 
     /**
@@ -42,6 +42,16 @@ class Attachment implements Arrayable
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    /**
+     * Get attachment metadata.
+     *
+     * @return array
+     */
+    public function getMetadata(): array
+    {
+        return $this->metadata;
     }
 
     /**
