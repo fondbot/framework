@@ -21,7 +21,7 @@ class Factory
      *
      * @return Kernel
      */
-    public function create(Container $container, Channel $channel, array $request, array $headers)
+    public function create(Container $container, Channel $channel, array $request, array $headers): Kernel
     {
         /** @var Driver $driver */
         $driver = $container->make(DriverManager::class)->get($channel);

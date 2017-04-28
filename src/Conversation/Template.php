@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-interface Template
+use JsonSerializable;
+use FondBot\Contracts\Arrayable;
+
+interface Template extends Arrayable, JsonSerializable
 {
 }
