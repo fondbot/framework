@@ -11,6 +11,7 @@ use FondBot\Application\Kernel;
 use FondBot\Templates\Attachment;
 use FondBot\Conversation\Template;
 use FondBot\Drivers\Commands\SendMessage;
+use FondBot\Drivers\Commands\SendRequest;
 use FondBot\Drivers\Commands\SendAttachment;
 
 trait SendsMessages
@@ -67,6 +68,21 @@ trait SendsMessages
         } else {
             $queue->later($this->kernel->getDriver(), $command, $delay);
         }
+    }
+
+    /**
+     * Send request to the messaging service.
+     *
+     * @param string $endpoint
+     * @param array  $parameters
+     */
+    protected function sendRequest(string $endpoint, array $parameters = []): void
+    {
+        /** @var Queue $queue */
+        $queue = $this->kernel->resolve(Queue::class);
+
+        $command = new SendRequest($this->getChat(), $this->getUser(), $endpoint, $parameters);
+        $queue->push($this->kernel->getDriver(), $command);
     }
 
     /**

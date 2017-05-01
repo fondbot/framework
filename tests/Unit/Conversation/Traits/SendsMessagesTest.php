@@ -62,6 +62,18 @@ class SendsMessagesTest extends TestCase
         $class = new SendsMessagesTraitTestClass($kernel, $this->mock(Chat::class), $this->mock(User::class));
         $class->sendAttachment($this->mock(Attachment::class), random_int(1, 10));
     }
+
+    public function test_sendRequest()
+    {
+        $kernel = $this->mock(Kernel::class);
+
+        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
+        $kernel->shouldReceive('getDriver')->once();
+        $queue->shouldReceive('push')->once();
+
+        $class = new SendsMessagesTraitTestClass($kernel, $this->mock(Chat::class), $this->mock(User::class));
+        $class->sendRequest('endpoint', ['foo' => 'bar']);
+    }
 }
 
 class SendsMessagesTraitTestClass
