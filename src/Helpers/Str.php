@@ -14,7 +14,7 @@ class Str
      *
      * @return bool
      */
-    public static function contains(string $haystack, $needles)
+    public static function contains(string $haystack, $needles): bool
     {
         foreach ((array) $needles as $needle) {
             if ($needle !== '' && mb_strpos($haystack, $needle) !== false) {
