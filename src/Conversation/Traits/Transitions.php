@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
+use RuntimeException;
 use InvalidArgumentException;
 use FondBot\Application\Kernel;
+use FondBot\Conversation\Intent;
 use FondBot\Conversation\Interaction;
 
 trait Transitions
@@ -40,5 +42,33 @@ trait Transitions
         $this->kernel->converse($instance);
 
         $this->transitioned = true;
+    }
+
+    /**
+     * Restart current intent or interaction.
+     */
+    protected function restart(): void
+    {
+        switch (true) {
+            case $this instanceof Intent:
+                $this->kernel->clearContext();
+
+                $this->kernel->converse($this);
+
+                $this->transitioned = true;
+                break;
+            case $this instanceof Interaction:
+                $context = $this->kernel->getContext();
+                $context->setInteraction(null);
+                $context->setValues([]);
+                $this->kernel->setContext($context);
+
+                $this->transitioned = true;
+
+                $this->kernel->converse($this);
+                break;
+            default:
+                throw new RuntimeException('Only conversable instances can be restarted.');
+        }
     }
 }
