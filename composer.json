@@ -47,7 +47,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --stop-on-failure --no-coverage",
+        "test": "vendor/bin/phpunit",
         "cs": "php-cs-fixer fix --allow-risky=yes"
     },
     "config": {
