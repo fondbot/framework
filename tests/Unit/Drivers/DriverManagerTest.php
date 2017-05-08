@@ -7,7 +7,7 @@ namespace FondBot\Tests\Unit\Drivers;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
-use FondBot\Contracts\Container;
+use FondBot\Application\Container;
 use FondBot\Drivers\DriverManager;
 use TheCodingMachine\Discovery\Asset;
 use TheCodingMachine\Discovery\Discovery;
@@ -15,7 +15,7 @@ use TheCodingMachine\Discovery\ImmutableAssetType;
 
 class DriverManagerTest extends TestCase
 {
-    public function test_get()
+    public function test_get(): void
     {
         $container = $this->mock(Container::class);
         $discovery = $this->mock(Discovery::class);
@@ -28,7 +28,7 @@ class DriverManagerTest extends TestCase
             ]))
             ->atLeast()->once();
 
-        $container->shouldReceive('make')->with(get_class($driver))->andReturn($driver)->once();
+        $container->shouldReceive('get')->with(get_class($driver))->andReturn($driver)->once();
 
         $manager = new DriverManager($container, $discovery);
 
@@ -45,7 +45,7 @@ class DriverManagerTest extends TestCase
      * @expectedException \FondBot\Drivers\Exceptions\DriverNotFound
      * @expectedExceptionMessage Driver `fake` not found.
      */
-    public function test_get_driver_does_not_exist()
+    public function test_get_driver_does_not_exist(): void
     {
         $container = $this->mock(Container::class);
         $discovery = $this->mock(Discovery::class);
@@ -56,7 +56,7 @@ class DriverManagerTest extends TestCase
                 new Asset('Foo', '', '', 0, ['name' => 'fake']),
             ]))
             ->atLeast()->once();
-        $container->shouldReceive('make')->with('Foo')->once();
+        $container->shouldReceive('get')->with('Foo')->once();
 
         $manager = new DriverManager($container, $discovery);
 
@@ -69,7 +69,7 @@ class DriverManagerTest extends TestCase
      * @expectedException \FondBot\Drivers\Exceptions\InvalidConfiguration
      * @expectedExceptionMessage Invalid `test` channel configuration.
      */
-    public function test_get_invalid_configuration()
+    public function test_get_invalid_configuration(): void
     {
         $container = $this->mock(Container::class);
         $discovery = $this->mock(Discovery::class);
@@ -82,7 +82,7 @@ class DriverManagerTest extends TestCase
             ]))
             ->atLeast()->once();
 
-        $container->shouldReceive('make')->with(get_class($driver))->andReturn($driver)->once();
+        $container->shouldReceive('get')->with(get_class($driver))->andReturn($driver)->once();
 
         $manager = new DriverManager($container, $discovery);
 

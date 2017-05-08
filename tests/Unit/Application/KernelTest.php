@@ -36,7 +36,7 @@ class KernelTest extends TestCase
 
         Kernel::getInstance()->setContext($context = $this->mock(Context::class));
 
-        $this->container->bind(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
+        $this->container->add(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
 
         $contextManager->shouldReceive('clear')->with($context)->once();
 
@@ -54,8 +54,8 @@ class KernelTest extends TestCase
 
         $kernel = Kernel::getInstance();
 
-        $this->container->bind(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
-        $this->container->bind(IntentManager::class, $intentManager = $this->mock(IntentManager::class));
+        $this->container->add(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
+        $this->container->add(IntentManager::class, $intentManager = $this->mock(IntentManager::class));
 
         $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName);
         $driver->shouldReceive('verifyRequest')->once();
@@ -91,8 +91,8 @@ class KernelTest extends TestCase
 
         $kernel = Kernel::getInstance();
 
-        $this->container->bind(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
-        $this->container->bind(IntentManager::class, $intentManager = $this->mock(IntentManager::class));
+        $this->container->add(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
+        $this->container->add(IntentManager::class, $intentManager = $this->mock(IntentManager::class));
 
         $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName);
         $driver->shouldReceive('verifyRequest')->once();

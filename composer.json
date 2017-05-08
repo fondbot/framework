@@ -23,6 +23,7 @@
     "require": {
         "php": ">=7.1",
         "jeremeamia/superclosure": "^2.3",
+        "league/container": "^2.4",
         "spatie/regex": "^1.1",
         "thecodingmachine/discovery": "^1.1",
         "tightenco/collect": "^5.4",

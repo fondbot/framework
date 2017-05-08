@@ -6,7 +6,6 @@ namespace FondBot\Application;
 
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
-use FondBot\Contracts\Container;
 use FondBot\Drivers\DriverManager;
 
 class Factory
@@ -24,7 +23,7 @@ class Factory
     public function create(Container $container, Channel $channel, array $request, array $headers): Kernel
     {
         /** @var Driver $driver */
-        $driver = $container->make(DriverManager::class)->get($channel);
+        $driver = $container->get(DriverManager::class)->get($channel);
 
         $driver->fill($channel->getParameters(), $request, $headers);
 

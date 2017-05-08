@@ -70,7 +70,7 @@ class Str
      *
      * @return string
      */
-    public static function lower($value)
+    public static function lower($value): string
     {
         return mb_strtolower($value, 'UTF-8');
     }

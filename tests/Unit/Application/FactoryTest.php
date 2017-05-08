@@ -17,7 +17,7 @@ class FactoryTest extends TestCase
     {
         $parameters = ['token' => $this->faker()->sha1];
 
-        $this->container->bind(DriverManager::class, $driverManager = $this->mock(DriverManager::class));
+        $this->container->add(DriverManager::class, $driverManager = $this->mock(DriverManager::class));
 
         $driverManager->shouldReceive('get')
             ->with($channel = $this->mock(Channel::class))

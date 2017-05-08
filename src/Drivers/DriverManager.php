@@ -6,7 +6,7 @@ namespace FondBot\Drivers;
 
 use FondBot\Helpers\Arr;
 use FondBot\Channels\Channel;
-use FondBot\Contracts\Container;
+use FondBot\Application\Container;
 use TheCodingMachine\Discovery\Asset;
 use TheCodingMachine\Discovery\Discovery;
 use FondBot\Drivers\Exceptions\DriverNotFound;
@@ -38,7 +38,7 @@ class DriverManager
         $assets = $this->discovery->getAssetType(Driver::class);
 
         foreach ($assets->getAssets() as $asset) {
-            $this->drivers[$asset->getMetadata()['name']] = $this->container->make($asset->getValue());
+            $this->drivers[$asset->getMetadata()['name']] = $this->container->get($asset->getValue());
         }
     }
 

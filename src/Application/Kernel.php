@@ -6,7 +6,6 @@ namespace FondBot\Application;
 
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
-use FondBot\Contracts\Container;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Conversable;
@@ -125,7 +124,7 @@ class Kernel
      */
     public function resolve(string $class)
     {
-        return $this->container->make($class);
+        return $this->container->get($class);
     }
 
     /**

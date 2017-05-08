@@ -8,7 +8,7 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Contracts\Cache;
-use FondBot\Contracts\Container;
+use FondBot\Application\Container;
 
 class ContextManager
 {
@@ -37,8 +37,8 @@ class ContextManager
         $key = $this->key($channel, $chat, $sender);
         $value = $this->cache->get($key);
 
-        $intent = $value['intent'] !== null ? $this->container->make($value['intent']) : null;
-        $interaction = $value['interaction'] !== null ? $this->container->make($value['interaction']) : null;
+        $intent = $value['intent'] !== null ? $this->container->get($value['intent']) : null;
+        $interaction = $value['interaction'] !== null ? $this->container->get($value['interaction']) : null;
 
         return new Context(
             $channel,

@@ -8,11 +8,11 @@ use Mockery;
 use Faker\Factory;
 use Faker\Generator;
 use FondBot\Application\Kernel;
-use FondBot\Tests\Classes\TestContainer;
+use FondBot\Application\Container;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    /** @var TestContainer */
+    /** @var Container */
     protected $container;
 
     protected function setUp()
@@ -21,7 +21,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
 
         // Set up container
-        $this->container = new Classes\TestContainer();
+        $this->container = new Container;
 
         $kernel = $this->mock(Kernel::class);
         Kernel::setInstance($kernel);
