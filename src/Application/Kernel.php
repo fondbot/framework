@@ -8,6 +8,7 @@ use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
+use FondBot\Drivers\DriverManager;
 use FondBot\Conversation\Conversable;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
@@ -86,7 +87,6 @@ class Kernel
     /**
      * Process webhook request.
      *
-     * @param Driver  $driver
      * @param Channel $channel
      *
      * @param array   $request
@@ -94,9 +94,11 @@ class Kernel
      *
      * @return mixed
      */
-    public function process(Driver $driver, Channel $channel, array $request, array $headers)
+    public function process(Channel $channel, array $request, array $headers)
     {
         try {
+            $driver = $this->driverManager()->get($channel);
+
             $this->container->add('driver', $driver);
 
             $driver->fill($channel->getParameters(), $request, $headers);
@@ -148,6 +150,16 @@ class Kernel
         } elseif ($conversable instanceof Interaction) {
             $conversable->handle($this);
         }
+    }
+
+    /**
+     * Get driver manager.
+     *
+     * @return DriverManager
+     */
+    private function driverManager(): DriverManager
+    {
+        return $this->resolve(DriverManager::class);
     }
 
     /**
