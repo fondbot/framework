@@ -20,44 +20,41 @@ use FondBot\Drivers\Extensions\WebhookVerification;
 
 class KernelTest extends TestCase
 {
-    public function test_context_and_driver()
+    public function test_context(): void
     {
-        Kernel::createInstance($this->container, $this->mock(Channel::class), $driver = $this->mock(Driver::class));
+        $kernel = new Kernel($this->container);
+        $kernel->setContext($context = $this->mock(Context::class));
 
-        Kernel::getInstance()->setContext($context = $this->mock(Context::class));
-
-        $this->assertSame($context, Kernel::getInstance()->getContext());
-        $this->assertSame($driver, Kernel::getInstance()->getDriver());
+        $this->assertSame($context, $kernel->getContext());
     }
 
-    public function test_clearContext()
+    public function test_clearContext(): void
     {
-        Kernel::createInstance($this->container, $this->mock(Channel::class), $this->mock(Driver::class));
-
-        Kernel::getInstance()->setContext($context = $this->mock(Context::class));
+        $kernel = new Kernel($this->container);
+        $kernel->setContext($context = $this->mock(Context::class));
 
         $this->container->add(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
 
         $contextManager->shouldReceive('clear')->with($context)->once();
 
-        Kernel::getInstance()->clearContext();
-        $this->assertNull(Kernel::getInstance()->getContext());
+        $kernel->clearContext();
+
+        $this->assertNull($kernel->getContext());
     }
 
-    public function test_process_new_dialog()
+    public function test_process_new_dialog(): void
     {
-        Kernel::createInstance(
-            $this->container,
-            $channel = $this->mock(Channel::class),
-            $driver = $this->mock(Driver::class)
-        );
-
-        $kernel = Kernel::getInstance();
+        $kernel = new Kernel($this->container);
+        $channel = $this->mock(Channel::class);
+        $driver = $this->mock(Driver::class);
 
         $this->container->add(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
         $this->container->add(IntentManager::class, $intentManager = $this->mock(IntentManager::class));
 
-        $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName);
+        $channel->shouldReceive('getParameters')->andReturn([])->atLeast()->once();
+        $driver->shouldReceive('fill')->with([], [], [])->once();
+
+        $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName)->atLeast()->once();
         $driver->shouldReceive('verifyRequest')->once();
         $contextManager->shouldReceive('resolve')
             ->with($channelName, $driver)
@@ -78,23 +75,24 @@ class KernelTest extends TestCase
         $intent->shouldReceive('handle')->with($kernel)->once();
         $contextManager->shouldReceive('save')->with($context)->once();
 
-        $kernel->process();
+        $kernel->process($driver, $channel, [], []);
+
+        $this->assertSame($driver, $kernel->getDriver());
     }
 
-    public function test_process_continue_dialog()
+    public function test_process_continue_dialog(): void
     {
-        Kernel::createInstance(
-            $this->container,
-            $channel = $this->mock(Channel::class),
-            $driver = $this->mock(Driver::class)
-        );
-
-        $kernel = Kernel::getInstance();
+        $kernel = new Kernel($this->container);
+        $channel = $this->mock(Channel::class);
+        $driver = $this->mock(Driver::class);
 
         $this->container->add(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
         $this->container->add(IntentManager::class, $intentManager = $this->mock(IntentManager::class));
 
-        $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName);
+        $channel->shouldReceive('getParameters')->andReturn([])->atLeast()->once();
+        $driver->shouldReceive('fill')->with([], [], [])->once();
+
+        $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName)->atLeast()->once();
         $driver->shouldReceive('verifyRequest')->once();
         $contextManager->shouldReceive('resolve')
             ->with($channelName, $driver)
@@ -108,40 +106,37 @@ class KernelTest extends TestCase
 
         $contextManager->shouldReceive('save')->with($context)->once();
 
-        $kernel->process();
+        $kernel->process($driver, $channel, [], []);
     }
 
-    public function test_process_invalid_request()
+    public function test_process_invalid_request(): void
     {
-        Kernel::createInstance(
-            $this->container,
-            $channel = $this->mock(Channel::class),
-            $driver = $this->mock(Driver::class)
-        );
+        $kernel = new Kernel($this->container);
+        $channel = $this->mock(Channel::class);
+        $driver = $this->mock(Driver::class);
 
-        $kernel = Kernel::getInstance();
-
-        $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName);
+        $channel->shouldReceive('getParameters')->andReturn([])->atLeast()->once();
+        $driver->shouldReceive('fill')->with([], [], [])->once();
         $driver->shouldReceive('verifyRequest')->andThrow(new InvalidRequest('Invalid request.'));
 
-        $this->assertSame('Invalid request.', $kernel->process());
+        $this->assertSame('Invalid request.', $kernel->process($driver, $channel, [], []));
     }
 
-    public function test_process_with_webhook_verification()
+    public function test_process_with_webhook_verification(): void
     {
+        $kernel = new Kernel($this->container);
+        $channel = $this->mock(Channel::class);
         /** @var Mockery\Mock|mixed $driver */
         $driver = Mockery::mock(Driver::class, WebhookVerification::class);
 
-        Kernel::createInstance($this->container, $channel = $this->mock(Channel::class), $driver);
-
         $request = ['verification' => $this->faker()->sha1];
-        $kernel = Kernel::getInstance();
 
-        $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName);
+        $channel->shouldReceive('getParameters')->andReturn([])->atLeast()->once();
+        $driver->shouldReceive('fill')->with([], $request, [])->once();
         $driver->shouldReceive('isVerificationRequest')->andReturn(true);
         $driver->shouldReceive('verifyWebhook')->andReturn($request['verification']);
 
-        $result = $kernel->process();
+        $result = $kernel->process($driver, $channel, $request, []);
 
         $this->assertSame($request['verification'], $result);
     }

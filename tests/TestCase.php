@@ -15,16 +15,16 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     /** @var Container */
     protected $container;
 
+    /** @var Kernel */
+    protected $kernel;
+
     protected function setUp()
     {
         parent::setUp();
         Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
 
-        // Set up container
         $this->container = new Container;
-
-        $kernel = $this->mock(Kernel::class);
-        Kernel::setInstance($kernel);
+        $this->kernel = $this->mock(Kernel::class);
     }
 
     protected function tearDown()

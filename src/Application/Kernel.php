@@ -21,57 +21,13 @@ class Kernel
     protected static $instance;
 
     private $container;
-    private $channel;
-    private $driver;
 
     /** @var Context|null */
     private $context;
 
-    protected function __construct(
-        Container $container,
-        Channel $channel,
-        Driver $driver
-    ) {
+    public function __construct(Container $container)
+    {
         $this->container = $container;
-        $this->channel = $channel;
-        $this->driver = $driver;
-    }
-
-    /**
-     * Create new kernel instance.
-     *
-     * @param Container $container
-     * @param Channel   $channel
-     * @param Driver    $driver
-     */
-    public static function createInstance(
-        Container $container,
-        Channel $channel,
-        Driver $driver
-    ): void {
-        static::setInstance(
-            new static($container, $channel, $driver)
-        );
-    }
-
-    /**
-     * Get current instance.
-     *
-     * @return Kernel
-     */
-    public static function getInstance(): Kernel
-    {
-        return static::$instance;
-    }
-
-    /**
-     * Set kernel instance.
-     *
-     * @param Kernel $instance
-     */
-    public static function setInstance(Kernel $instance): void
-    {
-        static::$instance = $instance;
     }
 
     /**
@@ -81,7 +37,7 @@ class Kernel
      */
     public function getDriver(): Driver
     {
-        return $this->driver;
+        return $this->container->get('driver');
     }
 
     /**
@@ -130,26 +86,36 @@ class Kernel
     /**
      * Process webhook request.
      *
+     * @param Driver  $driver
+     * @param Channel $channel
+     *
+     * @param array   $request
+     * @param array   $headers
+     *
      * @return mixed
      */
-    public function process()
+    public function process(Driver $driver, Channel $channel, array $request, array $headers)
     {
         try {
+            $this->container->add('driver', $driver);
+
+            $driver->fill($channel->getParameters(), $request, $headers);
+
             // Driver has webhook verification
-            if ($this->driver instanceof WebhookVerification && $this->driver->isVerificationRequest()) {
-                return $this->driver->verifyWebhook();
+            if ($driver instanceof WebhookVerification && $driver->isVerificationRequest()) {
+                return $driver->verifyWebhook();
             }
 
             // Verify request
-            $this->driver->verifyRequest();
+            $driver->verifyRequest();
 
             // Resolve context
-            $this->context = $this->contextManager()->resolve($this->channel->getName(), $this->driver);
+            $this->context = $this->contextManager()->resolve($channel->getName(), $driver);
 
             if ($this->context->getInteraction() !== null) {
                 $this->converse($this->context->getInteraction());
             } else {
-                $intent = $this->intentManager()->find($this->driver->getMessage());
+                $intent = $this->intentManager()->find($driver->getMessage());
 
                 if ($intent !== null) {
                     $this->converse($intent);
