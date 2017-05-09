@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Queue;
+namespace FondBot\Contracts;
 
 use FondBot\Drivers\Driver;
 use FondBot\Drivers\Command;
 
-abstract class Queue
+interface Queue
 {
     /**
      * Push command onto the queue.
@@ -15,7 +15,7 @@ abstract class Queue
      * @param Driver  $driver
      * @param Command $command
      */
-    abstract public function push(Driver $driver, Command $command): void;
+    public function push(Driver $driver, Command $command): void;
 
     /**
      * Push command onto the queue with a delay.
@@ -26,5 +26,5 @@ abstract class Queue
      *
      * @return mixed|void
      */
-    abstract public function later(Driver $driver, Command $command, int $delay): void;
+    public function later(Driver $driver, Command $command, int $delay): void;
 }

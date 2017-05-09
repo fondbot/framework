@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation\Traits;
 
-use FondBot\Queue\Queue;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
+use FondBot\Contracts\Queue;
 use FondBot\Application\Kernel;
 use FondBot\Templates\Keyboard;
 use FondBot\Templates\Attachment;

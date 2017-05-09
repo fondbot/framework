@@ -21,10 +21,10 @@ class DriverManager
     /** @var Driver[] */
     protected $drivers;
 
-    public function __construct(Container $container, Discovery $discovery = null)
+    public function __construct(Container $container, Discovery $discovery)
     {
         $this->container = $container;
-        $this->discovery = $discovery ?? Discovery::getInstance();
+        $this->discovery = $discovery;
 
         $this->boot();
     }

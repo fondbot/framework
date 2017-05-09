@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Queue\Queue;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
+use FondBot\Contracts\Queue;
 use FondBot\Application\Kernel;
 use FondBot\Templates\Attachment;
 use FondBot\Conversation\Template;

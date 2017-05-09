@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Helpers\Str;
-use FondBot\Application\Filesystem;
+use FondBot\Filesystem\Filesystem;
 
 class ConversationCreator
 {
@@ -25,7 +25,7 @@ class ConversationCreator
      */
     public function createIntent(string $directory, string $namespace, string $name): void
     {
-        $contents = $this->filesystem->read(__DIR__.'/../../resources/stubs/Intent.stub');
+        $contents = $this->filesystem->read('vendor/fondbot/fondbot/resources/stubs/Intent.stub');
 
         $className = $this->className($name, 'Intent');
 
@@ -48,7 +48,7 @@ class ConversationCreator
      */
     public function createInteraction(string $directory, string $namespace, string $name): void
     {
-        $contents = $this->filesystem->read(__DIR__.'/../../resources/stubs/Interaction.stub');
+        $contents = $this->filesystem->read('vendor/fondbot/fondbot/resources/stubs/Interaction.stub');
 
         $className = $this->className($name, 'Interaction');
 

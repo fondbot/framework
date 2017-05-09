@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Application;
+namespace FondBot\Filesystem;
 
 use League\Flysystem\Filesystem as LeagueFilesystem;
 
