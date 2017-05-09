@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Channels\Providers;
 
+use FondBot\Application\Config;
 use FondBot\Channels\ChannelManager;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
@@ -12,13 +13,6 @@ class ChannelServiceProvider extends AbstractServiceProvider
     protected $provides = [
         ChannelManager::class,
     ];
-
-    private $channels;
-
-    public function __construct(array $channels)
-    {
-        $this->channels = $channels;
-    }
 
     /**
      * Use the register method to register items with the container via the
@@ -29,9 +23,14 @@ class ChannelServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
+        /** @var Config $config */
+        $config = $this->getContainer()->get(Config::class);
+        /** @var array $channels */
+        $channels = $config->get('channels', []);
+
         $manager = new ChannelManager;
 
-        foreach ($this->channels as $name => $parameters) {
+        foreach ($channels as $name => $parameters) {
             $manager->add($name, $parameters);
         }
 

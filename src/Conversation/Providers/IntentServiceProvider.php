@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Providers;
 
+use FondBot\Application\Config;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\FallbackIntent;
 use League\Container\ServiceProvider\AbstractServiceProvider;
@@ -14,15 +15,6 @@ class IntentServiceProvider extends AbstractServiceProvider
         IntentManager::class,
     ];
 
-    private $intents;
-    private $fallbackIntent;
-
-    public function __construct(array $intents, string $fallbackIntent = FallbackIntent::class)
-    {
-        $this->intents = $intents;
-        $this->fallbackIntent = $fallbackIntent;
-    }
-
     /**
      * Use the register method to register items with the container via the
      * protected $this->container property or the `getContainer` method
@@ -32,13 +24,22 @@ class IntentServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
+        /** @var Config $config */
+        $config = $this->getContainer()->get(Config::class);
+
+        /** @var array $intents */
+        $intents = $config->get('intents', []);
+
+        /** @var string $fallbackIntent */
+        $fallbackIntent = $config->get('fallback_intent', FallbackIntent::class);
+
         $manager = new IntentManager();
 
-        foreach ($this->intents as $intent) {
+        foreach ($intents as $intent) {
             $manager->add($this->getContainer()->get($intent));
         }
 
-        $manager->setFallbackIntent($this->getContainer()->get($this->fallbackIntent));
+        $manager->setFallbackIntent($this->getContainer()->get($fallbackIntent));
 
         $this->getContainer()->add(IntentManager::class, $manager);
     }

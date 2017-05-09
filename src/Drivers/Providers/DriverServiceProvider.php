@@ -21,7 +21,7 @@ class DriverServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $manager = new DriverManager($this->getContainer(), Discovery::getInstance());
 
