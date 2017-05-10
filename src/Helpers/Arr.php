@@ -108,12 +108,8 @@ class Arr
      *
      * @return array
      */
-    public static function set(&$array, $key, $value): array
+    public static function set(array &$array, string $key, $value): array
     {
-        if ($key === null) {
-            return $array = $value;
-        }
-
         $keys = explode('.', $key);
         while (count($keys) > 1) {
             $key = array_shift($keys);
@@ -145,6 +141,7 @@ class Arr
         if (count($keys) === 0) {
             return;
         }
+
         foreach ($keys as $key) {
             // if the exact key exists in the top-level, remove it
             if (static::exists($array, $key)) {

@@ -27,7 +27,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         $this->kernel = $this->mock(Kernel::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
