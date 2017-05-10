@@ -10,15 +10,19 @@ use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Drivers\Command;
 use FondBot\Drivers\ReceivedMessage;
+use Psr\Http\Message\ServerRequestInterface;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 
 class DriverTest extends TestCase
 {
-    public function test_request_methods()
+    public function test_request_methods(): void
     {
+        $request = $this->mock(ServerRequestInterface::class);
+        $request->shouldReceive('getParsedBody')->andReturn(['foo' => 'bar']);
+
         $driver = new DriverTestClass();
 
-        $driver->fill([], ['foo' => 'bar']);
+        $driver->fill([], $request);
 
         $this->assertSame('bar', $driver->getRequest('foo'));
         $this->assertSame(['foo' => 'bar'], $driver->getRequest());
@@ -26,22 +30,25 @@ class DriverTest extends TestCase
         $this->assertFalse($driver->hasRequest('bar'));
     }
 
-    public function test_header_methods()
+    public function test_header_methods(): void
     {
+        $request = $this->mock(ServerRequestInterface::class);
+        $request->shouldReceive('getHeaders')->andReturn(['foo' => 'bar']);
         $driver = new DriverTestClass();
 
-        $driver->fill([], [], ['foo' => 'bar']);
+        $driver->fill([], $request);
 
         $this->assertSame(['foo' => 'bar'], $driver->getHeader());
         $this->assertSame('bar', $driver->getHeader('foo'));
         $this->assertNull($driver->getHeader('bar'));
     }
 
-    public function test_parameters_methods()
+    public function test_parameters_methods(): void
     {
+        $request = $this->mock(ServerRequestInterface::class);
         $driver = new DriverTestClass();
 
-        $driver->fill(['foo' => 'bar']);
+        $driver->fill(['foo' => 'bar'], $request);
 
         $this->assertSame('bar', $driver->getParameter('foo'));
         $this->assertNull($driver->getParameter('bar'));

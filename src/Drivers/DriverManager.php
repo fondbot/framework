@@ -9,6 +9,7 @@ use FondBot\Channels\Channel;
 use League\Container\Container;
 use TheCodingMachine\Discovery\Asset;
 use TheCodingMachine\Discovery\Discovery;
+use Psr\Http\Message\ServerRequestInterface;
 use FondBot\Drivers\Exceptions\DriverNotFound;
 use TheCodingMachine\Discovery\ImmutableAssetType;
 use FondBot\Drivers\Exceptions\InvalidConfiguration;
@@ -45,16 +46,14 @@ class DriverManager
     /**
      * Get driver instance.
      *
-     * @param Channel $channel
+     * @param Channel                $channel
      *
-     * @param array   $request
-     * @param array   $headers
-     * @param array   $parameters
+     * @param ServerRequestInterface $request
      *
      * @return Driver
      * @throws DriverNotFound
      */
-    public function get(Channel $channel, array $request = [], array $headers = [], array $parameters = []): Driver
+    public function get(Channel $channel, ServerRequestInterface $request): Driver
     {
         $driver = $this->drivers[$channel->getDriver()];
 
@@ -64,7 +63,7 @@ class DriverManager
 
         $this->validateParameters($channel, $driver);
 
-        $driver->fill($parameters, $request, $headers);
+        $driver->fill($channel->getParameters(), $request);
 
         return $driver;
     }

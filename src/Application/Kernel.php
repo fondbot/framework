@@ -99,11 +99,9 @@ class Kernel
     public function process(Channel $channel, ServerRequestInterface $request)
     {
         try {
-            $driver = $this->driverManager()->get($channel);
+            $driver = $this->driverManager()->get($channel, $request);
 
             $this->container->add('driver', $driver);
-
-            $driver->fill($channel->getParameters(), $request);
 
             // Driver has webhook verification
             if ($driver instanceof WebhookVerification && $driver->isVerificationRequest()) {
