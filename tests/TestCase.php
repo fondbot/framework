@@ -8,7 +8,7 @@ use Mockery;
 use Faker\Factory;
 use Faker\Generator;
 use FondBot\Application\Kernel;
-use FondBot\Application\Container;
+use League\Container\Container;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {

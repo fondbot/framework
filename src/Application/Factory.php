@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Application;
 
+use League\Container\Container;
 use League\Flysystem\Adapter\Local;
 use League\Container\ReflectionContainer;
 use FondBot\Drivers\DriverServiceProvider;

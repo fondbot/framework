@@ -6,6 +6,7 @@ namespace FondBot\Application;
 
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
+use League\Container\Container;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
 use FondBot\Drivers\DriverManager;

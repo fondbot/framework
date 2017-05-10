@@ -8,7 +8,7 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Contracts\Cache;
-use FondBot\Application\Container;
+use League\Container\Container;
 
 class ContextManager
 {

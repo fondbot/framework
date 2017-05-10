@@ -6,7 +6,7 @@ namespace FondBot\Drivers;
 
 use FondBot\Helpers\Arr;
 use FondBot\Channels\Channel;
-use FondBot\Application\Container;
+use League\Container\Container;
 use TheCodingMachine\Discovery\Asset;
 use TheCodingMachine\Discovery\Discovery;
 use FondBot\Drivers\Exceptions\DriverNotFound;
@@ -58,7 +58,7 @@ class DriverManager
     {
         $driver = $this->drivers[$channel->getDriver()];
 
-        if ($driver === null) {
+        if ($driver === null || !$driver instanceof Driver) {
             throw new DriverNotFound('Driver `'.$channel->getDriver().'` not found.');
         }
 

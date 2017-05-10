@@ -50,8 +50,10 @@ class RouteServiceProvider extends AbstractServiceProvider
         $this->getContainer()->add('router', function () {
             $router = new RouteCollection($this->getContainer());
 
-            $router->map('GET', $this->buildPath('/'), Controller::class.'::index');
-            $router->map('GET', $this->buildPath('/channels/{name}'), Controller::class.'::webhook');
+            $controller = new Controller($this->getContainer());
+
+            $router->map('GET', $this->buildPath('/'), [$controller, 'index']);
+            $router->map('GET', $this->buildPath('/channels/{name}'), [$controller, 'webhook']);
 
             return $router;
         });
