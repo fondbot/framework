@@ -22,6 +22,6 @@ class KeyboardTest extends TestCase
         $this->assertInstanceOf(Keyboard::class, $keyboard);
         $this->assertSame($buttons, $keyboard->getButtons());
         $this->assertSame(['buttons' => $buttons], $keyboard->toArray());
-        $this->assertSame(json_encode(['buttons' => $buttons]), $keyboard->jsonSerialize());
+        $this->assertSame(['buttons' => $buttons], $keyboard->jsonSerialize());
     }
 }

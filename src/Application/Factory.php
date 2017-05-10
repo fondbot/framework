@@ -25,7 +25,6 @@ class Factory
         $container->add('base_path', $basePath);
 
         // Load service providers
-        $container->addServiceProvider(new ConfigServiceProvider());
         $container->addServiceProvider(new RouteServiceProvider($routesPrefix));
         $container->addServiceProvider(new FilesystemServiceProvider(new Local($basePath)));
         $container->addServiceProvider(new DriverServiceProvider());

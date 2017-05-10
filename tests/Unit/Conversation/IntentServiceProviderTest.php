@@ -19,11 +19,11 @@ class IntentServiceProviderTest extends TestCase
         $this->container->add(TestIntent::class, new TestIntent());
         $this->container->add(FallbackIntent::class, new FallbackIntent());
 
-        $this->container->add(Config::class, function () use (&$intent1, &$intent2) {
-            $config = new Config();
-
-            $config->set('intents', [TestIntent::class]);
-            $config->set('fallback_intent', FallbackIntent::class);
+        $this->container->add(Config::class, function () {
+            $config = new Config([
+                'intents' => [TestIntent::class],
+                'fallback_intent' => FallbackIntent::class,
+            ]);
 
             return $config;
         });

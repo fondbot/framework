@@ -14,9 +14,9 @@ class ChannelServiceProviderTest extends TestCase
     public function test(): void
     {
         $this->container->add(Config::class, function () {
-            $config = new Config();
-
-            $config->set('channels', ['channel-1' => ['driver' => 'telegram', 'foo' => 'bar']]);
+            $config = new Config([
+                'channels' => ['channel-1' => ['driver' => 'telegram', 'foo' => 'bar']],
+            ]);
 
             return $config;
         });

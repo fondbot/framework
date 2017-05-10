@@ -46,8 +46,8 @@ class Keyboard implements Template
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    public function jsonSerialize(): string
+    public function jsonSerialize(): array
     {
-        return json_encode($this->toArray());
+        return $this->toArray();
     }
 }
