@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace FondBot\Application;
 
-use Psr\Container\ContainerInterface;
+use FondBot\Channels\ChannelManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Controller
 {
-    protected $container;
+    protected $kernel;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(Kernel $kernel)
     {
-        $this->container = $container;
+        $this->kernel = $kernel;
     }
 
     public function index(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -26,9 +26,14 @@ class Controller
 
     public function webhook(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        $name = $args['name'];
+        /** @var ChannelManager $channelManager */
+        $channelManager = $this->kernel->resolve(ChannelManager::class);
 
-        $response->getBody()->write($name);
+        $channel = $channelManager->create($args['name']);
+
+        $result = $this->kernel->process($channel, $request);
+
+        $response->getBody()->write($result);
 
         return $response;
     }

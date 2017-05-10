@@ -33,6 +33,10 @@ class Factory
         $container->addServiceProvider(new IntentServiceProvider());
         $container->addServiceProvider(new ContextServiceProvider());
 
-        return new Kernel($container);
+        $kernel = new Kernel($container);
+
+        $container->add(Kernel::class, $kernel);
+
+        return $kernel;
     }
 }

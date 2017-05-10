@@ -6,15 +6,13 @@ namespace FondBot\Drivers;
 
 use FondBot\Helpers\Arr;
 use FondBot\Queue\SerializableForQueue;
+use Psr\Http\Message\ServerRequestInterface;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 
 abstract class Driver implements SerializableForQueue
 {
-    /** @var array */
+    /** @var ServerRequestInterface */
     protected $request = [];
-
-    /** @var array */
-    protected $headers = [];
 
     /** @var array */
     protected $parameters;
@@ -23,14 +21,12 @@ abstract class Driver implements SerializableForQueue
      * Set driver data.
      *
      * @param array $parameters
-     * @param array $request
-     * @param array $headers
+     * @param ServerRequestInterface $request
      */
-    public function fill(array $parameters, array $request = [], array $headers = []): void
+    public function fill(array $parameters, ServerRequestInterface $request): void
     {
         $this->parameters = $parameters;
         $this->request = $request;
-        $this->headers = $headers;
     }
 
     /**
@@ -43,7 +39,7 @@ abstract class Driver implements SerializableForQueue
      */
     public function getRequest(string $key = null, $default = null)
     {
-        return Arr::get($this->request, $key, $default);
+        return Arr::get($this->request->getParsedBody(), $key, $default);
     }
 
     /**
@@ -55,7 +51,7 @@ abstract class Driver implements SerializableForQueue
      */
     public function hasRequest(string $key): bool
     {
-        return Arr::has($this->request, [$key]);
+        return Arr::has($this->request->getParsedBody(), [$key]);
     }
 
     /**
@@ -68,7 +64,7 @@ abstract class Driver implements SerializableForQueue
      */
     public function getHeader(string $name = null, $default = null)
     {
-        return Arr::get($this->headers, $name, $default);
+        return Arr::get($this->request->getHeaders(), $name, $default);
     }
 
     /**

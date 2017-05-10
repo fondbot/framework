@@ -14,6 +14,7 @@ use FondBot\Conversation\Conversable;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
+use Psr\Http\Message\ServerRequestInterface;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
@@ -90,21 +91,19 @@ class Kernel
     /**
      * Process webhook request.
      *
-     * @param Channel $channel
-     *
-     * @param array   $request
-     * @param array   $headers
+     * @param Channel                $channel
+     * @param ServerRequestInterface $request
      *
      * @return mixed
      */
-    public function process(Channel $channel, array $request, array $headers)
+    public function process(Channel $channel, ServerRequestInterface $request)
     {
         try {
             $driver = $this->driverManager()->get($channel);
 
             $this->container->add('driver', $driver);
 
-            $driver->fill($channel->getParameters(), $request, $headers);
+            $driver->fill($channel->getParameters(), $request);
 
             // Driver has webhook verification
             if ($driver instanceof WebhookVerification && $driver->isVerificationRequest()) {
