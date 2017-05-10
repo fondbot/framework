@@ -24,10 +24,12 @@
         "jeremeamia/superclosure": "^2.3",
         "league/container": "^2.4",
         "league/flysystem": "^1.0",
+        "league/route": "^3.0",
         "spatie/regex": "^1.1",
         "thecodingmachine/discovery": "^1.1",
         "tightenco/collect": "^5.4",
         "verbalexpressions/php-verbal-expressions": "dev-master",
+        "zendframework/zend-diactoros": "^1.4",
         "zumba/json-serializer": "^2.1"
     },
     "require-dev": {
