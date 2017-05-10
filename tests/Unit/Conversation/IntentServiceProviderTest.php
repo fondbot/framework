@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation\Providers;
+namespace Tests\Unit\Conversation;
 
 use FondBot\Tests\TestCase;
 use FondBot\Application\Config;
@@ -10,7 +10,7 @@ use FondBot\Conversation\Intent;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\FallbackIntent;
 use FondBot\Conversation\Activators\Activator;
-use FondBot\Conversation\Providers\IntentServiceProvider;
+use FondBot\Conversation\IntentServiceProvider;
 
 class IntentServiceProviderTest extends TestCase
 {

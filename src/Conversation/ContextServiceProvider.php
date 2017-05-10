@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation\Providers;
+namespace FondBot\Conversation;
 
 use FondBot\Contracts\Cache;
-use FondBot\Conversation\ContextManager;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 class ContextServiceProvider extends AbstractServiceProvider

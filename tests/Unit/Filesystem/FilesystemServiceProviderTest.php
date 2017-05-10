@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Filesystem\Providers;
+namespace Tests\Unit\Filesystem;
 
 use FondBot\Tests\TestCase;
 use FondBot\Filesystem\Filesystem;
 use League\Flysystem\Adapter\NullAdapter;
-use FondBot\Filesystem\Providers\FilesystemServiceProvider;
+use FondBot\Filesystem\FilesystemServiceProvider;
 
-class FilesystemProviderTest extends TestCase
+class FilesystemServiceProviderTest extends TestCase
 {
     public function test(): void
     {

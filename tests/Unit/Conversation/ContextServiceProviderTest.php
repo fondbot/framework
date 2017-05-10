@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Conversation\Providers;
+namespace Tests\Unit\Conversation;
 
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Cache;
 use FondBot\Conversation\ContextManager;
-use FondBot\Conversation\Providers\ContextServiceProvider;
+use FondBot\Conversation\ContextServiceProvider;
 
 class ContextServiceProviderTest extends TestCase
 {

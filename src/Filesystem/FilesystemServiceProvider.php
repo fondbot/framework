@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Filesystem\Providers;
+namespace FondBot\Filesystem;
 
-use FondBot\Filesystem\Filesystem;
 use League\Flysystem\AdapterInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 

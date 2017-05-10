@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Drivers\Providers;
+namespace Tests\Unit\Drivers;
 
 use FondBot\Tests\TestCase;
 use FondBot\Drivers\DriverManager;
-use FondBot\Drivers\Providers\DriverServiceProvider;
+use FondBot\Drivers\DriverServiceProvider;
 
 class DriverServiceProviderTest extends TestCase
 {

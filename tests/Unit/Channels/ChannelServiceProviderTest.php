@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Channels\Providers;
+namespace Tests\Unit\Channels;
 
 use FondBot\Tests\TestCase;
 use FondBot\Application\Config;
 use FondBot\Channels\ChannelManager;
-use FondBot\Channels\Providers\ChannelServiceProvider;
+use FondBot\Channels\ChannelServiceProvider;
 
 class ChannelServiceProviderTest extends TestCase
 {

@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation\Providers;
+namespace FondBot\Conversation;
 
 use FondBot\Application\Config;
-use FondBot\Conversation\IntentManager;
-use FondBot\Conversation\FallbackIntent;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 class IntentServiceProvider extends AbstractServiceProvider

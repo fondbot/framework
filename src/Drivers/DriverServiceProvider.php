@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Drivers\Providers;
+namespace FondBot\Drivers;
 
-use FondBot\Drivers\DriverManager;
 use TheCodingMachine\Discovery\Discovery;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 

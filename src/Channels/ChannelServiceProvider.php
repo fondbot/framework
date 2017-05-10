@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Channels\Providers;
+namespace FondBot\Channels;
 
 use FondBot\Application\Config;
-use FondBot\Channels\ChannelManager;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 class ChannelServiceProvider extends AbstractServiceProvider
