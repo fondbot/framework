@@ -1,13 +1,12 @@
 {
-    "name": "fondbot/fondbot",
-    "description": "FondBot is a library for building chat bots.",
+    "name": "fondbot/framework",
+    "description": "FondBot framework.",
     "type": "library",
     "keywords": [
         "fondbot",
         "bot",
         "bots",
         "chatbots",
-        "laravel",
         "telegram",
         "facebook messenger",
         "vk"
