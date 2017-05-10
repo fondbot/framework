@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Filesystem;
 
 use FondBot\Tests\TestCase;
-use FondBot\Filesystem\Filesystem;
+use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\NullAdapter;
 use FondBot\Filesystem\FilesystemServiceProvider;
 

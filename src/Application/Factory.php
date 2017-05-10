@@ -14,9 +14,14 @@ use FondBot\Filesystem\FilesystemServiceProvider;
 
 class Factory
 {
-    public static function create(Container $container, string $basePath, string $routesPrefix = ''): Kernel
-    {
+    public static function create(
+        Container $container,
+        string $basePath,
+        string $routesPrefix = ''
+    ): Kernel {
         $container->delegate(new ReflectionContainer());
+
+        $container->add('base_path', $basePath);
 
         // Load service providers
         $container->addServiceProvider(new ConfigServiceProvider());

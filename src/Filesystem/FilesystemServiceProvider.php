@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Filesystem;
 
+use League\Flysystem\Filesystem;
 use League\Flysystem\AdapterInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
