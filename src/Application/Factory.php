@@ -18,13 +18,16 @@ class Factory
     public static function create(
         Container $container,
         string $basePath,
+        string $resourcesPath,
         string $routesPrefix = ''
     ): Kernel {
         $container->delegate(new ReflectionContainer());
 
         $container->add('base_path', $basePath);
+        $container->add('resources_path', $resourcesPath);
 
         // Load service providers
+        $container->addServiceProvider(new LogServiceProvider());
         $container->addServiceProvider(new RouteServiceProvider($routesPrefix));
         $container->addServiceProvider(new FilesystemServiceProvider(new Local($basePath)));
         $container->addServiceProvider(new DriverServiceProvider());

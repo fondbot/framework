@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Application;
 
-use Whoops\Run;
 use Zend\Diactoros\Response;
 use League\Route\RouteCollection;
-use Whoops\Handler\PrettyPageHandler;
 use Zend\Diactoros\Response\SapiEmitter;
 use Zend\Diactoros\ServerRequestFactory;
 use League\Container\ServiceProvider\AbstractServiceProvider;
@@ -37,10 +35,6 @@ class RouteServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        $whoops = new Run;
-        $whoops->pushHandler(new PrettyPageHandler);
-        $whoops->register();
-
         $this->getContainer()->share('request', function () {
             return ServerRequestFactory::fromGlobals(
                 $_SERVER,
