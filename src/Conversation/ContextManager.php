@@ -8,14 +8,14 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Contracts\Cache;
-use League\Container\Container;
+use Psr\Container\ContainerInterface;
 
 class ContextManager
 {
     private $container;
     private $cache;
 
-    public function __construct(Container $container, Cache $cache)
+    public function __construct(ContainerInterface $container, Cache $cache)
     {
         $this->container = $container;
         $this->cache = $cache;

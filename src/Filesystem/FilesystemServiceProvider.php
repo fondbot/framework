@@ -30,8 +30,8 @@ class FilesystemServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        $filesystem = new Filesystem($this->adapter);
-
-        $this->getContainer()->add(Filesystem::class, $filesystem);
+        $this->getContainer()->share(Filesystem::class, function () {
+            return new Filesystem($this->adapter);
+        });
     }
 }

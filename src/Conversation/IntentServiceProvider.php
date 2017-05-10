@@ -22,23 +22,25 @@ class IntentServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        /** @var Config $config */
-        $config = $this->getContainer()->get(Config::class);
+        $this->getContainer()->share(IntentManager::class, function () {
+            /** @var Config $config */
+            $config = $this->getContainer()->get(Config::class);
 
-        /** @var array $intents */
-        $intents = $config->get('intents', []);
+            /** @var array $intents */
+            $intents = $config->get('intents', []);
 
-        /** @var string $fallbackIntent */
-        $fallbackIntent = $config->get('fallback_intent', FallbackIntent::class);
+            /** @var string $fallbackIntent */
+            $fallbackIntent = $config->get('fallback_intent', FallbackIntent::class);
 
-        $manager = new IntentManager();
+            $manager = new IntentManager();
 
-        foreach ($intents as $intent) {
-            $manager->add($this->getContainer()->get($intent));
-        }
+            foreach ($intents as $intent) {
+                $manager->add($this->getContainer()->get($intent));
+            }
 
-        $manager->setFallbackIntent($this->getContainer()->get($fallbackIntent));
+            $manager->setFallbackIntent($this->getContainer()->get($fallbackIntent));
 
-        $this->getContainer()->add(IntentManager::class, $manager);
+            return $manager;
+        });
     }
 }

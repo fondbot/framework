@@ -22,17 +22,19 @@ class ChannelServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        /** @var Config $config */
-        $config = $this->getContainer()->get(Config::class);
-        /** @var array $channels */
-        $channels = $config->get('channels', []);
+        $this->getContainer()->share(ChannelManager::class, function () {
+            /** @var Config $config */
+            $config = $this->getContainer()->get(Config::class);
+            /** @var array $channels */
+            $channels = $config->get('channels', []);
 
-        $manager = new ChannelManager;
+            $manager = new ChannelManager;
 
-        foreach ($channels as $name => $parameters) {
-            $manager->add($name, $parameters);
-        }
+            foreach ($channels as $name => $parameters) {
+                $manager->add($name, $parameters);
+            }
 
-        $this->getContainer()->add(ChannelManager::class, $manager);
+            return $manager;
+        });
     }
 }

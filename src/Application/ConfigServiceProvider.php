@@ -23,7 +23,7 @@ class ConfigServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         // Load configuration
-        $this->getContainer()->add(Config::class, function () {
+        $this->getContainer()->share(Config::class, function () {
             $config = new Config();
             $config->set('channels', []);
             $config->set('intents', []);

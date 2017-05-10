@@ -53,7 +53,7 @@ class RouteServiceProvider extends AbstractServiceProvider
         $this->getContainer()->share('response', Response::class);
         $this->getContainer()->share('emitter', SapiEmitter::class);
 
-        $this->getContainer()->add('router', function () {
+        $this->getContainer()->share('router', function () {
             $router = new RouteCollection($this->getContainer());
 
             $controller = new Controller($this->getContainer()->get(Kernel::class));
