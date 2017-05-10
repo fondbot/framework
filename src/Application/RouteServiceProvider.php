@@ -6,10 +6,8 @@ namespace FondBot\Application;
 
 use Zend\Diactoros\Response;
 use League\Route\RouteCollection;
-use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\SapiEmitter;
 use Zend\Diactoros\ServerRequestFactory;
-use Psr\Http\Message\ServerRequestInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 class RouteServiceProvider extends AbstractServiceProvider
@@ -52,21 +50,8 @@ class RouteServiceProvider extends AbstractServiceProvider
         $this->getContainer()->add('router', function () {
             $router = new RouteCollection($this->getContainer());
 
-            $router->map('GET', $this->buildPath('/'),
-                function (ServerRequestInterface $request, ResponseInterface $response) {
-                    $response->getBody()->write('FondBot v'.Kernel::VERSION);
-
-                    return $response;
-                });
-
-            $router->map('GET', $this->buildPath('/channels/{name}'),
-                function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
-                    $name = $args['name'];
-
-                    $response->getBody()->write($name);
-
-                    return $response;
-                });
+            $router->map('GET', $this->buildPath('/'), Controller::class.'::index');
+            $router->map('GET', $this->buildPath('/channels/{name}'), Controller::class.'::webhook');
 
             return $router;
         });
