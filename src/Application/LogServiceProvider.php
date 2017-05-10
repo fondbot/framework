@@ -30,7 +30,7 @@ class LogServiceProvider extends AbstractServiceProvider implements BootableServ
         $this->getContainer()->share(LoggerInterface::class, function () {
             $logger = new Logger('FondBot');
             $logger->pushHandler(new StreamHandler(
-                $this->getContainer()->get('resources_path').'/app.log'
+                $this->getContainer()->get('resources_path').'/logs/app.log'
             ));
 
             return $logger;
