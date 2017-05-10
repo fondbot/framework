@@ -27,7 +27,7 @@ class FilesystemCache implements Cache
      */
     public function get(string $key, $default = null)
     {
-        return $this->filesystem->get($this->key($key));
+        return $this->filesystem->get($this->key($key)) ?? $default;
     }
 
     /**
