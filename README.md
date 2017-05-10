@@ -8,9 +8,7 @@
 [![StyleCI](https://styleci.io/repos/78780366/shield)](https://styleci.io/repos/78780366)
 
 ## About FondBot
-FondBot is a framework for building chat bots. You can use it with or without framework. 
-
-Currently, we have packages to easily use FondBot with [Laravel](https://github.com/fondbot/frameworks-laravel) and [Lumen](https://github.com/fondbot/frameworks-lumen) frameworks. 
+FondBot is a framework for building chat bots. 
 
 The main goal of this project is to provide elegant and flexible architecture to develop and maintain chatbot projects from small to the big ones.
 
