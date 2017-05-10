@@ -18,6 +18,8 @@ use FondBot\Drivers\Extensions\WebhookVerification;
 
 class Kernel
 {
+    public const VERSION = '1.0.0';
+
     /** @var Kernel */
     protected static $instance;
 
