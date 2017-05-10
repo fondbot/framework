@@ -27,11 +27,13 @@ trait HasActivators
      *
      * @param string $value
      *
+     * @param bool   $caseSensitive
+     *
      * @return Exact
      */
-    protected function exact(string $value): Exact
+    protected function exact(string $value, bool $caseSensitive = false): Exact
     {
-        return new Exact($value);
+        return new Exact($value, $caseSensitive);
     }
 
     /**
@@ -60,12 +62,13 @@ trait HasActivators
      * Create "InArray" activator.
      *
      * @param array|Collection $values
+     * @param bool             $strict
      *
      * @return InArray
      */
-    protected function inArray($values): InArray
+    protected function inArray($values, bool $strict = true): InArray
     {
-        return new InArray($values);
+        return new InArray($values, $strict);
     }
 
     /**
