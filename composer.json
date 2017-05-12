@@ -28,6 +28,7 @@
         "league/route": "^3.0",
         "monolog/monolog": "^1.22",
         "spatie/regex": "^1.1",
+        "symfony/console": "^3.2",
         "thecodingmachine/discovery": "^1.1",
         "tightenco/collect": "^5.4",
         "verbalexpressions/php-verbal-expressions": "dev-master",

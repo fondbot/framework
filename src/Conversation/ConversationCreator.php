@@ -22,10 +22,13 @@ class ConversationCreator
      * @param string $directory
      * @param string $namespace
      * @param string $name
+     *
+     * @throws \League\Flysystem\FileNotFoundException
+     * @throws \League\Flysystem\FileExistsException
      */
     public function createIntent(string $directory, string $namespace, string $name): void
     {
-        $contents = $this->filesystem->read('vendor/fondbot/fondbot/resources/stubs/Intent.stub');
+        $contents = $this->filesystem->read('vendor/fondbot/framework/resources/stubs/Intent.stub');
 
         $className = $this->className($name, 'Intent');
 
@@ -45,10 +48,13 @@ class ConversationCreator
      * @param string $directory
      * @param string $namespace
      * @param string $name
+     *
+     * @throws \League\Flysystem\FileNotFoundException
+     * @throws \League\Flysystem\FileExistsException
      */
     public function createInteraction(string $directory, string $namespace, string $name): void
     {
-        $contents = $this->filesystem->read('vendor/fondbot/fondbot/resources/stubs/Interaction.stub');
+        $contents = $this->filesystem->read('vendor/fondbot/framework/resources/stubs/Interaction.stub');
 
         $className = $this->className($name, 'Interaction');
 

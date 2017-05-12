@@ -39,6 +39,8 @@ class Kernel
      * Get current driver instance.
      *
      * @return Driver
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function getDriver(): Driver
     {
@@ -67,6 +69,8 @@ class Kernel
 
     /**
      * Clear context.
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function clearContext(): void
     {
@@ -82,6 +86,7 @@ class Kernel
      * @param string $class
      *
      * @return mixed
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function resolve(string $class)
     {
@@ -95,6 +100,9 @@ class Kernel
      * @param ServerRequestInterface $request
      *
      * @return mixed
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \FondBot\Drivers\Exceptions\DriverNotFound
      */
     public function process(Channel $channel, ServerRequestInterface $request)
     {
@@ -156,6 +164,8 @@ class Kernel
      * Get driver manager.
      *
      * @return DriverManager
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     private function driverManager(): DriverManager
     {
@@ -166,6 +176,8 @@ class Kernel
      * Get context manager.
      *
      * @return ContextManager
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     private function contextManager(): ContextManager
     {
@@ -176,6 +188,8 @@ class Kernel
      * Get intent manager.
      *
      * @return IntentManager
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     private function intentManager(): IntentManager
     {
