@@ -32,6 +32,7 @@
         "thecodingmachine/discovery": "^1.1",
         "tightenco/collect": "^5.4",
         "verbalexpressions/php-verbal-expressions": "dev-master",
+        "vlucas/phpdotenv": "^2.4",
         "zendframework/zend-diactoros": "^1.4",
         "zumba/json-serializer": "^2.1"
     },
@@ -45,7 +46,10 @@
     "autoload": {
         "psr-4": {
             "FondBot\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
