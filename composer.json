@@ -22,6 +22,7 @@
     "require": {
         "php": ">=7.1",
         "filp/whoops": "^2.1",
+        "guzzlehttp/guzzle": "^6.2",
         "jeremeamia/superclosure": "^2.3",
         "league/container": "^2.4",
         "league/flysystem": "^1.0",
@@ -29,6 +30,7 @@
         "monolog/monolog": "^1.22",
         "spatie/regex": "^1.1",
         "symfony/console": "^3.2",
+        "symfony/process": "^3.2",
         "thecodingmachine/discovery": "^1.1",
         "tightenco/collect": "^5.4",
         "verbalexpressions/php-verbal-expressions": "dev-master",

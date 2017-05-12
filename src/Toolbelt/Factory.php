@@ -7,10 +7,8 @@ namespace FondBot\Toolbelt;
 use Dotenv\Dotenv;
 use League\Container\Container;
 use League\Flysystem\Adapter\Local;
-use FondBot\Toolbelt\Commands\MakeIntent;
 use League\Container\ReflectionContainer;
 use Symfony\Component\Console\Application;
-use FondBot\Toolbelt\Commands\MakeInteraction;
 use FondBot\Filesystem\FilesystemServiceProvider;
 
 class Factory
@@ -37,8 +35,10 @@ class Factory
         // Boot console application
         $console = new Application('FondBot', \FondBot\Application\Kernel::VERSION);
         $console->addCommands([
-            new MakeIntent($kernel),
-            new MakeInteraction($kernel),
+            new Commands\MakeIntent($kernel),
+            new Commands\MakeInteraction($kernel),
+            new Commands\ListDrivers($kernel),
+            new Commands\InstallDriver($kernel),
         ]);
 
         $container->add(Kernel::class, $kernel);

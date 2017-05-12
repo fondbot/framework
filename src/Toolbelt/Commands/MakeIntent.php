@@ -7,8 +7,6 @@ namespace FondBot\Toolbelt\Commands;
 use FondBot\Toolbelt\Command;
 use FondBot\Conversation\ConversationCreator;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class MakeIntent extends Command
 {
@@ -20,15 +18,15 @@ class MakeIntent extends Command
             ->addArgument('name', InputArgument::REQUIRED, 'Name of intent');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function handle(): void
     {
-        $name = $input->getArgument('name');
+        $name = $this->getArgument('name');
 
         /** @var ConversationCreator $creator */
         $creator = $this->kernel->resolve(ConversationCreator::class);
 
         $creator->createIntent('src', 'App', $name);
 
-        $output->writeln('<comment>Intent created.</comment>');
+        $this->success('Intent created.');
     }
 }
