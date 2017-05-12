@@ -7,6 +7,7 @@ namespace Tests\Unit\Cache;
 use FondBot\Tests\TestCase;
 use League\Flysystem\Filesystem;
 use FondBot\Cache\FilesystemCache;
+use League\Flysystem\FileNotFoundException;
 
 class FilesystemCacheTest extends TestCase
 {
@@ -15,11 +16,11 @@ class FilesystemCacheTest extends TestCase
         $filesystem = $this->mock(Filesystem::class);
         $cache = new FilesystemCache($filesystem);
 
-        $filesystem->shouldReceive('get')->with(md5('foo'))->andReturn('bar')->once();
+        $filesystem->shouldReceive('read')->with(md5('foo'))->andReturn('bar')->once();
 
         $this->assertSame('bar', $cache->get('foo'));
 
-        $filesystem->shouldReceive('get')->with(md5('bar'))->andReturnNull()->once();
+        $filesystem->shouldReceive('read')->with(md5('bar'))->andThrow(new FileNotFoundException(md5('bar')))->once();
 
         $this->assertSame('value', $cache->get('bar', 'value'));
     }

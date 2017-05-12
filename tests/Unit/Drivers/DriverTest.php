@@ -18,7 +18,8 @@ class DriverTest extends TestCase
     public function test_request_methods(): void
     {
         $request = $this->mock(ServerRequestInterface::class);
-        $request->shouldReceive('getParsedBody')->andReturn(['foo' => 'bar']);
+        $request->shouldReceive('getBody')->andReturnSelf()->atLeast()->once();
+        $request->shouldReceive('getContents')->andReturn(json_encode(['foo' => 'bar']))->atLeast()->once();
 
         $driver = new DriverTestClass();
 

@@ -7,6 +7,7 @@ namespace FondBot\Cache;
 use JsonSerializable;
 use FondBot\Contracts\Cache;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FileNotFoundException;
 
 class FilesystemCache implements Cache
 {
@@ -27,7 +28,18 @@ class FilesystemCache implements Cache
      */
     public function get(string $key, $default = null)
     {
-        return $this->filesystem->get($this->key($key)) ?? $default;
+        try {
+            $contents = $this->filesystem->read($this->key($key));
+            $json = json_decode($contents, true);
+
+            if (json_last_error() === JSON_ERROR_NONE) {
+                return $json;
+            }
+
+            return $contents;
+        } catch (FileNotFoundException $exception) {
+            return $default;
+        }
     }
 
     /**
@@ -38,11 +50,10 @@ class FilesystemCache implements Cache
      */
     public function store(string $key, $value): void
     {
-        if (is_array($value)) {
-            $value = json_encode($value);
-        }
         if ($value instanceof JsonSerializable) {
             $value = json_encode($value->jsonSerialize());
+        } else {
+            $value = json_encode($value);
         }
 
         $this->filesystem->put($this->key($key), $value);
@@ -55,7 +66,10 @@ class FilesystemCache implements Cache
      */
     public function forget(string $key): void
     {
-        $this->filesystem->delete($this->key($key));
+        try {
+            $this->filesystem->delete($this->key($key));
+        } catch (FileNotFoundException $exception) {
+        }
     }
 
     private function key(string $key): string

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Application;
 
-use Exception;
+use Throwable;
 use Whoops\Run;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
@@ -24,6 +24,11 @@ class LogServiceProvider extends AbstractServiceProvider implements BootableServ
      * this interface. Provides ability for eager loading of Service Providers.
      *
      * @return void
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function boot(): void
     {
@@ -38,7 +43,7 @@ class LogServiceProvider extends AbstractServiceProvider implements BootableServ
 
         $whoops = new Run;
         $whoops->pushHandler(new PrettyPageHandler);
-        $whoops->pushHandler(function (Exception $exception, $inspector, $run) {
+        $whoops->pushHandler(function (Throwable $exception) {
             /** @var LoggerInterface $logger */
             $logger = $this->getContainer()->get(LoggerInterface::class);
 

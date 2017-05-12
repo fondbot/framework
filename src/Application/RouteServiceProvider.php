@@ -32,6 +32,9 @@ class RouteServiceProvider extends AbstractServiceProvider
      * from the ContainerAwareTrait.
      *
      * @return void
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \InvalidArgumentException
      */
     public function register(): void
     {
@@ -54,6 +57,7 @@ class RouteServiceProvider extends AbstractServiceProvider
 
             $router->map('GET', $this->buildPath('/'), [$controller, 'index']);
             $router->map('GET', $this->buildPath('/channels/{name}'), [$controller, 'webhook']);
+            $router->map('POST', $this->buildPath('/channels/{name}'), [$controller, 'webhook']);
 
             return $router;
         });
