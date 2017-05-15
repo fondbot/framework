@@ -47,10 +47,10 @@ abstract class AppServiceProvider extends AbstractServiceProvider implements Boo
     public function boot(): void
     {
         $dotenv = new Dotenv($this->basePath());
-        $variables = $dotenv->load();
+        $dotenv->load();
 
-        $this->getContainer()->share(Config::class, function () use ($variables) {
-            return new Config($variables);
+        $this->getContainer()->share(Config::class, function () {
+            return new Config($_ENV);
         });
     }
 
