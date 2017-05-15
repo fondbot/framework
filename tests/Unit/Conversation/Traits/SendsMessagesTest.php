@@ -15,11 +15,12 @@ use FondBot\Conversation\Traits\SendsMessages;
 
 class SendsMessagesTest extends TestCase
 {
-    public function test_sendMessage()
+    public function test_sendMessage(): void
     {
         $kernel = $this->mock(Kernel::class);
 
         $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
+        $kernel->shouldReceive('getChannel')->once();
         $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('push')->once();
 
@@ -27,11 +28,12 @@ class SendsMessagesTest extends TestCase
         $class->sendMessage($this->faker()->text, $this->mock(Keyboard::class));
     }
 
-    public function test_sendDelayedMessage()
+    public function test_sendDelayedMessage(): void
     {
         $kernel = $this->mock(Kernel::class);
 
         $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
+        $kernel->shouldReceive('getChannel')->once();
         $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('later')->once();
 
@@ -39,11 +41,12 @@ class SendsMessagesTest extends TestCase
         $class->sendDelayedMessage(random_int(1, 10), $this->faker()->text, $this->mock(Keyboard::class));
     }
 
-    public function test_sendAttachment()
+    public function test_sendAttachment(): void
     {
         $kernel = $this->mock(Kernel::class);
 
         $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
+        $kernel->shouldReceive('getChannel')->once();
         $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('push')->once();
 
@@ -51,11 +54,12 @@ class SendsMessagesTest extends TestCase
         $class->sendAttachment($this->mock(Attachment::class));
     }
 
-    public function test_sendAttachment_with_delay()
+    public function test_sendAttachment_with_delay(): void
     {
         $kernel = $this->mock(Kernel::class);
 
         $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
+        $kernel->shouldReceive('getChannel')->once();
         $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('later')->once();
 
@@ -63,11 +67,12 @@ class SendsMessagesTest extends TestCase
         $class->sendAttachment($this->mock(Attachment::class), random_int(1, 10));
     }
 
-    public function test_sendRequest()
+    public function test_sendRequest(): void
     {
         $kernel = $this->mock(Kernel::class);
 
         $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
+        $kernel->shouldReceive('getChannel')->once();
         $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('push')->once();
 

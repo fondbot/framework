@@ -36,6 +36,18 @@ class Kernel
     }
 
     /**
+     * Get current channel.
+     *
+     * @return Channel
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
+     */
+    public function getChannel(): Channel
+    {
+        return $this->container->get('channel');
+    }
+
+    /**
      * Get current driver instance.
      *
      * @return Driver
@@ -109,6 +121,7 @@ class Kernel
         try {
             $driver = $this->driverManager()->get($channel, $request);
 
+            $this->container->add('channel', $channel);
             $this->container->add('driver', $driver);
 
             // Driver has webhook verification

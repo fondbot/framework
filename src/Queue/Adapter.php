@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Queue;
 
+use FondBot\Contracts\Queue;
 use SuperClosure\Serializer;
 use Zumba\JsonSerializer\JsonSerializer;
 
-trait SerializesForQueue
+abstract class Adapter implements Queue
 {
     /**
      * Create payload.

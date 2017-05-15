@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation;
 
+use FondBot\Channels\Channel;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
@@ -18,28 +19,30 @@ use FondBot\Conversation\FallbackIntent;
  */
 class FallbackIntentTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->intent = new FallbackIntent;
     }
 
-    public function test_activators()
+    public function test_activators(): void
     {
         $this->assertSame([], $this->intent->activators());
     }
 
-    public function test_run()
+    public function test_run(): void
     {
         $kernel = $this->mock(Kernel::class);
         $queue = $this->mock(Queue::class);
+        $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
         $context = $this->mock(Context::class);
         $chat = $this->mock(Chat::class);
         $user = $this->mock(User::class);
 
         $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue)->once();
+        $kernel->shouldReceive('getChannel')->andReturn($channel)->once();
         $kernel->shouldReceive('getDriver')->andReturn($driver)->once();
         $kernel->shouldReceive('getContext')->andReturn($context)->atLeast()->once();
         $context->shouldReceive('getChat')->andReturn($chat)->atLeast()->once();

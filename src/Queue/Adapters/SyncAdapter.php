@@ -2,21 +2,30 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Queue;
+namespace FondBot\Queue\Adapters;
 
+use FondBot\Channels\Channel;
 use FondBot\Drivers\Driver;
-use FondBot\Contracts\Queue;
 use FondBot\Drivers\Command;
+use FondBot\Queue\Adapter;
 
-class SyncQueue implements Queue
+class SyncAdapter extends Adapter
 {
+    /**
+     * Establish connection to the queue.
+     */
+    public function connect(): void
+    {
+    }
+
     /**
      * Push command onto the queue.
      *
+     * @param Channel $channel
      * @param Driver  $driver
      * @param Command $command
      */
-    public function push(Driver $driver, Command $command): void
+    public function push(Channel $channel, Driver $driver, Command $command): void
     {
         $driver->handle($command);
     }
@@ -24,18 +33,19 @@ class SyncQueue implements Queue
     /**
      * Push command onto the queue with a delay.
      *
+     * @param Channel $channel
      * @param Driver  $driver
      * @param Command $command
      * @param int     $delay
      *
      * @return mixed|void
      */
-    public function later(Driver $driver, Command $command, int $delay): void
+    public function later(Channel $channel, Driver $driver, Command $command, int $delay): void
     {
         if ($delay > 0) {
             sleep($delay);
         }
 
-        $this->push($driver, $command);
+        $this->push($channel, $driver, $command);
     }
 }

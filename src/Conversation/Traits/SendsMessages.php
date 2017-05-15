@@ -24,6 +24,8 @@ trait SendsMessages
      *
      * @param string        $text
      * @param Template|null $template
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     protected function sendMessage(string $text, Template $template = null): void
     {
@@ -31,7 +33,7 @@ trait SendsMessages
         $queue = $this->kernel->resolve(Queue::class);
 
         $command = new SendMessage($this->getChat(), $this->getUser(), $text, $template);
-        $queue->push($this->kernel->getDriver(), $command);
+        $queue->push($this->kernel->getChannel(), $this->kernel->getDriver(), $command);
     }
 
     /**
@@ -40,6 +42,8 @@ trait SendsMessages
      * @param int           $delay
      * @param string        $text
      * @param Template|null $template
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     protected function sendDelayedMessage(int $delay, string $text, Template $template = null): void
     {
@@ -47,7 +51,7 @@ trait SendsMessages
         $queue = $this->kernel->resolve(Queue::class);
 
         $command = new SendMessage($this->getChat(), $this->getUser(), $text, $template);
-        $queue->later($this->kernel->getDriver(), $command, $delay);
+        $queue->later($this->kernel->getChannel(), $this->kernel->getDriver(), $command, $delay);
     }
 
     /**
@@ -55,6 +59,8 @@ trait SendsMessages
      *
      * @param Attachment $attachment
      * @param int        $delay
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     protected function sendAttachment(Attachment $attachment, int $delay = 0): void
     {
@@ -64,9 +70,9 @@ trait SendsMessages
         $command = new SendAttachment($this->getChat(), $this->getUser(), $attachment);
 
         if ($delay === 0) {
-            $queue->push($this->kernel->getDriver(), $command);
+            $queue->push($this->kernel->getChannel(), $this->kernel->getDriver(), $command);
         } else {
-            $queue->later($this->kernel->getDriver(), $command, $delay);
+            $queue->later($this->kernel->getChannel(), $this->kernel->getDriver(), $command, $delay);
         }
     }
 
@@ -75,6 +81,8 @@ trait SendsMessages
      *
      * @param string $endpoint
      * @param array  $parameters
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     protected function sendRequest(string $endpoint, array $parameters = []): void
     {
@@ -82,7 +90,7 @@ trait SendsMessages
         $queue = $this->kernel->resolve(Queue::class);
 
         $command = new SendRequest($this->getChat(), $this->getUser(), $endpoint, $parameters);
-        $queue->push($this->kernel->getDriver(), $command);
+        $queue->push($this->kernel->getChannel(), $this->kernel->getDriver(), $command);
     }
 
     /**

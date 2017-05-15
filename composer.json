@@ -42,8 +42,12 @@
         "fzaninotto/faker": "^1.6",
         "larapack/dd": "^1.1",
         "mockery/mockery": "^0.9.9",
+        "pda/pheanstalk": "^3.1",
         "phpunit/phpunit": "^6",
         "sllh/php-cs-fixer-styleci-bridge": "^2.1"
+    },
+    "suggests": {
+        "pda/pheanstalk": "Required for Beanstalkd queue."
     },
     "autoload": {
         "psr-4": {
