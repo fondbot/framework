@@ -47,6 +47,8 @@ class DriverManager
      * @param ServerRequestInterface $request
      *
      * @return Driver
+     *
+     * @throws InvalidConfiguration
      * @throws DriverNotFound
      */
     public function get(Channel $channel, ServerRequestInterface $request): Driver
@@ -65,7 +67,7 @@ class DriverManager
     }
 
     /**
-     * Get all added drivers.
+     * Get all installed drivers.
      *
      * @return array
      */
@@ -78,6 +80,8 @@ class DriverManager
      * Validate channel parameters with driver requirements.
      *
      * @param Channel $channel
+     *
+     * @throws InvalidConfiguration
      */
     protected function validateParameters(Channel $channel): void
     {
