@@ -9,6 +9,7 @@ use League\Container\Container;
 use League\Flysystem\Adapter\Local;
 use League\Container\ReflectionContainer;
 use Symfony\Component\Console\Application;
+use FondBot\Application\LogServiceProvider;
 use FondBot\Filesystem\FilesystemServiceProvider;
 
 class Factory
@@ -27,6 +28,7 @@ class Factory
         $container->add('resources_path', $resourcesPath);
 
         // Load service providers
+        $container->addServiceProvider(new LogServiceProvider);
         $container->addServiceProvider(new FilesystemServiceProvider(new Local($basePath)));
 
         // Boot kernel
@@ -39,6 +41,7 @@ class Factory
             new Commands\MakeInteraction($kernel),
             new Commands\ListDrivers($kernel),
             new Commands\InstallDriver($kernel),
+            new Commands\Log($kernel),
         ]);
 
         $container->add(Kernel::class, $kernel);
