@@ -13,7 +13,7 @@ class ListDrivers extends Command
     {
         $this
             ->setName('driver:list')
-            ->setDescription('Get list of all available drivers.');
+            ->setDescription('Get list of all available drivers');
     }
 
     public function handle(): void

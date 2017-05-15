@@ -9,11 +9,11 @@ use Symfony\Component\Process\Process;
 
 class Log extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('log')
-            ->setDescription('Tail log.');
+            ->setDescription('Tail log');
     }
 
     /**

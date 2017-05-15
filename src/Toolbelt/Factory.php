@@ -28,6 +28,7 @@ class Factory
             new Commands\MakeInteraction($kernel),
             new Commands\ListDrivers($kernel),
             new Commands\InstallDriver($kernel),
+            new Commands\ListChannels($kernel),
             new Commands\Log($kernel),
         ]);
 

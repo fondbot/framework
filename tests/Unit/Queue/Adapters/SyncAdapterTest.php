@@ -21,6 +21,7 @@ class SyncAdapterTest extends TestCase
         $driver->shouldReceive('handle')->with($command)->once();
 
         $adapter = new SyncAdapter();
+        $adapter->connect();
         $adapter->push($channel, $driver, $command);
     }
 

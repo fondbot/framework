@@ -30,6 +30,14 @@ class ChannelManagerTest extends TestCase
         $this->assertSame($parameters['token'], $result->getParameter('token'));
     }
 
+    public function test_all(): void
+    {
+        $manager = new ChannelManager();
+        $manager->add('foo', ['foo' => 'bar']);
+
+        $this->assertSame(['foo' => ['foo' => 'bar']], $manager->all());
+    }
+
     /**
      * @expectedException \FondBot\Channels\ChannelNotFound
      * @expectedExceptionMessage Channel `fake` not found.

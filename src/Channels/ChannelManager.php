@@ -21,6 +21,16 @@ class ChannelManager
     }
 
     /**
+     * Get all channels.
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->channels;
+    }
+
+    /**
      * Create channel.
      *
      * @param string $name
