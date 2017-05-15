@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Queue;
 
-use FondBot\Channels\Channel;
-use FondBot\Drivers\Command;
 use FondBot\Drivers\Driver;
+use FondBot\Drivers\Command;
+use FondBot\Channels\Channel;
 
 class Job implements SerializableForQueue
 {

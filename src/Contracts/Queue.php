@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts;
 
-use FondBot\Channels\Channel;
 use FondBot\Drivers\Driver;
 use FondBot\Drivers\Command;
+use FondBot\Channels\Channel;
 
 interface Queue
 {

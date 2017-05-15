@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace FondBot\Queue\Adapters;
 
-use FondBot\Channels\Channel;
-use FondBot\Drivers\Command;
-use FondBot\Drivers\Driver;
-use FondBot\Queue\Adapter;
 use FondBot\Queue\Job;
+use FondBot\Queue\Adapter;
 use Pheanstalk\Pheanstalk;
+use FondBot\Drivers\Driver;
+use FondBot\Drivers\Command;
+use FondBot\Channels\Channel;
 
 class BeanstalkdAdapter extends Adapter
 {

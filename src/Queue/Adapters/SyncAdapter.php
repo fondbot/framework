@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Queue\Adapters;
 
-use FondBot\Channels\Channel;
+use FondBot\Queue\Adapter;
 use FondBot\Drivers\Driver;
 use FondBot\Drivers\Command;
-use FondBot\Queue\Adapter;
+use FondBot\Channels\Channel;
 
 class SyncAdapter extends Adapter
 {

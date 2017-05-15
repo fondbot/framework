@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation;
 
-use FondBot\Channels\Channel;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Queue;
+use FondBot\Channels\Channel;
 use FondBot\Application\Kernel;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\FallbackIntent;
