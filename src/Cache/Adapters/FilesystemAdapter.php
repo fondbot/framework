@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Cache;
+namespace FondBot\Cache\Adapters;
 
 use JsonSerializable;
-use FondBot\Contracts\Cache;
+use FondBot\Cache\Adapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FileNotFoundException;
 
-class FilesystemCache implements Cache
+class FilesystemAdapter extends Adapter
 {
     private $filesystem;
 
