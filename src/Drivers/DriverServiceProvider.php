@@ -27,6 +27,8 @@ class DriverServiceProvider extends AbstractServiceProvider
      * from the ContainerAwareTrait.
      *
      * @return void
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function register(): void
     {

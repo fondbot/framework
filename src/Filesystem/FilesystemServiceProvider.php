@@ -8,18 +8,18 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\AdapterInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
-class FilesystemServiceProvider extends AbstractServiceProvider
+abstract class FilesystemServiceProvider extends AbstractServiceProvider
 {
     protected $provides = [
         Filesystem::class,
     ];
 
-    private $adapter;
-
-    public function __construct(AdapterInterface $adapter)
-    {
-        $this->adapter = $adapter;
-    }
+    /**
+     * Filesystem adapter.
+     *
+     * @return \League\Flysystem\AdapterInterface
+     */
+    abstract public function adapter(): AdapterInterface;
 
     /**
      * Use the register method to register items with the container via the
@@ -31,7 +31,7 @@ class FilesystemServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         $this->getContainer()->share(Filesystem::class, function () {
-            return new Filesystem($this->adapter);
+            return new Filesystem($this->adapter());
         });
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Channels;
 
 use FondBot\Tests\TestCase;
-use FondBot\Application\Config;
 use FondBot\Channels\ChannelManager;
 use FondBot\Channels\ChannelServiceProvider;
 
@@ -13,15 +12,10 @@ class ChannelServiceProviderTest extends TestCase
 {
     public function test(): void
     {
-        $this->container->add(Config::class, function () {
-            $config = new Config([
-                'channels' => ['channel-1' => ['driver' => 'telegram', 'foo' => 'bar']],
-            ]);
+        $provider = $this->mock(ChannelServiceProvider::class)->makePartial();
+        $provider->shouldReceive('channels')->andReturn(['channel-1' => ['driver' => 'telegram', 'foo' => 'bar']])->once();
 
-            return $config;
-        });
-
-        $this->container->addServiceProvider(new ChannelServiceProvider());
+        $this->container->addServiceProvider($provider);
 
         /** @var ChannelManager $manager */
         $manager = $this->container->get(ChannelManager::class);

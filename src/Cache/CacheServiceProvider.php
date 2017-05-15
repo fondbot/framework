@@ -2,16 +2,23 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation;
+namespace FondBot\Cache;
 
 use FondBot\Contracts\Cache;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
-class ContextServiceProvider extends AbstractServiceProvider
+abstract class CacheServiceProvider extends AbstractServiceProvider
 {
     protected $provides = [
-        ContextManager::class,
+        Cache::class,
     ];
+
+    /**
+     * Cache adapter.
+     *
+     * @return Adapter
+     */
+    abstract public function adapter(): Adapter;
 
     /**
      * Use the register method to register items with the container via the
@@ -19,15 +26,9 @@ class ContextServiceProvider extends AbstractServiceProvider
      * from the ContainerAwareTrait.
      *
      * @return void
-     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function register(): void
     {
-        $this->getContainer()->share(ContextManager::class, function () {
-            return new ContextManager(
-                $this->getContainer(),
-                $this->getContainer()->get(Cache::class)
-            );
-        });
+        $this->getContainer()->share(Cache::class, $this->adapter());
     }
 }

@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use FondBot\Application\Config;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
-class ChannelServiceProvider extends AbstractServiceProvider
+abstract class ChannelServiceProvider extends AbstractServiceProvider
 {
     protected $provides = [
         ChannelManager::class,
     ];
+
+    /**
+     * Define channels.
+     *
+     * @return array
+     */
+    abstract public function channels(): array;
 
     /**
      * Use the register method to register items with the container via the
@@ -19,18 +25,15 @@ class ChannelServiceProvider extends AbstractServiceProvider
      * from the ContainerAwareTrait.
      *
      * @return void
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function register(): void
     {
         $this->getContainer()->share(ChannelManager::class, function () {
-            /** @var Config $config */
-            $config = $this->getContainer()->get(Config::class);
-            /** @var array $channels */
-            $channels = $config->get('channels', []);
-
             $manager = new ChannelManager;
 
-            foreach ($channels as $name => $parameters) {
+            foreach ($this->channels() as $name => $parameters) {
                 $manager->add($name, $parameters);
             }
 

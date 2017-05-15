@@ -13,15 +13,15 @@ class FilesystemServiceProviderTest extends TestCase
 {
     public function test(): void
     {
-        $adapter = new NullAdapter();
+        $provider = $this->mock(FilesystemServiceProvider::class)->makePartial();
+        $provider->shouldReceive('adapter')->andReturn($adapter = new NullAdapter())->once();
 
-        $this->container->addServiceProvider(new FilesystemServiceProvider($adapter));
+        $this->container->addServiceProvider($provider);
 
         /** @var Filesystem $filesystem */
         $filesystem = $this->container->get(Filesystem::class);
 
         $this->assertInstanceOf(Filesystem::class, $filesystem);
-
         $this->assertSame($adapter, $filesystem->getAdapter());
     }
 }
