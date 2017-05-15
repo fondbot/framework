@@ -12,7 +12,7 @@ abstract class AppServiceProvider extends AbstractServiceProvider implements Boo
 {
     protected $provides = [
         Config::class,
-        'env',
+        'environment',
         'base_path',
         'resources_path',
     ];
@@ -63,7 +63,7 @@ abstract class AppServiceProvider extends AbstractServiceProvider implements Boo
      */
     public function register(): void
     {
-        $this->getContainer()->share('env', $this->environment());
+        $this->getContainer()->share('environment', $this->environment());
         $this->getContainer()->share('base_path', $this->basePath());
         $this->getContainer()->share('resources_path', $this->resourcesPath());
     }

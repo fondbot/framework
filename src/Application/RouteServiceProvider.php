@@ -65,7 +65,7 @@ class RouteServiceProvider extends AbstractServiceProvider
 
     private function buildPath(string $path): string
     {
-        if ($this->prefix !== null) {
+        if ($this->prefix !== '') {
             return $this->prefix.'/'.$path;
         }
 

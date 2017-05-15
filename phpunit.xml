@@ -10,10 +10,6 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Feature Tests">
-            <directory suffix="Test.php">./tests/Feature</directory>
-        </testsuite>
-
         <testsuite name="Unit Tests">
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
@@ -37,10 +33,4 @@
         />
         <log type="coverage-clover" target="clover.xml"/>
     </logging>
-    <php>
-        <env name="APP_ENV" value="testing"/>
-        <env name="CACHE_DRIVER" value="array"/>
-        <env name="SESSION_DRIVER" value="array"/>
-        <env name="QUEUE_DRIVER" value="sync"/>
-    </php>
 </phpunit>
