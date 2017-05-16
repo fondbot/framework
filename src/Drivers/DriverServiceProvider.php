@@ -32,8 +32,8 @@ class DriverServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        $this->getContainer()->share(DriverManager::class, function () {
-            $manager = new DriverManager($this->getContainer());
+        $this->container->share(DriverManager::class, function () {
+            $manager = new DriverManager($this->container);
 
             // Here we will discover all drivers installed
             // And add all found drivers to the manager
@@ -41,7 +41,7 @@ class DriverServiceProvider extends AbstractServiceProvider
 
             foreach ($assets->getAssets() as $asset) {
                 $manager->add(
-                    $this->getContainer()->get($asset->getValue()),
+                    $this->container->get($asset->getValue()),
                     $asset->getMetadata()['name'],
                     Arr::get($asset->getMetadata(), 'parameters', [])
                 );

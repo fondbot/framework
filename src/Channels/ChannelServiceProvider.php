@@ -30,7 +30,7 @@ abstract class ChannelServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        $this->getContainer()->share(ChannelManager::class, function () {
+        $this->container->share(ChannelManager::class, function () {
             $manager = new ChannelManager;
 
             foreach ($this->channels() as $name => $parameters) {

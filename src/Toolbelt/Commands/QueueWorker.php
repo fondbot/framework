@@ -32,6 +32,10 @@ class QueueWorker extends Command
         while (true) {
             $job = $queue->next();
 
+            if ($job === null) {
+                continue;
+            }
+
             $this->line('Job: '.get_class($job));
 
             $driver = $job->driver;

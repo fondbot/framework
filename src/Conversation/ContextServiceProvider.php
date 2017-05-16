@@ -23,10 +23,10 @@ class ContextServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        $this->getContainer()->share(ContextManager::class, function () {
+        $this->container->share(ContextManager::class, function () {
             return new ContextManager(
-                $this->getContainer(),
-                $this->getContainer()->get(Cache::class)
+                $this->container,
+                $this->container->get(Cache::class)
             );
         });
     }

@@ -38,7 +38,7 @@ class RouteServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        $this->getContainer()->share('request', function () {
+        $this->container->share('request', function () {
             return ServerRequestFactory::fromGlobals(
                 $_SERVER,
                 $_GET,
@@ -47,13 +47,13 @@ class RouteServiceProvider extends AbstractServiceProvider
                 $_FILES
             );
         });
-        $this->getContainer()->share('response', Response::class);
-        $this->getContainer()->share('emitter', SapiEmitter::class);
+        $this->container->share('response', Response::class);
+        $this->container->share('emitter', SapiEmitter::class);
 
-        $this->getContainer()->share('router', function () {
-            $router = new RouteCollection($this->getContainer());
+        $this->container->share('router', function () {
+            $router = new RouteCollection($this->container);
 
-            $controller = new Controller($this->getContainer()->get(Kernel::class));
+            $controller = new Controller($this->container->get(Kernel::class));
 
             $router->map('GET', $this->buildPath('/'), [$controller, 'index']);
             $router->map('GET', $this->buildPath('/channels/{name}'), [$controller, 'webhook']);

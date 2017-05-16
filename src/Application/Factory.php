@@ -16,7 +16,6 @@ class Factory
         $container->delegate(new ReflectionContainer);
 
         // Load service providers
-        $container->addServiceProvider(new LogServiceProvider);
         $container->addServiceProvider(new RouteServiceProvider($routesPrefix));
         $container->addServiceProvider(new DriverServiceProvider);
         $container->addServiceProvider(new ContextServiceProvider);

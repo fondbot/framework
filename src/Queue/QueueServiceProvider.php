@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Cache;
+namespace FondBot\Queue;
 
-use FondBot\Contracts\Cache;
+use FondBot\Contracts\Queue;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
-abstract class CacheServiceProvider extends AbstractServiceProvider
+abstract class QueueServiceProvider extends AbstractServiceProvider
 {
     protected $provides = [
-        Cache::class,
+        Queue::class,
     ];
 
     /**
-     * Cache adapter.
+     * Queue adapter.
      *
      * @return Adapter
      */
@@ -29,6 +29,6 @@ abstract class CacheServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        $this->container->share(Cache::class, $this->adapter());
+        $this->container->share(Queue::class, $this->adapter());
     }
 }

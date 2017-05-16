@@ -49,7 +49,7 @@ abstract class AppServiceProvider extends AbstractServiceProvider implements Boo
         $dotenv = new Dotenv($this->basePath());
         $dotenv->load();
 
-        $this->getContainer()->share(Config::class, function () {
+        $this->container->share(Config::class, function () {
             return new Config($_ENV);
         });
     }
@@ -63,8 +63,8 @@ abstract class AppServiceProvider extends AbstractServiceProvider implements Boo
      */
     public function register(): void
     {
-        $this->getContainer()->share('environment', $this->environment());
-        $this->getContainer()->share('base_path', $this->basePath());
-        $this->getContainer()->share('resources_path', $this->resourcesPath());
+        $this->container->share('environment', $this->environment());
+        $this->container->share('base_path', $this->basePath());
+        $this->container->share('resources_path', $this->resourcesPath());
     }
 }

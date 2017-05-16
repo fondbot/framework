@@ -8,17 +8,24 @@ use Throwable;
 use Whoops\Run;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
-use Monolog\Handler\StreamHandler;
+use Monolog\Handler\HandlerInterface;
 use Whoops\Handler\PrettyPageHandler;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
 
-class LogServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
+abstract class LogServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
     protected $provides = [
         LoggerInterface::class,
         'application_log',
     ];
+
+    /**
+     * Define handlers.
+     *
+     * @return HandlerInterface[]
+     */
+    abstract public function handlers(): array;
 
     /**
      * Method will be invoked on registration of a service provider implementing
@@ -33,26 +40,27 @@ class LogServiceProvider extends AbstractServiceProvider implements BootableServ
      */
     public function boot(): void
     {
-        $path = $this->getContainer()->get('resources_path').'/logs/app.log';
-
-        $this->container->share('application_log', $path);
-
-        $this->getContainer()->share(LoggerInterface::class, function () use ($path) {
+        $this->container->share(LoggerInterface::class, function () {
             $logger = new Logger('FondBot');
-            $logger->pushHandler(new StreamHandler($path));
+
+            foreach ($this->handlers() as $handler) {
+                $logger->pushHandler($handler);
+            }
 
             return $logger;
         });
 
-        $whoops = new Run;
-        $whoops->pushHandler(new PrettyPageHandler);
-        $whoops->pushHandler(function (Throwable $exception) {
-            /** @var LoggerInterface $logger */
-            $logger = $this->getContainer()->get(LoggerInterface::class);
+        if (PHP_SAPI !== 'cli') {
+            $whoops = new Run;
+            $whoops->pushHandler(new PrettyPageHandler);
+            $whoops->pushHandler(function (Throwable $exception) {
+                /** @var LoggerInterface $logger */
+                $logger = $this->container->get(LoggerInterface::class);
 
-            $logger->error($exception);
-        });
-        $whoops->register();
+                $logger->error($exception);
+            });
+            $whoops->register();
+        }
     }
 
     /**

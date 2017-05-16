@@ -20,8 +20,16 @@ class Request
 
     public static function fromMessage(MessageInterface $message): Request
     {
+        $parameters = $message->getBody()->getContents();
+
+        if ($parameters === '') {
+            $parameters = '{}';
+        }
+
+        $parameters = json_decode($parameters, true);
+
         return new static(
-            json_decode($message->getBody()->getContents(), true),
+            $parameters,
             $message->getHeaders()
         );
     }

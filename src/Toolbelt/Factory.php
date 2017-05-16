@@ -7,16 +7,12 @@ namespace FondBot\Toolbelt;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Symfony\Component\Console\Application;
-use FondBot\Application\LogServiceProvider;
 
 class Factory
 {
     public static function create(Container $container): Kernel
     {
         $container->delegate(new ReflectionContainer);
-
-        // Load service providers
-        $container->addServiceProvider(new LogServiceProvider);
 
         // Boot kernel
         $kernel = new Kernel($container);
