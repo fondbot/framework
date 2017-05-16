@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Application;
 
 use Dotenv\Dotenv;
+use Dotenv\Exception\InvalidPathException;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
 
@@ -46,8 +47,10 @@ abstract class AppServiceProvider extends AbstractServiceProvider implements Boo
      */
     public function boot(): void
     {
-        $dotenv = new Dotenv($this->basePath());
-        $dotenv->load();
+        try {
+            (new Dotenv($this->basePath()))->load();
+        } catch (InvalidPathException $exception) {
+        }
 
         $this->container->share(Config::class, function () {
             return new Config($_ENV);
