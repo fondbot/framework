@@ -17,7 +17,6 @@ abstract class LogServiceProvider extends AbstractServiceProvider implements Boo
 {
     protected $provides = [
         LoggerInterface::class,
-        'application_log',
     ];
 
     /**
@@ -32,8 +31,8 @@ abstract class LogServiceProvider extends AbstractServiceProvider implements Boo
      * this interface. Provides ability for eager loading of Service Providers.
      *
      * @return void
-     * @throws \Psr\Container\NotFoundExceptionInterface
      *
+     * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Exception
      * @throws \InvalidArgumentException
