@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts;
 
+use FondBot\Queue\Job;
 use FondBot\Drivers\Driver;
 use FondBot\Drivers\Command;
 use FondBot\Channels\Channel;
@@ -14,6 +15,13 @@ interface Queue
      * Establish connection to the queue.
      */
     public function connect(): void;
+
+    /**
+     * Pull next job from the queue.
+     *
+     * @return Job
+     */
+    public function next(): ?Job;
 
     /**
      * Push command onto the queue.

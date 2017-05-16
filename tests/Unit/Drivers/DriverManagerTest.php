@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Drivers;
 
+use FondBot\Http\Request;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Drivers\DriverManager;
-use Psr\Http\Message\ServerRequestInterface;
 
 class DriverManagerTest extends TestCase
 {
@@ -16,7 +16,7 @@ class DriverManagerTest extends TestCase
     {
         $driver = $this->mock(Driver::class);
         $channel = $this->mock(Channel::class);
-        $request = $this->mock(ServerRequestInterface::class);
+        $request = $this->mock(Request::class);
         $manager = new DriverManager($this->container);
 
         $manager->add($driver, 'foo', ['bar']);
@@ -36,7 +36,7 @@ class DriverManagerTest extends TestCase
     public function test_get_driver_does_not_exist(): void
     {
         $channel = $this->mock(Channel::class);
-        $request = $this->mock(ServerRequestInterface::class);
+        $request = $this->mock(Request::class);
         $manager = new DriverManager($this->container);
 
         $channel->shouldReceive('getDriver')->andReturn('foo')->atLeast()->once();
@@ -52,7 +52,7 @@ class DriverManagerTest extends TestCase
     {
         $driver = $this->mock(Driver::class);
         $channel = $this->mock(Channel::class);
-        $request = $this->mock(ServerRequestInterface::class);
+        $request = $this->mock(Request::class);
         $manager = new DriverManager($this->container);
 
         $manager->add($driver, 'foo', ['bar']);

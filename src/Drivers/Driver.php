@@ -5,25 +5,25 @@ declare(strict_types=1);
 namespace FondBot\Drivers;
 
 use FondBot\Helpers\Arr;
-use FondBot\Http\InteractsWithRequest;
+use FondBot\Http\Request;
 use FondBot\Queue\SerializableForQueue;
-use Psr\Http\Message\ServerRequestInterface;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 
 abstract class Driver implements SerializableForQueue
 {
-    use InteractsWithRequest;
-
     /** @var array */
     protected $parameters;
+
+    /** @var Request */
+    protected $request;
 
     /**
      * Set driver data.
      *
-     * @param array                  $parameters
-     * @param ServerRequestInterface $request
+     * @param array   $parameters
+     * @param Request $request
      */
-    public function fill(array $parameters, ServerRequestInterface $request): void
+    public function fill(array $parameters, Request $request): void
     {
         $this->parameters = $parameters;
         $this->request = $request;

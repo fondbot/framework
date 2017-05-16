@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Application;
 
+use FondBot\Http\Request;
 use FondBot\Channels\ChannelManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,7 +32,7 @@ class Controller
 
         $channel = $channelManager->create($args['name']);
 
-        $result = $this->kernel->process($channel, $request);
+        $result = $this->kernel->process($channel, Request::fromMessage($request));
 
         $response->getBody()->write($result);
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Application;
 
 use Mockery;
+use FondBot\Http\Request;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
@@ -16,7 +17,6 @@ use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
-use Psr\Http\Message\ServerRequestInterface;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
@@ -47,7 +47,7 @@ class KernelTest extends TestCase
     public function test_process_new_dialog(): void
     {
         $kernel = new Kernel($this->container);
-        $request = $this->mock(ServerRequestInterface::class);
+        $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
 
@@ -86,7 +86,7 @@ class KernelTest extends TestCase
     public function test_process_continue_dialog(): void
     {
         $kernel = new Kernel($this->container);
-        $request = $this->mock(ServerRequestInterface::class);
+        $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
 
@@ -116,7 +116,7 @@ class KernelTest extends TestCase
     public function test_process_invalid_request(): void
     {
         $kernel = new Kernel($this->container);
-        $request = $this->mock(ServerRequestInterface::class);
+        $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
 
@@ -131,7 +131,7 @@ class KernelTest extends TestCase
     public function test_process_with_webhook_verification(): void
     {
         $kernel = new Kernel($this->container);
-        $request = $this->mock(ServerRequestInterface::class);
+        $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
         /** @var Mockery\Mock|mixed $driver */
         $driver = Mockery::mock(Driver::class, WebhookVerification::class);

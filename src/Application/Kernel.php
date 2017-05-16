@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Application;
 
+use FondBot\Http\Request;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use League\Container\Container;
@@ -14,7 +15,6 @@ use FondBot\Conversation\Conversable;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\ContextManager;
-use Psr\Http\Message\ServerRequestInterface;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
@@ -108,15 +108,16 @@ class Kernel
     /**
      * Process webhook request.
      *
-     * @param Channel                $channel
-     * @param ServerRequestInterface $request
+     * @param Channel $channel
+     * @param Request $request
      *
      * @return mixed
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \FondBot\Drivers\Exceptions\DriverNotFound
+     * @throws \FondBot\Drivers\Exceptions\InvalidConfiguration
      */
-    public function process(Channel $channel, ServerRequestInterface $request)
+    public function process(Channel $channel, Request $request)
     {
         try {
             $driver = $this->driverManager()->get($channel, $request);

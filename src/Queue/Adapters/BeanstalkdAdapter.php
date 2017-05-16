@@ -10,6 +10,8 @@ use Pheanstalk\Pheanstalk;
 use FondBot\Drivers\Driver;
 use FondBot\Drivers\Command;
 use FondBot\Channels\Channel;
+use Pheanstalk\Job as PheanstalkJob;
+use FondBot\Queue\SerializableForQueue;
 
 class BeanstalkdAdapter extends Adapter
 {
@@ -45,6 +47,26 @@ class BeanstalkdAdapter extends Adapter
     }
 
     /**
+     * Pull next job from the queue.
+     *
+     * @return Job|SerializableForQueue
+     */
+    public function next(): ?Job
+    {
+        $pheanstalkJob = $this->connection->watch($this->queue)->reserve();
+
+        if ($pheanstalkJob instanceof PheanstalkJob) {
+            $job = $this->unserialize($pheanstalkJob->getData());
+
+            $this->connection->delete($pheanstalkJob);
+
+            return $job;
+        }
+
+        return null;
+    }
+
+    /**
      * Push command onto the queue.
      *
      * @param Channel $channel
@@ -53,6 +75,10 @@ class BeanstalkdAdapter extends Adapter
      */
     public function push(Channel $channel, Driver $driver, Command $command): void
     {
+        if ($this->connection === null) {
+            $this->connect();
+        }
+
         $job = new Job($channel, $driver, $command);
         $this->connection->putInTube($this->queue, $this->serialize($job));
     }
@@ -69,6 +95,10 @@ class BeanstalkdAdapter extends Adapter
      */
     public function later(Channel $channel, Driver $driver, Command $command, int $delay): void
     {
+        if ($this->connection === null) {
+            $this->connect();
+        }
+
         $job = new Job($channel, $driver, $command);
         $this->connection->putInTube($this->queue, $this->serialize($job), Pheanstalk::DEFAULT_PRIORITY, $delay);
     }

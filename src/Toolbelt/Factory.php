@@ -30,6 +30,7 @@ class Factory
             new Commands\InstallDriver($kernel),
             new Commands\ListChannels($kernel),
             new Commands\Log($kernel),
+            new Commands\QueueWorker($kernel),
         ]);
 
         $container->add(Kernel::class, $kernel);

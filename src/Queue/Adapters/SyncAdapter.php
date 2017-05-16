@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Queue\Adapters;
 
+use FondBot\Queue\Job;
 use FondBot\Queue\Adapter;
 use FondBot\Drivers\Driver;
 use FondBot\Drivers\Command;
@@ -16,6 +17,16 @@ class SyncAdapter extends Adapter
      */
     public function connect(): void
     {
+    }
+
+    /**
+     * Pull next job from the queue.
+     *
+     * @return Job
+     */
+    public function next(): ?Job
+    {
+        return null;
     }
 
     /**
