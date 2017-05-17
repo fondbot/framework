@@ -77,7 +77,7 @@ class Context
     }
 
     /**
-     * Get current intent instance.
+     * Get current intent.
      *
      * @return Intent|Conversable|null
      */
@@ -87,7 +87,7 @@ class Context
     }
 
     /**
-     * Set intent instance.
+     * Set intent.
      *
      * @param Intent $intent
      */
@@ -97,7 +97,7 @@ class Context
     }
 
     /**
-     * Get current interaction instance.
+     * Get interaction.
      *
      * @return Interaction|Conversable|null
      */
@@ -107,7 +107,7 @@ class Context
     }
 
     /**
-     * Set interaction instance.
+     * Set interaction.
      *
      * @param Interaction|null $interaction
      */
@@ -117,7 +117,7 @@ class Context
     }
 
     /**
-     * Get stored values.
+     * Get values.
      *
      * @return array
      */
@@ -127,7 +127,7 @@ class Context
     }
 
     /**
-     * Set values to be stored.
+     * Set values.
      *
      * @param array $values
      */
@@ -137,7 +137,7 @@ class Context
     }
 
     /**
-     * Store value.
+     * Set single value.
      *
      * @param string $key
      * @param mixed  $value
