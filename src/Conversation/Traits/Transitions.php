@@ -51,17 +51,17 @@ trait Transitions
     {
         switch (true) {
             case $this instanceof Intent:
-                $this->kernel->clearContext();
+                $this->kernel->clearSession();
 
                 $this->kernel->converse($this);
 
                 $this->transitioned = true;
                 break;
             case $this instanceof Interaction:
-                $context = $this->kernel->getContext();
-                $context->setInteraction(null);
-                $context->setValues([]);
-                $this->kernel->setContext($context);
+                $session = $this->kernel->getSession();
+                $session->setInteraction(null);
+                $session->setValues([]);
+                $this->kernel->setSession($session);
 
                 $this->transitioned = true;
 

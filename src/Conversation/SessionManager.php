@@ -10,7 +10,7 @@ use FondBot\Drivers\Driver;
 use FondBot\Contracts\Cache;
 use Psr\Container\ContainerInterface;
 
-class ContextManager
+class SessionManager
 {
     private $container;
     private $cache;
@@ -22,14 +22,14 @@ class ContextManager
     }
 
     /**
-     * Resolve context instance.
+     * Resolve session.
      *
      * @param string $channel
      * @param Driver $driver
      *
-     * @return Context
+     * @return Session
      */
-    public function resolve(string $channel, Driver $driver): Context
+    public function resolve(string $channel, Driver $driver): Session
     {
         $chat = $driver->getChat();
         $sender = $driver->getUser();
@@ -40,7 +40,7 @@ class ContextManager
         $intent = $value['intent'] !== null ? $this->container->get($value['intent']) : null;
         $interaction = $value['interaction'] !== null ? $this->container->get($value['interaction']) : null;
 
-        return new Context(
+        return new Session(
             $channel,
             $chat,
             $sender,
@@ -52,31 +52,31 @@ class ContextManager
     }
 
     /**
-     * Save updated context.
+     * Save session.
      *
-     * @param Context $context
+     * @param Session $session
      */
-    public function save(Context $context): void
+    public function save(Session $session): void
     {
-        $key = $this->key($context->getChannel(), $context->getChat(), $context->getUser());
+        $key = $this->key($session->getChannel(), $session->getChat(), $session->getUser());
 
-        $this->cache->store($key, $context->toArray());
+        $this->cache->store($key, $session->toArray());
     }
 
     /**
-     * Clear context.
+     * Clear session.
      *
-     * @param Context $context
+     * @param Session $session
      */
-    public function clear(Context $context): void
+    public function clear(Session $session): void
     {
-        $key = $this->key($context->getChannel(), $context->getChat(), $context->getUser());
+        $key = $this->key($session->getChannel(), $session->getChat(), $session->getUser());
 
         $this->cache->forget($key);
     }
 
     /**
-     * Get key of current context in storage (Cache, Memory, etc.).
+     * Get key of session.
      *
      * @param string $channel
      * @param Chat   $chat
@@ -86,6 +86,6 @@ class ContextManager
      */
     private function key(string $channel, Chat $chat, User $sender): string
     {
-        return 'context.'.$channel.'.'.$chat->getId().'.'.$sender->getId();
+        return 'session.'.$channel.'.'.$chat->getId().'.'.$sender->getId();
     }
 }

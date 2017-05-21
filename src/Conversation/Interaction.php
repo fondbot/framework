@@ -8,11 +8,11 @@ use FondBot\Application\Kernel;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Conversation\Traits\SendsMessages;
-use FondBot\Conversation\Traits\InteractsWithContext;
+use FondBot\Conversation\Traits\InteractsWithSession;
 
 abstract class Interaction implements Conversable
 {
-    use InteractsWithContext,
+    use InteractsWithSession,
         SendsMessages,
         Transitions;
 
@@ -32,20 +32,22 @@ abstract class Interaction implements Conversable
      * Handle interaction.
      *
      * @param Kernel $kernel
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function handle(Kernel $kernel): void
     {
         $this->kernel = $kernel;
-        $context = $this->kernel->getContext();
+        $session = $this->kernel->getSession();
 
-        if ($context->getInteraction() instanceof $this) {
-            $this->process($context->getMessage());
+        if ($session->getInteraction() instanceof $this) {
+            $this->process($session->getMessage());
 
             if (!$this->transitioned) {
-                $this->kernel->clearContext();
+                $this->kernel->clearSession();
             }
         } else {
-            $this->kernel->getContext()->setInteraction($this);
+            $this->kernel->getSession()->setInteraction($this);
             $this->run();
         }
     }

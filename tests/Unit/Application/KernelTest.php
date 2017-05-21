@@ -11,37 +11,37 @@ use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Application\Kernel;
 use FondBot\Conversation\Intent;
-use FondBot\Conversation\Context;
+use FondBot\Conversation\Session;
 use FondBot\Drivers\DriverManager;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
-use FondBot\Conversation\ContextManager;
+use FondBot\Conversation\SessionManager;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
 class KernelTest extends TestCase
 {
-    public function test_context(): void
+    public function test_session(): void
     {
         $kernel = new Kernel($this->container);
-        $kernel->setContext($context = $this->mock(Context::class));
+        $kernel->setSession($session = $this->mock(Session::class));
 
-        $this->assertSame($context, $kernel->getContext());
+        $this->assertSame($session, $kernel->getSession());
     }
 
-    public function test_clearContext(): void
+    public function test_clearSession(): void
     {
         $kernel = new Kernel($this->container);
-        $kernel->setContext($context = $this->mock(Context::class));
+        $kernel->setSession($session = $this->mock(Session::class));
 
-        $this->container->add(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
+        $this->container->add(SessionManager::class, $sessionManager = $this->mock(SessionManager::class));
 
-        $contextManager->shouldReceive('clear')->with($context)->once();
+        $sessionManager->shouldReceive('clear')->with($session)->once();
 
-        $kernel->clearContext();
+        $kernel->clearSession();
 
-        $this->assertNull($kernel->getContext());
+        $this->assertNull($kernel->getSession());
     }
 
     public function test_process_new_dialog(): void
@@ -52,19 +52,19 @@ class KernelTest extends TestCase
         $driver = $this->mock(Driver::class);
 
         $this->container->add(DriverManager::class, $driverManager = $this->mock(DriverManager::class));
-        $this->container->add(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
+        $this->container->add(SessionManager::class, $sessionManager = $this->mock(SessionManager::class));
         $this->container->add(IntentManager::class, $intentManager = $this->mock(IntentManager::class));
 
         $driverManager->shouldReceive('get')->with($channel, $request)->andReturn($driver)->once();
 
         $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName)->atLeast()->once();
         $driver->shouldReceive('verifyRequest')->once();
-        $contextManager->shouldReceive('resolve')
+        $sessionManager->shouldReceive('resolve')
             ->with($channelName, $driver)
-            ->andReturn($context = $this->mock(Context::class))
+            ->andReturn($session = $this->mock(Session::class))
             ->once();
 
-        $context->shouldReceive('getInteraction')->andReturn(null)->once();
+        $session->shouldReceive('getInteraction')->andReturn(null)->once();
 
         $driver->shouldReceive('getMessage')->andReturn($receivedMessage = $this->mock(ReceivedMessage::class))->once();
         $intentManager->shouldReceive('find')
@@ -72,11 +72,11 @@ class KernelTest extends TestCase
             ->andReturn($intent = $this->mock(Intent::class))
             ->once();
 
-        $context->shouldReceive('setIntent')->with($intent)->once();
-        $context->shouldReceive('setInteraction')->with(null)->once();
-        $context->shouldReceive('setValues')->with([])->once();
+        $session->shouldReceive('setIntent')->with($intent)->once();
+        $session->shouldReceive('setInteraction')->with(null)->once();
+        $session->shouldReceive('setValues')->with([])->once();
         $intent->shouldReceive('handle')->with($kernel)->once();
-        $contextManager->shouldReceive('save')->with($context)->once();
+        $sessionManager->shouldReceive('save')->with($session)->once();
 
         $kernel->process($channel, $request);
 
@@ -91,24 +91,24 @@ class KernelTest extends TestCase
         $driver = $this->mock(Driver::class);
 
         $this->container->add(DriverManager::class, $driverManager = $this->mock(DriverManager::class));
-        $this->container->add(ContextManager::class, $contextManager = $this->mock(ContextManager::class));
+        $this->container->add(SessionManager::class, $sessionManager = $this->mock(SessionManager::class));
         $this->container->add(IntentManager::class, $intentManager = $this->mock(IntentManager::class));
 
         $driverManager->shouldReceive('get')->with($channel, $request)->andReturn($driver)->once();
 
         $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName)->atLeast()->once();
         $driver->shouldReceive('verifyRequest')->once();
-        $contextManager->shouldReceive('resolve')
+        $sessionManager->shouldReceive('resolve')
             ->with($channelName, $driver)
-            ->andReturn($context = $this->mock(Context::class))
+            ->andReturn($session = $this->mock(Session::class))
             ->once();
 
-        $context->shouldReceive('getInteraction')->andReturn($interaction = $this->mock(Interaction::class))->atLeast()->once();
+        $session->shouldReceive('getInteraction')->andReturn($interaction = $this->mock(Interaction::class))->atLeast()->once();
 
         $intentManager->shouldReceive('find')->never();
         $interaction->shouldReceive('handle')->with($kernel)->once();
 
-        $contextManager->shouldReceive('save')->with($context)->once();
+        $sessionManager->shouldReceive('save')->with($session)->once();
 
         $kernel->process($channel, $request);
     }

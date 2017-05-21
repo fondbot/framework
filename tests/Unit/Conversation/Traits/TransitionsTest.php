@@ -7,7 +7,7 @@ namespace FondBot\Tests\Unit\Conversation\Traits;
 use FondBot\Tests\TestCase;
 use FondBot\Application\Kernel;
 use FondBot\Conversation\Intent;
-use FondBot\Conversation\Context;
+use FondBot\Conversation\Session;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\Traits\Transitions;
@@ -15,7 +15,7 @@ use FondBot\Conversation\Activators\Activator;
 
 class TransitionsTest extends TestCase
 {
-    public function test_jump()
+    public function test_jump(): void
     {
         $kernel = $this->mock(Kernel::class);
 
@@ -30,7 +30,7 @@ class TransitionsTest extends TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Invalid interaction `foo`
      */
-    public function test_jump_invalid_interaction()
+    public function test_jump_invalid_interaction(): void
     {
         $kernel = $this->mock(Kernel::class);
 
@@ -41,7 +41,7 @@ class TransitionsTest extends TestCase
         $class->jump('foo');
     }
 
-    public function test_restart_intent()
+    public function test_restart_intent(): void
     {
         $kernel = $this->mock(Kernel::class);
         $intent = new class extends Intent {
@@ -64,16 +64,16 @@ class TransitionsTest extends TestCase
             }
         };
 
-        $kernel->shouldReceive('clearContext')->once();
+        $kernel->shouldReceive('clearSession')->once();
         $kernel->shouldReceive('converse')->with($intent)->once();
 
         $intent->handle($kernel);
     }
 
-    public function test_restart_interaction()
+    public function test_restart_interaction(): void
     {
         $kernel = $this->mock(Kernel::class);
-        $context = $this->mock(Context::class);
+        $session = $this->mock(Session::class);
         $interaction = new class extends Interaction {
             /**
              * Run interaction.
@@ -93,12 +93,12 @@ class TransitionsTest extends TestCase
             }
         };
 
-        $context->shouldReceive('getInteraction')->andReturn($interaction)->once();
-        $context->shouldReceive('getMessage')->andReturn($this->mock(ReceivedMessage::class))->once();
-        $kernel->shouldReceive('getContext')->andReturn($context)->atLeast()->once();
-        $context->shouldReceive('setInteraction')->with(null)->once();
-        $context->shouldReceive('setValues')->with([])->once();
-        $kernel->shouldReceive('setContext')->once();
+        $session->shouldReceive('getInteraction')->andReturn($interaction)->once();
+        $session->shouldReceive('getMessage')->andReturn($this->mock(ReceivedMessage::class))->once();
+        $kernel->shouldReceive('getSession')->andReturn($session)->atLeast()->once();
+        $session->shouldReceive('setInteraction')->with(null)->once();
+        $session->shouldReceive('setValues')->with([])->once();
+        $kernel->shouldReceive('setSession')->once();
         $kernel->shouldReceive('converse')->with($interaction)->once();
 
         $interaction->handle($kernel);
@@ -108,7 +108,7 @@ class TransitionsTest extends TestCase
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Only conversable instances can be restarted.
      */
-    public function test_restart_not_converable()
+    public function test_restart_not_converable(): void
     {
         $class = new TransitionsTraitTestClass($this->mock(Kernel::class));
         $class->restart();

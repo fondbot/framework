@@ -8,7 +8,7 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Application\Kernel;
 
-trait InteractsWithContext
+trait InteractsWithSession
 {
     /** @var Kernel */
     protected $kernel;
@@ -21,7 +21,7 @@ trait InteractsWithContext
      */
     protected function remember(string $key, $value): void
     {
-        $this->kernel->getContext()->setValue($key, $value);
+        $this->kernel->getSession()->setValue($key, $value);
     }
 
     /**
@@ -31,7 +31,7 @@ trait InteractsWithContext
      */
     protected function getChat(): Chat
     {
-        return $this->kernel->getContext()->getChat();
+        return $this->kernel->getSession()->getChat();
     }
 
     /**
@@ -41,6 +41,6 @@ trait InteractsWithContext
      */
     protected function getUser(): User
     {
-        return $this->kernel->getContext()->getUser();
+        return $this->kernel->getSession()->getUser();
     }
 }

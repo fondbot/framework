@@ -7,7 +7,7 @@ namespace FondBot\Application;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use FondBot\Drivers\DriverServiceProvider;
-use FondBot\Conversation\ContextServiceProvider;
+use FondBot\Conversation\SessionServiceProvider;
 
 class Factory
 {
@@ -18,7 +18,7 @@ class Factory
         // Load service providers
         $container->addServiceProvider(new RouteServiceProvider($routesPrefix));
         $container->addServiceProvider(new DriverServiceProvider);
-        $container->addServiceProvider(new ContextServiceProvider);
+        $container->addServiceProvider(new SessionServiceProvider);
 
         // Boot kernel
         $kernel = new Kernel($container);

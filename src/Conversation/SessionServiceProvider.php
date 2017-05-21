@@ -7,10 +7,10 @@ namespace FondBot\Conversation;
 use FondBot\Contracts\Cache;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
-class ContextServiceProvider extends AbstractServiceProvider
+class SessionServiceProvider extends AbstractServiceProvider
 {
     protected $provides = [
-        ContextManager::class,
+        SessionManager::class,
     ];
 
     /**
@@ -23,8 +23,8 @@ class ContextServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        $this->container->share(ContextManager::class, function () {
-            return new ContextManager(
+        $this->container->share(SessionManager::class, function () {
+            return new SessionManager(
                 $this->container,
                 $this->container->get(Cache::class)
             );

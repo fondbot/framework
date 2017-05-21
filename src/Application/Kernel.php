@@ -9,12 +9,12 @@ use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use League\Container\Container;
 use FondBot\Conversation\Intent;
-use FondBot\Conversation\Context;
+use FondBot\Conversation\Session;
 use FondBot\Drivers\DriverManager;
 use FondBot\Conversation\Conversable;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
-use FondBot\Conversation\ContextManager;
+use FondBot\Conversation\SessionManager;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
@@ -27,8 +27,8 @@ class Kernel
 
     private $container;
 
-    /** @var Context|null */
-    private $context;
+    /** @var Session|null */
+    private $session;
 
     public function __construct(Container $container)
     {
@@ -60,35 +60,35 @@ class Kernel
     }
 
     /**
-     * Get context instance.
+     * Get session.
      *
-     * @return Context|null
+     * @return Session|null
      */
-    public function getContext(): ?Context
+    public function getSession(): ?Session
     {
-        return $this->context;
+        return $this->session;
     }
 
     /**
-     * Set context instance.
+     * Set session.
      *
-     * @param Context $context
+     * @param Session $session
      */
-    public function setContext(Context $context): void
+    public function setSession(Session $session): void
     {
-        $this->context = $context;
+        $this->session = $session;
     }
 
     /**
-     * Clear context.
+     * Clear session.
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function clearContext(): void
+    public function clearSession(): void
     {
-        if ($this->context !== null) {
-            $this->contextManager()->clear($this->context);
-            $this->context = null;
+        if ($this->session !== null) {
+            $this->sessionManager()->clear($this->session);
+            $this->session = null;
         }
     }
 
@@ -133,11 +133,11 @@ class Kernel
             // Verify request
             $driver->verifyRequest();
 
-            // Resolve context
-            $this->context = $this->contextManager()->resolve($channel->getName(), $driver);
+            // Resolve session
+            $this->session = $this->sessionManager()->resolve($channel->getName(), $driver);
 
-            if ($this->context->getInteraction() !== null) {
-                $this->converse($this->context->getInteraction());
+            if ($this->session->getInteraction() !== null) {
+                $this->converse($this->session->getInteraction());
             } else {
                 $intent = $this->intentManager()->find($driver->getMessage());
 
@@ -146,8 +146,8 @@ class Kernel
                 }
             }
 
-            if ($this->context !== null) {
-                $this->contextManager()->save($this->context);
+            if ($this->session !== null) {
+                $this->sessionManager()->save($this->session);
             }
 
             return 'OK';
@@ -164,9 +164,9 @@ class Kernel
     public function converse(Conversable $conversable): void
     {
         if ($conversable instanceof Intent) {
-            $this->context->setIntent($conversable);
-            $this->context->setInteraction(null);
-            $this->context->setValues([]);
+            $this->session->setIntent($conversable);
+            $this->session->setInteraction(null);
+            $this->session->setValues([]);
 
             $conversable->handle($this);
         } elseif ($conversable instanceof Interaction) {
@@ -187,15 +187,15 @@ class Kernel
     }
 
     /**
-     * Get context manager.
+     * Get session manager.
      *
-     * @return ContextManager
+     * @return SessionManager
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      */
-    private function contextManager(): ContextManager
+    private function sessionManager(): SessionManager
     {
-        return $this->resolve(ContextManager::class);
+        return $this->resolve(SessionManager::class);
     }
 
     /**

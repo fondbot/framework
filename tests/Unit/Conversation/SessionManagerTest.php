@@ -9,9 +9,9 @@ use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Cache;
-use FondBot\Conversation\Context;
+use FondBot\Conversation\Session;
 use FondBot\Drivers\ReceivedMessage;
-use FondBot\Conversation\ContextManager;
+use FondBot\Conversation\SessionManager;
 
 /**
  * @property string                                     $channel
@@ -20,11 +20,11 @@ use FondBot\Conversation\ContextManager;
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $receivedMessage
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $cache
- * @property ContextManager                             $manager
+ * @property SessionManager                             $manager
  */
-class ContextManagerTest extends TestCase
+class SessionManagerTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -35,10 +35,10 @@ class ContextManagerTest extends TestCase
         $this->driver = $this->mock(Driver::class);
         $this->cache = $this->mock(Cache::class);
 
-        $this->manager = new ContextManager($this->container, $this->cache);
+        $this->manager = new SessionManager($this->container, $this->cache);
     }
 
-    public function test_resolve()
+    public function test_resolve(): void
     {
         $this->driver->shouldReceive('getChat')->andReturn($this->chat)->once();
         $this->driver->shouldReceive('getUser')->andReturn($this->sender)->once();
@@ -46,7 +46,7 @@ class ContextManagerTest extends TestCase
         $this->chat->shouldReceive('getId')->andReturn($chatId = $this->faker()->uuid)->atLeast()->once();
         $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
-        $key = 'context.'.$this->channel.'.'.$chatId.'.'.$senderId;
+        $key = 'session.'.$this->channel.'.'.$chatId.'.'.$senderId;
 
         $this->cache->shouldReceive('get')->with($key)->andReturn([
             'intent' => null,
@@ -57,47 +57,47 @@ class ContextManagerTest extends TestCase
             ],
         ])->once();
 
-        $context = $this->manager->resolve($this->channel, $this->driver);
+        $session = $this->manager->resolve($this->channel, $this->driver);
 
-        $this->assertInstanceOf(Context::class, $context);
+        $this->assertInstanceOf(Session::class, $session);
     }
 
-    public function test_save()
+    public function test_save(): void
     {
-        $contextArray = [
+        $sessionArray = [
             'intent' => null,
             'interaction' => null,
             'values' => ['key1' => 'value1'],
         ];
 
-        $context = $this->mock(Context::class);
-        $context->shouldReceive('getChannel')->andReturn($this->channel)->atLeast()->once();
-        $context->shouldReceive('getChat')->andReturn($this->chat)->atLeast()->once();
-        $context->shouldReceive('getUser')->andReturn($this->sender)->atLeast()->once();
-        $context->shouldReceive('toArray')->andReturn($contextArray)->atLeast()->once();
+        $session = $this->mock(Session::class);
+        $session->shouldReceive('getChannel')->andReturn($this->channel)->atLeast()->once();
+        $session->shouldReceive('getChat')->andReturn($this->chat)->atLeast()->once();
+        $session->shouldReceive('getUser')->andReturn($this->sender)->atLeast()->once();
+        $session->shouldReceive('toArray')->andReturn($sessionArray)->atLeast()->once();
         $this->chat->shouldReceive('getId')->andReturn($chatId = $this->faker()->uuid)->atLeast()->once();
         $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
-        $key = 'context.'.$this->channel.'.'.$chatId.'.'.$senderId;
+        $key = 'session.'.$this->channel.'.'.$chatId.'.'.$senderId;
 
-        $this->cache->shouldReceive('store')->with($key, $contextArray)->once();
+        $this->cache->shouldReceive('store')->with($key, $sessionArray)->once();
 
-        $this->manager->save($context);
+        $this->manager->save($session);
     }
 
-    public function test_clear()
+    public function test_clear(): void
     {
-        $context = $this->mock(Context::class);
-        $context->shouldReceive('getChannel')->andReturn($this->channel)->once();
-        $context->shouldReceive('getChat')->andReturn($this->chat)->atLeast()->once();
-        $context->shouldReceive('getUser')->andReturn($this->sender)->once();
+        $session = $this->mock(Session::class);
+        $session->shouldReceive('getChannel')->andReturn($this->channel)->once();
+        $session->shouldReceive('getChat')->andReturn($this->chat)->atLeast()->once();
+        $session->shouldReceive('getUser')->andReturn($this->sender)->once();
         $this->chat->shouldReceive('getId')->andReturn($chatId = $this->faker()->uuid)->atLeast()->once();
         $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
-        $key = 'context.'.$this->channel.'.'.$chatId.'.'.$senderId;
+        $key = 'session.'.$this->channel.'.'.$chatId.'.'.$senderId;
 
         $this->cache->shouldReceive('forget')->with($key)->once();
 
-        $this->manager->clear($context);
+        $this->manager->clear($session);
     }
 }

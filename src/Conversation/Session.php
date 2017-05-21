@@ -8,7 +8,7 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\ReceivedMessage;
 
-class Context
+class Session
 {
     private $channel;
     private $chat;
