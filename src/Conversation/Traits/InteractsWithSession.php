@@ -14,7 +14,7 @@ trait InteractsWithSession
     protected $kernel;
 
     /**
-     * Remember value in context.
+     * Remember value in session.
      *
      * @param string $key
      * @param        $value
