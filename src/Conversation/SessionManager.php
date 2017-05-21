@@ -28,6 +28,8 @@ class SessionManager
      * @param Driver $driver
      *
      * @return Session
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function resolve(string $channel, Driver $driver): Session
     {
@@ -80,12 +82,12 @@ class SessionManager
      *
      * @param string $channel
      * @param Chat   $chat
-     * @param User   $sender
+     * @param User   $user
      *
      * @return string
      */
-    private function key(string $channel, Chat $chat, User $sender): string
+    private function key(string $channel, Chat $chat, User $user): string
     {
-        return 'session.'.$channel.'.'.$chat->getId().'.'.$sender->getId();
+        return 'session.'.$channel.'.'.$chat->getId().'.'.$user->getId();
     }
 }
