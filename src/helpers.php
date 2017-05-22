@@ -77,9 +77,9 @@ if (!function_exists('logger')) {
     /**
      * Get logger.
      *
-     * @return \Monolog\Logger|\Psr\Log\LoggerInterface
+     * @return Monolog\Logger|\Psr\Log\LoggerInterface
      */
-    function logger(): \Monolog\Logger
+    function logger(): Monolog\Logger
     {
         return resolve(Monolog\Logger::class);
     }
