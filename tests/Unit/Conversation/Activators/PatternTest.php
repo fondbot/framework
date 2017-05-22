@@ -7,7 +7,6 @@ namespace FondBot\Tests\Unit\Conversation\Activators;
 use FondBot\Tests\TestCase;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Activators\Pattern;
-use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 /**
  * @property mixed|\Mockery\Mock message
@@ -36,40 +35,6 @@ class PatternTest extends TestCase
         $this->message->shouldReceive('getText')->andReturn('ab');
 
         $activator = new Pattern('/abc/');
-        $this->assertFalse(
-            $activator->matches($this->message)
-        );
-    }
-
-    public function test_verbal_expression_matches(): void
-    {
-        $this->message->shouldReceive('getText')->andReturn('https://fondbot.com');
-
-        $expression = new VerbalExpressions();
-        $expression
-            ->startOfLine()
-            ->then('https://')
-            ->anything()
-            ->endOfLine();
-
-        $activator = new Pattern($expression);
-        $this->assertTrue(
-            $activator->matches($this->message)
-        );
-    }
-
-    public function test_verbal_expression_does_not_match(): void
-    {
-        $this->message->shouldReceive('getText')->andReturn('http://fondbot.com');
-
-        $expression = new VerbalExpressions();
-        $expression
-            ->startOfLine()
-            ->then('https://')
-            ->anything()
-            ->endOfLine();
-
-        $activator = new Pattern($expression);
         $this->assertFalse(
             $activator->matches($this->message)
         );

@@ -33,7 +33,6 @@
         "symfony/process": "^3.2",
         "thecodingmachine/discovery": "^1.1",
         "tightenco/collect": "^5.4",
-        "verbalexpressions/php-verbal-expressions": "dev-master",
         "vlucas/phpdotenv": "^2.4",
         "zendframework/zend-diactoros": "^1.4",
         "zumba/json-serializer": "^2.1"
@@ -46,7 +45,7 @@
         "phpunit/phpunit": "^6",
         "sllh/php-cs-fixer-styleci-bridge": "^2.1"
     },
-    "suggests": {
+    "suggest": {
         "pda/pheanstalk": "Required for Beanstalkd queue."
     },
     "autoload": {

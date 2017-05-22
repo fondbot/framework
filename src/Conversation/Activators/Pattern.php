@@ -6,18 +6,12 @@ namespace FondBot\Conversation\Activators;
 
 use Spatie\Regex\Regex;
 use FondBot\Drivers\ReceivedMessage;
-use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 class Pattern implements Activator
 {
     private $value;
 
-    /**
-     * Pattern constructor.
-     *
-     * @param string|VerbalExpressions $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $this->value = $value;
     }
@@ -32,10 +26,6 @@ class Pattern implements Activator
     public function matches(ReceivedMessage $message): bool
     {
         $text = $message->getText();
-
-        if ($this->value instanceof VerbalExpressions) {
-            return $this->value->test($text);
-        }
 
         return Regex::match($this->value, $text)->hasMatch();
     }
