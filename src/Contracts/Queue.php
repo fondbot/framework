@@ -12,11 +12,6 @@ use FondBot\Channels\Channel;
 interface Queue
 {
     /**
-     * Establish connection to the queue.
-     */
-    public function connect(): void;
-
-    /**
      * Pull next job from the queue.
      *
      * @return Job

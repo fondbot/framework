@@ -25,7 +25,6 @@ class QueueWorker extends Command
     {
         /** @var Queue $queue */
         $queue = $this->kernel->resolve(Queue::class);
-        $queue->connect();
 
         $this->info('Worker started...');
 

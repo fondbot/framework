@@ -18,32 +18,12 @@ class BeanstalkdAdapter extends Adapter
     /** @var Pheanstalk */
     private $connection;
 
-    private $host;
-    private $port;
     private $queue;
-    private $timeout;
-    private $persistent;
 
-    public function __construct(
-        string $host,
-        int $port = 11300,
-        string $queue = 'default',
-        int $timeout = null,
-        bool $persistent = false
-    ) {
-        $this->host = $host;
-        $this->port = $port;
-        $this->queue = $queue;
-        $this->timeout = $timeout;
-        $this->persistent = $persistent;
-    }
-
-    /**
-     * Establish connection to the queue.
-     */
-    public function connect(): void
+    public function __construct(Pheanstalk $connection, string $queue = 'default')
     {
-        $this->connection = new Pheanstalk($this->host, $this->port, $this->timeout, $this->persistent);
+        $this->connection = $connection;
+        $this->queue = $queue;
     }
 
     /**
@@ -75,10 +55,6 @@ class BeanstalkdAdapter extends Adapter
      */
     public function push(Channel $channel, Driver $driver, Command $command): void
     {
-        if ($this->connection === null) {
-            $this->connect();
-        }
-
         $job = new Job($channel, $driver, $command);
         $this->connection->putInTube($this->queue, $this->serialize($job));
     }
@@ -95,10 +71,6 @@ class BeanstalkdAdapter extends Adapter
      */
     public function later(Channel $channel, Driver $driver, Command $command, int $delay): void
     {
-        if ($this->connection === null) {
-            $this->connect();
-        }
-
         $job = new Job($channel, $driver, $command);
         $this->connection->putInTube($this->queue, $this->serialize($job), Pheanstalk::DEFAULT_PRIORITY, $delay);
     }

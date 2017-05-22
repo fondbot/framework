@@ -39,13 +39,7 @@ class RouteServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         $this->container->share('request', function () {
-            return ServerRequestFactory::fromGlobals(
-                $_SERVER,
-                $_GET,
-                $_POST,
-                $_COOKIE,
-                $_FILES
-            );
+            return ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
         });
         $this->container->share('response', Response::class);
         $this->container->share('emitter', SapiEmitter::class);
