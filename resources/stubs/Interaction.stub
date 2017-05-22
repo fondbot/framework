@@ -14,7 +14,7 @@ class ___CLASSNAME___ extends Interaction
      */
     public function run(): void
     {
-        // Here you can send message, show keyboard or something else...
+        // Send message, show keyboard or do something else...
     }
 
     /**
@@ -24,6 +24,6 @@ class ___CLASSNAME___ extends Interaction
      */
     public function process(ReceivedMessage $reply): void
     {
-        // In this method you will process reply to the message you sent in method run.
+        // Process reply to the message you sent in method "run".
     }
 }
