@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Helpers\Str;
-use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
 
 class ConversationCreator
 {
     private $filesystem;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(MountManager $manager)
     {
-        $this->filesystem = $filesystem;
+        $this->filesystem = $manager->getFilesystem('local');
     }
 
     /**

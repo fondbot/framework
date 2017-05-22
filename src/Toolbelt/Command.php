@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Toolbelt;
 
 use FondBot\Application\Kernel;
-use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -127,13 +128,17 @@ abstract class Command extends SymfonyCommand
     /**
      * Get filesystem instance.
      *
-     * @return Filesystem
+     * @return FilesystemInterface
      *
+     * @throws \League\Flysystem\FilesystemNotFoundException
      * @throws \Psr\Container\ContainerExceptionInterface
      */
-    protected function filesystem(): Filesystem
+    protected function filesystem(): FilesystemInterface
     {
-        return $this->kernel->resolve(Filesystem::class);
+        /** @var MountManager $manager */
+        $manager = $this->kernel->resolve(MountManager::class);
+
+        return $manager->getFilesystem('local');
     }
 
     /**
