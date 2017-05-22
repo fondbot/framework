@@ -24,7 +24,7 @@ class KernelTest extends TestCase
 {
     public function test_session(): void
     {
-        $kernel = new Kernel($this->container);
+        $kernel = Kernel::createInstance($this->container);
         $kernel->setSession($session = $this->mock(Session::class));
 
         $this->assertSame($session, $kernel->getSession());
@@ -32,7 +32,7 @@ class KernelTest extends TestCase
 
     public function test_clearSession(): void
     {
-        $kernel = new Kernel($this->container);
+        $kernel = Kernel::createInstance($this->container);
         $kernel->setSession($session = $this->mock(Session::class));
 
         $this->container->add(SessionManager::class, $sessionManager = $this->mock(SessionManager::class));
@@ -46,7 +46,7 @@ class KernelTest extends TestCase
 
     public function test_process_new_dialog(): void
     {
-        $kernel = new Kernel($this->container);
+        $kernel = Kernel::createInstance($this->container);
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
@@ -85,7 +85,7 @@ class KernelTest extends TestCase
 
     public function test_process_continue_dialog(): void
     {
-        $kernel = new Kernel($this->container);
+        $kernel = Kernel::createInstance($this->container);
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
@@ -115,7 +115,7 @@ class KernelTest extends TestCase
 
     public function test_process_invalid_request(): void
     {
-        $kernel = new Kernel($this->container);
+        $kernel = Kernel::createInstance($this->container);
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
@@ -130,7 +130,7 @@ class KernelTest extends TestCase
 
     public function test_process_with_webhook_verification(): void
     {
-        $kernel = new Kernel($this->container);
+        $kernel = Kernel::createInstance($this->container);
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
         /** @var Mockery\Mock|mixed $driver */

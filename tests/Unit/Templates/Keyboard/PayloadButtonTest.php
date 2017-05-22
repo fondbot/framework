@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Templates\Keyboard;
+namespace FondBot\Tests\Unit\Templates\Keyboard;
 
 use FondBot\Tests\TestCase;
 use FondBot\Templates\Keyboard\PayloadButton;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Queue\Adapters;
+namespace FondBot\Tests\Unit\Queue\Adapters;
 
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;

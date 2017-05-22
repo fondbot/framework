@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Application;
+namespace FondBot\Tests\Unit\Application;
 
 use FondBot\Tests\TestCase;
 use Zend\Diactoros\Request;

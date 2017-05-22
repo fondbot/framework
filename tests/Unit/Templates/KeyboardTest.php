@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Templates;
+namespace FondBot\Tests\Unit\Templates;
 
 use FondBot\Tests\TestCase;
 use FondBot\Templates\Keyboard;

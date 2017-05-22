@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Toolbelt\Commands;
 
+use GuzzleHttp\Client;
 use FondBot\Toolbelt\Command;
 use Symfony\Component\Console\Helper\Table;
 
@@ -18,7 +19,12 @@ class ListDrivers extends Command
 
     public function handle(): void
     {
-        $drivers = collect($this->kernel->getDrivers())
+        /** @var Client $http */
+        $http = $this->kernel->resolve(Client::class);
+        $response = $http->get('https://fondbot.com/api/drivers');
+        $items = json_decode($response->getBody()->getContents(), true);
+
+        $drivers = collect($items)
             ->map(function ($item) {
                 return [$item['name'], $item['package'], $item['official'] ? '✅' : '❌'];
             })

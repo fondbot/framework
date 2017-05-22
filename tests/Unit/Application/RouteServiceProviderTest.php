@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Application;
+namespace FondBot\Tests\Unit\Application;
 
 use FondBot\Tests\TestCase;
 use FondBot\Application\Kernel;
@@ -14,7 +14,7 @@ class RouteServiceProviderTest extends TestCase
 {
     public function test_without_prefix(): void
     {
-        $this->container->share(Kernel::class, new Kernel($this->container));
+        $this->container->share(Kernel::class, Kernel::createInstance($this->container));
         $this->container->addServiceProvider(new RouteServiceProvider(''));
 
         $this->assertInstanceOf(ServerRequestInterface::class, $this->container->get('request'));
@@ -25,7 +25,7 @@ class RouteServiceProviderTest extends TestCase
     {
         $prefix = 'foo';
 
-        $this->container->share(Kernel::class, new Kernel($this->container));
+        $this->container->share(Kernel::class, Kernel::createInstance($this->container));
         $this->container->addServiceProvider(new RouteServiceProvider($prefix));
 
         $this->assertInstanceOf(ServerRequestInterface::class, $this->container->get('request'));

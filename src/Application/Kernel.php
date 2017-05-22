@@ -30,9 +30,19 @@ class Kernel
     /** @var Session|null */
     private $session;
 
-    public function __construct(Container $container)
+    private function __construct(Container $container)
     {
         $this->container = $container;
+    }
+
+    public static function getInstance(): Kernel
+    {
+        return static::$instance;
+    }
+
+    public static function createInstance(Container $container): Kernel
+    {
+        return static::$instance = new static($container);
     }
 
     /**
@@ -93,16 +103,18 @@ class Kernel
     }
 
     /**
-     * Resolve from container.
+     * Resolve an alias from container.
      *
-     * @param string $class
+     * @param string $alias
+     * @param array  $args
      *
      * @return mixed
+     *
      * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function resolve(string $class)
+    public function resolve(string $alias, array $args = [])
     {
-        return $this->container->get($class);
+        return $this->container->get($alias, $args);
     }
 
     /**

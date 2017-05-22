@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Drivers;
+namespace FondBot\Tests\Unit\Drivers;
 
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;

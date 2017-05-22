@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Toolbelt;
 
+use FondBot\Application\Kernel;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputInterface;
@@ -127,6 +128,8 @@ abstract class Command extends SymfonyCommand
      * Get filesystem instance.
      *
      * @return Filesystem
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     protected function filesystem(): Filesystem
     {

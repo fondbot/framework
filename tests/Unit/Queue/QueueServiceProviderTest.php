@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Queue;
+namespace FondBot\Tests\Unit\Queue;
 
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Queue;

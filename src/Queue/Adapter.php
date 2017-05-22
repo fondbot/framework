@@ -19,7 +19,7 @@ abstract class Adapter implements Queue
      */
     protected function serialize(SerializableForQueue $serializable): string
     {
-        $serializer = new JsonSerializer(new Serializer());
+        $serializer = new JsonSerializer(new Serializer);
 
         return $serializer->serialize($serializable);
     }
@@ -33,7 +33,7 @@ abstract class Adapter implements Queue
      */
     protected function unserialize(string $payload): SerializableForQueue
     {
-        $serializer = new JsonSerializer(new Serializer());
+        $serializer = new JsonSerializer(new Serializer);
 
         return $serializer->unserialize($payload);
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Cache;
+namespace FondBot\Tests\Unit\Cache;
 
 use FondBot\Cache\Adapter;
 use FondBot\Tests\TestCase;

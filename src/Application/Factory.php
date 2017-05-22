@@ -21,7 +21,7 @@ class Factory
         $container->addServiceProvider(new SessionServiceProvider);
 
         // Boot kernel
-        $kernel = new Kernel($container);
+        $kernel = Kernel::createInstance($container);
 
         $container->add(Kernel::class, $kernel);
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Http;
+namespace FondBot\Tests\Unit\Http;
 
 use FondBot\Http\Request;
 use FondBot\Tests\TestCase;

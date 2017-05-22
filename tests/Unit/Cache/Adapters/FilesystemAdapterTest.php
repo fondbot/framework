@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Cache\Adapters;
+namespace FondBot\Tests\Unit\Cache\Adapters;
 
 use FondBot\Tests\TestCase;
 use League\Flysystem\Filesystem;

@@ -31,3 +31,56 @@ if (!function_exists('env')) {
         return $value;
     }
 }
+
+if (!function_exists('kernel')) {
+    /**
+     * Get kernel instance.
+     *
+     * @return FondBot\Application\Kernel
+     */
+    function kernel(): FondBot\Application\Kernel
+    {
+        return FondBot\Application\Kernel::getInstance();
+    }
+}
+
+if (!function_exists('resolve')) {
+    /**
+     * Resolve an alias from container.
+     *
+     * @param string $alias
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    function resolve(string $alias, array $args = [])
+    {
+        return kernel()->resolve($alias, $args);
+    }
+}
+
+if (!function_exists('path')) {
+    /**
+     * Get path.
+     *
+     * @param string $postfix
+     *
+     * @return string
+     */
+    function path(string $postfix = ''): string
+    {
+        return resolve('base_path').'/'.$postfix;
+    }
+}
+
+if (!function_exists('logger')) {
+    /**
+     * Get logger.
+     *
+     * @return \Monolog\Logger|\Psr\Log\LoggerInterface
+     */
+    function logger(): \Monolog\Logger
+    {
+        return resolve(Monolog\Logger::class);
+    }
+}

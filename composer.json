@@ -28,6 +28,7 @@
         "league/flysystem": "^1.0",
         "league/route": "^3.0",
         "monolog/monolog": "^1.22",
+        "nesbot/carbon": "^1.22",
         "spatie/regex": "^1.1",
         "symfony/console": "^3.2",
         "symfony/process": "^3.2",
