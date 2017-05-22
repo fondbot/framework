@@ -6,6 +6,7 @@ namespace FondBot\Tests\Unit\Http;
 
 use FondBot\Http\Request;
 use FondBot\Tests\TestCase;
+use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Request as ZendRequest;
 
 class RequestTest extends TestCase
@@ -42,5 +43,12 @@ class RequestTest extends TestCase
         $request = Request::fromMessage($message);
 
         $this->assertSame([], $request->getParameters());
+
+        // Test create from ServerRequest
+        $message = new ServerRequest([], [], null, null, 'php://input', ['x' => 'y'], [], ['foo' => 'bar']);
+        $request = Request::fromMessage($message);
+
+        $this->assertSame(['foo' => 'bar'], $request->getParameters());
+        $this->assertSame(['x' => ['y']], $request->getHeaders());
     }
 }
