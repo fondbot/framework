@@ -21,7 +21,9 @@ class Request
 
     public static function fromMessage(MessageInterface $message): Request
     {
-        if ($message instanceof ServerRequestInterface) {
+        if ($message->getHeaderLine('content-type') === 'application/json') {
+            $parameters = (array) json_decode($message->getBody()->getContents(), true);
+        } elseif ($message instanceof ServerRequestInterface) {
             $parameters = array_merge($message->getQueryParams(), (array) $message->getParsedBody());
         } else {
             $parameters = (array) json_decode($message->getBody()->getContents(), true);
