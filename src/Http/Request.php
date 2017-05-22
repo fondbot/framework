@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Http;
 
 use FondBot\Helpers\Arr;
+use Zend\Diactoros\ServerRequest;
 use Psr\Http\Message\MessageInterface;
 
 class Request
@@ -20,13 +21,11 @@ class Request
 
     public static function fromMessage(MessageInterface $message): Request
     {
-        $parameters = $message->getBody()->getContents();
-
-        if ($parameters === '') {
-            $parameters = '{}';
+        if ($message instanceof ServerRequest) {
+            $parameters = array_merge($message->getQueryParams(), $message->getParsedBody());
+        } else {
+            $parameters = (array) json_decode($message->getBody()->getContents(), true);
         }
-
-        $parameters = json_decode($parameters, true);
 
         return new static($parameters, $message->getHeaders());
     }
