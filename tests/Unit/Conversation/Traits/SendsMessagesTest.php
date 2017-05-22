@@ -6,8 +6,10 @@ namespace FondBot\Tests\Unit\Conversation\Traits;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
+use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Queue;
+use FondBot\Channels\Channel;
 use FondBot\Application\Kernel;
 use FondBot\Templates\Keyboard;
 use FondBot\Templates\Attachment;
@@ -17,66 +19,61 @@ class SendsMessagesTest extends TestCase
 {
     public function test_sendMessage(): void
     {
-        $kernel = $this->mock(Kernel::class);
+        $this->container->add(Queue::class, $queue = $this->mock(Queue::class));
+        $this->container->add('channel', $this->mock(Channel::class));
+        $this->container->add('driver', $this->mock(Driver::class));
 
-        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
-        $kernel->shouldReceive('getChannel')->once();
-        $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('push')->once();
 
-        $class = new SendsMessagesTraitTestClass($kernel, $this->mock(Chat::class), $this->mock(User::class));
+        $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
         $class->sendMessage($this->faker()->text, $this->mock(Keyboard::class));
     }
 
     public function test_sendDelayedMessage(): void
     {
-        $kernel = $this->mock(Kernel::class);
+        $this->container->add(Queue::class, $queue = $this->mock(Queue::class));
+        $this->container->add('channel', $this->mock(Channel::class));
+        $this->container->add('driver', $this->mock(Driver::class));
 
-        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
-        $kernel->shouldReceive('getChannel')->once();
-        $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('later')->once();
 
-        $class = new SendsMessagesTraitTestClass($kernel, $this->mock(Chat::class), $this->mock(User::class));
+        $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
         $class->sendDelayedMessage(random_int(1, 10), $this->faker()->text, $this->mock(Keyboard::class));
     }
 
     public function test_sendAttachment(): void
     {
-        $kernel = $this->mock(Kernel::class);
+        $this->container->add(Queue::class, $queue = $this->mock(Queue::class));
+        $this->container->add('channel', $this->mock(Channel::class));
+        $this->container->add('driver', $this->mock(Driver::class));
 
-        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
-        $kernel->shouldReceive('getChannel')->once();
-        $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('push')->once();
 
-        $class = new SendsMessagesTraitTestClass($kernel, $this->mock(Chat::class), $this->mock(User::class));
+        $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
         $class->sendAttachment($this->mock(Attachment::class));
     }
 
     public function test_sendAttachment_with_delay(): void
     {
-        $kernel = $this->mock(Kernel::class);
+        $this->container->add(Queue::class, $queue = $this->mock(Queue::class));
+        $this->container->add('channel', $this->mock(Channel::class));
+        $this->container->add('driver', $this->mock(Driver::class));
 
-        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
-        $kernel->shouldReceive('getChannel')->once();
-        $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('later')->once();
 
-        $class = new SendsMessagesTraitTestClass($kernel, $this->mock(Chat::class), $this->mock(User::class));
+        $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
         $class->sendAttachment($this->mock(Attachment::class), random_int(1, 10));
     }
 
     public function test_sendRequest(): void
     {
-        $kernel = $this->mock(Kernel::class);
+        $this->container->add(Queue::class, $queue = $this->mock(Queue::class));
+        $this->container->add('channel', $this->mock(Channel::class));
+        $this->container->add('driver', $this->mock(Driver::class));
 
-        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue = $this->mock(Queue::class));
-        $kernel->shouldReceive('getChannel')->once();
-        $kernel->shouldReceive('getDriver')->once();
         $queue->shouldReceive('push')->once();
 
-        $class = new SendsMessagesTraitTestClass($kernel, $this->mock(Chat::class), $this->mock(User::class));
+        $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
         $class->sendRequest('endpoint', ['foo' => 'bar']);
     }
 }

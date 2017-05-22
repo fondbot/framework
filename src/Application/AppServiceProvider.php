@@ -12,7 +12,6 @@ use League\Container\ServiceProvider\BootableServiceProviderInterface;
 abstract class AppServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
     protected $provides = [
-        Config::class,
         'environment',
         'base_path',
         'resources_path',
@@ -51,10 +50,6 @@ abstract class AppServiceProvider extends AbstractServiceProvider implements Boo
             (new Dotenv($this->basePath()))->load();
         } catch (InvalidPathException $exception) {
         }
-
-        $this->container->share(Config::class, function () {
-            return new Config($_ENV);
-        });
     }
 
     /**

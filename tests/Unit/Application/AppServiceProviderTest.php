@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Application;
 
 use FondBot\Tests\TestCase;
-use FondBot\Application\Config;
 use FondBot\Application\AppServiceProvider;
 
 class AppServiceProviderTest extends TestCase
@@ -25,10 +24,7 @@ class AppServiceProviderTest extends TestCase
 
         $this->container->addServiceProvider($provider);
 
-        /** @var Config $config */
-        $config = $this->container->get(Config::class);
-
-        $this->assertSame('BAR', $config->get('FOO'));
+        $this->assertSame('BAR', env('FOO'));
         $this->assertSame('production', $this->container->get('environment'));
         $this->assertSame($basePath, $this->container->get('base_path'));
         $this->assertSame($resourcesPath, $this->container->get('resources_path'));
@@ -49,10 +45,7 @@ class AppServiceProviderTest extends TestCase
 
         $this->container->addServiceProvider($provider);
 
-        /** @var Config $config */
-        $config = $this->container->get(Config::class);
-
-        $this->assertSame('BAR', $config->get('FOO'));
+        $this->assertSame('BAR', env('FOO'));
         $this->assertSame('production', $this->container->get('environment'));
         $this->assertSame($basePath, $this->container->get('base_path'));
         $this->assertSame($resourcesPath, $this->container->get('resources_path'));

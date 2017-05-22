@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Application;
 
+use Mockery\Mock;
 use Monolog\Logger;
 use FondBot\Tests\TestCase;
 use Psr\Log\LoggerInterface;
@@ -14,10 +15,12 @@ class LogServiceProviderTest extends TestCase
 {
     public function test(): void
     {
+        /** @var Mock|LogServiceProvider $provider */
         $provider = $this->mock(LogServiceProvider::class)->makePartial();
         $provider->shouldReceive('handlers')->andReturn([
             $handler = $this->mock(HandlerInterface::class),
         ]);
+        $provider->register();
 
         $this->container->addServiceProvider($provider);
 

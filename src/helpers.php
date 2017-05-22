@@ -67,9 +67,15 @@ if (!function_exists('path')) {
      *
      * @return string
      */
-    function path(string $postfix = ''): string
+    function path(string $postfix = null): string
     {
-        return resolve('base_path').'/'.$postfix;
+        $basePath = resolve('base_path');
+
+        if ($postfix === null) {
+            return $basePath;
+        }
+
+        return $basePath.'/'.$postfix;
     }
 }
 

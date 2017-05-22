@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit;
 
+use Monolog\Logger;
 use FondBot\Tests\TestCase;
+use FondBot\Application\Kernel;
 
 class HelpersTest extends TestCase
 {
@@ -24,5 +26,39 @@ class HelpersTest extends TestCase
 
         $this->assertNull(env('x'));
         $this->assertSame('y', env('x', 'y'));
+    }
+
+    public function test_kernel(): void
+    {
+        $kernel = Kernel::createInstance($this->container);
+
+        $this->assertSame($kernel, kernel());
+    }
+
+    public function test_resolve(): void
+    {
+        $this->container->add('foo', 'bar');
+        Kernel::createInstance($this->container);
+
+        $this->assertSame('bar', resolve('foo'));
+    }
+
+    public function test_path(): void
+    {
+        $this->container->add('base_path', 'foo');
+        Kernel::createInstance($this->container);
+
+        $this->assertSame('foo', path());
+        $this->assertSame('foo/bar', path('bar'));
+    }
+
+    public function test_logger(): void
+    {
+        $logger = new Logger('foo');
+
+        $this->container->add(Logger::class, $logger);
+        Kernel::createInstance($this->container);
+
+        $this->assertSame($logger, logger());
     }
 }

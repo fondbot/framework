@@ -15,7 +15,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     /** @var Container */
     protected $container;
 
-    /** @var Kernel */
+    /** @var Kernel|Mockery\Mock|mixed */
     protected $kernel;
 
     protected function setUp(): void
@@ -24,7 +24,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
 
         $this->container = new Container;
-        $this->kernel = $this->mock(Kernel::class);
+        $this->kernel = Kernel::createInstance($this->container);
     }
 
     protected function tearDown(): void
