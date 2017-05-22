@@ -14,14 +14,14 @@ use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
  */
 class PatternTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->message = $this->mock(ReceivedMessage::class);
     }
 
-    public function test_string_matches()
+    public function test_string_matches(): void
     {
         $this->message->shouldReceive('getText')->andReturn('abc');
 
@@ -31,7 +31,7 @@ class PatternTest extends TestCase
         );
     }
 
-    public function test_string_does_not_match()
+    public function test_string_does_not_match(): void
     {
         $this->message->shouldReceive('getText')->andReturn('ab');
 
@@ -41,7 +41,7 @@ class PatternTest extends TestCase
         );
     }
 
-    public function test_verbal_expression_matches()
+    public function test_verbal_expression_matches(): void
     {
         $this->message->shouldReceive('getText')->andReturn('https://fondbot.com');
 
@@ -58,7 +58,7 @@ class PatternTest extends TestCase
         );
     }
 
-    public function test_verbal_expression_does_not_match()
+    public function test_verbal_expression_does_not_match(): void
     {
         $this->message->shouldReceive('getText')->andReturn('http://fondbot.com');
 

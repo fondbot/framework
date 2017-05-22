@@ -18,7 +18,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     /** @var Kernel */
     protected $kernel;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Mockery::getConfiguration()->allowMockingNonExistentMethods(false);

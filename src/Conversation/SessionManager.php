@@ -42,15 +42,7 @@ class SessionManager
         $intent = $value['intent'] !== null ? $this->container->get($value['intent']) : null;
         $interaction = $value['interaction'] !== null ? $this->container->get($value['interaction']) : null;
 
-        return new Session(
-            $channel,
-            $chat,
-            $sender,
-            $message,
-            $intent,
-            $interaction,
-            $value['values'] ?? []
-        );
+        return new Session($channel, $chat, $sender, $message, $intent, $interaction, $value['values'] ?? []);
     }
 
     /**

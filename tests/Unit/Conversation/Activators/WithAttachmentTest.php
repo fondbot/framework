@@ -14,14 +14,14 @@ use FondBot\Conversation\Activators\WithAttachment;
  */
 class WithAttachmentTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->message = $this->mock(ReceivedMessage::class);
     }
 
-    public function test_matches_without_type()
+    public function test_matches_without_type(): void
     {
         $activator = new WithAttachment;
 
@@ -32,7 +32,7 @@ class WithAttachmentTest extends TestCase
         );
     }
 
-    public function test_does_not_match_without_type()
+    public function test_does_not_match_without_type(): void
     {
         $activator = new WithAttachment;
 
@@ -48,7 +48,7 @@ class WithAttachmentTest extends TestCase
      *
      * @param string $type
      */
-    public function test_matches_with_type(string $type)
+    public function test_matches_with_type(string $type): void
     {
         $activator = new WithAttachment($type);
         $attachment = new Attachment($type, $this->faker()->imageUrl());
@@ -66,7 +66,7 @@ class WithAttachmentTest extends TestCase
      *
      * @param string $type
      */
-    public function test_does_not_match_with_type(string $type)
+    public function test_does_not_match_with_type(string $type): void
     {
         $activator = new WithAttachment($type);
         $otherType = collect(Attachment::possibleTypes())

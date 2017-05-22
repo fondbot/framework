@@ -32,5 +32,29 @@ class AppServiceProviderTest extends TestCase
         $this->assertSame('production', $this->container->get('environment'));
         $this->assertSame($basePath, $this->container->get('base_path'));
         $this->assertSame($resourcesPath, $this->container->get('resources_path'));
+
+        unlink($basePath.'/.env');
+    }
+
+    public function test_dotenv_invalid_path_exception(): void
+    {
+        $provider = $this->mock(AppServiceProvider::class)->makePartial();
+
+        $basePath = sys_get_temp_dir();
+        $resourcesPath = $basePath.'/resources';
+
+        $provider->shouldReceive('environment')->andReturn('production')->once();
+        $provider->shouldReceive('basePath')->andReturn($basePath)->twice();
+        $provider->shouldReceive('resourcesPath')->andReturn($resourcesPath)->once();
+
+        $this->container->addServiceProvider($provider);
+
+        /** @var Config $config */
+        $config = $this->container->get(Config::class);
+
+        $this->assertSame('BAR', $config->get('FOO'));
+        $this->assertSame('production', $this->container->get('environment'));
+        $this->assertSame($basePath, $this->container->get('base_path'));
+        $this->assertSame($resourcesPath, $this->container->get('resources_path'));
     }
 }

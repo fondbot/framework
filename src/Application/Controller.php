@@ -6,8 +6,8 @@ namespace FondBot\Application;
 
 use FondBot\Http\Request;
 use FondBot\Channels\ChannelManager;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class Controller
 {
@@ -18,14 +18,14 @@ class Controller
         $this->kernel = $kernel;
     }
 
-    public function index(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function index(RequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $response->getBody()->write('FondBot v'.Kernel::VERSION);
 
         return $response;
     }
 
-    public function webhook(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function webhook(RequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         /** @var ChannelManager $channelManager */
         $channelManager = $this->kernel->resolve(ChannelManager::class);

@@ -16,12 +16,16 @@ class FilesystemAdapterTest extends TestCase
         $filesystem = $this->mock(Filesystem::class);
         $adapter = new FilesystemAdapter($filesystem);
 
-        $filesystem->shouldReceive('read')->with(md5('foo'))->andReturn('bar')->once();
+        // JSON
+        $filesystem->shouldReceive('read')->with(md5('x'))->andReturn(json_encode(['foo' => 'bar']))->once();
+        $this->assertSame(['foo' => 'bar'], $adapter->get('x'));
 
+        // Not JSON
+        $filesystem->shouldReceive('read')->with(md5('foo'))->andReturn('bar')->once();
         $this->assertSame('bar', $adapter->get('foo'));
 
+        // Throws exception
         $filesystem->shouldReceive('read')->with(md5('bar'))->andThrow(new FileNotFoundException(md5('bar')))->once();
-
         $this->assertSame('value', $adapter->get('bar', 'value'));
     }
 
@@ -44,8 +48,10 @@ class FilesystemAdapterTest extends TestCase
         $filesystem = $this->mock(Filesystem::class);
         $adapter = new FilesystemAdapter($filesystem);
 
-        $filesystem->shouldReceive('delete')->with(md5('foo'))->once();
+        $filesystem->shouldReceive('delete')->with(md5('bar'))->once();
+        $filesystem->shouldReceive('delete')->with(md5('foo'))->andThrow(new FileNotFoundException(md5('foo')))->once();
 
+        $adapter->forget('bar');
         $adapter->forget('foo');
     }
 }

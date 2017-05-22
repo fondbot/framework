@@ -13,14 +13,14 @@ use FondBot\Conversation\Activators\InArray;
  */
 class InArrayTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->message = $this->mock(ReceivedMessage::class);
     }
 
-    public function test_array_matches()
+    public function test_array_matches(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/start');
 
@@ -30,7 +30,7 @@ class InArrayTest extends TestCase
         );
     }
 
-    public function test_array_does_not_match()
+    public function test_array_does_not_match(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/stop');
 
@@ -40,7 +40,7 @@ class InArrayTest extends TestCase
         );
     }
 
-    public function test_collection_matches()
+    public function test_collection_matches(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/start');
 
@@ -50,7 +50,7 @@ class InArrayTest extends TestCase
         );
     }
 
-    public function test_collection_does_not_match()
+    public function test_collection_does_not_match(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/stop');
 

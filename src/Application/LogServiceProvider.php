@@ -49,6 +49,8 @@ abstract class LogServiceProvider extends AbstractServiceProvider implements Boo
             return $logger;
         });
 
+        $this->container->share(Logger::class, $this->container->get(LoggerInterface::class));
+
         if (PHP_SAPI !== 'cli') {
             $whoops = new Run;
             $whoops->pushHandler(new PrettyPageHandler);

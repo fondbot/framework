@@ -13,14 +13,14 @@ use FondBot\Conversation\Activators\Contains;
  */
 class ContainsTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->message = $this->mock(ReceivedMessage::class);
     }
 
-    public function test_matches()
+    public function test_matches(): void
     {
         $this->message->shouldReceive('getText')->andReturn('this is foo');
 
@@ -30,7 +30,7 @@ class ContainsTest extends TestCase
         );
     }
 
-    public function test_does_not_match()
+    public function test_does_not_match(): void
     {
         $this->message->shouldReceive('getText')->andReturn('this is bar');
 
@@ -40,7 +40,7 @@ class ContainsTest extends TestCase
         );
     }
 
-    public function test_message_does_not_have_text()
+    public function test_message_does_not_have_text(): void
     {
         $this->message->shouldReceive('getText')->andReturn(null);
 

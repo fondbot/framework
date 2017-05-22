@@ -13,14 +13,14 @@ use FondBot\Conversation\Activators\Exact;
  */
 class ExactTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->message = $this->mock(ReceivedMessage::class);
     }
 
-    public function test_matches_case_sensitive()
+    public function test_matches_case_sensitive(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/start');
 
@@ -30,7 +30,7 @@ class ExactTest extends TestCase
         );
     }
 
-    public function test_does_not_match_case_sensitive()
+    public function test_does_not_match_case_sensitive(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/Start');
 
@@ -40,7 +40,7 @@ class ExactTest extends TestCase
         );
     }
 
-    public function test_matches_case_insensitive()
+    public function test_matches_case_insensitive(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/Start');
 
@@ -50,7 +50,7 @@ class ExactTest extends TestCase
         );
     }
 
-    public function test_does_not_match_case_insensitive()
+    public function test_does_not_match_case_insensitive(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/Start');
 
@@ -60,7 +60,7 @@ class ExactTest extends TestCase
         );
     }
 
-    public function test_empty_message()
+    public function test_empty_message(): void
     {
         $this->message->shouldReceive('getText')->andReturn(null);
 

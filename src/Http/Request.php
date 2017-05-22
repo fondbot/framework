@@ -28,18 +28,15 @@ class Request
 
         $parameters = json_decode($parameters, true);
 
-        return new static(
-            $parameters,
-            $message->getHeaders()
-        );
+        return new static($parameters, $message->getHeaders());
     }
 
     /**
      * Get request parameters.
      *
-     * @return array|null
+     * @return array
      */
-    public function getParameters(): ?array
+    public function getParameters(): array
     {
         return $this->parameters;
     }
