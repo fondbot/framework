@@ -69,13 +69,33 @@ if (!function_exists('path')) {
      */
     function path(string $postfix = null): string
     {
-        $basePath = resolve('base_path');
+        $path = resolve('base_path');
 
         if ($postfix === null) {
-            return $basePath;
+            return $path;
         }
 
-        return $basePath.'/'.$postfix;
+        return $path.'/'.$postfix;
+    }
+}
+
+if (!function_exists('resources')) {
+    /**
+     * Get resources path.
+     *
+     * @param string $postfix
+     *
+     * @return string
+     */
+    function resources(string $postfix = null): string
+    {
+        $path = resolve('resources_path');
+
+        if ($postfix === null) {
+            return $path;
+        }
+
+        return $path.'/'.$postfix;
     }
 }
 

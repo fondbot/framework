@@ -52,6 +52,15 @@ class HelpersTest extends TestCase
         $this->assertSame('foo/bar', path('bar'));
     }
 
+    public function test_resources_path(): void
+    {
+        $this->container->add('resources_path', 'foo');
+        Kernel::createInstance($this->container);
+
+        $this->assertSame('foo', resources());
+        $this->assertSame('foo/bar', resources('bar'));
+    }
+
     public function test_logger(): void
     {
         $logger = new Logger('foo');
