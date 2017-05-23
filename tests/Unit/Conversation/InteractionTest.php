@@ -45,6 +45,7 @@ class InteractionTest extends TestCase
     {
         $this->session->shouldReceive('getInteraction')->andReturnNull()->once();
         $this->session->shouldReceive('setInteraction')->with($this->interaction)->once();
+        $this->session->shouldReceive('getMessage')->andReturn($this->mock(ReceivedMessage::class))->once();
 
         $this->interaction->handle($this->kernel);
     }

@@ -13,8 +13,10 @@ class TestInteraction extends Interaction
 {
     /**
      * Run interaction.
+     *
+     * @param ReceivedMessage $message
      */
-    public function run(): void
+    public function run(ReceivedMessage $message): void
     {
     }
 

@@ -18,8 +18,10 @@ abstract class Interaction implements Conversable
 
     /**
      * Run interaction.
+     *
+     * @param ReceivedMessage $message
      */
-    abstract public function run(): void;
+    abstract public function run(ReceivedMessage $message): void;
 
     /**
      * Process received message.
@@ -48,7 +50,7 @@ abstract class Interaction implements Conversable
             }
         } else {
             $this->kernel->getSession()->setInteraction($this);
-            $this->run();
+            $this->run($session->getMessage());
         }
     }
 }

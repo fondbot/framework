@@ -78,8 +78,10 @@ class TransitionsTest extends TestCase
         $interaction = new class extends Interaction {
             /**
              * Run interaction.
+             *
+             * @param ReceivedMessage $message
              */
-            public function run(): void
+            public function run(ReceivedMessage $message): void
             {
             }
 

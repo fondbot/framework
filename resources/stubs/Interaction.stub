@@ -11,8 +11,10 @@ class ___CLASSNAME___ extends Interaction
 {
     /**
      * Run interaction.
+     *
+     * @param ReceivedMessage $message
      */
-    public function run(): void
+    public function run(ReceivedMessage $message): void
     {
         // Send message, show keyboard or do something else...
     }
