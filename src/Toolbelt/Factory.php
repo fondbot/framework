@@ -6,17 +6,13 @@ namespace FondBot\Toolbelt;
 
 use FondBot\Application\Kernel;
 use League\Container\Container;
-use League\Container\ReflectionContainer;
 use Symfony\Component\Console\Application;
 
 class Factory
 {
-    public static function create(Container $container): Kernel
+    public static function create(Container $container): void
     {
-        $container->delegate(new ReflectionContainer);
-
-        // Boot kernel
-        $kernel = Kernel::createInstance($container);
+        $kernel = $container->get(Kernel::class);
 
         // Boot console application
         $console = new Application('FondBot', Kernel::VERSION);
@@ -30,9 +26,6 @@ class Factory
             new Commands\QueueWorker($kernel),
         ]);
 
-        $container->add(Kernel::class, $kernel);
         $container->add('console', $console);
-
-        return $kernel;
     }
 }

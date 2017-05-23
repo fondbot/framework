@@ -13,9 +13,19 @@ class FactoryTest extends TestCase
 {
     public function test(): void
     {
-        $kernel = Factory::create($this->container);
+        $this->container->add(Kernel::class, $this->kernel);
+        Factory::create($this->container);
 
-        $this->assertInstanceOf(Kernel::class, $kernel);
-        $this->assertInstanceOf(Application::class, $kernel->resolve('console'));
+        /** @var Application $console */
+        $console = $this->kernel->resolve('console');
+
+        $this->assertInstanceOf(Application::class, $console);
+        $this->assertTrue($console->has('make:intent'));
+        $this->assertTrue($console->has('make:interaction'));
+        $this->assertTrue($console->has('driver:list'));
+        $this->assertTrue($console->has('driver:install'));
+        $this->assertTrue($console->has('channel:list'));
+        $this->assertTrue($console->has('log'));
+        $this->assertTrue($console->has('queue:worker'));
     }
 }
