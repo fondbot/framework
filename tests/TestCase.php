@@ -25,6 +25,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
         $this->container = new Container;
         $this->kernel = Kernel::createInstance($this->container);
+        $this->container->add(Kernel::class, $this->kernel);
     }
 
     protected function tearDown(): void
