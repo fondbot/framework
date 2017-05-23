@@ -6,6 +6,7 @@ namespace FondBot\Tests\Unit\Conversation;
 
 use FondBot\Tests\TestCase;
 use FondBot\Conversation\Intent;
+use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\FallbackIntent;
 use FondBot\Conversation\Activators\Activator;
@@ -42,10 +43,7 @@ class TestIntent extends Intent
         return [];
     }
 
-    /**
-     * Run intent.
-     */
-    public function run(): void
+    public function run(ReceivedMessage $message): void
     {
     }
 }

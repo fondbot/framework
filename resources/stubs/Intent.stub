@@ -6,6 +6,7 @@ namespace ___NAMESPACE___;
 
 use FondBot\Conversation\Activators\Activator;
 use FondBot\Conversation\Intent;
+use FondBot\Drivers\ReceivedMessage;
 
 class ___CLASSNAME___ extends Intent
 {
@@ -21,7 +22,7 @@ class ___CLASSNAME___ extends Intent
         ];
     }
 
-    public function run(): void
+    public function run(ReceivedMessage $message): void
     {
         // Send reply to user, jump to interaction or do something else...
     }

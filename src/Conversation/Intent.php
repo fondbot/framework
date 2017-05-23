@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Application\Kernel;
+use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Conversation\Traits\Authorization;
 use FondBot\Conversation\Traits\HasActivators;
@@ -21,8 +22,10 @@ abstract class Intent implements Conversable
 
     /**
      * Run intent.
+     *
+     * @param ReceivedMessage $message
      */
-    abstract public function run(): void;
+    abstract public function run(ReceivedMessage $message): void;
 
     /**
      * Handle intent.
@@ -32,6 +35,8 @@ abstract class Intent implements Conversable
     public function handle(Kernel $kernel): void
     {
         $this->kernel = $kernel;
-        $this->run();
+        $session = $kernel->getSession();
+
+        $this->run($session->getMessage());
     }
 }

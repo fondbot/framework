@@ -44,6 +44,8 @@ class TransitionsTest extends TestCase
     public function test_restart_intent(): void
     {
         $kernel = $this->mock(Kernel::class);
+        $session = $this->mock(Session::class);
+
         $intent = new class extends Intent {
             /**
              * Intent activators.
@@ -55,15 +57,14 @@ class TransitionsTest extends TestCase
                 return [];
             }
 
-            /**
-             * Run intent.
-             */
-            public function run(): void
+            public function run(ReceivedMessage $message): void
             {
                 $this->restart();
             }
         };
 
+        $kernel->shouldReceive('getSession')->andReturn($session)->once();
+        $session->shouldReceive('getMessage')->andReturn($this->mock(ReceivedMessage::class));
         $kernel->shouldReceive('clearSession')->once();
         $kernel->shouldReceive('converse')->with($intent)->once();
 
