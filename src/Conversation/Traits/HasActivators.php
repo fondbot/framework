@@ -11,7 +11,6 @@ use FondBot\Conversation\Activators\Pattern;
 use FondBot\Conversation\Activators\Contains;
 use FondBot\Conversation\Activators\Activator;
 use FondBot\Conversation\Activators\WithAttachment;
-use VerbalExpressions\PHPVerbalExpressions\VerbalExpressions;
 
 trait HasActivators
 {
@@ -49,11 +48,11 @@ trait HasActivators
     /**
      * Create "Pattern" activator.
      *
-     * @param string|VerbalExpressions $value
+     * @param string $value
      *
      * @return Pattern
      */
-    protected function pattern($value): Pattern
+    protected function pattern(string $value): Pattern
     {
         return new Pattern($value);
     }
