@@ -3,8 +3,9 @@
 [![Latest Stable Version](https://poser.pugx.org/fondbot/framework/v/stable?format=flat-square)](https://packagist.org/packages/fondbot/framework)
 [![License](https://poser.pugx.org/fondbot/framework/license?format=flat-square)](https://packagist.org/packages/fondbot/framework)
 [![Build Status](https://img.shields.io/travis/fondbot/framework.svg?style=flat-square)](https://travis-ci.org/fondbot/framework)
-[![Quality Score](https://img.shields.io/scrutinizer/g/fondbot/fondbot.svg?style=flat-square)](https://scrutinizer-ci.com/g/fondbot/fondbot)
-[![StyleCI](https://styleci.io/repos/90851088/shield)](https://styleci.io/repos/90851088)
+[![Quality Score](https://img.shields.io/scrutinizer/g/fondbot/framework.svg?style=flat-square)](https://scrutinizer-ci.com/g/fondbot/framework)
+[![Coverage](https://img.shields.io/scrutinizer/coverage/g/fondbot/framework.svg?style=flat-square)](https://scrutinizer-ci.com/g/fondbot/framework)
+[![StyleCI](https://styleci.io/repos/78780366/shield)](https://styleci.io/repos/78780366)
 
 > **Note:** This repository contains the core code of the FondBot framework. If you want to to build chatbot using FondBot framework, visit the main [FondBot repository](https://github.com/fondbot/fondbot).
 
