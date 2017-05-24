@@ -27,11 +27,18 @@ class LogTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertTrue(in_array(
-            trim($commandTester->getDisplay(true)),
-            ['tail: cannot open `foo\' for reading: No such file or directory', 'tail: foo: No such file or directory'],
-            true
-        ));
+        $result = trim($commandTester->getDisplay(true));
+
+        $this->assertTrue(
+            in_array(
+                $result,
+                [
+                    'tail: cannot open `foo\' for reading: No such file or directory',
+                    'tail: foo: No such file or directory',
+                ],
+                true
+            ),
+            $result);
     }
 
     public function test_without_stream_handler(): void
