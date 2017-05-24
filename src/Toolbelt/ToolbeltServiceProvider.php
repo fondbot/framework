@@ -28,22 +28,21 @@ abstract class ToolbeltServiceProvider extends AbstractServiceProvider
      *
      * @return void
      *
+     * @throws \Symfony\Component\Console\Exception\LogicException
      * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function register(): void
     {
         $this->container->share('toolbelt', function () {
-            $kernel = $this->container->get(Kernel::class);
-
             $application = new Application('FondBot', Kernel::VERSION);
             $application->addCommands([
-                new Commands\MakeIntent($kernel),
-                new Commands\MakeInteraction($kernel),
-                new Commands\ListDrivers($kernel),
-                new Commands\InstallDriver($kernel),
-                new Commands\ListChannels($kernel),
-                new Commands\Log($kernel),
-                new Commands\QueueWorker($kernel),
+                new Commands\MakeIntent,
+                new Commands\MakeInteraction,
+                new Commands\ListDrivers,
+                new Commands\InstallDriver,
+                new Commands\ListChannels,
+                new Commands\Log,
+                new Commands\QueueWorker,
             ]);
 
             foreach ($this->commands() as $command) {

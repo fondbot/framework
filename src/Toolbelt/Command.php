@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Toolbelt;
 
-use FondBot\Application\Kernel;
 use League\Flysystem\MountManager;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -14,20 +13,11 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 abstract class Command extends SymfonyCommand
 {
-    protected $kernel;
-
     /** @var InputInterface */
     protected $input;
 
     /** @var SymfonyStyle */
     protected $output;
-
-    public function __construct(Kernel $kernel)
-    {
-        parent::__construct();
-
-        $this->kernel = $kernel;
-    }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -49,6 +39,20 @@ abstract class Command extends SymfonyCommand
     protected function getArgument(string $name)
     {
         return $this->input->getArgument($name);
+    }
+
+    /**
+     * Get option value.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     *
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     */
+    protected function getOption(string $name)
+    {
+        return $this->input->getOption($name);
     }
 
     /**
@@ -136,7 +140,7 @@ abstract class Command extends SymfonyCommand
     protected function filesystem(): FilesystemInterface
     {
         /** @var MountManager $manager */
-        $manager = $this->kernel->resolve(MountManager::class);
+        $manager = resolve(MountManager::class);
 
         return $manager->getFilesystem('local');
     }

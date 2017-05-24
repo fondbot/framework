@@ -22,7 +22,7 @@ class InstallDriver extends Command
     public function handle(): void
     {
         /** @var Client $http */
-        $http = $this->kernel->resolve(Client::class);
+        $http = resolve(Client::class);
         $response = $http->get('https://fondbot.com/api/drivers');
         $items = json_decode($response->getBody()->getContents(), true);
 

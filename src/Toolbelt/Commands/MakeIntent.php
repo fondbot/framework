@@ -23,7 +23,7 @@ class MakeIntent extends Command
         $name = $this->getArgument('name');
 
         /** @var ConversationCreator $creator */
-        $creator = $this->kernel->resolve(ConversationCreator::class);
+        $creator = resolve(ConversationCreator::class);
 
         $creator->createIntent('src', 'App', $name);
 

@@ -30,7 +30,7 @@ class Log extends Command
     public function handle(): void
     {
         /** @var Logger $logger */
-        $logger = $this->kernel->resolve(Logger::class);
+        $logger = resolve(Logger::class);
 
         /** @var StreamHandler|null $handler */
         $handler = collect($logger->getHandlers())->first(function (HandlerInterface $item) {
@@ -39,12 +39,13 @@ class Log extends Command
 
         if ($handler === null) {
             $this->error('There are no logs stored in filesystem.');
-            exit;
+
+            return;
         }
 
         $command = 'tail -f -n 1000 '.escapeshellarg($handler->getUrl());
 
-        (new Process($command))->setTimeout(null)->run(function ($type, $line) {
+        (new Process($command))->setTimeout(null)->run(function ($_, $line) {
             $this->line($line);
         });
     }

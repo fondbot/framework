@@ -25,7 +25,7 @@ class ListChannels extends Command
     public function handle(): void
     {
         /** @var ChannelManager $manager */
-        $manager = $this->kernel->resolve(ChannelManager::class);
+        $manager = resolve(ChannelManager::class);
 
         $channels = collect($manager->all())
             ->map(function ($item, $name) {
