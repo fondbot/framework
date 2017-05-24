@@ -46,7 +46,7 @@ abstract class Interaction implements Conversable
             $this->process($session->getMessage());
 
             if (!$this->transitioned) {
-                $this->kernel->clearSession();
+                $this->kernel->closeSession();
             }
         } else {
             $this->kernel->getSession()->setInteraction($this);

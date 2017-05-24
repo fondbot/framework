@@ -90,14 +90,14 @@ class Kernel
     }
 
     /**
-     * Clear session.
+     * Close session.
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function clearSession(): void
+    public function closeSession(): void
     {
         if ($this->session !== null) {
-            $this->sessionManager()->clear($this->session);
+            $this->sessionManager()->close($this->session);
             $this->session = null;
         }
     }
@@ -146,7 +146,7 @@ class Kernel
             $driver->verifyRequest();
 
             // Resolve session
-            $this->session = $this->sessionManager()->resolve($channel->getName(), $driver);
+            $this->session = $this->sessionManager()->load($channel->getName(), $driver);
 
             if ($this->session->getInteraction() !== null) {
                 $this->converse($this->session->getInteraction());

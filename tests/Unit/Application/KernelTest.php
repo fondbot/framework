@@ -30,16 +30,16 @@ class KernelTest extends TestCase
         $this->assertSame($session, $kernel->getSession());
     }
 
-    public function test_clearSession(): void
+    public function test_closeSession(): void
     {
         $kernel = Kernel::createInstance($this->container);
         $kernel->setSession($session = $this->mock(Session::class));
 
         $this->container->add(SessionManager::class, $sessionManager = $this->mock(SessionManager::class));
 
-        $sessionManager->shouldReceive('clear')->with($session)->once();
+        $sessionManager->shouldReceive('close')->with($session)->once();
 
-        $kernel->clearSession();
+        $kernel->closeSession();
 
         $this->assertNull($kernel->getSession());
     }
@@ -59,7 +59,7 @@ class KernelTest extends TestCase
 
         $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName)->atLeast()->once();
         $driver->shouldReceive('verifyRequest')->once();
-        $sessionManager->shouldReceive('resolve')
+        $sessionManager->shouldReceive('load')
             ->with($channelName, $driver)
             ->andReturn($session = $this->mock(Session::class))
             ->once();
@@ -98,7 +98,7 @@ class KernelTest extends TestCase
 
         $channel->shouldReceive('getName')->andReturn($channelName = $this->faker()->userName)->atLeast()->once();
         $driver->shouldReceive('verifyRequest')->once();
-        $sessionManager->shouldReceive('resolve')
+        $sessionManager->shouldReceive('load')
             ->with($channelName, $driver)
             ->andReturn($session = $this->mock(Session::class))
             ->once();

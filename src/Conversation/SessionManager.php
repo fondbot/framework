@@ -22,7 +22,7 @@ class SessionManager
     }
 
     /**
-     * Resolve session.
+     * Load session.
      *
      * @param string $channel
      * @param Driver $driver
@@ -31,7 +31,7 @@ class SessionManager
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function resolve(string $channel, Driver $driver): Session
+    public function load(string $channel, Driver $driver): Session
     {
         $chat = $driver->getChat();
         $sender = $driver->getUser();
@@ -58,11 +58,11 @@ class SessionManager
     }
 
     /**
-     * Clear session.
+     * Close session.
      *
      * @param Session $session
      */
-    public function clear(Session $session): void
+    public function close(Session $session): void
     {
         $key = $this->key($session->getChannel(), $session->getChat(), $session->getUser());
 

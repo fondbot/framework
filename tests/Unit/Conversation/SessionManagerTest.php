@@ -38,7 +38,7 @@ class SessionManagerTest extends TestCase
         $this->manager = new SessionManager($this->container, $this->cache);
     }
 
-    public function test_resolve(): void
+    public function test_load(): void
     {
         $this->driver->shouldReceive('getChat')->andReturn($this->chat)->once();
         $this->driver->shouldReceive('getUser')->andReturn($this->sender)->once();
@@ -57,7 +57,7 @@ class SessionManagerTest extends TestCase
             ],
         ])->once();
 
-        $session = $this->manager->resolve($this->channel, $this->driver);
+        $session = $this->manager->load($this->channel, $this->driver);
 
         $this->assertInstanceOf(Session::class, $session);
     }
@@ -85,7 +85,7 @@ class SessionManagerTest extends TestCase
         $this->manager->save($session);
     }
 
-    public function test_clear(): void
+    public function test_close(): void
     {
         $session = $this->mock(Session::class);
         $session->shouldReceive('getChannel')->andReturn($this->channel)->once();
@@ -98,6 +98,6 @@ class SessionManagerTest extends TestCase
 
         $this->cache->shouldReceive('forget')->with($key)->once();
 
-        $this->manager->clear($session);
+        $this->manager->close($session);
     }
 }

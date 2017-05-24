@@ -65,7 +65,7 @@ class TransitionsTest extends TestCase
 
         $kernel->shouldReceive('getSession')->andReturn($session)->once();
         $session->shouldReceive('getMessage')->andReturn($this->mock(ReceivedMessage::class));
-        $kernel->shouldReceive('clearSession')->once();
+        $kernel->shouldReceive('closeSession')->once();
         $kernel->shouldReceive('converse')->with($intent)->once();
 
         $intent->handle($kernel);

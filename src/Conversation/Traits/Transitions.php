@@ -51,7 +51,7 @@ trait Transitions
     {
         switch (true) {
             case $this instanceof Intent:
-                $this->kernel->clearSession();
+                $this->kernel->closeSession();
 
                 $this->kernel->converse($this);
 
