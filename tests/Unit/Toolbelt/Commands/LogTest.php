@@ -29,7 +29,7 @@ class LogTest extends TestCase
 
         $this->assertTrue(in_array(
             trim($commandTester->getDisplay(true)),
-            ['tail: cannot open `foo` for reading: No such file or directory', 'tail: foo: No such file or directory'],
+            ['tail: cannot open `foo\' for reading: No such file or directory', 'tail: foo: No such file or directory'],
             true
         ));
     }
