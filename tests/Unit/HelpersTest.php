@@ -7,6 +7,7 @@ namespace FondBot\Tests\Unit;
 use Monolog\Logger;
 use FondBot\Tests\TestCase;
 use FondBot\Application\Kernel;
+use FondBot\Conversation\Session;
 
 class HelpersTest extends TestCase
 {
@@ -41,6 +42,15 @@ class HelpersTest extends TestCase
         Kernel::createInstance($this->container);
 
         $this->assertSame('bar', resolve('foo'));
+    }
+
+    public function test_session(): void
+    {
+        $kernel = Kernel::createInstance($this->container);
+        $session = $this->mock(Session::class);
+        $kernel->setSession($session);
+
+        $this->assertSame($session, session());
     }
 
     public function test_path(): void

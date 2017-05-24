@@ -59,6 +59,18 @@ if (!function_exists('resolve')) {
     }
 }
 
+if (!function_exists('session')) {
+    /**
+     * Get session.
+     *
+     * @return FondBot\Conversation\Session
+     */
+    function session(): FondBot\Conversation\Session
+    {
+        return kernel()->getSession();
+    }
+}
+
 if (!function_exists('path')) {
     /**
      * Get path.
@@ -103,7 +115,7 @@ if (!function_exists('logger')) {
     /**
      * Get logger.
      *
-     * @return Monolog\Logger|\Psr\Log\LoggerInterface
+     * @return Monolog\Logger|Psr\Log\LoggerInterface
      */
     function logger(): Monolog\Logger
     {
