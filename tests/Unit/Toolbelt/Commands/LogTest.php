@@ -36,6 +36,7 @@ class LogTest extends TestCase
                     'tail: cannot open `foo\' for reading: No such file or directory',
                     'tail: foo: No such file or directory',
                     'tail: cannot open \'foo\' for reading: No such file or directory',
+                    'tail: cannot open ‘foo’ for reading: No such file or directory',
                 ],
                 true
             ),
