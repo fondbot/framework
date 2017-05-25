@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Application;
 
 use FondBot\Http\Request;
-use FondBot\Channels\ChannelManager;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use FondBot\Conversation\ConversationManager;
 
 class Controller
 {
@@ -27,12 +27,10 @@ class Controller
 
     public function webhook(RequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        /** @var ChannelManager $channelManager */
-        $channelManager = $this->kernel->resolve(ChannelManager::class);
+        /** @var ConversationManager $conversation */
+        $conversation = $this->kernel->resolve(ConversationManager::class);
 
-        $channel = $channelManager->create($args['name']);
-
-        $result = $this->kernel->process($channel, Request::fromMessage($request));
+        $result = $conversation->handle($args['name'], Request::fromMessage($request));
 
         $response->getBody()->write($result);
 

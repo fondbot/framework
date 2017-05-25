@@ -47,6 +47,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected function mock(string $class)
     {
-        return Mockery::mock($class);
+        $instance = Mockery::mock($class);
+
+        $this->container->add($class, $instance);
+
+        return $instance;
     }
 }

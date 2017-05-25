@@ -19,9 +19,9 @@ class SendsMessagesTest extends TestCase
 {
     public function test_sendMessage(): void
     {
-        $this->container->add(Queue::class, $queue = $this->mock(Queue::class));
-        $this->container->add('channel', $this->mock(Channel::class));
-        $this->container->add('driver', $this->mock(Driver::class));
+        $queue = $this->mock(Queue::class);
+        $this->kernel->setChannel($this->mock(Channel::class));
+        $this->kernel->setDriver($this->mock(Driver::class));
 
         $queue->shouldReceive('push')->once();
 
@@ -31,9 +31,9 @@ class SendsMessagesTest extends TestCase
 
     public function test_sendDelayedMessage(): void
     {
-        $this->container->add(Queue::class, $queue = $this->mock(Queue::class));
-        $this->container->add('channel', $this->mock(Channel::class));
-        $this->container->add('driver', $this->mock(Driver::class));
+        $queue = $this->mock(Queue::class);
+        $this->kernel->setChannel($this->mock(Channel::class));
+        $this->kernel->setDriver($this->mock(Driver::class));
 
         $queue->shouldReceive('later')->once();
 
@@ -43,9 +43,9 @@ class SendsMessagesTest extends TestCase
 
     public function test_sendAttachment(): void
     {
-        $this->container->add(Queue::class, $queue = $this->mock(Queue::class));
-        $this->container->add('channel', $this->mock(Channel::class));
-        $this->container->add('driver', $this->mock(Driver::class));
+        $queue = $this->mock(Queue::class);
+        $this->kernel->setChannel($this->mock(Channel::class));
+        $this->kernel->setDriver($this->mock(Driver::class));
 
         $queue->shouldReceive('push')->once();
 
@@ -55,9 +55,9 @@ class SendsMessagesTest extends TestCase
 
     public function test_sendAttachment_with_delay(): void
     {
-        $this->container->add(Queue::class, $queue = $this->mock(Queue::class));
-        $this->container->add('channel', $this->mock(Channel::class));
-        $this->container->add('driver', $this->mock(Driver::class));
+        $queue = $this->mock(Queue::class);
+        $this->kernel->setChannel($this->mock(Channel::class));
+        $this->kernel->setDriver($this->mock(Driver::class));
 
         $queue->shouldReceive('later')->once();
 
@@ -67,9 +67,9 @@ class SendsMessagesTest extends TestCase
 
     public function test_sendRequest(): void
     {
-        $this->container->add(Queue::class, $queue = $this->mock(Queue::class));
-        $this->container->add('channel', $this->mock(Channel::class));
-        $this->container->add('driver', $this->mock(Driver::class));
+        $queue = $this->mock(Queue::class);
+        $this->kernel->setChannel($this->mock(Channel::class));
+        $this->kernel->setDriver($this->mock(Driver::class));
 
         $queue->shouldReceive('push')->once();
 

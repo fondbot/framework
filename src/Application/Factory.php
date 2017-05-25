@@ -8,6 +8,7 @@ use League\Container\Container;
 use League\Container\ReflectionContainer;
 use FondBot\Drivers\DriverServiceProvider;
 use FondBot\Conversation\SessionServiceProvider;
+use FondBot\Conversation\ConversationServiceProvider;
 
 class Factory
 {
@@ -19,6 +20,7 @@ class Factory
         $container->addServiceProvider(new RouteServiceProvider($routesPrefix));
         $container->addServiceProvider(new DriverServiceProvider);
         $container->addServiceProvider(new SessionServiceProvider);
+        $container->addServiceProvider(new ConversationServiceProvider);
 
         // Boot kernel
         $kernel = Kernel::createInstance($container);

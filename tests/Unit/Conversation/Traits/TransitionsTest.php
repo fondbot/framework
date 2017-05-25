@@ -11,18 +11,19 @@ use FondBot\Conversation\Session;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\Traits\Transitions;
+use FondBot\Conversation\ConversationManager;
 use FondBot\Conversation\Activators\Activator;
 
 class TransitionsTest extends TestCase
 {
     public function test_jump(): void
     {
-        $kernel = $this->mock(Kernel::class);
+        $conversationManager = $this->mock(ConversationManager::class);
+        $this->container->add('foo', $interaction = $this->mock(Interaction::class));
 
-        $kernel->shouldReceive('resolve')->with('foo')->andReturn($interaction = $this->mock(Interaction::class))->once();
-        $kernel->shouldReceive('converse')->with($interaction)->once();
+        $conversationManager->shouldReceive('converse')->with($interaction)->once();
 
-        $class = new TransitionsTraitTestClass($kernel);
+        $class = new TransitionsTraitTestClass($this->kernel);
         $class->jump('foo');
     }
 
@@ -32,20 +33,19 @@ class TransitionsTest extends TestCase
      */
     public function test_jump_invalid_interaction(): void
     {
-        $kernel = $this->mock(Kernel::class);
+        $conversationManager = $this->mock(ConversationManager::class);
+        $this->container->add('foo', $this->mock(Intent::class));
 
-        $kernel->shouldReceive('resolve')->with('foo')->andReturn($this->mock(Intent::class))->once();
-        $kernel->shouldReceive('converse')->never();
+        $conversationManager->shouldReceive('converse')->never();
 
-        $class = new TransitionsTraitTestClass($kernel);
+        $class = new TransitionsTraitTestClass($this->kernel);
         $class->jump('foo');
     }
 
     public function test_restart_intent(): void
     {
-        $kernel = $this->mock(Kernel::class);
+        $conversationManager = $this->mock(ConversationManager::class);
         $session = $this->mock(Session::class);
-
         $intent = new class extends Intent {
             /**
              * Intent activators.
@@ -63,18 +63,20 @@ class TransitionsTest extends TestCase
             }
         };
 
-        $kernel->shouldReceive('getSession')->andReturn($session)->once();
-        $session->shouldReceive('getMessage')->andReturn($this->mock(ReceivedMessage::class));
-        $kernel->shouldReceive('closeSession')->once();
-        $kernel->shouldReceive('converse')->with($intent)->once();
+        $this->kernel->setSession($session);
 
-        $intent->handle($kernel);
+        $session->shouldReceive('getMessage')->andReturn($this->mock(ReceivedMessage::class));
+        $conversationManager->shouldReceive('restart')->with($intent)->once();
+
+        $intent->handle($this->kernel);
     }
 
     public function test_restart_interaction(): void
     {
-        $kernel = $this->mock(Kernel::class);
+        $conversationManager = $this->mock(ConversationManager::class);
         $session = $this->mock(Session::class);
+        $this->kernel->setSession($session);
+
         $interaction = new class extends Interaction {
             /**
              * Run interaction.
@@ -98,23 +100,10 @@ class TransitionsTest extends TestCase
 
         $session->shouldReceive('getInteraction')->andReturn($interaction)->once();
         $session->shouldReceive('getMessage')->andReturn($this->mock(ReceivedMessage::class))->once();
-        $kernel->shouldReceive('getSession')->andReturn($session)->atLeast()->once();
-        $session->shouldReceive('setInteraction')->with(null)->once();
-        $session->shouldReceive('setValues')->with([])->once();
-        $kernel->shouldReceive('setSession')->once();
-        $kernel->shouldReceive('converse')->with($interaction)->once();
 
-        $interaction->handle($kernel);
-    }
+        $conversationManager->shouldReceive('restart')->with($interaction)->once();
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Only conversable instances can be restarted.
-     */
-    public function test_restart_not_converable(): void
-    {
-        $class = new TransitionsTraitTestClass($this->mock(Kernel::class));
-        $class->restart();
+        $interaction->handle($this->kernel);
     }
 }
 

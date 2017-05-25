@@ -7,7 +7,6 @@ namespace FondBot\Conversation\Traits;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Contracts\Queue;
-use FondBot\Application\Kernel;
 use FondBot\Templates\Attachment;
 use FondBot\Conversation\Template;
 use FondBot\Drivers\Commands\SendMessage;
@@ -16,9 +15,6 @@ use FondBot\Drivers\Commands\SendAttachment;
 
 trait SendsMessages
 {
-    /** @var Kernel */
-    protected $kernel;
-
     /**
      * Send message to user.
      *
@@ -30,10 +26,10 @@ trait SendsMessages
     protected function sendMessage(string $text, Template $template = null): void
     {
         /** @var Queue $queue */
-        $queue = $this->kernel->resolve(Queue::class);
+        $queue = resolve(Queue::class);
 
         $command = new SendMessage($this->getChat(), $this->getUser(), $text, $template);
-        $queue->push($this->kernel->getChannel(), $this->kernel->getDriver(), $command);
+        $queue->push(kernel()->getChannel(), kernel()->getDriver(), $command);
     }
 
     /**
@@ -48,10 +44,10 @@ trait SendsMessages
     protected function sendDelayedMessage(int $delay, string $text, Template $template = null): void
     {
         /** @var Queue $queue */
-        $queue = $this->kernel->resolve(Queue::class);
+        $queue = resolve(Queue::class);
 
         $command = new SendMessage($this->getChat(), $this->getUser(), $text, $template);
-        $queue->later($this->kernel->getChannel(), $this->kernel->getDriver(), $command, $delay);
+        $queue->later(kernel()->getChannel(), kernel()->getDriver(), $command, $delay);
     }
 
     /**
@@ -65,14 +61,14 @@ trait SendsMessages
     protected function sendAttachment(Attachment $attachment, int $delay = 0): void
     {
         /** @var Queue $queue */
-        $queue = $this->kernel->resolve(Queue::class);
+        $queue = resolve(Queue::class);
 
         $command = new SendAttachment($this->getChat(), $this->getUser(), $attachment);
 
         if ($delay === 0) {
-            $queue->push($this->kernel->getChannel(), $this->kernel->getDriver(), $command);
+            $queue->push(kernel()->getChannel(), kernel()->getDriver(), $command);
         } else {
-            $queue->later($this->kernel->getChannel(), $this->kernel->getDriver(), $command, $delay);
+            $queue->later(kernel()->getChannel(), kernel()->getDriver(), $command, $delay);
         }
     }
 
@@ -87,10 +83,10 @@ trait SendsMessages
     protected function sendRequest(string $endpoint, array $parameters = []): void
     {
         /** @var Queue $queue */
-        $queue = $this->kernel->resolve(Queue::class);
+        $queue = resolve(Queue::class);
 
         $command = new SendRequest($this->getChat(), $this->getUser(), $endpoint, $parameters);
-        $queue->push($this->kernel->getChannel(), $this->kernel->getDriver(), $command);
+        $queue->push(kernel()->getChannel(), kernel()->getDriver(), $command);
     }
 
     /**

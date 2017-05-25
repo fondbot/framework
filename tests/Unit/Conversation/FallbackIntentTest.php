@@ -10,7 +10,6 @@ use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Queue;
 use FondBot\Channels\Channel;
-use FondBot\Application\Kernel;
 use FondBot\Conversation\Session;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\FallbackIntent;
@@ -34,7 +33,6 @@ class FallbackIntentTest extends TestCase
 
     public function test_run(): void
     {
-        $kernel = $this->mock(Kernel::class);
         $queue = $this->mock(Queue::class);
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
@@ -43,16 +41,15 @@ class FallbackIntentTest extends TestCase
         $chat = $this->mock(Chat::class);
         $user = $this->mock(User::class);
 
-        $kernel->shouldReceive('resolve')->with(Queue::class)->andReturn($queue)->once();
-        $kernel->shouldReceive('getChannel')->andReturn($channel)->once();
-        $kernel->shouldReceive('getDriver')->andReturn($driver)->once();
-        $kernel->shouldReceive('getSession')->andReturn($session)->atLeast()->once();
+        $this->kernel->setChannel($channel);
+        $this->kernel->setDriver($driver);
+        $this->kernel->setSession($session);
         $session->shouldReceive('getMessage')->andReturn($message)->atLeast()->once();
         $session->shouldReceive('getChat')->andReturn($chat)->atLeast()->once();
         $session->shouldReceive('getUser')->andReturn($user)->atLeast()->once();
 
         $queue->shouldReceive('push')->once();
 
-        $this->intent->handle($kernel);
+        $this->intent->handle($this->kernel);
     }
 }

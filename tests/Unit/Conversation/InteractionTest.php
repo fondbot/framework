@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Conversation;
 
 use FondBot\Tests\TestCase;
-use FondBot\Application\Kernel;
 use FondBot\Conversation\Session;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Tests\Classes\TestInteraction;
 
 /**
- * @property mixed|\Mockery\Mock                    $kernel
  * @property mixed|\Mockery\Mock                    $session
  * @property \FondBot\Tests\Classes\TestInteraction interaction
  */
@@ -21,10 +19,9 @@ class InteractionTest extends TestCase
     {
         parent::setUp();
 
-        $this->kernel = $this->mock(Kernel::class);
         $this->session = $this->mock(Session::class);
 
-        $this->kernel->shouldReceive('getSession')->andReturn($this->session);
+        $this->kernel->setSession($this->session);
 
         $this->interaction = new TestInteraction;
     }
@@ -36,7 +33,6 @@ class InteractionTest extends TestCase
         $this->session->shouldReceive('getInteraction')->andReturn($this->interaction)->once();
         $this->session->shouldReceive('getMessage')->andReturn($message)->once();
         $this->session->shouldReceive('setValue')->with('key', 'value')->once();
-        $this->kernel->shouldReceive('closeSession')->once();
 
         $this->interaction->handle($this->kernel);
     }
@@ -52,12 +48,10 @@ class InteractionTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessageRegExp /^Invalid interaction `(.*)`$/
+     * @expectedExceptionMessageRegExp /^Alias (.*) is not being managed by the container$/
      */
     public function test_run_transition_exception(): void
     {
-        $this->kernel->shouldReceive('resolve')->andReturn(null)->once();
-
         $this->interaction->runIncorrect($this->kernel);
     }
 }

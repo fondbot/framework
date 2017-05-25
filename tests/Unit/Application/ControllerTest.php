@@ -7,10 +7,9 @@ namespace FondBot\Tests\Unit\Application;
 use FondBot\Tests\TestCase;
 use Zend\Diactoros\Request;
 use Zend\Diactoros\Response;
-use FondBot\Channels\Channel;
 use FondBot\Application\Kernel;
 use FondBot\Application\Controller;
-use FondBot\Channels\ChannelManager;
+use FondBot\Conversation\ConversationManager;
 
 class ControllerTest extends TestCase
 {
@@ -30,18 +29,14 @@ class ControllerTest extends TestCase
 
     public function test_webhook(): void
     {
-        $kernel = $this->mock(Kernel::class);
-        $channelManager = $this->mock(ChannelManager::class);
-        $channel = $this->mock(Channel::class);
+        $conversationManager = $this->mock(ConversationManager::class);
         $request = new Request();
         $response = new Response('php://temp');
         $args = ['name' => 'foo'];
 
-        $kernel->shouldReceive('resolve')->with(ChannelManager::class)->andReturn($channelManager)->once();
-        $channelManager->shouldReceive('create')->with('foo')->andReturn($channel)->once();
-        $kernel->shouldReceive('process')->once()->andReturn('bar');
+        $conversationManager->shouldReceive('handle')->andReturn('bar')->once();
 
-        $controller = new Controller($kernel);
+        $controller = new Controller($this->kernel);
         $controller->webhook($request, $response, $args);
 
         $response->getBody()->rewind();
