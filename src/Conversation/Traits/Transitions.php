@@ -26,8 +26,7 @@ trait Transitions
             throw new InvalidArgumentException('Invalid interaction `'.$interaction.'`');
         }
 
-        // Run interaction
-        $this->conversationManager()->converse($instance);
+        $this->conversationManager()->transition($instance);
     }
 
     /**

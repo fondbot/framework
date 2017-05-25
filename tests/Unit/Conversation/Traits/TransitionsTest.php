@@ -21,7 +21,7 @@ class TransitionsTest extends TestCase
         $conversationManager = $this->mock(ConversationManager::class);
         $this->container->add('foo', $interaction = $this->mock(Interaction::class));
 
-        $conversationManager->shouldReceive('converse')->with($interaction)->once();
+        $conversationManager->shouldReceive('transition')->with($interaction)->once();
 
         $class = new TransitionsTraitTestClass($this->kernel);
         $class->jump('foo');
