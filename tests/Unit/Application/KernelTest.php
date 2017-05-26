@@ -50,8 +50,7 @@ class KernelTest extends TestCase
         $session = $this->mock(Session::class);
         $sessionManager = $this->mock(SessionManager::class);
 
-        $channel->shouldReceive('getName')->andReturn('foo')->once();
-        $sessionManager->shouldReceive('load')->with('foo', $driver)->andReturn($session)->once();
+        $sessionManager->shouldReceive('load')->with($channel, $driver)->andReturn($session)->once();
 
         $this->kernel->loadSession($channel, $driver);
 

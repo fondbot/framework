@@ -42,10 +42,9 @@ class ConversationManagerTest extends TestCase
         $channelManager->shouldReceive('create')->with($channelName)->andReturn($channel)->once();
         $driverManager->shouldReceive('get')->with($channel, $request)->andReturn($driver)->once();
 
-        $channel->shouldReceive('getName')->andReturn($channelName)->atLeast()->once();
         $driver->shouldReceive('verifyRequest')->once();
         $sessionManager->shouldReceive('load')
-            ->with($channelName, $driver)
+            ->with($channel, $driver)
             ->andReturn($session)
             ->once();
 
@@ -84,10 +83,9 @@ class ConversationManagerTest extends TestCase
         $channelManager->shouldReceive('create')->with($channelName)->andReturn($channel)->once();
         $driverManager->shouldReceive('get')->with($channel, $request)->andReturn($driver)->once();
 
-        $channel->shouldReceive('getName')->andReturn($channelName)->atLeast()->once();
         $driver->shouldReceive('verifyRequest')->once();
         $sessionManager->shouldReceive('load')
-            ->with($channelName, $driver)
+            ->with($channel, $driver)
             ->andReturn($session)
             ->once();
 

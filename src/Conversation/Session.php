@@ -6,6 +6,7 @@ namespace FondBot\Conversation;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
+use FondBot\Channels\Channel;
 use FondBot\Drivers\ReceivedMessage;
 
 class Session
@@ -19,7 +20,7 @@ class Session
     private $values;
 
     public function __construct(
-        string $channel,
+        Channel $channel,
         Chat $chat,
         User $user,
         ReceivedMessage $message,
@@ -39,9 +40,9 @@ class Session
     /**
      * Get channel name.
      *
-     * @return string
+     * @return Channel
      */
-    public function getChannel(): string
+    public function getChannel(): Channel
     {
         return $this->channel;
     }

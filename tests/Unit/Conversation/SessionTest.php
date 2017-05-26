@@ -7,13 +7,14 @@ namespace FondBot\Tests\Unit\Conversation;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
+use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Session;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 
 /**
- * @property string                                     $channel
+ * @property mixed|\Mockery\Mock|\Mockery\MockInterface $channel
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $chat
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $sender
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $message
@@ -28,7 +29,7 @@ class SessionTest extends TestCase
     {
         parent::setUp();
 
-        $this->channel = $this->faker()->userName;
+        $this->channel = $this->mock(Channel::class);
         $this->chat = $this->mock(Chat::class);
         $this->sender = $this->mock(User::class);
         $this->message = $this->mock(ReceivedMessage::class);

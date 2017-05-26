@@ -8,6 +8,7 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Contracts\Cache;
+use FondBot\Channels\Channel;
 use Psr\Container\ContainerInterface;
 
 class SessionManager
@@ -24,14 +25,14 @@ class SessionManager
     /**
      * Load session.
      *
-     * @param string $channel
-     * @param Driver $driver
+     * @param Channel $channel
+     * @param Driver  $driver
      *
      * @return Session
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function load(string $channel, Driver $driver): Session
+    public function load(Channel $channel, Driver $driver): Session
     {
         $chat = $driver->getChat();
         $sender = $driver->getUser();
@@ -72,14 +73,14 @@ class SessionManager
     /**
      * Get key of session.
      *
-     * @param string $channel
+     * @param Channel $channel
      * @param Chat   $chat
      * @param User   $user
      *
      * @return string
      */
-    private function key(string $channel, Chat $chat, User $user): string
+    private function key(Channel $channel, Chat $chat, User $user): string
     {
-        return 'session.'.$channel.'.'.$chat->getId().'.'.$user->getId();
+        return 'session.'.$channel->getName().'.'.$chat->getId().'.'.$user->getId();
     }
 }

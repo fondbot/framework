@@ -106,7 +106,7 @@ class Kernel
      */
     public function loadSession(Channel $channel, Driver $driver): void
     {
-        $this->session = $this->sessionManager()->load($channel->getName(), $driver);
+        $this->session = $this->sessionManager()->load($channel, $driver);
     }
 
     /**
