@@ -29,7 +29,7 @@ class SendsMessagesTest extends TestCase
         $class->sendMessage($this->faker()->text, $this->mock(Keyboard::class));
     }
 
-    public function test_sendDelayedMessage(): void
+    public function test_sendMessage_with_delay(): void
     {
         $queue = $this->mock(Queue::class);
         $this->kernel->setChannel($this->mock(Channel::class));
@@ -38,7 +38,7 @@ class SendsMessagesTest extends TestCase
         $queue->shouldReceive('later')->once();
 
         $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
-        $class->sendDelayedMessage(random_int(1, 10), $this->faker()->text, $this->mock(Keyboard::class));
+        $class->sendMessage($this->faker()->text, $this->mock(Keyboard::class), random_int(1, 10));
     }
 
     public function test_sendAttachment(): void

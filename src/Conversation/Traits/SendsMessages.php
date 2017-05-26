@@ -20,34 +20,20 @@ trait SendsMessages
      *
      * @param string        $text
      * @param Template|null $template
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     */
-    protected function sendMessage(string $text, Template $template = null): void
-    {
-        /** @var Queue $queue */
-        $queue = resolve(Queue::class);
-
-        $command = new SendMessage($this->getChat(), $this->getUser(), $text, $template);
-        $queue->push(kernel()->getChannel(), kernel()->getDriver(), $command);
-    }
-
-    /**
-     * Send message to user with delay.
-     *
      * @param int           $delay
-     * @param string        $text
-     * @param Template|null $template
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
      */
-    protected function sendDelayedMessage(int $delay, string $text, Template $template = null): void
+    protected function sendMessage(string $text, Template $template = null, int $delay = 0): void
     {
         /** @var Queue $queue */
         $queue = resolve(Queue::class);
 
         $command = new SendMessage($this->getChat(), $this->getUser(), $text, $template);
-        $queue->later(kernel()->getChannel(), kernel()->getDriver(), $command, $delay);
+
+        if ($delay > 0) {
+            $queue->later(kernel()->getChannel(), kernel()->getDriver(), $command, $delay);
+        } else {
+            $queue->push(kernel()->getChannel(), kernel()->getDriver(), $command);
+        }
     }
 
     /**
