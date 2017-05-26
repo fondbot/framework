@@ -16,7 +16,7 @@ class MakeInteractionTest extends TestCase
     {
         $this->container->add(ConversationCreator::class, $creator = $this->mock(ConversationCreator::class));
 
-        $creator->shouldReceive('createInteraction')->with('src', 'App', 'foo')->once();
+        $creator->shouldReceive('createInteraction')->with('src', 'Bot', 'foo')->once();
 
         $application = new Application;
         $application->add(new MakeInteraction);

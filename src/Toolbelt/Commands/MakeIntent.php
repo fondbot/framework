@@ -25,7 +25,7 @@ class MakeIntent extends Command
         /** @var ConversationCreator $creator */
         $creator = resolve(ConversationCreator::class);
 
-        $creator->createIntent('src', 'App', $name);
+        $creator->createIntent('src', 'Bot', $name);
 
         $this->success('Intent created.');
     }

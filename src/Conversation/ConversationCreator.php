@@ -33,11 +33,11 @@ class ConversationCreator
         $className = $this->className($name, 'Intent');
 
         // Replace stub placeholders
-        $this->replacePlaceholder($contents, 'namespace', $this->namespace($namespace));
+        $this->replacePlaceholder($contents, 'namespace', $this->namespace($namespace, 'Intents'));
         $this->replacePlaceholder($contents, 'className', $className);
         $this->replacePlaceholder($contents, 'name', $this->formatName($name));
 
-        $path = $directory.'/'.$this->filename($className);
+        $path = $directory.'/Intents/'.$this->filename($className);
 
         $this->filesystem->write($path, $contents);
     }

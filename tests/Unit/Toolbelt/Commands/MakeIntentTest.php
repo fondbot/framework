@@ -16,7 +16,7 @@ class MakeIntentTest extends TestCase
     {
         $this->container->add(ConversationCreator::class, $creator = $this->mock(ConversationCreator::class));
 
-        $creator->shouldReceive('createIntent')->with('src', 'App', 'foo')->once();
+        $creator->shouldReceive('createIntent')->with('src', 'Bot', 'foo')->once();
 
         $application = new Application;
         $application->add(new MakeIntent);

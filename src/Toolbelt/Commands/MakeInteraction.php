@@ -25,7 +25,7 @@ class MakeInteraction extends Command
         /** @var ConversationCreator $creator */
         $creator = resolve(ConversationCreator::class);
 
-        $creator->createInteraction('src', 'App', $name);
+        $creator->createInteraction('src', 'Bot', $name);
 
         $this->success('Interaction created.');
     }
