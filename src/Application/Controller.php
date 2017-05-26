@@ -11,13 +11,6 @@ use FondBot\Conversation\ConversationManager;
 
 class Controller
 {
-    protected $kernel;
-
-    public function __construct(Kernel $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
     public function index(RequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $response->getBody()->write('FondBot v'.Kernel::VERSION);
@@ -28,7 +21,7 @@ class Controller
     public function webhook(RequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         /** @var ConversationManager $conversation */
-        $conversation = $this->kernel->resolve(ConversationManager::class);
+        $conversation = resolve(ConversationManager::class);
 
         $result = $conversation->handle($args['name'], Request::fromMessage($request));
 

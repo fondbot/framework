@@ -47,7 +47,7 @@ class RouteServiceProvider extends AbstractServiceProvider
         $this->container->share('router', function () {
             $router = new RouteCollection($this->container);
 
-            $controller = new Controller($this->container->get(Kernel::class));
+            $controller = new Controller;
 
             $router->map('GET', $this->buildPath('/'), [$controller, 'index']);
             $router->map('GET', $this->buildPath('/channels/{name}'), [$controller, 'webhook']);

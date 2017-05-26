@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
+use FondBot\Channels\Exceptions\ChannelNotFound;
+
 class ChannelManager
 {
     /** @var array */

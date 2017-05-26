@@ -39,7 +39,7 @@ class ChannelManagerTest extends TestCase
     }
 
     /**
-     * @expectedException \FondBot\Channels\ChannelNotFound
+     * @expectedException \FondBot\Channels\Exceptions\ChannelNotFound
      * @expectedExceptionMessage Channel `fake` not found.
      */
     public function test_create_exception(): void
