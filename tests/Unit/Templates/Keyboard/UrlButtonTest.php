@@ -13,14 +13,15 @@ class UrlButtonTest extends TestCase
     {
         $label = $this->faker()->word;
         $url = $this->faker()->url;
-        $params = [
-            'args1' => $this->faker()->word,
-            'args2' => $this->faker()->word,
-        ];
+        $parameters = ['foo' => 'bar'];
 
-        $button = new UrlButton($label, $url, $params);
+        $button = (new UrlButton)
+            ->setLabel($label)
+            ->setUrl($url)
+            ->setParameters($parameters);
+
         $this->assertSame($label, $button->getLabel());
         $this->assertSame($url, $button->getUrl());
-        $this->assertSame($params, $button->getParameters());
+        $this->assertSame($parameters, $button->getParameters());
     }
 }

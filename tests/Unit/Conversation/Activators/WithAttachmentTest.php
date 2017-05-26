@@ -51,7 +51,7 @@ class WithAttachmentTest extends TestCase
     public function test_matches_with_type(string $type): void
     {
         $activator = new WithAttachment($type);
-        $attachment = new Attachment($type, $this->faker()->imageUrl());
+        $attachment = (new Attachment)->setType($type);
 
         $this->message->shouldReceive('hasAttachment')->andReturn(true)->atLeast()->once();
         $this->message->shouldReceive('getAttachment')->andReturn($attachment)->atLeast()->once();
@@ -75,7 +75,7 @@ class WithAttachmentTest extends TestCase
             })
             ->random();
 
-        $attachment = new Attachment($otherType, $this->faker()->imageUrl());
+        $attachment = (new Attachment)->setType($otherType);
 
         $this->message->shouldReceive('hasAttachment')->andReturn(true)->atLeast()->once();
         $this->message->shouldReceive('getAttachment')->andReturn($attachment)->atLeast()->once();

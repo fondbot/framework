@@ -8,18 +8,27 @@ class ReplyButton implements Button
 {
     private $label;
 
-    public function __construct(string $label)
-    {
-        $this->label = $label;
-    }
-
     /**
-     * Button label.
+     * Get label.
      *
      * @return string
      */
     public function getLabel(): string
     {
         return $this->label;
+    }
+
+    /**
+     * Set label.
+     *
+     * @param string $label
+     *
+     * @return ReplyButton
+     */
+    public function setLabel(string $label): ReplyButton
+    {
+        $this->label = $label;
+
+        return $this;
     }
 }

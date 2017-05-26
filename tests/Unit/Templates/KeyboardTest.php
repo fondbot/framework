@@ -17,7 +17,9 @@ class KeyboardTest extends TestCase
             $this->mock(Button::class),
         ];
 
-        $keyboard = new Keyboard($buttons);
+        $keyboard = (new Keyboard)
+            ->addButton($buttons[0])
+            ->addButton($buttons[1]);
 
         $this->assertInstanceOf(Keyboard::class, $keyboard);
         $this->assertSame($buttons, $keyboard->getButtons());

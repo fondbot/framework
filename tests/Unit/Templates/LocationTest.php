@@ -11,13 +11,11 @@ class LocationTest extends TestCase
 {
     public function test()
     {
-        $location = new Location($latitude = $this->faker()->latitude, $longitude = $this->faker()->longitude);
-
-        $array = ['latitude' => $latitude, 'longitude' => $longitude];
+        $location = (new Location)
+            ->setLatitude($latitude = $this->faker()->latitude)
+            ->setLongitude($longitude = $this->faker()->longitude);
 
         $this->assertSame($latitude, $location->getLatitude());
         $this->assertSame($longitude, $location->getLongitude());
-        $this->assertSame($array, $location->toArray());
-        $this->assertSame(json_encode($array), $location->jsonSerialize());
     }
 }

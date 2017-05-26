@@ -4,18 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Templates;
 
-use FondBot\Conversation\Template;
-
-class Location implements Template
+class Location
 {
-    protected $latitude;
-    protected $longitude;
-
-    public function __construct(float $latitude, float $longitude)
-    {
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
-    }
+    private $latitude;
+    private $longitude;
 
     /**
      * Get latitude.
@@ -25,6 +17,20 @@ class Location implements Template
     public function getLatitude(): float
     {
         return $this->latitude;
+    }
+
+    /**
+     * Set latitude.
+     *
+     * @param float $latitude
+     *
+     * @return Location
+     */
+    public function setLatitude(float $latitude): Location
+    {
+        $this->latitude = $latitude;
+
+        return $this;
     }
 
     /**
@@ -38,27 +44,16 @@ class Location implements Template
     }
 
     /**
-     * Get the instance as an array.
+     * Set longitude.
      *
-     * @return array
+     * @param float $longitude
+     *
+     * @return Location
      */
-    public function toArray(): array
+    public function setLongitude(float $longitude): Location
     {
-        return [
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-        ];
-    }
+        $this->longitude = $longitude;
 
-    /**
-     * Specify data which should be serialized to JSON.
-     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    public function jsonSerialize(): string
-    {
-        return json_encode($this->toArray());
+        return $this;
     }
 }

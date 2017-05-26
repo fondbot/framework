@@ -7,7 +7,7 @@ namespace FondBot\Drivers\Commands;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Command;
-use FondBot\Conversation\Template;
+use FondBot\Contracts\Template;
 
 class SendMessage implements Command
 {

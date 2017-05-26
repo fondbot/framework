@@ -4,21 +4,30 @@ declare(strict_types=1);
 
 namespace FondBot\Templates;
 
-use FondBot\Conversation\Template;
+use FondBot\Contracts\Template;
 use FondBot\Templates\Keyboard\Button;
 
 class Keyboard implements Template
 {
     /** @var Button[] */
-    protected $buttons;
+    private $buttons;
 
-    public function __construct(array $buttons)
+    /**
+     * Add button.
+     *
+     * @param Button $button
+     *
+     * @return Keyboard
+     */
+    public function addButton(Button $button): Keyboard
     {
-        $this->buttons = $buttons;
+        $this->buttons[] = $button;
+
+        return $this;
     }
 
     /**
-     * Get keyboard buttons.
+     * Get buttons.
      *
      * @return Button[]
      */

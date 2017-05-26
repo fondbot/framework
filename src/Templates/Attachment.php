@@ -4,28 +4,19 @@ declare(strict_types=1);
 
 namespace FondBot\Templates;
 
-use FondBot\Contracts\Arrayable;
-
-class Attachment implements Arrayable
+class Attachment
 {
     public const TYPE_FILE = 'file';
     public const TYPE_IMAGE = 'image';
     public const TYPE_AUDIO = 'audio';
     public const TYPE_VIDEO = 'video';
 
-    protected $type;
-    protected $path;
-    protected $metadata;
-
-    public function __construct(string $type, string $path, array $metadata = [])
-    {
-        $this->type = $type;
-        $this->path = $path;
-        $this->metadata = $metadata;
-    }
+    private $type;
+    private $path;
+    private $metadata;
 
     /**
-     * Get attachment type.
+     * Get type.
      *
      * @return string
      */
@@ -35,7 +26,21 @@ class Attachment implements Arrayable
     }
 
     /**
-     * Get path to the attachment.
+     * Set type.
+     *
+     * @param string $type
+     *
+     * @return Attachment
+     */
+    public function setType(string $type): Attachment
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get path.
      *
      * @return string
      */
@@ -45,13 +50,41 @@ class Attachment implements Arrayable
     }
 
     /**
-     * Get attachment metadata.
+     * Set path.
+     *
+     * @param string $path
+     *
+     * @return Attachment
+     */
+    public function setPath(string $path): Attachment
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * Get metadata.
      *
      * @return array
      */
     public function getMetadata(): array
     {
         return $this->metadata;
+    }
+
+    /**
+     * Set metadata.
+     *
+     * @param array $metadata
+     *
+     * @return Attachment
+     */
+    public function setMetadata(array $metadata): Attachment
+    {
+        $this->metadata = $metadata;
+
+        return $this;
     }
 
     /**
@@ -66,19 +99,6 @@ class Attachment implements Arrayable
             static::TYPE_IMAGE,
             static::TYPE_AUDIO,
             static::TYPE_VIDEO,
-        ];
-    }
-
-    /**
-     * Get the instance as an array.
-     *
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return [
-            'type' => $this->type,
-            'path' => $this->path,
         ];
     }
 }

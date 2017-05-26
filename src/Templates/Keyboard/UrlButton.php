@@ -10,15 +10,8 @@ class UrlButton implements Button
     private $url;
     private $parameters;
 
-    public function __construct(string $label, string $url, array $parameters = [])
-    {
-        $this->label = $label;
-        $this->url = $url;
-        $this->parameters = $parameters;
-    }
-
     /**
-     * Button label.
+     * Get label.
      *
      * @return string
      */
@@ -28,7 +21,21 @@ class UrlButton implements Button
     }
 
     /**
-     * URL.
+     * Set label.
+     *
+     * @param string $label
+     *
+     * @return UrlButton
+     */
+    public function setLabel(string $label): UrlButton
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get URL.
      *
      * @return string
      */
@@ -38,12 +45,40 @@ class UrlButton implements Button
     }
 
     /**
-     * Additional parameters.
+     * Set URL.
+     *
+     * @param mixed $url
+     *
+     * @return UrlButton
+     */
+    public function setUrl($url): UrlButton
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get parameters.
      *
      * @return array
      */
     public function getParameters(): array
     {
         return $this->parameters;
+    }
+
+    /**
+     * Set parameters.
+     *
+     * @param mixed $parameters
+     *
+     * @return UrlButton
+     */
+    public function setParameters($parameters): UrlButton
+    {
+        $this->parameters = $parameters;
+
+        return $this;
     }
 }

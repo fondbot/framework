@@ -9,14 +9,8 @@ class PayloadButton implements Button
     private $label;
     private $payload;
 
-    public function __construct(string $label, $payload)
-    {
-        $this->label = $label;
-        $this->payload = $payload;
-    }
-
     /**
-     * Button label.
+     * Get label.
      *
      * @return string
      */
@@ -26,10 +20,40 @@ class PayloadButton implements Button
     }
 
     /**
+     * Set label.
+     *
+     * @param string $label
+     *
+     * @return PayloadButton
+     */
+    public function setLabel(string $label): PayloadButton
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get payload.
+     *
      * @return mixed
      */
     public function getPayload()
     {
         return $this->payload;
+    }
+
+    /**
+     * Set payload.
+     *
+     * @param mixed $payload
+     *
+     * @return PayloadButton
+     */
+    public function setPayload($payload): PayloadButton
+    {
+        $this->payload = $payload;
+
+        return $this;
     }
 }
