@@ -13,12 +13,40 @@ use FondBot\Templates\Keyboard\PayloadButton;
 
 abstract class TemplateCompiler
 {
+    /**
+     * Compile keyboard.
+     *
+     * @param Keyboard $keyboard
+     *
+     * @return mixed
+     */
     abstract public function compileKeyboard(Keyboard $keyboard);
 
+    /**
+     * Compile payload button.
+     *
+     * @param PayloadButton $button
+     *
+     * @return mixed
+     */
     abstract public function compilePayloadButton(PayloadButton $button);
 
+    /**
+     * Compile reply button.
+     *
+     * @param ReplyButton $button
+     *
+     * @return mixed
+     */
     abstract public function compileReplyButton(ReplyButton $button);
 
+    /**
+     * Compile url button.
+     *
+     * @param UrlButton $button
+     *
+     * @return mixed
+     */
     abstract public function compileUrlButton(UrlButton $button);
 
     /**

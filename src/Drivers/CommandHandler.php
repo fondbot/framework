@@ -18,10 +18,25 @@ abstract class CommandHandler
         $this->driver = $driver;
     }
 
+    /**
+     * Handle send message command.
+     *
+     * @param SendMessage $command
+     */
     abstract public function handleSendMessage(SendMessage $command): void;
 
+    /**
+     * Handle send attachment command.
+     *
+     * @param SendAttachment $command
+     */
     abstract public function handleSendAttachment(SendAttachment $command): void;
 
+    /**
+     * Handle send request command.
+     *
+     * @param SendRequest $command
+     */
     abstract public function handleSendRequest(SendRequest $command): void;
 
     /**
