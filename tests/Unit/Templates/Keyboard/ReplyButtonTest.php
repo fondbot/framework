@@ -16,6 +16,7 @@ class ReplyButtonTest extends TestCase
         $button = (new ReplyButton)
             ->setLabel($label);
 
+        $this->assertSame('ReplyButton', $button->getName());
         $this->assertSame($label, $button->getLabel());
     }
 }

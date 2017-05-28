@@ -11,10 +11,10 @@ use FondBot\Contracts\Template;
 
 class SendMessage implements Command
 {
-    public $chat;
-    public $recipient;
-    public $text;
-    public $template;
+    private $chat;
+    private $recipient;
+    private $text;
+    private $template;
 
     public function __construct(Chat $chat, User $recipient, string $text, Template $template = null)
     {
@@ -22,5 +22,35 @@ class SendMessage implements Command
         $this->recipient = $recipient;
         $this->text = $text;
         $this->template = $template;
+    }
+
+    /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'SendMessage';
+    }
+
+    public function getChat(): Chat
+    {
+        return $this->chat;
+    }
+
+    public function getRecipient(): User
+    {
+        return $this->recipient;
+    }
+
+    public function getText(): string
+    {
+        return $this->text;
+    }
+
+    public function getTemplate(): ?Template
+    {
+        return $this->template;
     }
 }

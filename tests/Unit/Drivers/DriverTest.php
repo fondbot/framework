@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Drivers;
 
+use Mockery\Mock;
 use FondBot\Http\Request;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
+use FondBot\Drivers\Command;
+use FondBot\Drivers\CommandHandler;
 
 class DriverTest extends TestCase
 {
@@ -21,5 +24,18 @@ class DriverTest extends TestCase
 
         $this->assertSame('bar', $driver->getParameter('foo'));
         $this->assertSame('z', $driver->getParameter('foo-bar', 'z'));
+    }
+
+    public function test_handle(): void
+    {
+        $command = $this->mock(Command::class);
+        $commandHandler = $this->mock(CommandHandler::class);
+        /** @var Driver|Mock $driver */
+        $driver = $this->mock(Driver::class)->makePartial();
+
+        $driver->shouldReceive('getCommandHandler')->andReturn($commandHandler)->once();
+        $commandHandler->shouldReceive('handle')->with($command)->once();
+
+        $driver->handle($command);
     }
 }

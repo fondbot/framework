@@ -20,6 +20,7 @@ class UrlButtonTest extends TestCase
             ->setUrl($url)
             ->setParameters($parameters);
 
+        $this->assertSame('UrlButton', $button->getName());
         $this->assertSame($label, $button->getLabel());
         $this->assertSame($url, $button->getUrl());
         $this->assertSame($parameters, $button->getParameters());

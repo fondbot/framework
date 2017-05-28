@@ -13,17 +13,13 @@ class Keyboard implements Template
     private $buttons;
 
     /**
-     * Add button.
+     * Get name.
      *
-     * @param Button $button
-     *
-     * @return Keyboard
+     * @return string
      */
-    public function addButton(Button $button): Keyboard
+    public function getName(): string
     {
-        $this->buttons[] = $button;
-
-        return $this;
+        return 'Keyboard';
     }
 
     /**
@@ -37,26 +33,16 @@ class Keyboard implements Template
     }
 
     /**
-     * Get the instance as an array.
+     * Add button.
      *
-     * @return array
+     * @param Button $button
+     *
+     * @return Keyboard
      */
-    public function toArray(): array
+    public function addButton(Button $button): Keyboard
     {
-        return [
-            'buttons' => $this->buttons,
-        ];
-    }
+        $this->buttons[] = $button;
 
-    /**
-     * Specify data which should be serialized to JSON.
-     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        return $this;
     }
 }

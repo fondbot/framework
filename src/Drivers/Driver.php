@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Drivers;
 
+use RuntimeException;
 use FondBot\Helpers\Arr;
-use FondBot\Http\Request;
 use FondBot\Queue\SerializableForQueue;
+use FondBot\Http\Request as HttpRequest;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 
 abstract class Driver implements SerializableForQueue
@@ -14,16 +15,16 @@ abstract class Driver implements SerializableForQueue
     /** @var array */
     protected $parameters;
 
-    /** @var Request */
+    /** @var HttpRequest */
     protected $request;
 
     /**
-     * Set driver data.
+     * Fill driver with parameters and http request instance.
      *
-     * @param array   $parameters
-     * @param Request $request
+     * @param array       $parameters
+     * @param HttpRequest $request
      */
-    public function fill(array $parameters, Request $request): void
+    public function fill(array $parameters, HttpRequest $request): void
     {
         $this->parameters = $parameters;
         $this->request = $request;
@@ -41,6 +42,20 @@ abstract class Driver implements SerializableForQueue
     {
         return Arr::get($this->parameters, $name, $default);
     }
+
+    /**
+     * Get template compiler instance.
+     *
+     * @return TemplateCompiler
+     */
+    abstract public function getTemplateCompiler(): TemplateCompiler;
+
+    /**
+     * Get command handler instance.
+     *
+     * @return CommandHandler
+     */
+    abstract public function getCommandHandler(): CommandHandler;
 
     /**
      * Verify incoming request data.
@@ -74,6 +89,11 @@ abstract class Driver implements SerializableForQueue
      * Handle command.
      *
      * @param Command $command
+     *
+     * @throws RuntimeException
      */
-    abstract public function handle(Command $command): void;
+    public function handle(Command $command): void
+    {
+        $this->getCommandHandler()->handle($command);
+    }
 }

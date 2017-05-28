@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts;
 
-use JsonSerializable;
-
-interface Template extends Arrayable, JsonSerializable
+interface Template
 {
+    /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName(): string;
 }

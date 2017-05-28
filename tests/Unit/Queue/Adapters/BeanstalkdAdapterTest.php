@@ -6,12 +6,12 @@ namespace FondBot\Tests\Unit\Queue\Adapters;
 
 use FondBot\Queue\Job;
 use Pheanstalk\Pheanstalk;
+use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
+use FondBot\Drivers\Command;
 use SuperClosure\Serializer;
 use FondBot\Channels\Channel;
 use Pheanstalk\Job as PheanstalkJob;
-use FondBot\Tests\Classes\FakeDriver;
-use FondBot\Tests\Classes\FakeCommand;
 use Zumba\JsonSerializer\JsonSerializer;
 use FondBot\Queue\Adapters\BeanstalkdAdapter;
 
@@ -60,8 +60,8 @@ class BeanstalkdAdapterTest extends TestCase
         $pheanstalk = $this->mock(Pheanstalk::class);
 
         $channel = new Channel('foo', 'bar', []);
-        $driver = new FakeDriver;
-        $command = new FakeCommand;
+        $driver = $this->mock(Driver::class);
+        $command = $this->mock(Command::class);
         $queue = $this->faker()->word;
 
         $pheanstalk->shouldReceive('putInTube')->once();
@@ -75,8 +75,8 @@ class BeanstalkdAdapterTest extends TestCase
         $pheanstalk = $this->mock(Pheanstalk::class);
 
         $channel = new Channel('foo', 'bar', []);
-        $driver = new FakeDriver;
-        $command = new FakeCommand;
+        $driver = $this->mock(Driver::class);
+        $command = $this->mock(Command::class);
         $queue = $this->faker()->word;
         $delay = random_int(1, 10);
 

@@ -18,6 +18,7 @@ class PayloadButtonTest extends TestCase
             ->setLabel($label)
             ->setPayload($payload);
 
+        $this->assertSame('PayloadButton', $button->getName());
         $this->assertSame($label, $button->getLabel());
         $this->assertSame($payload, $button->getPayload());
     }

@@ -10,7 +10,7 @@ use FondBot\Templates\Keyboard\Button;
 
 class KeyboardTest extends TestCase
 {
-    public function test_create()
+    public function test(): void
     {
         $buttons = [
             $this->mock(Button::class),
@@ -22,8 +22,7 @@ class KeyboardTest extends TestCase
             ->addButton($buttons[1]);
 
         $this->assertInstanceOf(Keyboard::class, $keyboard);
+        $this->assertSame('Keyboard', $keyboard->getName());
         $this->assertSame($buttons, $keyboard->getButtons());
-        $this->assertSame(['buttons' => $buttons], $keyboard->toArray());
-        $this->assertSame(['buttons' => $buttons], $keyboard->jsonSerialize());
     }
 }

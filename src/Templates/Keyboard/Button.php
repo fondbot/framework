@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Templates\Keyboard;
 
-interface Button
+use FondBot\Contracts\Template;
+
+interface Button extends Template
 {
 }

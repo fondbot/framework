@@ -42,7 +42,7 @@ class DriverManager
     /**
      * Get driver for channel.
      *
-     * @param Channel                $channel
+     * @param Channel $channel
      * @param Request $request
      *
      * @return Driver

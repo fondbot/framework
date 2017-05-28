@@ -9,6 +9,16 @@ class ReplyButton implements Button
     private $label;
 
     /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'ReplyButton';
+    }
+
+    /**
      * Get label.
      *
      * @return string

@@ -11,6 +11,16 @@ class UrlButton implements Button
     private $parameters;
 
     /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'UrlButton';
+    }
+
+    /**
      * Get label.
      *
      * @return string

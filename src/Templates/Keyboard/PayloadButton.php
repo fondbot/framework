@@ -10,6 +10,16 @@ class PayloadButton implements Button
     private $payload;
 
     /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'PayloadButton';
+    }
+
+    /**
      * Get label.
      *
      * @return string
