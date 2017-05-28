@@ -46,9 +46,9 @@ abstract class Driver implements SerializableForQueue
     /**
      * Get template compiler instance.
      *
-     * @return TemplateCompiler
+     * @return TemplateCompiler|null
      */
-    abstract public function getTemplateCompiler(): TemplateCompiler;
+    abstract public function getTemplateCompiler(): ?TemplateCompiler;
 
     /**
      * Get command handler instance.
