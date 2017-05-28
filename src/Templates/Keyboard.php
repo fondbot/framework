@@ -10,7 +10,7 @@ use FondBot\Templates\Keyboard\Button;
 class Keyboard implements Template
 {
     /** @var Button[] */
-    private $buttons;
+    private $buttons = [];
 
     /**
      * Get name.
