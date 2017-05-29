@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Templates\Keyboard;
 
-class PayloadButton implements Button
+class PayloadButton extends Button
 {
-    private $label;
     private $payload;
 
     /**
@@ -17,30 +16,6 @@ class PayloadButton implements Button
     public function getName(): string
     {
         return 'PayloadButton';
-    }
-
-    /**
-     * Get label.
-     *
-     * @return string
-     */
-    public function getLabel(): string
-    {
-        return $this->label;
-    }
-
-    /**
-     * Set label.
-     *
-     * @param string $label
-     *
-     * @return PayloadButton
-     */
-    public function setLabel(string $label): PayloadButton
-    {
-        $this->label = $label;
-
-        return $this;
     }
 
     /**

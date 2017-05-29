@@ -6,14 +6,19 @@ namespace FondBot\Templates\Keyboard;
 
 use FondBot\Contracts\Template;
 
-interface Button extends Template
+abstract class Button implements Template
 {
+    protected $label;
+
     /**
      * Get label.
      *
      * @return string
      */
-    public function getLabel(): string;
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
 
     /**
      * Set label.
@@ -22,5 +27,10 @@ interface Button extends Template
      *
      * @return static
      */
-    public function setLabel(string $label);
+    public function setLabel(string $label)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
 }

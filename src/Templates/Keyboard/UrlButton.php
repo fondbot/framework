@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Templates\Keyboard;
 
-class UrlButton implements Button
+class UrlButton extends Button
 {
-    private $label;
     private $url;
     private $parameters;
 
@@ -18,30 +17,6 @@ class UrlButton implements Button
     public function getName(): string
     {
         return 'UrlButton';
-    }
-
-    /**
-     * Get label.
-     *
-     * @return string
-     */
-    public function getLabel(): string
-    {
-        return $this->label;
-    }
-
-    /**
-     * Set label.
-     *
-     * @param string $label
-     *
-     * @return UrlButton
-     */
-    public function setLabel(string $label): UrlButton
-    {
-        $this->label = $label;
-
-        return $this;
     }
 
     /**
