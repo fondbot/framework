@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Drivers;
 
 use RuntimeException;
+use GuzzleHttp\Client;
 use FondBot\Helpers\Arr;
 use FondBot\Queue\SerializableForQueue;
 use FondBot\Http\Request as HttpRequest;
@@ -18,6 +19,14 @@ abstract class Driver implements SerializableForQueue
     /** @var HttpRequest */
     protected $request;
 
+    /** @var Client */
+    protected $http;
+
+    public function __construct(Client $http)
+    {
+        $this->http = $http;
+    }
+
     /**
      * Fill driver with parameters and http request instance.
      *
@@ -28,6 +37,14 @@ abstract class Driver implements SerializableForQueue
     {
         $this->parameters = $parameters;
         $this->request = $request;
+    }
+
+    /**
+     * @return Client
+     */
+    public function getHttp(): Client
+    {
+        return $this->http;
     }
 
     /**

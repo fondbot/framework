@@ -23,21 +23,21 @@ abstract class CommandHandler
      *
      * @param SendMessage $command
      */
-    abstract public function handleSendMessage(SendMessage $command): void;
+    abstract protected function handleSendMessage(SendMessage $command): void;
 
     /**
      * Handle send attachment command.
      *
      * @param SendAttachment $command
      */
-    abstract public function handleSendAttachment(SendAttachment $command): void;
+    abstract protected function handleSendAttachment(SendAttachment $command): void;
 
     /**
      * Handle send request command.
      *
      * @param SendRequest $command
      */
-    abstract public function handleSendRequest(SendRequest $command): void;
+    abstract protected function handleSendRequest(SendRequest $command): void;
 
     /**
      * @param Command $command

@@ -27,7 +27,7 @@ class CommandHandlerTest extends TestCase
         $driver = $this->mock(Driver::class);
         $command = $this->mock(SendMessage::class);
         /** @var CommandHandler|Mock $handler */
-        $handler = $this->mock(CommandHandler::class, [$driver])->makePartial();
+        $handler = $this->mock(CommandHandler::class, [$driver])->shouldAllowMockingProtectedMethods()->makePartial();
 
         $command->shouldReceive('getName')->andReturn('SendMessage')->once();
         $handler->shouldReceive('handleSendMessage')->once();

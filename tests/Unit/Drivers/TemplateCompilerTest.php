@@ -23,13 +23,14 @@ class TemplateCompilerTest extends TestCase
     public function test_method_exists(): void
     {
         $template = $this->mock(Keyboard::class);
+        $args = ['foo' => 'bar'];
         /** @var TemplateCompiler|Mock $compiler */
-        $compiler = $this->mock(TemplateCompiler::class)->makePartial();
+        $compiler = $this->mock(TemplateCompiler::class)->shouldAllowMockingProtectedMethods()->makePartial();
 
-        $template->shouldReceive('getName')->andReturn('Keyboard')->once();
-        $compiler->shouldReceive('compileKeyboard')->with($template)->once();
+        $template->shouldReceive('getName')->andReturn('keyboard')->once();
+        $compiler->shouldReceive('compileKeyboard')->with($template, $args)->once();
 
-        $compiler->compile($template);
+        $compiler->compile($template, $args);
     }
 
     /**
@@ -40,7 +41,7 @@ class TemplateCompilerTest extends TestCase
     {
         $template = $this->mock(Keyboard::class);
         /** @var TemplateCompiler|Mock $compiler */
-        $compiler = $this->mock(TemplateCompiler::class)->makePartial();
+        $compiler = $this->mock(TemplateCompiler::class)->shouldAllowMockingProtectedMethods()->makePartial();
 
         $template->shouldReceive('getName')->andReturn('foo')->atLeast()->once();
 
