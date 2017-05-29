@@ -77,8 +77,13 @@ abstract class TemplateCompiler
                 // Then we go through elements and compiled remaining templates
                 $result[] = collect($template->toArray())
                     ->map(function ($element) use ($args) {
-                        return $this->compile($element, $args);
-                    });
+                        if ($element instanceof Template) {
+                            return $this->compile($element, $args);
+                        }
+
+                        return $element;
+                    })
+                    ->toArray();
             } else {
                 // Otherwise, we look for a compile method
                 $method = 'compile'.ucfirst($template->getName());
@@ -88,6 +93,10 @@ abstract class TemplateCompiler
 
                 $result[] = $this->$method($template, $args);
             }
+        }
+
+        if (count($result) === 1) {
+            return $result[0];
         }
 
         return $result;
