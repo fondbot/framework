@@ -15,7 +15,7 @@ abstract class Button implements Template
      *
      * @return string
      */
-    public function getLabel(): string
+    public function getLabel(): ?string
     {
         return $this->label;
     }
