@@ -7,7 +7,7 @@ namespace FondBot\Templates\Keyboard;
 class UrlButton extends Button
 {
     private $url;
-    private $parameters;
+    private $parameters = [];
 
     /**
      * Get name.
@@ -60,7 +60,7 @@ class UrlButton extends Button
      *
      * @return UrlButton
      */
-    public function setParameters($parameters): UrlButton
+    public function setParameters(array $parameters): UrlButton
     {
         $this->parameters = $parameters;
 
