@@ -41,7 +41,7 @@
     "require-dev": {
         "fzaninotto/faker": "^1.6",
         "larapack/dd": "^1.1",
-        "mockery/mockery": "^0.9.9",
+        "mockery/mockery": "^1.0",
         "pda/pheanstalk": "^3.1",
         "phpunit/phpunit": "^6",
         "sllh/php-cs-fixer-styleci-bridge": "^2.1"
