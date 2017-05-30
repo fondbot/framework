@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Drivers;
 
 use Mockery\Mock;
+use GuzzleHttp\Client;
 use FondBot\Http\Request;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
@@ -13,6 +14,16 @@ use FondBot\Drivers\CommandHandler;
 
 class DriverTest extends TestCase
 {
+    public function test_http()
+    {
+        $guzzle = $this->mock(Client::class);
+
+        /** @var Driver $driver */
+        $driver = $this->mock(Driver::class, [$guzzle])->makePartial();
+
+        $this->assertSame($guzzle, $driver->getHttp());
+    }
+
     public function test_fill(): void
     {
         $request = new Request([], []);

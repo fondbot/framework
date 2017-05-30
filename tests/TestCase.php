@@ -47,7 +47,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @return mixed|Mockery\Mock
      */
-    protected function mock(string $class, array $args = null)
+    protected function mock($class, array $args = null)
     {
         if ($args !== null) {
             $instance = Mockery::mock($class, $args);

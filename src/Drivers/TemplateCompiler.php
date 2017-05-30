@@ -57,48 +57,39 @@ abstract class TemplateCompiler
     /**
      * Compile template.
      *
-     * @param Template|Template[] $templates
-     * @param array               $args
+     * @param Template $template
+     * @param array    $args
      *
      * @return mixed
      */
-    public function compile($templates, array $args = [])
+    public function compile(Template $template, array $args = [])
     {
-        if ($templates instanceof Template) {
-            $templates = [$templates];
-        }
-
-        $result = [];
-
-        foreach ($templates as $template) {
-            // If template can compile itself there is no need to create additional method
-            if ($template instanceof Arrayable) {
-                // Firstly, we compile the template
-                // Then we go through elements and compiled remaining templates
-                $result[] = collect($template->toArray())
-                    ->map(function ($element) use ($args) {
-                        if ($element instanceof Template) {
-                            return $this->compile($element, $args);
-                        }
-
-                        return $element;
-                    })
-                    ->toArray();
-            } else {
-                // Otherwise, we look for a compile method
-                $method = 'compile'.ucfirst($template->getName());
-                if (!method_exists($this, $method)) {
-                    throw new RuntimeException('No compile method for "'.$template->getName().'".');
+        // If template can compile itself we recursively compile subelements
+        if ($template instanceof Arrayable) {
+            $array = $template->toArray();
+            $transformer = function ($value) use (&$transformer, $args) {
+                if (is_array($value)) {
+                    return array_map($transformer, $value);
+                } elseif ($value instanceof Arrayable) {
+                    return array_map($transformer, $value->toArray());
+                } elseif ($value instanceof Template) {
+                    return $this->compile($value, $args);
                 }
 
-                $result[] = $this->$method($template, $args);
-            }
+                return $value;
+            };
+
+            $result = array_map($transformer, $array);
+
+            return $result;
         }
 
-        if (count($result) === 1) {
-            return $result[0];
+        // Otherwise, we look for a compile method
+        $method = 'compile'.ucfirst($template->getName());
+        if (!method_exists($this, $method)) {
+            throw new RuntimeException('No compile method for "'.$template->getName().'".');
         }
 
-        return $result;
+        return $this->$method($template, $args);
     }
 }
