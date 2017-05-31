@@ -21,7 +21,7 @@ trait InteractsWithSession
      */
     protected function remember(string $key, $value): void
     {
-        $this->kernel->getSession()->setValue($key, $value);
+        $this->kernel->getSession()->setContextValue($key, $value);
     }
 
     /**

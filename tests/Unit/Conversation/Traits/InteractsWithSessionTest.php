@@ -18,7 +18,7 @@ class InteractsWithSessionTest extends TestCase
         $session = $this->mock(Session::class);
 
         $kernel->shouldReceive('getSession')->andReturn($session)->once();
-        $session->shouldReceive('setValue')->with('foo', 'bar')->once();
+        $session->shouldReceive('setContextValue')->with('foo', 'bar')->once();
 
         $class = new InteractsWithSessionTraitTestClass($kernel);
         $class->remember('foo', 'bar');

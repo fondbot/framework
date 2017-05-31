@@ -20,7 +20,7 @@ use FondBot\Conversation\Interaction;
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $message
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $intent
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $interaction
- * @property array                                      $values
+ * @property array                                      $context
  * @property Session                                    $session
  */
 class SessionTest extends TestCase
@@ -35,7 +35,7 @@ class SessionTest extends TestCase
         $this->message = $this->mock(ReceivedMessage::class);
         $this->intent = $this->mock(Intent::class);
         $this->interaction = $this->mock(Interaction::class);
-        $this->values = [
+        $this->context = [
             'foo' => $this->faker()->sha1,
             'bar' => $this->faker()->sha1,
         ];
@@ -47,7 +47,7 @@ class SessionTest extends TestCase
             $this->message,
             $this->intent,
             $this->interaction,
-            $this->values
+            $this->context
         );
     }
 
@@ -93,22 +93,22 @@ class SessionTest extends TestCase
         $this->assertNotSame($this->interaction, $this->session->getInteraction());
     }
 
-    public function test_values(): void
+    public function test_context(): void
     {
-        $this->assertSame($this->values, $this->session->getValues());
+        $this->assertSame($this->context, $this->session->getContext());
 
         $values = [
             'name' => $this->faker()->name,
             'phone' => $this->faker()->phoneNumber,
         ];
 
-        $this->session->setValues($values);
-        $this->assertSame($values, $this->session->getValues());
-        $this->assertNotSame($this->values, $this->session->getValues());
+        $this->session->setContext($values);
+        $this->assertSame($values, $this->session->getContext());
+        $this->assertNotSame($this->context, $this->session->getContext());
 
-        $this->session->setValue('uuid', $uuid = $this->faker()->uuid);
+        $this->session->setContextValue('uuid', $uuid = $this->faker()->uuid);
         $values['uuid'] = $uuid;
-        $this->assertSame($values, $this->session->getValues());
+        $this->assertSame($values, $this->session->getContext());
     }
 
     public function test_toArray(): void
@@ -116,7 +116,7 @@ class SessionTest extends TestCase
         $expected = [
             'intent' => get_class($this->intent),
             'interaction' => get_class($this->interaction),
-            'values' => $this->values,
+            'context' => $this->context,
         ];
 
         $this->assertSame($expected, $this->session->toArray());

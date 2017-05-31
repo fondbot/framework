@@ -88,7 +88,7 @@ class ConversationManager
             $session = session();
             $session->setIntent($conversable);
             $session->setInteraction(null);
-            $session->setValues([]);
+            $session->setContext([]);
 
             kernel()->setSession($session);
 
@@ -127,7 +127,7 @@ class ConversationManager
             case $conversable instanceof Interaction:
                 $session = session();
                 $session->setInteraction(null);
-                $session->setValues([]);
+                $session->setContext([]);
 
                 kernel()->setSession($session);
 

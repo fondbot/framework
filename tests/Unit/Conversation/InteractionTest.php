@@ -32,7 +32,7 @@ class InteractionTest extends TestCase
 
         $this->session->shouldReceive('getInteraction')->andReturn($this->interaction)->once();
         $this->session->shouldReceive('getMessage')->andReturn($message)->once();
-        $this->session->shouldReceive('setValue')->with('key', 'value')->once();
+        $this->session->shouldReceive('setContextValue')->with('key', 'value')->once();
 
         $this->interaction->handle($this->kernel);
     }

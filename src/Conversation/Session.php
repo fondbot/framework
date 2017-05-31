@@ -17,7 +17,7 @@ class Session
     private $message;
     private $intent;
     private $interaction;
-    private $values;
+    private $context;
 
     public function __construct(
         Channel $channel,
@@ -26,7 +26,7 @@ class Session
         ReceivedMessage $message,
         Intent $intent = null,
         Interaction $interaction = null,
-        array $values = []
+        array $context = []
     ) {
         $this->channel = $channel;
         $this->chat = $chat;
@@ -34,7 +34,7 @@ class Session
         $this->message = $message;
         $this->intent = $intent;
         $this->interaction = $interaction;
-        $this->values = $values;
+        $this->context = $context;
     }
 
     /**
@@ -118,23 +118,23 @@ class Session
     }
 
     /**
-     * Get values.
+     * Get context.
      *
      * @return array
      */
-    public function getValues(): array
+    public function getContext(): array
     {
-        return $this->values;
+        return $this->context;
     }
 
     /**
-     * Set values.
+     * Set context.
      *
-     * @param array $values
+     * @param array $context
      */
-    public function setValues(array $values): void
+    public function setContext(array $context): void
     {
-        $this->values = $values;
+        $this->context = $context;
     }
 
     /**
@@ -143,9 +143,9 @@ class Session
      * @param string $key
      * @param mixed  $value
      */
-    public function setValue(string $key, $value): void
+    public function setContextValue(string $key, $value): void
     {
-        $this->values[$key] = $value;
+        $this->context[$key] = $value;
     }
 
     /**
@@ -158,7 +158,7 @@ class Session
         return [
             'intent' => $this->intent !== null ? get_class($this->intent) : null,
             'interaction' => $this->interaction !== null ? get_class($this->interaction) : null,
-            'values' => $this->values,
+            'context' => $this->context,
         ];
     }
 }

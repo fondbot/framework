@@ -58,7 +58,7 @@ class ConversationManagerTest extends TestCase
 
         $session->shouldReceive('setIntent')->with($intent)->once();
         $session->shouldReceive('setInteraction')->with(null)->once();
-        $session->shouldReceive('setValues')->with([])->once();
+        $session->shouldReceive('setContext')->with([])->once();
         $intent->shouldReceive('handle')->with($this->kernel)->once();
         $sessionManager->shouldReceive('close')->with($session)->once();
 
@@ -146,7 +146,7 @@ class ConversationManagerTest extends TestCase
 
         $session->shouldReceive('setIntent')->with($intent)->once();
         $session->shouldReceive('setInteraction')->with(null)->once();
-        $session->shouldReceive('setValues')->with([])->once();
+        $session->shouldReceive('setContext')->with([])->once();
         $intent->shouldReceive('handle')->once();
 
         (new ConversationManager)->restart($intent);
@@ -168,7 +168,7 @@ class ConversationManagerTest extends TestCase
         $this->kernel->setSession($session);
 
         $session->shouldReceive('setInteraction')->with(null)->once();
-        $session->shouldReceive('setValues')->with([])->once();
+        $session->shouldReceive('setContext')->with([])->once();
         $interaction->shouldReceive('handle')->once();
 
         (new ConversationManager)->restart($interaction);
