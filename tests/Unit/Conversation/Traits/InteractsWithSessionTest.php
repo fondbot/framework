@@ -12,6 +12,19 @@ use FondBot\Conversation\Traits\InteractsWithSession;
 
 class InteractsWithSessionTest extends TestCase
 {
+    public function test_context(): void
+    {
+        $kernel = $this->mock(Kernel::class);
+        $session = $this->mock(Session::class);
+
+        $kernel->shouldReceive('getSession')->andReturn($session)->twice();
+        $session->shouldReceive('getContext')->andReturn(['foo' => 'bar'])->twice();
+
+        $class = new InteractsWithSessionTraitTestClass($kernel);
+        $this->assertSame(['foo' => 'bar'], $class->context());
+        $this->assertSame('bar', $class->context('foo'));
+    }
+
     public function test_remember(): void
     {
         $kernel = $this->mock(Kernel::class);
