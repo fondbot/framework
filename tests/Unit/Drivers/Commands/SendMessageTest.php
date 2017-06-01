@@ -7,6 +7,7 @@ namespace FondBot\Tests\Unit\Drivers\Commands;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
+use InvalidArgumentException;
 use FondBot\Contracts\Template;
 use FondBot\Drivers\Commands\SendMessage;
 
@@ -26,5 +27,17 @@ class SendMessageTest extends TestCase
         $this->assertSame($recipient, $command->getRecipient());
         $this->assertSame($text, $command->getText());
         $this->assertSame($template, $command->getTemplate());
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Either text or template should be set.
+     */
+    public function test_text_and_template_null()
+    {
+        new SendMessage(
+            $this->mock(Chat::class),
+            $this->mock(User::class)
+        );
     }
 }

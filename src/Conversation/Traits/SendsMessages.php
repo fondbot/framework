@@ -18,11 +18,11 @@ trait SendsMessages
     /**
      * Send message to user.
      *
-     * @param string        $text
+     * @param string|null   $text
      * @param Template|null $template
      * @param int           $delay
      */
-    protected function sendMessage(string $text, Template $template = null, int $delay = 0): void
+    protected function sendMessage(string $text = null, Template $template = null, int $delay = 0): void
     {
         /** @var Queue $queue */
         $queue = resolve(Queue::class);

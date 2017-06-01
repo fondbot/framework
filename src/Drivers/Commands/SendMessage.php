@@ -7,6 +7,7 @@ namespace FondBot\Drivers\Commands;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Command;
+use InvalidArgumentException;
 use FondBot\Contracts\Template;
 
 class SendMessage implements Command
@@ -16,8 +17,12 @@ class SendMessage implements Command
     private $text;
     private $template;
 
-    public function __construct(Chat $chat, User $recipient, string $text, Template $template = null)
+    public function __construct(Chat $chat, User $recipient, string $text = null, Template $template = null)
     {
+        if ($text === null && $template === null) {
+            throw new InvalidArgumentException('Either text or template should be set.');
+        }
+
         $this->chat = $chat;
         $this->recipient = $recipient;
         $this->text = $text;
@@ -44,7 +49,7 @@ class SendMessage implements Command
         return $this->recipient;
     }
 
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
