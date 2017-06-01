@@ -22,7 +22,7 @@ class ListDrivers extends Command
         /** @var Client $http */
         $http = resolve(Client::class);
         $response = $http->get('https://fondbot.com/api/drivers');
-        $items = json_decode((string) $response, true);
+        $items = json_decode((string) $response->getBody(), true);
 
         $drivers = collect($items)
             ->map(function ($item) {

@@ -31,6 +31,9 @@ class ListDriversTest extends TestCase
 
         $guzzle->shouldReceive('get')
             ->with('https://fondbot.com/api/drivers')
+            ->andReturnSelf()
+            ->once();
+        $guzzle->shouldReceive('getBody')
             ->andReturn($stream = new Stream($stream))
             ->once();
 
