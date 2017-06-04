@@ -15,7 +15,7 @@ class DriverManager
 {
     protected $container;
 
-    /** @var Driver[] */
+    /** @var AbstractDriver[] */
     protected $drivers = [];
 
     /** @var array */
@@ -29,11 +29,11 @@ class DriverManager
     /**
      * Add driver.
      *
-     * @param Driver $driver
-     * @param string $name
-     * @param array  $parameters
+     * @param AbstractDriver $driver
+     * @param string         $name
+     * @param array          $parameters
      */
-    public function add(Driver $driver, string $name, array $parameters): void
+    public function add(AbstractDriver $driver, string $name, array $parameters): void
     {
         $this->drivers[$name] = $driver;
         $this->parameters[$name] = $parameters;
@@ -45,22 +45,22 @@ class DriverManager
      * @param Channel $channel
      * @param Request $request
      *
-     * @return Driver
+     * @return AbstractDriver
      *
      * @throws InvalidConfiguration
      * @throws DriverNotFound
      */
-    public function get(Channel $channel, Request $request): Driver
+    public function get(Channel $channel, Request $request): AbstractDriver
     {
         $driver = Arr::get($this->drivers, $channel->getDriver());
 
-        if ($driver === null || !$driver instanceof Driver) {
+        if ($driver === null || !$driver instanceof AbstractDriver) {
             throw new DriverNotFound('Driver `'.$channel->getDriver().'` not found.');
         }
 
         $this->validateParameters($channel);
 
-        $driver->fill($channel->getParameters(), $request);
+        $driver->initialize($channel->getParameters(), $request);
 
         return $driver;
     }

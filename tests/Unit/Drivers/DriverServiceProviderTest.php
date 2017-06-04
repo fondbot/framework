@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Drivers;
 
-use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Drivers\DriverManager;
+use FondBot\Drivers\AbstractDriver;
 use TheCodingMachine\Discovery\Asset;
 use TheCodingMachine\Discovery\Discovery;
 use FondBot\Drivers\DriverServiceProvider;
@@ -16,14 +16,14 @@ class DriverServiceProviderTest extends TestCase
 {
     public function test(): void
     {
-        $driver = $this->mock(Driver::class);
+        $driver = $this->mock(AbstractDriver::class);
         $discovery = $this->mock(Discovery::class);
 
         $this->container->add(get_class($driver), $driver);
 
         $discovery->shouldReceive('getAssetType')
-            ->with(Driver::class)
-            ->andReturn(new ImmutableAssetType(Driver::class, [
+            ->with(AbstractDriver::class)
+            ->andReturn(new ImmutableAssetType(AbstractDriver::class, [
                 new Asset(get_class($driver), '', '', 0, ['name' => 'foo']),
             ]))
             ->atLeast()->once();

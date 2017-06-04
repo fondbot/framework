@@ -6,13 +6,13 @@ namespace FondBot\Tests\Unit\Conversation\Traits;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
-use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Queue;
 use FondBot\Channels\Channel;
 use FondBot\Application\Kernel;
 use FondBot\Templates\Keyboard;
 use FondBot\Templates\Attachment;
+use FondBot\Drivers\AbstractDriver;
 use FondBot\Conversation\Traits\SendsMessages;
 
 class SendsMessagesTest extends TestCase
@@ -21,7 +21,7 @@ class SendsMessagesTest extends TestCase
     {
         $queue = $this->mock(Queue::class);
         $this->kernel->setChannel($this->mock(Channel::class));
-        $this->kernel->setDriver($this->mock(Driver::class));
+        $this->kernel->setDriver($this->mock(AbstractDriver::class));
 
         $queue->shouldReceive('push')->once();
 
@@ -33,7 +33,7 @@ class SendsMessagesTest extends TestCase
     {
         $queue = $this->mock(Queue::class);
         $this->kernel->setChannel($this->mock(Channel::class));
-        $this->kernel->setDriver($this->mock(Driver::class));
+        $this->kernel->setDriver($this->mock(AbstractDriver::class));
 
         $queue->shouldReceive('later')->once();
 
@@ -45,7 +45,7 @@ class SendsMessagesTest extends TestCase
     {
         $queue = $this->mock(Queue::class);
         $this->kernel->setChannel($this->mock(Channel::class));
-        $this->kernel->setDriver($this->mock(Driver::class));
+        $this->kernel->setDriver($this->mock(AbstractDriver::class));
 
         $queue->shouldReceive('push')->once();
 
@@ -57,7 +57,7 @@ class SendsMessagesTest extends TestCase
     {
         $queue = $this->mock(Queue::class);
         $this->kernel->setChannel($this->mock(Channel::class));
-        $this->kernel->setDriver($this->mock(Driver::class));
+        $this->kernel->setDriver($this->mock(AbstractDriver::class));
 
         $queue->shouldReceive('later')->once();
 
@@ -69,7 +69,7 @@ class SendsMessagesTest extends TestCase
     {
         $queue = $this->mock(Queue::class);
         $this->kernel->setChannel($this->mock(Channel::class));
-        $this->kernel->setDriver($this->mock(Driver::class));
+        $this->kernel->setDriver($this->mock(AbstractDriver::class));
 
         $queue->shouldReceive('push')->once();
 

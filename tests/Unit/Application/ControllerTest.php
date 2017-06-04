@@ -24,7 +24,7 @@ class ControllerTest extends TestCase
 
         $response->getBody()->rewind();
 
-        $this->assertSame('FondBot v1.0.0', $response->getBody()->getContents());
+        $this->assertRegExp('/FondBot v([0-9]+)\.([0-9]+)\.([0-9]+)/', $response->getBody()->getContents());
     }
 
     public function test_webhook(): void

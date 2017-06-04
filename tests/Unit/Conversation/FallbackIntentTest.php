@@ -6,11 +6,11 @@ namespace FondBot\Tests\Unit\Conversation;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
-use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Queue;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Session;
+use FondBot\Drivers\AbstractDriver;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\FallbackIntent;
 
@@ -35,7 +35,7 @@ class FallbackIntentTest extends TestCase
     {
         $queue = $this->mock(Queue::class);
         $channel = $this->mock(Channel::class);
-        $driver = $this->mock(Driver::class);
+        $driver = $this->mock(AbstractDriver::class);
         $session = $this->mock(Session::class);
         $message = $this->mock(ReceivedMessage::class);
         $chat = $this->mock(Chat::class);

@@ -37,7 +37,7 @@ class DriverServiceProvider extends AbstractServiceProvider
 
             // Here we will discover all drivers installed
             // And add all found drivers to the manager
-            $assets = $this->discovery->getAssetType(Driver::class);
+            $assets = $this->discovery->getAssetType(AbstractDriver::class);
 
             foreach ($assets->getAssets() as $asset) {
                 $manager->add(
