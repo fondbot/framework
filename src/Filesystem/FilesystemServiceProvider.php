@@ -14,6 +14,7 @@ abstract class FilesystemServiceProvider extends AbstractServiceProvider
 {
     protected $provides = [
         MountManager::class,
+        Filesystem::class,
     ];
 
     /**
@@ -37,9 +38,13 @@ abstract class FilesystemServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
+        $this->container->share(Filesystem::class, function () {
+            return new Filesystem(new Local($this->container->get('base_path')));
+        });
+
         $this->container->share(MountManager::class, function () {
             $filesystems = [
-                'local' => new Filesystem(new Local($this->container->get('base_path'))),
+                'local' => $this->container->get(Filesystem::class),
             ];
 
             foreach ($this->adapters() as $name => $adapter) {
