@@ -12,12 +12,11 @@ use FondBot\Conversation\ConversationServiceProvider;
 
 class Factory
 {
-    public static function create(Container $container, string $routesPrefix = ''): Kernel
+    public static function create(Container $container): Kernel
     {
         $container->delegate(new ReflectionContainer);
 
         // Load service providers
-        $container->addServiceProvider(new RouteServiceProvider($routesPrefix));
         $container->addServiceProvider(new DriverServiceProvider);
         $container->addServiceProvider(new SessionServiceProvider);
         $container->addServiceProvider(new ConversationServiceProvider);

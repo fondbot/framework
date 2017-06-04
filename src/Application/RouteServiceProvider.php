@@ -10,7 +10,7 @@ use Zend\Diactoros\Response\SapiEmitter;
 use Zend\Diactoros\ServerRequestFactory;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
-class RouteServiceProvider extends AbstractServiceProvider
+abstract class RouteServiceProvider extends AbstractServiceProvider
 {
     protected $provides = [
         'request',
@@ -19,12 +19,14 @@ class RouteServiceProvider extends AbstractServiceProvider
         'router',
     ];
 
-    private $prefix;
-
-    public function __construct(string $prefix)
-    {
-        $this->prefix = $prefix;
-    }
+    /**
+     * Define routes.
+     *
+     * @param RouteCollection $routes
+     *
+     * @return void
+     */
+    abstract public function routes(RouteCollection $routes): void;
 
     /**
      * Use the register method to register items with the container via the
@@ -47,22 +49,9 @@ class RouteServiceProvider extends AbstractServiceProvider
         $this->container->share('router', function () {
             $router = new RouteCollection($this->container);
 
-            $controller = new Controller;
-
-            $router->map('GET', $this->buildPath('/'), [$controller, 'index']);
-            $router->map('GET', $this->buildPath('/channels/{name}'), [$controller, 'webhook']);
-            $router->map('POST', $this->buildPath('/channels/{name}'), [$controller, 'webhook']);
+            $this->routes($router);
 
             return $router;
         });
-    }
-
-    private function buildPath(string $path): string
-    {
-        if ($this->prefix !== '') {
-            return $this->prefix.'/'.$path;
-        }
-
-        return $path;
     }
 }
