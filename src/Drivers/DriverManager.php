@@ -26,6 +26,16 @@ class DriverManager
     }
 
     /**
+     * Get all registered drivers.
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->drivers;
+    }
+
+    /**
      * Get driver for channel.
      *
      * @param Channel $channel

@@ -20,7 +20,7 @@ class DriverServiceProviderTest extends TestCase
 
         $this->container->addServiceProvider(new DriverServiceProvider($assetLoader));
 
-        $assetLoader->shouldReceive('discover')->with('driver')->andReturn(['Foo', 'Bar']);
+        $assetLoader->shouldReceive('all')->with('driver')->andReturn(['Foo', 'Bar']);
 
         $this->container->add('Foo', $fooDriver);
         $this->container->add('Bar', $barDriver);

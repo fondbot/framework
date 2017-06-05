@@ -7,6 +7,7 @@ namespace FondBot\Toolbelt\Commands;
 use Http\Client\HttpClient;
 use FondBot\Toolbelt\Command;
 use Http\Message\RequestFactory;
+use FondBot\Drivers\DriverManager;
 use Symfony\Component\Console\Helper\Table;
 
 class ListDrivers extends Command
@@ -24,22 +25,30 @@ class ListDrivers extends Command
         $http = resolve(HttpClient::class);
         /** @var RequestFactory $requestFactory */
         $requestFactory = resolve(RequestFactory::class);
+        /** @var DriverManager $driverManager */
+        $driverManager = resolve(DriverManager::class);
+
+        $installedDrivers = collect($driverManager->all())->keys()->toArray();
 
         $request = $requestFactory->createRequest('GET', 'https://fondbot.com/api/drivers');
-
         $response = $http->sendRequest($request);
 
         $items = json_decode((string) $response->getBody(), true);
 
         $drivers = collect($items)
-            ->map(function ($item) {
-                return [$item['name'], $item['package'], $item['official'] ? '✅' : '❌'];
+            ->transform(function ($item) use ($installedDrivers) {
+                return [
+                    $item['name'],
+                    $item['package'],
+                    $item['official'] ? '✅' : '❌',
+                    in_array($item['name'], $installedDrivers, true) ? '✅' : '❌',
+                ];
             })
             ->toArray();
 
         $table = new Table($this->output);
         $table
-            ->setHeaders(['Name', 'Package', 'Official'])
+            ->setHeaders(['Name', 'Package', 'Official', 'Installed'])
             ->setRows($drivers)
             ->render();
     }

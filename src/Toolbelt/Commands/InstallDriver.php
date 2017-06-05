@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Toolbelt\Commands;
 
-use GuzzleHttp\Client;
+use Http\Client\HttpClient;
 use FondBot\Toolbelt\Command;
+use Http\Message\RequestFactory;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -21,10 +22,15 @@ class InstallDriver extends Command
 
     public function handle(): void
     {
-        /** @var Client $http */
-        $http = resolve(Client::class);
-        $response = $http->get('https://fondbot.com/api/drivers');
-        $items = json_decode($response->getBody()->getContents(), true);
+        /** @var HttpClient $http */
+        $http = resolve(HttpClient::class);
+        /** @var RequestFactory $requestFactory */
+        $requestFactory = resolve(RequestFactory::class);
+
+        $request = $requestFactory->createRequest('GET', 'https://fondbot.com/api/drivers');
+        $response = $http->sendRequest($request);
+
+        $items = json_decode((string) $response->getBody(), true);
 
         // Check if package is listed in store
         $name = $this->getArgument('name');

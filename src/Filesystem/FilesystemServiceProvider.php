@@ -39,7 +39,7 @@ abstract class FilesystemServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         $this->container->share(Filesystem::class, function () {
-            return new Filesystem(new Local($this->container->get('base_path')));
+            return new Filesystem(new Local($this->container->get('base_path'), LOCK_EX, Local::SKIP_LINKS));
         });
 
         $this->container->share(MountManager::class, function () {

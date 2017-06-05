@@ -15,6 +15,7 @@ abstract class AppServiceProvider extends AbstractServiceProvider implements Boo
         'environment',
         'base_path',
         'resources_path',
+        'bootstrap_path',
     ];
 
     /**
@@ -64,5 +65,6 @@ abstract class AppServiceProvider extends AbstractServiceProvider implements Boo
         $this->container->share('environment', $this->environment());
         $this->container->share('base_path', $this->basePath());
         $this->container->share('resources_path', $this->resourcesPath());
+        $this->container->share('bootstrap_path', 'bootstrap');
     }
 }

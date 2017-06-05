@@ -41,6 +41,7 @@
     "zumba/json-serializer": "^2.1"
   },
   "require-dev": {
+    "composer/composer": "^1.4",
     "fzaninotto/faker": "^1.6",
     "larapack/dd": "^1.1",
     "league/flysystem-memory": "^1.0",
