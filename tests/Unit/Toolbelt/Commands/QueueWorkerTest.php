@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Toolbelt\Commands;
 
 use FondBot\Queue\Job;
+use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Queue;
 use FondBot\Drivers\Command;
 use FondBot\Channels\Channel;
-use FondBot\Drivers\AbstractDriver;
 use FondBot\Toolbelt\Commands\QueueWorker;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -21,7 +21,7 @@ class QueueWorkerTest extends TestCase
         $queue = $this->mock(Queue::class);
         $job = new Job(
             $channel = $this->mock(Channel::class),
-            $driver = $this->mock(AbstractDriver::class),
+            $driver = $this->mock(Driver::class),
             $command = $this->mock(Command::class)
         );
 

@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Drivers;
 
 use FondBot\Http\Request;
+use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Drivers\DriverManager;
-use FondBot\Drivers\AbstractDriver;
 
 class DriverManagerTest extends TestCase
 {
     public function test_get(): void
     {
-        $driver = $this->mock(AbstractDriver::class);
+        $driver = $this->mock(Driver::class);
         $channel = $this->mock(Channel::class);
         $request = $this->mock(Request::class);
         $manager = new DriverManager;

@@ -13,7 +13,7 @@ abstract class CommandHandler
 {
     protected $driver;
 
-    public function __construct(AbstractDriver $driver)
+    public function __construct(Driver $driver)
     {
         $this->driver = $driver;
     }

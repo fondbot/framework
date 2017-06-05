@@ -7,9 +7,9 @@ namespace FondBot\Tests\Unit\Drivers;
 use Mockery;
 use Mockery\Mock;
 use RuntimeException;
+use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Drivers\Command;
-use FondBot\Drivers\AbstractDriver;
 use FondBot\Drivers\CommandHandler;
 use FondBot\Drivers\Commands\SendMessage;
 
@@ -24,7 +24,7 @@ class CommandHandlerTest extends TestCase
 
     public function test_method_exists(): void
     {
-        $driver = $this->mock(AbstractDriver::class);
+        $driver = $this->mock(Driver::class);
         $command = $this->mock(SendMessage::class);
         /** @var CommandHandler|Mock $handler */
         $handler = $this->mock(CommandHandler::class, [$driver])->shouldAllowMockingProtectedMethods()->makePartial();
@@ -41,7 +41,7 @@ class CommandHandlerTest extends TestCase
      */
     public function test_method_does_not_exist(): void
     {
-        $driver = $this->mock(AbstractDriver::class);
+        $driver = $this->mock(Driver::class);
         $command = $this->mock(Command::class);
         /** @var CommandHandler|Mock $handler */
         $handler = $this->mock(CommandHandler::class, [$driver])->makePartial();

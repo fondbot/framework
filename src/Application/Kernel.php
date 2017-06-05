@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Application;
 
+use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use League\Container\Container;
 use FondBot\Conversation\Session;
-use FondBot\Drivers\AbstractDriver;
 use FondBot\Conversation\SessionManager;
 
 class Kernel
@@ -61,9 +61,9 @@ class Kernel
     /**
      * Get current driver.
      *
-     * @return AbstractDriver|null
+     * @return Driver|null
      */
-    public function getDriver(): ?AbstractDriver
+    public function getDriver(): ?Driver
     {
         return $this->driver;
     }
@@ -71,9 +71,9 @@ class Kernel
     /**
      * Set driver.
      *
-     * @param AbstractDriver $driver
+     * @param Driver $driver
      */
-    public function setDriver(AbstractDriver $driver): void
+    public function setDriver(Driver $driver): void
     {
         $this->driver = $driver;
     }
@@ -101,10 +101,10 @@ class Kernel
     /**
      * Load session.
      *
-     * @param Channel        $channel
-     * @param AbstractDriver $driver
+     * @param Channel $channel
+     * @param Driver  $driver
      */
-    public function loadSession(Channel $channel, AbstractDriver $driver): void
+    public function loadSession(Channel $channel, Driver $driver): void
     {
         $this->session = $this->sessionManager()->load($channel, $driver);
     }

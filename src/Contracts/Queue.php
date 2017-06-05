@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Contracts;
 
 use FondBot\Queue\Job;
+use FondBot\Drivers\Driver;
 use FondBot\Drivers\Command;
 use FondBot\Channels\Channel;
-use FondBot\Drivers\AbstractDriver;
 
 interface Queue
 {
@@ -21,21 +21,21 @@ interface Queue
     /**
      * Push command onto the queue.
      *
-     * @param Channel        $channel
-     * @param AbstractDriver $driver
-     * @param Command        $command
+     * @param Channel $channel
+     * @param Driver  $driver
+     * @param Command $command
      */
-    public function push(Channel $channel, AbstractDriver $driver, Command $command): void;
+    public function push(Channel $channel, Driver $driver, Command $command): void;
 
     /**
      * Push command onto the queue with a delay.
      *
-     * @param Channel        $channel
-     * @param AbstractDriver $driver
-     * @param Command        $command
-     * @param int            $delay
+     * @param Channel $channel
+     * @param Driver  $driver
+     * @param Command $command
+     * @param int     $delay
      *
      * @return mixed|void
      */
-    public function later(Channel $channel, AbstractDriver $driver, Command $command, int $delay): void;
+    public function later(Channel $channel, Driver $driver, Command $command, int $delay): void;
 }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Drivers;
 
+use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Application\Assets;
 use FondBot\Drivers\DriverManager;
-use FondBot\Drivers\AbstractDriver;
 use FondBot\Drivers\DriverServiceProvider;
 
 class DriverServiceProviderTest extends TestCase
@@ -15,8 +15,8 @@ class DriverServiceProviderTest extends TestCase
     public function test(): void
     {
         $assetLoader = $this->mock(Assets::class);
-        $fooDriver = $this->mock(AbstractDriver::class);
-        $barDriver = $this->mock(AbstractDriver::class);
+        $fooDriver = $this->mock(Driver::class);
+        $barDriver = $this->mock(Driver::class);
 
         $this->container->addServiceProvider(new DriverServiceProvider($assetLoader));
 

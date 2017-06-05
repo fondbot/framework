@@ -8,7 +8,6 @@ use RuntimeException;
 use FondBot\Helpers\Arr;
 use FondBot\Http\Request;
 use Http\Client\HttpClient;
-use FondBot\Contracts\Driver;
 use Http\Message\RequestFactory;
 use Illuminate\Support\Collection;
 use Psr\Http\Message\StreamInterface;
@@ -16,8 +15,9 @@ use FondBot\Queue\SerializableForQueue;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Http\Request as HttpRequest;
 use FondBot\Drivers\Exceptions\InvalidRequest;
+use FondBot\Contracts\Driver as DriverContract;
 
-abstract class AbstractDriver implements Driver, SerializableForQueue
+abstract class Driver implements DriverContract, SerializableForQueue
 {
     /** @var Collection */
     protected $parameters;
@@ -58,9 +58,9 @@ abstract class AbstractDriver implements Driver, SerializableForQueue
      *
      * @param Request $request
      *
-     * @return Driver|AbstractDriver|static
+     * @return Driver|DriverContract|static
      */
-    public function initialize(array $parameters, Request $request): Driver
+    public function initialize(array $parameters, Request $request): DriverContract
     {
         $this->request = $request;
 

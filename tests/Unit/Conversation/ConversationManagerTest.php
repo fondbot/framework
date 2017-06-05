@@ -7,12 +7,12 @@ namespace FondBot\Tests\Unit\Conversation;
 use Mockery;
 use Monolog\Logger;
 use FondBot\Http\Request;
+use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Session;
 use FondBot\Drivers\DriverManager;
-use FondBot\Drivers\AbstractDriver;
 use FondBot\Channels\ChannelManager;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Conversable;
@@ -29,7 +29,7 @@ class ConversationManagerTest extends TestCase
     {
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
-        $driver = $this->mock(AbstractDriver::class);
+        $driver = $this->mock(Driver::class);
         $channelManager = $this->mock(ChannelManager::class);
         $driverManager = $this->mock(DriverManager::class);
         $sessionManager = $this->mock(SessionManager::class);
@@ -71,7 +71,7 @@ class ConversationManagerTest extends TestCase
     {
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
-        $driver = $this->mock(AbstractDriver::class);
+        $driver = $this->mock(Driver::class);
         $channelManager = $this->mock(ChannelManager::class);
         $driverManager = $this->mock(DriverManager::class);
         $sessionManager = $this->mock(SessionManager::class);
@@ -103,7 +103,7 @@ class ConversationManagerTest extends TestCase
     {
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
-        $driver = $this->mock(AbstractDriver::class);
+        $driver = $this->mock(Driver::class);
         $channelManager = $this->mock(ChannelManager::class);
         $driverManager = $this->mock(DriverManager::class);
 
@@ -121,7 +121,7 @@ class ConversationManagerTest extends TestCase
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
         /** @var \Mockery\Mock|mixed $driver */
-        $driver = Mockery::mock(AbstractDriver::class, WebhookVerification::class);
+        $driver = Mockery::mock(Driver::class, WebhookVerification::class);
         $channelManager = $this->mock(ChannelManager::class);
         $driverManager = $this->mock(DriverManager::class);
         $verification = $this->faker()->uuid;

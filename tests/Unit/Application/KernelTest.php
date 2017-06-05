@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Application;
 
+use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Application\Kernel;
 use FondBot\Conversation\Session;
-use FondBot\Drivers\AbstractDriver;
 use FondBot\Conversation\SessionManager;
 
 class KernelTest extends TestCase
@@ -30,7 +30,7 @@ class KernelTest extends TestCase
 
     public function test_driver(): void
     {
-        $driver = $this->mock(AbstractDriver::class);
+        $driver = $this->mock(Driver::class);
         $this->kernel->setDriver($driver);
 
         $this->assertSame($driver, $this->kernel->getDriver());
@@ -46,7 +46,7 @@ class KernelTest extends TestCase
     public function test_loadSession(): void
     {
         $channel = $this->mock(Channel::class);
-        $driver = $this->mock(AbstractDriver::class);
+        $driver = $this->mock(Driver::class);
         $session = $this->mock(Session::class);
         $sessionManager = $this->mock(SessionManager::class);
 

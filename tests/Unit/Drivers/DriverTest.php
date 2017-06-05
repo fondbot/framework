@@ -6,19 +6,19 @@ namespace FondBot\Tests\Unit\Drivers;
 
 use Mockery\Mock;
 use FondBot\Http\Request;
+use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Drivers\Command;
-use FondBot\Drivers\AbstractDriver;
 use FondBot\Drivers\CommandHandler;
 
-class AbstractDriverTest extends TestCase
+class DriverTest extends TestCase
 {
     public function test_initialize(): void
     {
         $request = $this->mock(Request::class);
 
-        /** @var AbstractDriver|Mock $driver */
-        $driver = $this->mock(AbstractDriver::class)->makePartial();
+        /** @var Driver|Mock $driver */
+        $driver = $this->mock(Driver::class)->makePartial();
         $driver->shouldReceive('getDefaultParameters')->andReturn(['foo' => '', 'bar' => ''])->once();
 
         $driver = $driver->initialize(['foo' => 'bar'], $request);
@@ -32,8 +32,8 @@ class AbstractDriverTest extends TestCase
         $command = $this->mock(Command::class);
         $commandHandler = $this->mock(CommandHandler::class);
 
-        /** @var AbstractDriver|Mock $driver */
-        $driver = $this->mock(AbstractDriver::class)->makePartial();
+        /** @var Driver|Mock $driver */
+        $driver = $this->mock(Driver::class)->makePartial();
 
         $driver->shouldReceive('getCommandHandler')->andReturn($commandHandler)->once();
         $commandHandler->shouldReceive('handle')->with($command)->once();

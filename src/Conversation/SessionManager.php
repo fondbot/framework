@@ -6,9 +6,9 @@ namespace FondBot\Conversation;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
+use FondBot\Drivers\Driver;
 use FondBot\Contracts\Cache;
 use FondBot\Channels\Channel;
-use FondBot\Drivers\AbstractDriver;
 use Psr\Container\ContainerInterface;
 
 class SessionManager
@@ -25,14 +25,14 @@ class SessionManager
     /**
      * Load session.
      *
-     * @param Channel        $channel
-     * @param AbstractDriver $driver
+     * @param Channel $channel
+     * @param Driver  $driver
      *
      * @return Session
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function load(Channel $channel, AbstractDriver $driver): Session
+    public function load(Channel $channel, Driver $driver): Session
     {
         $chat = $driver->getChat();
         $sender = $driver->getUser();

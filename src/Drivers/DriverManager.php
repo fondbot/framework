@@ -12,15 +12,15 @@ use FondBot\Drivers\Exceptions\InvalidConfiguration;
 
 class DriverManager
 {
-    /** @var AbstractDriver[] */
+    /** @var Driver[] */
     private $drivers = [];
 
     /**
      * Add driver.
      *
-     * @param AbstractDriver $driver
+     * @param Driver $driver
      */
-    public function add(AbstractDriver $driver): void
+    public function add(Driver $driver): void
     {
         $this->drivers[$driver->getShortName()] = $driver;
     }
@@ -41,16 +41,16 @@ class DriverManager
      * @param Channel $channel
      * @param Request $request
      *
-     * @return AbstractDriver
+     * @return Driver
      *
      * @throws InvalidConfiguration
      * @throws DriverNotFound
      */
-    public function get(Channel $channel, Request $request): AbstractDriver
+    public function get(Channel $channel, Request $request): Driver
     {
         $driver = Arr::get($this->drivers, $channel->getDriver());
 
-        if ($driver === null || !$driver instanceof AbstractDriver) {
+        if ($driver === null || !$driver instanceof Driver) {
             throw new DriverNotFound('Driver `'.$channel->getDriver().'` not found.');
         }
 
