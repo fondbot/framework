@@ -62,9 +62,9 @@ class QueueWorker extends Command
 
     private function isTimeout(): bool
     {
-        $timeout = $this->getOption('timeout') ?? 60;
+        $timeout = $this->getOption('timeout');
 
-        return microtime(true) - $this->startTime > $timeout;
+        return $timeout !== null && microtime(true) - $this->startTime > $timeout;
     }
 
     private function handledJobsInLimit(): bool
@@ -72,6 +72,6 @@ class QueueWorker extends Command
         $this->jobsHandled++;
         $limit = (int) $this->getOption('jobs');
 
-        return $limit <= 0 || $this->jobsHandled >= $limit;
+        return $limit !== 0 && $this->jobsHandled >= $limit;
     }
 }
