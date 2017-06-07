@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation\Traits;
 
-use FondBot\Conversation\Activators\WithPayload;
 use FondBot\Tests\TestCase;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\InArray;
@@ -12,6 +11,7 @@ use FondBot\Conversation\Activators\Pattern;
 use FondBot\Conversation\Activators\Contains;
 use FondBot\Conversation\Activators\Activator;
 use FondBot\Conversation\Traits\HasActivators;
+use FondBot\Conversation\Activators\WithPayload;
 use FondBot\Conversation\Activators\WithAttachment;
 
 class HasActivatorsTest extends TestCase
