@@ -12,7 +12,7 @@ use FondBot\Conversation\SessionManager;
 
 class Kernel
 {
-    public const VERSION = '1.0.3';
+    public const VERSION = '1.0.4';
 
     /** @var Kernel */
     private static $instance;
