@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation\Activators;
 
-use FondBot\Conversation\Activators\WithPayload;
-use FondBot\Drivers\ReceivedMessage;
 use FondBot\Tests\TestCase;
+use FondBot\Drivers\ReceivedMessage;
+use FondBot\Conversation\Activators\WithPayload;
 
 class WithPayloadTest extends TestCase
 {
