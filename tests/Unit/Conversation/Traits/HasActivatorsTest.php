@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation\Traits;
 
+use FondBot\Conversation\Activators\WithPayload;
 use FondBot\Tests\TestCase;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\InArray;
@@ -25,6 +26,7 @@ class HasActivatorsTest extends TestCase
         $this->assertInstanceOf(InArray::class, $class->inArray([1, 2, 3]));
         $this->assertInstanceOf(WithAttachment::class, $class->withAttachment());
         $this->assertInstanceOf(WithAttachment::class, $class->withAttachment($this->faker()->word));
+        $this->assertInstanceOf(WithPayload::class, $class->withPayload($this->faker()->word));
     }
 }
 

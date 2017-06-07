@@ -10,6 +10,7 @@ use FondBot\Conversation\Activators\InArray;
 use FondBot\Conversation\Activators\Pattern;
 use FondBot\Conversation\Activators\Contains;
 use FondBot\Conversation\Activators\Activator;
+use FondBot\Conversation\Activators\WithPayload;
 use FondBot\Conversation\Activators\WithAttachment;
 
 trait HasActivators
@@ -80,5 +81,17 @@ trait HasActivators
     protected function withAttachment(string $type = null): WithAttachment
     {
         return new WithAttachment($type);
+    }
+
+    /**
+     * Create "WithPayload" activator.
+     *
+     * @param string $value
+     *
+     * @return WithPayload
+     */
+    protected function withPayload(string $value): WithPayload
+    {
+        return new WithPayload($value);
     }
 }
