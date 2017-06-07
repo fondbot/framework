@@ -11,6 +11,7 @@ use FondBot\Conversation\Activators\Pattern;
 use FondBot\Conversation\Activators\Contains;
 use FondBot\Conversation\Activators\Activator;
 use FondBot\Conversation\Traits\HasActivators;
+use FondBot\Conversation\Activators\WithPayload;
 use FondBot\Conversation\Activators\WithAttachment;
 
 class HasActivatorsTest extends TestCase
@@ -25,6 +26,7 @@ class HasActivatorsTest extends TestCase
         $this->assertInstanceOf(InArray::class, $class->inArray([1, 2, 3]));
         $this->assertInstanceOf(WithAttachment::class, $class->withAttachment());
         $this->assertInstanceOf(WithAttachment::class, $class->withAttachment($this->faker()->word));
+        $this->assertInstanceOf(WithPayload::class, $class->withPayload($this->faker()->word));
     }
 }
 
