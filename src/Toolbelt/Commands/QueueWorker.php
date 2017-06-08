@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Toolbelt\Commands;
 
+use Carbon\Carbon;
 use FondBot\Contracts\Queue;
 use FondBot\Toolbelt\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -47,7 +48,11 @@ class QueueWorker extends Command
                 continue;
             }
 
-            $this->line('Job: '.get_class($job));
+            $this->line(sprintf(
+                '[%s] Processed %s',
+                Carbon::now(),
+                get_class($job)
+            ));
 
             $driver = $job->driver;
             $command = $job->command;
