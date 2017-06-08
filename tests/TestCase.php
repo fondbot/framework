@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Tests;
 
 use Mockery;
+use Carbon\Carbon;
 use Faker\Factory;
 use Faker\Generator;
 use FondBot\Application\Kernel;
@@ -22,6 +23,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
         Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
+        Carbon::setTestNow(Carbon::now());
 
         $this->container = new Container;
         $this->kernel = Kernel::createInstance($this->container);

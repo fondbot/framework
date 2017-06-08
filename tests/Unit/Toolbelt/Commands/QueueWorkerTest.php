@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Toolbelt\Commands;
 
+use Carbon\Carbon;
 use FondBot\Queue\Job;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
@@ -40,8 +41,8 @@ class QueueWorkerTest extends TestCase
         $commandTester->execute(['command' => $command->getName(), '--timeout' => 1, '--jobs' => 2]);
 
         $expected = 'Worker started...'.PHP_EOL;
-        $expected .= 'Job: FondBot\Queue\Job'.PHP_EOL;
-        $expected .= 'Job: FondBot\Queue\Job';
+        $expected .= '['.Carbon::now().'] Processed FondBot\Queue\Job'.PHP_EOL;
+        $expected .= '['.Carbon::now().'] Processed FondBot\Queue\Job';
 
         $this->assertSame($expected, trim($commandTester->getDisplay(true)));
     }
