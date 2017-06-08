@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Tests;
 
-use Carbon\Carbon;
 use Mockery;
+use Carbon\Carbon;
 use Faker\Factory;
 use Faker\Generator;
 use FondBot\Application\Kernel;
