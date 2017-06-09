@@ -21,6 +21,7 @@
   ],
   "require": {
     "php": "^7.1",
+    "cache/cache": "^0.4.0",
     "filp/whoops": "^2.1",
     "jeremeamia/superclosure": "^2.3",
     "league/container": "^2.4",

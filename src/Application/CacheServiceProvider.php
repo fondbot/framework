@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Cache;
+namespace FondBot\Application;
 
-use FondBot\Contracts\Cache;
+use Psr\SimpleCache\CacheInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 abstract class CacheServiceProvider extends AbstractServiceProvider
 {
     protected $provides = [
-        Cache::class,
+        CacheInterface::class,
     ];
 
     /**
      * Cache adapter.
      *
-     * @return Adapter
+     * @return CacheInterface
      */
-    abstract public function adapter(): Adapter;
+    abstract public function adapter(): CacheInterface;
 
     /**
      * Use the register method to register items with the container via the
@@ -29,6 +29,6 @@ abstract class CacheServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        $this->container->share(Cache::class, $this->adapter());
+        $this->container->share(CacheInterface::class, $this->adapter());
     }
 }

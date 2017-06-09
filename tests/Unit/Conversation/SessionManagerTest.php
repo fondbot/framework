@@ -8,9 +8,9 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
-use FondBot\Contracts\Cache;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Session;
+use Psr\SimpleCache\CacheInterface;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\SessionManager;
 
@@ -34,7 +34,7 @@ class SessionManagerTest extends TestCase
         $this->sender = $this->mock(User::class);
         $this->receivedMessage = $this->mock(ReceivedMessage::class);
         $this->driver = $this->mock(Driver::class);
-        $this->cache = $this->mock(Cache::class);
+        $this->cache = $this->mock(CacheInterface::class);
 
         $this->manager = new SessionManager($this->container, $this->cache);
     }
@@ -83,7 +83,7 @@ class SessionManagerTest extends TestCase
 
         $key = 'session.foo.'.$chatId.'.'.$senderId;
 
-        $this->cache->shouldReceive('store')->with($key, $sessionArray)->once();
+        $this->cache->shouldReceive('set')->with($key, $sessionArray)->once();
 
         $this->manager->save($session);
     }
@@ -100,7 +100,7 @@ class SessionManagerTest extends TestCase
 
         $key = 'session.foo.'.$chatId.'.'.$senderId;
 
-        $this->cache->shouldReceive('forget')->with($key)->once();
+        $this->cache->shouldReceive('delete')->with($key)->once();
 
         $this->manager->close($session);
     }
