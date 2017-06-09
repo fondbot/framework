@@ -16,7 +16,7 @@ interface Queue
      *
      * @return Job
      */
-    public function next(): ?Job;
+    public function pull(): ?Job;
 
     /**
      * Push command onto the queue.

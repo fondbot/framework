@@ -12,9 +12,9 @@ use FondBot\Queue\Adapters\SyncAdapter;
 
 class SyncAdapterTest extends TestCase
 {
-    public function test_next(): void
+    public function test_pull(): void
     {
-        $this->assertNull((new SyncAdapter())->next());
+        $this->assertNull((new SyncAdapter())->pull());
     }
 
     public function test_push(): void

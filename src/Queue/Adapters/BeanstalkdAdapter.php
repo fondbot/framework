@@ -31,7 +31,7 @@ class BeanstalkdAdapter extends Adapter
      *
      * @return Job|SerializableForQueue
      */
-    public function next(): ?Job
+    public function pull(): ?Job
     {
         $pheanstalkJob = $this->connection->watch($this->queue)->reserve();
 

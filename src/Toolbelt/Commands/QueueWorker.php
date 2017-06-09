@@ -42,7 +42,7 @@ class QueueWorker extends Command
         $this->info('Worker started...');
 
         while (true) {
-            $job = $queue->next();
+            $job = $queue->pull();
 
             if ($job === null) {
                 continue;

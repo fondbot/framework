@@ -17,7 +17,7 @@ class SyncAdapter extends Adapter
      *
      * @return Job
      */
-    public function next(): ?Job
+    public function pull(): ?Job
     {
         return null;
     }

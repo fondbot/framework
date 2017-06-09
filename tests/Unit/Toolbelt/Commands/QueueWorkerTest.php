@@ -28,9 +28,9 @@ class QueueWorkerTest extends TestCase
 
         $this->container->add(Queue::class, $queue);
 
-        $queue->shouldReceive('next')->andReturn($job)->once();
-        $queue->shouldReceive('next')->andReturn(null)->once();
-        $queue->shouldReceive('next')->andReturn($job)->once();
+        $queue->shouldReceive('pull')->andReturn($job)->once();
+        $queue->shouldReceive('pull')->andReturn(null)->once();
+        $queue->shouldReceive('pull')->andReturn($job)->once();
         $driver->shouldReceive('handle')->with($command)->twice();
 
         $application = new Application;
