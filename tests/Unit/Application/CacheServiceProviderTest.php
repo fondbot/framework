@@ -13,7 +13,7 @@ class CacheServiceProviderTest extends TestCase
 {
     public function test(): void
     {
-        $adapter = $this->mock(ArrayCachePool::class);
+        $adapter = $this->mock(ArrayCachePool::class)->makePartial();
         $provider = $this->mock(CacheServiceProvider::class)->makePartial();
 
         $provider->shouldReceive('adapter')->andReturn($adapter)->once();

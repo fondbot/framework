@@ -14,7 +14,7 @@ class SessionServiceProviderTest extends TestCase
 {
     public function test(): void
     {
-        $this->container->add(CacheInterface::class, $this->mock(ArrayCachePool::class));
+        $this->container->add(CacheInterface::class, $this->mock(ArrayCachePool::class)->makePartial());
 
         $this->container->addServiceProvider(new SessionServiceProvider());
 
