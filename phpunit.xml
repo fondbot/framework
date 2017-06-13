@@ -17,20 +17,10 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>
-
-            <exclude>
-                <file>./src/Conversation/ConversationCreator.php</file>
-            </exclude>
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-html"
-             target="build/coverage"
-             charset="UTF-8"
-             highlight="true"
-             lowUpperBound="30"
-             highLowerBound="90"
-        />
+        <log type="coverage-html" target="build/coverage" charset="UTF-8" highlight="true"/>
         <log type="coverage-clover" target="build/clover.xml"/>
     </logging>
 </phpunit>
