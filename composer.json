@@ -46,7 +46,7 @@
     "fzaninotto/faker": "^1.6",
     "larapack/dd": "^1.1",
     "league/flysystem-memory": "^1.0",
-    "mockery/mockery": "^1.0",
+    "mockery/mockery": "^0.9.9",
     "pda/pheanstalk": "^3.1",
     "php-http/mock-client": "^1.0",
     "phpunit/phpunit": "^6",
