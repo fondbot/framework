@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Application;
 
-use FondBot\Http\Request;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Conversation\ConversationManager;
@@ -23,7 +22,7 @@ class Controller
         /** @var ConversationManager $conversation */
         $conversation = resolve(ConversationManager::class);
 
-        $result = $conversation->handle($args['name'], Request::fromMessage($request));
+        $result = $conversation->handle($args['name'], $request);
 
         $response->getBody()->write($result);
 

@@ -6,7 +6,6 @@ namespace FondBot\Tests\Unit\Conversation;
 
 use Mockery;
 use Monolog\Logger;
-use FondBot\Http\Request;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
@@ -17,6 +16,7 @@ use FondBot\Channels\ChannelManager;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Conversable;
 use FondBot\Conversation\Interaction;
+use Psr\Http\Message\RequestInterface;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\SessionManager;
 use FondBot\Conversation\ConversationManager;
@@ -27,7 +27,7 @@ class ConversationManagerTest extends TestCase
 {
     public function test_handle_new_dialog(): void
     {
-        $request = $this->mock(Request::class);
+        $request = $this->mock(RequestInterface::class);
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
         $channelManager = $this->mock(ChannelManager::class);
@@ -69,7 +69,7 @@ class ConversationManagerTest extends TestCase
 
     public function test_handle_existing_dialog(): void
     {
-        $request = $this->mock(Request::class);
+        $request = $this->mock(RequestInterface::class);
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
         $channelManager = $this->mock(ChannelManager::class);
@@ -101,7 +101,7 @@ class ConversationManagerTest extends TestCase
 
     public function test_handle_invalid_request(): void
     {
-        $request = $this->mock(Request::class);
+        $request = $this->mock(RequestInterface::class);
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
         $channelManager = $this->mock(ChannelManager::class);
@@ -118,7 +118,7 @@ class ConversationManagerTest extends TestCase
 
     public function test_handle_webhook_verification(): void
     {
-        $request = $this->mock(Request::class);
+        $request = $this->mock(RequestInterface::class);
         $channel = $this->mock(Channel::class);
         /** @var \Mockery\Mock|mixed $driver */
         $driver = Mockery::mock(Driver::class, WebhookVerification::class);

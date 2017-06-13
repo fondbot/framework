@@ -6,14 +6,13 @@ namespace FondBot\Drivers;
 
 use RuntimeException;
 use FondBot\Helpers\Arr;
-use FondBot\Http\Request;
 use Http\Client\HttpClient;
 use Http\Message\RequestFactory;
 use Illuminate\Support\Collection;
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\RequestInterface;
 use FondBot\Queue\SerializableForQueue;
 use Psr\Http\Message\ResponseInterface;
-use FondBot\Http\Request as HttpRequest;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Contracts\Driver as DriverContract;
 
@@ -22,7 +21,7 @@ abstract class Driver implements DriverContract, SerializableForQueue
     /** @var Collection */
     protected $parameters;
 
-    /** @var HttpRequest */
+    /** @var RequestInterface */
     protected $request;
 
     /** @var HttpClient */
@@ -54,13 +53,12 @@ abstract class Driver implements DriverContract, SerializableForQueue
     /**
      * Initialize gateway with parameters.
      *
-     * @param array   $parameters
-     *
-     * @param Request $request
+     * @param array            $parameters
+     * @param RequestInterface $request
      *
      * @return Driver|DriverContract|static
      */
-    public function initialize(array $parameters, Request $request): DriverContract
+    public function initialize(array $parameters, RequestInterface $request): DriverContract
     {
         $this->request = $request;
 

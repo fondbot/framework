@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Drivers;
 
 use Mockery\Mock;
-use FondBot\Http\Request;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Drivers\Command;
 use FondBot\Drivers\CommandHandler;
+use Psr\Http\Message\RequestInterface;
 
 class DriverTest extends TestCase
 {
     public function test_initialize(): void
     {
-        $request = $this->mock(Request::class);
+        $request = $this->mock(RequestInterface::class);
 
         /** @var Driver|Mock $driver */
         $driver = $this->mock(Driver::class)->makePartial();

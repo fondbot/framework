@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Http\Request;
 use FondBot\Drivers\DriverManager;
 use FondBot\Channels\ChannelManager;
+use Psr\Http\Message\RequestInterface;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
@@ -23,11 +23,11 @@ class ConversationManager
      * Handle incoming request (webhook).
      *
      * @param string  $channelName
-     * @param Request $request
+     * @param RequestInterface $request
      *
      * @return mixed
      */
-    public function handle(string $channelName, Request $request)
+    public function handle(string $channelName, RequestInterface $request)
     {
         try {
             /** @var ChannelManager $channelManager */

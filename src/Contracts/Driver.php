@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts;
 
-use FondBot\Http\Request;
+use Psr\Http\Message\RequestInterface;
 
 interface Driver
 {
@@ -38,10 +38,10 @@ interface Driver
     /**
      * Initialize gateway with request and parameters.
      *
-     * @param array   $parameters
-     * @param Request $request
+     * @param array            $parameters
+     * @param RequestInterface $request
      *
      * @return Driver|static
      */
-    public function initialize(array $parameters, Request $request): Driver;
+    public function initialize(array $parameters, RequestInterface $request): Driver;
 }
