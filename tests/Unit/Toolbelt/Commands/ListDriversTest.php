@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Toolbelt\Commands;
 
 use Mockery;
-use Http\Mock\Client;
 use Zend\Diactoros\Stream;
 use FondBot\Tests\TestCase;
-use Http\Client\HttpClient;
-use Http\Message\RequestFactory;
+use GuzzleHttp\ClientInterface;
 use FondBot\Drivers\DriverManager;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Toolbelt\Commands\ListDrivers;
 use Symfony\Component\Console\Application;
@@ -28,21 +25,13 @@ class ListDriversTest extends TestCase
 
     public function test(): void
     {
-        $requestFactory = $this->mock(RequestFactory::class);
+        $http = $this->mock(ClientInterface::class);
         $driverManager = $this->mock(DriverManager::class);
-
-        $httpClient = new Client;
-        $this->container->add(HttpClient::class, $httpClient);
 
         $driverManager->shouldReceive('all')
             ->andReturn([
                 'foo' => 'bar',
             ])
-            ->once();
-
-        $requestFactory->shouldReceive('createRequest')
-            ->with('GET', 'https://fondbot.com/api/drivers')
-            ->andReturn($this->mock(RequestInterface::class))
             ->once();
 
         $stream = fopen('php://memory', 'rb+');
@@ -54,7 +43,7 @@ class ListDriversTest extends TestCase
         $response = $this->mock(ResponseInterface::class);
         $response->shouldReceive('getBody')->andReturn($stream)->once();
 
-        $httpClient->addResponse($response);
+        $http->shouldReceive('send')->andReturn($response)->once();
 
         $application = new Application;
         $application->add(new ListDrivers);

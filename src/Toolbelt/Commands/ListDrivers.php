@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Toolbelt\Commands;
 
-use Http\Client\HttpClient;
+use GuzzleHttp\Psr7\Request;
 use FondBot\Toolbelt\Command;
-use Http\Message\RequestFactory;
+use GuzzleHttp\ClientInterface;
 use FondBot\Drivers\DriverManager;
 use Symfony\Component\Console\Helper\Table;
 
@@ -21,17 +21,15 @@ class ListDrivers extends Command
 
     public function handle(): void
     {
-        /** @var HttpClient $http */
-        $http = resolve(HttpClient::class);
-        /** @var RequestFactory $requestFactory */
-        $requestFactory = resolve(RequestFactory::class);
+        /** @var ClientInterface $http */
+        $http = resolve(ClientInterface::class);
         /** @var DriverManager $driverManager */
         $driverManager = resolve(DriverManager::class);
 
         $installedDrivers = collect($driverManager->all())->keys()->toArray();
 
-        $request = $requestFactory->createRequest('GET', 'https://fondbot.com/api/drivers');
-        $response = $http->sendRequest($request);
+        $request = new Request('GET', 'https://fondbot.com/api/drivers');
+        $response = $http->send($request);
 
         $items = json_decode((string) $response->getBody(), true);
 

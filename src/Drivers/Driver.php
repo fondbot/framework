@@ -6,8 +6,8 @@ namespace FondBot\Drivers;
 
 use RuntimeException;
 use FondBot\Helpers\Arr;
-use Http\Client\HttpClient;
-use Http\Message\RequestFactory;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\ClientInterface;
 use Illuminate\Support\Collection;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\RequestInterface;
@@ -24,16 +24,11 @@ abstract class Driver implements DriverContract, SerializableForQueue
     /** @var RequestInterface */
     protected $request;
 
-    /** @var HttpClient */
-    private $httpClient;
+    protected $httpClient;
 
-    /** @var RequestFactory */
-    private $requestFactory;
-
-    public function __construct(HttpClient $httpClient, RequestFactory $requestFactory)
+    public function __construct(ClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
-        $this->requestFactory = $requestFactory;
     }
 
     /**
@@ -103,9 +98,9 @@ abstract class Driver implements DriverContract, SerializableForQueue
         $body = null,
         string $protocolVersion = '1.1'
     ): ResponseInterface {
-        $request = $this->requestFactory->createRequest($method, $uri, $headers, $body, $protocolVersion);
+        $request = new Request($method, $uri, $headers, $body, $protocolVersion);
 
-        return $this->httpClient->sendRequest($request);
+        return $this->httpClient->send($request);
     }
 
     /**
