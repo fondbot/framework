@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Toolbelt\Commands;
 
-use GuzzleHttp\Psr7\Request;
 use FondBot\Toolbelt\Command;
 use GuzzleHttp\ClientInterface;
 use FondBot\Drivers\DriverManager;
@@ -28,8 +27,7 @@ class ListDrivers extends Command
 
         $installedDrivers = collect($driverManager->all())->keys()->toArray();
 
-        $request = new Request('GET', 'https://fondbot.com/api/drivers');
-        $response = $http->send($request);
+        $response = $http->request('GET', 'https://fondbot.com/api/drivers');
 
         $items = json_decode((string) $response->getBody(), true);
 

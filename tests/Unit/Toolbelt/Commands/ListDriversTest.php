@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Toolbelt\Commands;
 
-use Mockery;
 use Zend\Diactoros\Stream;
 use FondBot\Tests\TestCase;
 use GuzzleHttp\ClientInterface;
@@ -16,13 +15,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class ListDriversTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Mockery::getConfiguration()->allowMockingNonExistentMethods(true);
-    }
-
     public function test(): void
     {
         $http = $this->mock(ClientInterface::class);
@@ -43,7 +35,7 @@ class ListDriversTest extends TestCase
         $response = $this->mock(ResponseInterface::class);
         $response->shouldReceive('getBody')->andReturn($stream)->once();
 
-        $http->shouldReceive('send')->andReturn($response)->once();
+        $http->shouldReceive('request')->with('GET', 'https://fondbot.com/api/drivers')->andReturn($response)->once();
 
         $application = new Application;
         $application->add(new ListDrivers);
