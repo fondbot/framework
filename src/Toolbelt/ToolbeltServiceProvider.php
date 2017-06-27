@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Toolbelt;
 
-use FondBot\Application\Kernel;
+use FondBot\Foundation\Kernel;
 use Symfony\Component\Console\Application;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 

@@ -6,7 +6,7 @@ namespace FondBot\Tests\Unit;
 
 use Monolog\Logger;
 use FondBot\Tests\TestCase;
-use FondBot\Application\Kernel;
+use FondBot\Foundation\Kernel;
 use FondBot\Conversation\Session;
 
 class HelpersTest extends TestCase

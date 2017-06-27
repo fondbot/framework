@@ -10,7 +10,7 @@ use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Queue;
 use FondBot\Channels\Channel;
-use FondBot\Application\Kernel;
+use FondBot\Foundation\Kernel;
 use FondBot\Templates\Keyboard;
 use FondBot\Templates\Attachment;
 use FondBot\Conversation\Traits\SendsMessages;

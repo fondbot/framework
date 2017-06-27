@@ -36,11 +36,11 @@ if (!function_exists('kernel')) {
     /**
      * Get kernel instance.
      *
-     * @return FondBot\Application\Kernel
+     * @return \FondBot\Foundation\Kernel
      */
-    function kernel(): FondBot\Application\Kernel
+    function kernel(): \FondBot\Foundation\Kernel
     {
-        return FondBot\Application\Kernel::getInstance();
+        return FondBot\Foundation\Kernel::getInstance();
     }
 }
 

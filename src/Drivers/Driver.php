@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Drivers;
 
 use RuntimeException;
+use GuzzleHttp\Client;
 use FondBot\Helpers\Arr;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\ClientInterface;
+use FondBot\Channels\Channel;
 use Illuminate\Support\Collection;
-use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\RequestInterface;
 use FondBot\Queue\SerializableForQueue;
 use Psr\Http\Message\ResponseInterface;
@@ -24,11 +23,11 @@ abstract class Driver implements DriverContract, SerializableForQueue
     /** @var RequestInterface */
     protected $request;
 
-    protected $httpClient;
+    protected $guzzle;
 
-    public function __construct(ClientInterface $httpClient)
+    public function __construct(Client $guzzle)
     {
-        $this->httpClient = $httpClient;
+        $this->guzzle = $guzzle;
     }
 
     /**
@@ -48,24 +47,24 @@ abstract class Driver implements DriverContract, SerializableForQueue
     /**
      * Initialize gateway with parameters.
      *
-     * @param array            $parameters
+     * @param Channel          $channel
      * @param RequestInterface $request
      *
      * @return Driver|DriverContract|static
      */
-    public function initialize(array $parameters, RequestInterface $request): DriverContract
+    public function initialize(Channel $channel, RequestInterface $request): DriverContract
     {
         $this->request = $request;
 
-        $array = [];
+        $parameters = [];
 
         foreach ($this->getDefaultParameters() as $key => $value) {
-            $value = Arr::get($parameters, $key, $value);
+            $value = Arr::get($channel->getParameters(), $key, $value);
 
-            Arr::set($array, $key, $value);
+            Arr::set($parameters, $key, $value);
         }
 
-        $this->parameters = collect($array);
+        $this->parameters = collect($parameters);
 
         return $this;
     }
@@ -81,53 +80,39 @@ abstract class Driver implements DriverContract, SerializableForQueue
     }
 
     /**
-     * Send HTTP request.
+     * Get request body as json.
      *
-     * @param string                                     $method
-     * @param string                                     $uri
-     * @param array                                      $headers
-     * @param string|array|resource|StreamInterface|null $body
-     * @param string                                     $protocolVersion
-     *
-     * @return ResponseInterface
+     * @return array
      */
-    public function send(
-        string $method,
-        string $uri,
-        array $headers = [],
-        $body = null,
-        string $protocolVersion = '1.1'
-    ): ResponseInterface {
-        $request = new Request($method, $uri, $headers, $body, $protocolVersion);
-
-        return $this->httpClient->send($request);
+    public function getRequestJson(): array
+    {
+        return json_decode((string) $this->request->getBody(), true) ?? [];
     }
 
     /**
      * Send a GET request.
      *
      * @param string $uri
-     * @param array  $headers
+     * @param array  $options
      *
      * @return ResponseInterface
      */
-    public function get(string $uri, array $headers = []): ResponseInterface
+    public function get(string $uri, array $options = []): ResponseInterface
     {
-        return $this->send('GET', $uri, $headers);
+        return $this->guzzle->get($uri, $options);
     }
 
     /**
      * Send a POST request.
      *
-     * @param string                                     $uri
-     * @param array                                      $headers
-     * @param string|array|resource|StreamInterface|null $body
+     * @param string $uri
+     * @param array  $options
      *
      * @return ResponseInterface
      */
-    public function post(string $uri, array $headers = [], $body = null): ResponseInterface
+    public function post(string $uri, array $options = []): ResponseInterface
     {
-        return $this->send('POST', $uri, $headers, $body);
+        return $this->guzzle->post($uri, $options);
     }
 
     /**
@@ -145,7 +130,7 @@ abstract class Driver implements DriverContract, SerializableForQueue
     abstract public function getCommandHandler(): CommandHandler;
 
     /**
-     * Verify incoming request data.
+     * Verify request consistency.
      *
      * @throws InvalidRequest
      */

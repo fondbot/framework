@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Conversation\Traits;
 
 use FondBot\Tests\TestCase;
-use FondBot\Application\Kernel;
+use FondBot\Foundation\Kernel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Session;
 use FondBot\Drivers\ReceivedMessage;

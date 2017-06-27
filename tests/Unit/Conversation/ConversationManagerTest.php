@@ -4,53 +4,30 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation;
 
-use Mockery;
-use Monolog\Logger;
-use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
-use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Session;
-use FondBot\Drivers\DriverManager;
-use FondBot\Channels\ChannelManager;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Conversable;
 use FondBot\Conversation\Interaction;
-use Psr\Http\Message\RequestInterface;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\SessionManager;
 use FondBot\Conversation\ConversationManager;
-use FondBot\Drivers\Exceptions\InvalidRequest;
-use FondBot\Drivers\Extensions\WebhookVerification;
 
 class ConversationManagerTest extends TestCase
 {
     public function test_handle_new_dialog(): void
     {
-        $request = $this->mock(RequestInterface::class);
-        $channel = $this->mock(Channel::class);
-        $driver = $this->mock(Driver::class);
-        $channelManager = $this->mock(ChannelManager::class);
-        $driverManager = $this->mock(DriverManager::class);
         $sessionManager = $this->mock(SessionManager::class);
         $intentManager = $this->mock(IntentManager::class);
         $session = $this->mock(Session::class);
         $intent = $this->mock(Intent::class);
         $receivedMessage = $this->mock(ReceivedMessage::class);
-        $channelName = $this->faker()->userName;
 
-        $channelManager->shouldReceive('create')->with($channelName)->andReturn($channel)->once();
-        $driverManager->shouldReceive('get')->with($channel, $request)->andReturn($driver)->once();
-
-        $driver->shouldReceive('verifyRequest')->once();
-        $sessionManager->shouldReceive('load')
-            ->with($channel, $driver)
-            ->andReturn($session)
-            ->once();
+        $this->kernel->setSession($session);
 
         $session->shouldReceive('getInteraction')->andReturn(null)->once();
 
-        $driver->shouldReceive('getMessage')->andReturn($receivedMessage)->once();
         $intentManager->shouldReceive('find')
             ->with($receivedMessage)
             ->andReturn($intent)
@@ -62,32 +39,18 @@ class ConversationManagerTest extends TestCase
         $intent->shouldReceive('handle')->with($this->kernel)->once();
         $sessionManager->shouldReceive('close')->with($session)->once();
 
-        (new ConversationManager())->handle($channelName, $request);
-
-        $this->assertSame($driver, $this->kernel->getDriver());
+        (new ConversationManager($this->kernel))->handle($receivedMessage);
     }
 
     public function test_handle_existing_dialog(): void
     {
-        $request = $this->mock(RequestInterface::class);
-        $channel = $this->mock(Channel::class);
-        $driver = $this->mock(Driver::class);
-        $channelManager = $this->mock(ChannelManager::class);
-        $driverManager = $this->mock(DriverManager::class);
         $sessionManager = $this->mock(SessionManager::class);
         $intentManager = $this->mock(IntentManager::class);
         $interaction = $this->mock(Interaction::class);
         $session = $this->mock(Session::class);
-        $channelName = $this->faker()->userName;
+        $receivedMessage = $this->mock(ReceivedMessage::class);
 
-        $channelManager->shouldReceive('create')->with($channelName)->andReturn($channel)->once();
-        $driverManager->shouldReceive('get')->with($channel, $request)->andReturn($driver)->once();
-
-        $driver->shouldReceive('verifyRequest')->once();
-        $sessionManager->shouldReceive('load')
-            ->with($channel, $driver)
-            ->andReturn($session)
-            ->once();
+        $this->kernel->setSession($session);
 
         $session->shouldReceive('getInteraction')->andReturn($interaction)->atLeast()->once();
 
@@ -96,45 +59,7 @@ class ConversationManagerTest extends TestCase
 
         $sessionManager->shouldReceive('close')->with($session)->once();
 
-        (new ConversationManager)->handle($channelName, $request);
-    }
-
-    public function test_handle_invalid_request(): void
-    {
-        $request = $this->mock(RequestInterface::class);
-        $channel = $this->mock(Channel::class);
-        $driver = $this->mock(Driver::class);
-        $channelManager = $this->mock(ChannelManager::class);
-        $driverManager = $this->mock(DriverManager::class);
-
-        $channelManager->shouldReceive('create')->with('foo')->andReturn($channel)->once();
-        $driverManager->shouldReceive('get')->with($channel, $request)->andReturn($driver)->once();
-        $this->mock(Logger::class)->shouldReceive('warning');
-
-        $driver->shouldReceive('verifyRequest')->andThrow(new InvalidRequest('Invalid request.'));
-
-        $this->assertSame('OK', (new ConversationManager)->handle('foo', $request));
-    }
-
-    public function test_handle_webhook_verification(): void
-    {
-        $request = $this->mock(RequestInterface::class);
-        $channel = $this->mock(Channel::class);
-        /** @var \Mockery\Mock|mixed $driver */
-        $driver = Mockery::mock(Driver::class, WebhookVerification::class);
-        $channelManager = $this->mock(ChannelManager::class);
-        $driverManager = $this->mock(DriverManager::class);
-        $verification = $this->faker()->uuid;
-
-        $channelManager->shouldReceive('create')->with('foo')->andReturn($channel)->once();
-        $driverManager->shouldReceive('get')->with($channel, $request)->andReturn($driver)->once();
-
-        $driver->shouldReceive('isVerificationRequest')->andReturn(true);
-        $driver->shouldReceive('verifyWebhook')->andReturn($verification);
-
-        $result = (new ConversationManager())->handle('foo', $request);
-
-        $this->assertSame($verification, $result);
+        (new ConversationManager($this->kernel))->handle($receivedMessage);
     }
 
     public function test_restart_intent(): void
@@ -149,7 +74,7 @@ class ConversationManagerTest extends TestCase
         $session->shouldReceive('setContext')->with([])->once();
         $intent->shouldReceive('handle')->once();
 
-        (new ConversationManager)->restart($intent);
+        (new ConversationManager($this->kernel))->restart($intent);
     }
 
     public function test_transition(): void
@@ -157,7 +82,7 @@ class ConversationManagerTest extends TestCase
         $conversable = $this->mock(Conversable::class);
         $conversable->shouldReceive('handle')->with($this->kernel)->once();
 
-        (new ConversationManager)->transition($conversable);
+        (new ConversationManager($this->kernel))->transition($conversable);
     }
 
     public function test_restart_interaction(): void
@@ -171,6 +96,6 @@ class ConversationManagerTest extends TestCase
         $session->shouldReceive('setContext')->with([])->once();
         $interaction->shouldReceive('handle')->once();
 
-        (new ConversationManager)->restart($interaction);
+        (new ConversationManager($this->kernel))->restart($interaction);
     }
 }

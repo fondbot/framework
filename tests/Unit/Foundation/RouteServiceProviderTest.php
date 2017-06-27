@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Application;
+namespace FondBot\Tests\Unit\Foundation;
 
 use FondBot\Tests\TestCase;
 use League\Route\RouteCollection;
+use FondBot\Foundation\RouteServiceProvider;
 use Psr\Http\Message\ServerRequestInterface;
-use FondBot\Application\RouteServiceProvider;
 
 class RouteServiceProviderTest extends TestCase
 {

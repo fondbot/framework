@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Application;
+namespace FondBot\Tests\Unit\Foundation;
 
 use FondBot\Tests\TestCase;
-use FondBot\Application\Kernel;
-use FondBot\Application\Factory;
+use FondBot\Foundation\Kernel;
+use FondBot\Foundation\Factory;
 
 class FactoryTest extends TestCase
 {

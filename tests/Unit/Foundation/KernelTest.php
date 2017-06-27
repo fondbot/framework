@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Application;
+namespace FondBot\Tests\Unit\Foundation;
 
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
-use FondBot\Application\Kernel;
+use FondBot\Foundation\Kernel;
 use FondBot\Conversation\Session;
 use FondBot\Conversation\SessionManager;
 

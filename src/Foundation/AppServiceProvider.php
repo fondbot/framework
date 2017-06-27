@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Application;
+namespace FondBot\Foundation;
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
+use FondBot\Conversation\ConversationManager;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
 
@@ -16,6 +17,7 @@ abstract class AppServiceProvider extends AbstractServiceProvider implements Boo
         'base_path',
         'resources_path',
         'bootstrap_path',
+        ConversationManager::class,
     ];
 
     /**
@@ -66,5 +68,9 @@ abstract class AppServiceProvider extends AbstractServiceProvider implements Boo
         $this->container->share('base_path', $this->basePath());
         $this->container->share('resources_path', $this->resourcesPath());
         $this->container->share('bootstrap_path', 'bootstrap');
+
+        $this->container->share(ConversationManager::class, function () {
+            return new ConversationManager($this->container->get(Kernel::class));
+        });
     }
 }

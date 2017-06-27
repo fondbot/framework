@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Toolbelt\Commands;
 
+use GuzzleHttp\Client;
 use Zend\Diactoros\Stream;
 use FondBot\Tests\TestCase;
-use GuzzleHttp\ClientInterface;
+use FondBot\Foundation\Kernel;
 use FondBot\Drivers\DriverManager;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Toolbelt\Commands\ListDrivers;
@@ -17,7 +18,7 @@ class ListDriversTest extends TestCase
 {
     public function test(): void
     {
-        $http = $this->mock(ClientInterface::class);
+        $http = $this->mock(Client::class);
         $driverManager = $this->mock(DriverManager::class);
 
         $driverManager->shouldReceive('all')
@@ -35,7 +36,11 @@ class ListDriversTest extends TestCase
         $response = $this->mock(ResponseInterface::class);
         $response->shouldReceive('getBody')->andReturn($stream)->once();
 
-        $http->shouldReceive('request')->with('GET', 'https://fondbot.com/api/drivers')->andReturn($response)->once();
+        $http->shouldReceive('request')->with(
+            'GET',
+            'https://fondbot.com/api/drivers',
+            ['form_params' => ['version' => Kernel::VERSION]]
+        )->andReturn($response)->once();
 
         $application = new Application;
         $application->add(new ListDrivers);

@@ -7,7 +7,7 @@ namespace FondBot\Conversation\Traits;
 use FondBot\Helpers\Arr;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
-use FondBot\Application\Kernel;
+use FondBot\Foundation\Kernel;
 
 trait InteractsWithSession
 {

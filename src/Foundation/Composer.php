@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Application;
+namespace FondBot\Foundation;
 
 use RuntimeException;
 use Composer\Script\Event;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Application;
+namespace FondBot\Foundation;
 
 use Zend\Diactoros\Response;
 use League\Route\RouteCollection;

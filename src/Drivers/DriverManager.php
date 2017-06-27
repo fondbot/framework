@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace FondBot\Drivers;
 
 use FondBot\Helpers\Arr;
-use FondBot\Channels\Channel;
-use Psr\Http\Message\RequestInterface;
 use FondBot\Drivers\Exceptions\DriverNotFound;
 use FondBot\Drivers\Exceptions\InvalidConfiguration;
 
@@ -38,23 +36,20 @@ class DriverManager
     /**
      * Get driver for channel.
      *
-     * @param Channel $channel
-     * @param RequestInterface $request
+     * @param string $name
      *
      * @return Driver
      *
      * @throws InvalidConfiguration
      * @throws DriverNotFound
      */
-    public function get(Channel $channel, RequestInterface $request): Driver
+    public function get(string $name): Driver
     {
-        $driver = Arr::get($this->drivers, $channel->getDriver());
+        $driver = Arr::get($this->drivers, $name);
 
         if ($driver === null || !$driver instanceof Driver) {
-            throw new DriverNotFound('Driver `'.$channel->getDriver().'` not found.');
+            throw new DriverNotFound('Driver `'.$name.'` not found.');
         }
-
-        $driver->initialize($channel->getParameters(), $request);
 
         return $driver;
     }

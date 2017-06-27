@@ -6,7 +6,7 @@ namespace FondBot\Tests\Unit\Conversation\Traits;
 
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
-use FondBot\Application\Kernel;
+use FondBot\Foundation\Kernel;
 use FondBot\Conversation\Session;
 use FondBot\Conversation\Traits\InteractsWithSession;
 

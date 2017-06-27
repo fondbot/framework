@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Application;
+namespace FondBot\Tests\Unit\Foundation;
 
 use Mockery\Mock;
 use Monolog\Logger;
 use FondBot\Tests\TestCase;
 use Psr\Log\LoggerInterface;
 use Monolog\Handler\HandlerInterface;
-use FondBot\Application\LogServiceProvider;
+use FondBot\Foundation\LogServiceProvider;
 
 class LogServiceProviderTest extends TestCase
 {

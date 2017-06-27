@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Application;
+namespace FondBot\Tests\Unit\Foundation;
 
 use FondBot\Tests\TestCase;
 use Psr\SimpleCache\CacheInterface;
 use Cache\Adapter\PHPArray\ArrayCachePool;
-use FondBot\Application\CacheServiceProvider;
+use FondBot\Foundation\CacheServiceProvider;
 
 class CacheServiceProviderTest extends TestCase
 {

@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Application;
+namespace FondBot\Foundation;
 
-use Throwable;
-use Whoops\Run;
 use Monolog\Logger;
+use Monolog\ErrorHandler;
 use Psr\Log\LoggerInterface;
 use Monolog\Handler\HandlerInterface;
-use Whoops\Handler\PrettyPageHandler;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
 
@@ -46,22 +44,12 @@ abstract class LogServiceProvider extends AbstractServiceProvider implements Boo
                 $logger->pushHandler($handler);
             }
 
+            ErrorHandler::register($logger);
+
             return $logger;
         });
 
         $this->container->share(Logger::class, $this->container->get(LoggerInterface::class));
-
-        if (PHP_SAPI !== 'cli') {
-            $whoops = new Run;
-            $whoops->pushHandler(new PrettyPageHandler);
-            $whoops->pushHandler(function (Throwable $exception) {
-                /** @var LoggerInterface $logger */
-                $logger = $this->container->get(LoggerInterface::class);
-
-                $logger->error($exception);
-            });
-            $whoops->register();
-        }
     }
 
     /**

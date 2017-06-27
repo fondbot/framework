@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Drivers\DriverManager;
-use FondBot\Channels\ChannelManager;
-use Psr\Http\Message\RequestInterface;
+use FondBot\Foundation\Kernel;
+use FondBot\Drivers\ReceivedMessage;
 use FondBot\Drivers\Exceptions\InvalidRequest;
-use FondBot\Drivers\Extensions\WebhookVerification;
 
 class ConversationManager
 {
@@ -19,43 +17,24 @@ class ConversationManager
      */
     private $transitioned = false;
 
+    private $kernel;
+
+    public function __construct(Kernel $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
     /**
-     * Handle incoming request (webhook).
+     * Handle received message.
      *
-     * @param string  $channelName
-     * @param RequestInterface $request
-     *
-     * @return mixed
+     * @param ReceivedMessage $message
      */
-    public function handle(string $channelName, RequestInterface $request)
+    public function handle(ReceivedMessage $message): void
     {
         try {
-            /** @var ChannelManager $channelManager */
-            $channelManager = resolve(ChannelManager::class);
-
-            /** @var DriverManager $driverManager */
-            $driverManager = resolve(DriverManager::class);
-
-            $channel = $channelManager->create($channelName);
-            $driver = $driverManager->get($channel, $request);
-
-            kernel()->setChannel($channel);
-            kernel()->setDriver($driver);
-
-            // Driver has webhook verification
-            if ($driver instanceof WebhookVerification && $driver->isVerificationRequest()) {
-                return $driver->verifyWebhook();
-            }
-
-            // Verify request
-            $driver->verifyRequest();
-
-            // Load session
-            kernel()->loadSession($channel, $driver);
-
             if (!$this->isInConversation()) {
                 $this->converse(
-                    $this->findIntent()
+                    $this->findIntent($message)
                 );
             } else {
                 $this->converse(
@@ -66,15 +45,13 @@ class ConversationManager
             // Close session if conversation has not been transitioned
             // Otherwise, save session state
             if (!$this->transitioned) {
-                kernel()->closeSession();
+                $this->kernel->closeSession();
             } else {
-                kernel()->saveSession();
+                $this->kernel->saveSession();
             }
         } catch (InvalidRequest $exception) {
             logger()->warning('ConversationManager[handle] - Invalid Request', ['message' => $exception->getMessage()]);
         }
-
-        return 'OK';
     }
 
     /**
@@ -85,18 +62,18 @@ class ConversationManager
     public function converse(Conversable $conversable): void
     {
         if ($conversable instanceof Intent) {
-            $session = session();
+            $session = $this->kernel->getSession();
             $session->setIntent($conversable);
             $session->setInteraction(null);
             $session->setContext([]);
 
-            kernel()->setSession($session);
+            $this->kernel->setSession($session);
 
-            $conversable->handle(kernel());
+            $conversable->handle($this->kernel);
         } elseif ($conversable instanceof Interaction) {
-            $conversable->handle(kernel());
+            $conversable->handle($this->kernel);
         } else {
-            $conversable->handle(kernel());
+            $conversable->handle($this->kernel);
         }
     }
 
@@ -125,11 +102,11 @@ class ConversationManager
                 $this->transitioned = true;
                 break;
             case $conversable instanceof Interaction:
-                $session = session();
+                $session = $this->kernel->getSession();
                 $session->setInteraction(null);
                 $session->setContext([]);
 
-                kernel()->setSession($session);
+                $this->kernel->setSession($session);
 
                 $this->transitioned = true;
 
@@ -141,14 +118,16 @@ class ConversationManager
     /**
      * Find matching intent.
      *
+     * @param ReceivedMessage $message
+     *
      * @return Intent|null
      */
-    private function findIntent(): Intent
+    private function findIntent(ReceivedMessage $message): Intent
     {
         /** @var IntentManager $intentManager */
-        $intentManager = resolve(IntentManager::class);
+        $intentManager = $this->kernel->resolve(IntentManager::class);
 
-        return $intentManager->find(kernel()->getDriver()->getMessage());
+        return $intentManager->find($message);
     }
 
     /**
@@ -158,6 +137,6 @@ class ConversationManager
      */
     private function isInConversation(): bool
     {
-        return session()->getInteraction() !== null;
+        return $this->kernel->getSession()->getInteraction() !== null;
     }
 }

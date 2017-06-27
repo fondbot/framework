@@ -6,7 +6,7 @@ namespace FondBot\Tests\Unit\Drivers;
 
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
-use FondBot\Application\Assets;
+use FondBot\Foundation\Assets;
 use FondBot\Drivers\DriverManager;
 use FondBot\Drivers\DriverServiceProvider;
 

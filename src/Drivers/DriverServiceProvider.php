@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Drivers;
 
-use FondBot\Application\Assets;
+use FondBot\Foundation\Assets;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 class DriverServiceProvider extends AbstractServiceProvider

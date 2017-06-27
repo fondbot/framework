@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Application;
+namespace FondBot\Tests\Unit\Foundation;
 
 use FondBot\Tests\TestCase;
-use FondBot\Application\AppServiceProvider;
+use FondBot\Foundation\AppServiceProvider;
+use FondBot\Conversation\ConversationManager;
 
 class AppServiceProviderTest extends TestCase
 {
@@ -28,6 +29,7 @@ class AppServiceProviderTest extends TestCase
         $this->assertSame('production', $this->container->get('environment'));
         $this->assertSame($basePath, $this->container->get('base_path'));
         $this->assertSame($resourcesPath, $this->container->get('resources_path'));
+        $this->assertInstanceOf(ConversationManager::class, $this->container->get(ConversationManager::class));
 
         unlink($basePath.'/.env');
     }
