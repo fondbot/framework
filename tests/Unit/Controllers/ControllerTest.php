@@ -15,7 +15,7 @@ class ControllerTest extends TestCase
         $kernel = $this->mock(Kernel::class);
 
         $controller = new Controller($kernel);
-        $response = $controller->__invoke();
+        $response = $controller->run();
 
         $this->assertRegExp('/FondBot v([0-9]+)\.([0-9]+)\.([0-9]+)/', (string) $response->getBody());
     }

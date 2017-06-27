@@ -20,7 +20,7 @@ class WebhookController
         $this->requestHandler = $requestHandler;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function run(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $channel = $this->channelManager->create($args['name']);
 

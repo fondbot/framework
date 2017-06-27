@@ -10,7 +10,7 @@ use Zend\Diactoros\Response\HtmlResponse;
 
 class Controller
 {
-    public function __invoke(): ResponseInterface
+    public function run(): ResponseInterface
     {
         return new HtmlResponse('FondBot v'.Kernel::VERSION);
     }
