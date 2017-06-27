@@ -15,9 +15,12 @@ class LogTest extends TestCase
 {
     public function test_stream_handler_exists(): void
     {
-        $this->container->add(Logger::class, $logger = $this->mock(Logger::class));
+        $logger = $this->mock(Logger::class);
+        $handler = $this->mock(StreamHandler::class);
 
-        $logger->shouldReceive('getHandlers')->andReturn([$handler = $this->mock(StreamHandler::class)])->once();
+        $this->container->add(Logger::class, $logger);
+
+        $logger->shouldReceive('getHandlers')->andReturn([$handler])->once();
         $handler->shouldReceive('getUrl')->andReturn('foo')->once();
 
         $application = new Application;
@@ -34,6 +37,7 @@ class LogTest extends TestCase
                 $result,
                 [
                     'tail: cannot open `foo\' for reading: No such file or directory',
+                    'tail: '.PHP_EOL.'cannot open `foo\' for reading: No such file or directory',
                     'tail: foo: No such file or directory',
                     'tail: cannot open \'foo\' for reading: No such file or directory',
                     'tail: cannot open ‘foo’ for reading: No such file or directory',
