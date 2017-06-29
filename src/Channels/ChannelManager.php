@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use FondBot\Channels\Exceptions\ChannelNotFoundException;
+use FondBot\Channels\Exceptions\ChannelNotFound;
 
 class ChannelManager
 {
@@ -23,17 +23,27 @@ class ChannelManager
     }
 
     /**
+     * Get all channels.
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->channels;
+    }
+
+    /**
      * Create channel.
      *
      * @param string $name
      *
      * @return Channel
-     * @throws ChannelNotFoundException
+     * @throws ChannelNotFound
      */
     public function create(string $name): Channel
     {
         if (!isset($this->channels[$name])) {
-            throw new ChannelNotFoundException('Channel `'.$name.'` not found.');
+            throw new ChannelNotFound('Channel `'.$name.'` not found.');
         }
 
         $data = collect($this->channels[$name]);

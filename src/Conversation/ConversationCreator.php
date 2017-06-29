@@ -5,36 +5,39 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Helpers\Str;
-use FondBot\Contracts\Filesystem\Filesystem;
+use League\Flysystem\MountManager;
 
 class ConversationCreator
 {
     private $filesystem;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(MountManager $manager)
     {
-        $this->filesystem = $filesystem;
+        $this->filesystem = $manager->getFilesystem('local');
     }
 
     /**
-     * Create new story.
+     * Create new intent.
      *
      * @param string $directory
      * @param string $namespace
      * @param string $name
+     *
+     * @throws \League\Flysystem\FileNotFoundException
+     * @throws \League\Flysystem\FileExistsException
      */
-    public function createStory(string $directory, string $namespace, string $name): void
+    public function createIntent(string $directory, string $namespace, string $name): void
     {
-        $contents = $this->filesystem->read(__DIR__.'/../../resources/stubs/Story.stub');
+        $contents = $this->filesystem->read('vendor/fondbot/framework/resources/stubs/Intent.stub');
 
-        $className = $this->className($name, 'Story');
+        $className = $this->className($name, 'Intent');
 
         // Replace stub placeholders
-        $this->replacePlaceholder($contents, 'namespace', $this->namespace($namespace));
+        $this->replacePlaceholder($contents, 'namespace', $this->namespace($namespace, 'Intents'));
         $this->replacePlaceholder($contents, 'className', $className);
         $this->replacePlaceholder($contents, 'name', $this->formatName($name));
 
-        $path = $directory.'/'.$this->filename($className);
+        $path = $directory.'/Intents/'.$this->filename($className);
 
         $this->filesystem->write($path, $contents);
     }
@@ -45,10 +48,13 @@ class ConversationCreator
      * @param string $directory
      * @param string $namespace
      * @param string $name
+     *
+     * @throws \League\Flysystem\FileNotFoundException
+     * @throws \League\Flysystem\FileExistsException
      */
     public function createInteraction(string $directory, string $namespace, string $name): void
     {
-        $contents = $this->filesystem->read(__DIR__.'/../../resources/stubs/Interaction.stub');
+        $contents = $this->filesystem->read('vendor/fondbot/framework/resources/stubs/Interaction.stub');
 
         $className = $this->className($name, 'Interaction');
 

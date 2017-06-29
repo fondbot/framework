@@ -4,88 +4,49 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Bot;
-use FondBot\Traits\Loggable;
-use FondBot\Contracts\Channels\User;
+use FondBot\Foundation\Kernel;
+use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Traits\Transitions;
-use FondBot\Contracts\Conversation\Conversable;
-use FondBot\Contracts\Conversation\Interaction as InteractionContract;
+use FondBot\Conversation\Traits\SendsMessages;
+use FondBot\Conversation\Traits\InteractsWithSession;
 
-abstract class Interaction implements InteractionContract, Conversable
+abstract class Interaction implements Conversable
 {
-    use Transitions, Loggable;
+    use InteractsWithSession,
+        SendsMessages,
+        Transitions;
 
     /**
-     * Remember value in context.
+     * Run interaction.
      *
-     * @param string $key
-     * @param        $value
+     * @param ReceivedMessage $message
      */
-    protected function remember(string $key, $value): void
-    {
-        $this->bot->getContext()->setValue($key, $value);
-    }
+    abstract public function run(ReceivedMessage $message): void;
 
     /**
-     * Get user.
+     * Process received message.
      *
-     * @return User
+     * @param ReceivedMessage $reply
      */
-    public function getUser(): User
-    {
-        return $this->bot->getContext()->getUser();
-    }
-
-    /**
-     * Do something before running Interaction.
-     */
-    protected function before(): void
-    {
-    }
-
-    /**
-     * Do something after running Interaction.
-     */
-    protected function after(): void
-    {
-    }
+    abstract public function process(ReceivedMessage $reply): void;
 
     /**
      * Handle interaction.
      *
-     * @param Bot $bot
+     * @param Kernel $kernel
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function handle(Bot $bot): void
+    public function handle(Kernel $kernel): void
     {
-        $this->bot = $bot;
+        $this->kernel = $kernel;
+        $session = $this->kernel->getSession();
 
-        // Perform actions before running interaction
-        $this->before();
-
-        // Process reply if current interaction in context
-        // Reply to participant if not
-        if ($this->bot->getContext()->getInteraction() instanceof $this) {
-            $this->debug('run.process');
-
-            $this->process($this->bot->getContext()->getMessage());
-
-            // If no transition run we need to clear context.
-            if (!$this->transitioned) {
-                $this->bot->clearContext();
-            }
-
-            $this->after();
-
-            return;
+        if ($session->getInteraction() instanceof $this) {
+            $this->process($session->getMessage());
+        } else {
+            $this->kernel->getSession()->setInteraction($this);
+            $this->run($session->getMessage());
         }
-
-        // Set current interaction in context
-        $this->bot->getContext()->setInteraction($this);
-
-        // Send message to participant
-        $this->bot->sendMessage($this->getUser(), $this->text(), $this->keyboard());
-
-        // Perform actions after running interaction
-        $this->after();
     }
 }

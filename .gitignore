@@ -1,19 +1,10 @@
+/build
 /vendor
-/tests/Coverage
 
 .DS_Store
 Thumbs.db
 .idea
 .php_cs.cache
 
-clover.xml
 composer.lock
-_ide_helper.php
-_ide_helper_models.php
 .phpstorm.meta.php
-
-*.sublime-project
-*.sublime-workspace
-*.phar
-*.pid
-*.log

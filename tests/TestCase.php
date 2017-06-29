@@ -2,48 +2,35 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace FondBot\Tests;
 
 use Mockery;
-use FondBot\Bot;
+use Carbon\Carbon;
 use Faker\Factory;
 use Faker\Generator;
-use GuzzleHttp\Client;
-use Psr\Log\LoggerInterface;
-use Tests\Classes\FakeContainer;
-use FondBot\Contracts\Filesystem\Filesystem;
+use FondBot\Foundation\Kernel;
+use League\Container\Container;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    /** @var FakeContainer */
+    /** @var Container */
     protected $container;
 
-    /** @var Mockery\Mock */
-    protected $guzzle;
+    /** @var Kernel|Mockery\Mock|mixed */
+    protected $kernel;
 
-    /** @var Mockery\Mock */
-    protected $filesystem;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
+        Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
+        Carbon::setTestNow(Carbon::now());
 
-        // Set up container
-        $this->container = new Classes\FakeContainer();
-
-        $logger = $this->mock(LoggerInterface::class);
-        $logger->shouldReceive('debug', 'error');
-
-        $this->guzzle = $this->mock(Client::class);
-        $this->filesystem = $this->mock(Filesystem::class);
-
-        $bot = $this->mock(Bot::class);
-        $bot->shouldReceive('get')->with(LoggerInterface::class)->andReturn($this->container->make(LoggerInterface::class));
-        $bot->shouldReceive('get')->with(Client::class)->andReturn($this->container->make(Client::class));
-        Bot::setInstance($bot);
+        $this->container = new Container;
+        $this->kernel = Kernel::createInstance($this->container);
+        $this->container->add(Kernel::class, $this->kernel);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -58,22 +45,19 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     /**
      * @param string $class
      *
-     * @return \Mockery\Mock|mixed
+     * @param array  $args
+     *
+     * @return mixed|Mockery\Mock
      */
-    protected function mock(string $class)
+    protected function mock($class, array $args = null)
     {
-        $instance = Mockery::mock($class);
+        if ($args !== null) {
+            $instance = Mockery::mock($class, $args);
+        } else {
+            $instance = Mockery::mock($class);
+        }
 
-        $this->container->singleton($class, $instance);
-
-        return $instance;
-    }
-
-    protected function spy(string $class)
-    {
-        $instance = Mockery::spy($class)->makePartial();
-
-        $this->container->singleton($class, $instance);
+        $this->container->add($class, $instance);
 
         return $instance;
     }
