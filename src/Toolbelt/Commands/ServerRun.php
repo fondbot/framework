@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace FondBot\Toolbelt\Commands;
 
 use FondBot\Toolbelt\Command;
-use FondBot\Conversation\ConversationCreator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\ProcessUtils;
@@ -41,7 +40,6 @@ class ServerRun extends Command
         return $this->input->getOption('host');
     }
 
-
     /**
      * Get the full server command.
      *
@@ -49,7 +47,7 @@ class ServerRun extends Command
      */
     protected function serverCommand() : string
     {
-        return sprintf('%s -S %s:%s %s/server.php',
+        return sprintf('%s -S %s:%s %s/public/index.php',
             ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false)),
             $this->host(),
             $this->port(),
@@ -62,7 +60,6 @@ class ServerRun extends Command
         chdir(path());
         $this->line("<info>Fondbot development server started:</info> <http://{$this->host()}:{$this->port()}>");
         passthru($this->serverCommand());
-        dd(path());
     }
 
 }
