@@ -43,6 +43,7 @@ abstract class ToolbeltServiceProvider extends AbstractServiceProvider
                 new Commands\ListChannels,
                 new Commands\Log,
                 new Commands\QueueWorker,
+                new Commands\ServerRun,
             ]);
 
             foreach ($this->commands() as $command) {
