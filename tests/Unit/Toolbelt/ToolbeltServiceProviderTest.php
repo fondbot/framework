@@ -33,5 +33,6 @@ class ToolbeltServiceProviderTest extends TestCase
         $this->assertTrue($console->has('channel:list'));
         $this->assertTrue($console->has('log'));
         $this->assertTrue($console->has('queue:worker'));
+        $this->assertTrue($console->has('serve'));
     }
 }
