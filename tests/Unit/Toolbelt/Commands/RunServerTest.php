@@ -30,6 +30,5 @@ class RunServerTest extends TestCase
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);
-//        dd(trim($commandTester->getDisplay(true)));
     }
 }
