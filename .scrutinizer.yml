@@ -4,7 +4,7 @@ build:
       - 
         command: "vendor/bin/phpunit"
         coverage: 
-          file: clover.xml
+          file: build/clover.xml
           format: clover
 filter: 
   excluded_paths: 
