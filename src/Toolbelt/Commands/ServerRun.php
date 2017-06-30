@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Toolbelt\Commands;
 
 use FondBot\Toolbelt\Command;
+use Symfony\Component\Process\ProcessUtils;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\PhpExecutableFinder;
-use Symfony\Component\Process\ProcessUtils;
 
 class ServerRun extends Command
 {
@@ -61,5 +61,4 @@ class ServerRun extends Command
         $this->line("<info>Fondbot development server started:</info> <http://{$this->host()}:{$this->port()}>");
         passthru($this->serverCommand());
     }
-
 }

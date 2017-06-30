@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Toolbelt\Commands;
 
@@ -22,7 +22,7 @@ class RunServerTest extends TestCase
         $commandServer->shouldReceive('getName')->once()->andReturn('serve');
         $commandServer->shouldReceive('getApplication')->once();
         $commandServer->shouldReceive('run')->once();
-        $application   = new Application;
+        $application = new Application;
 
         $application->add($commandServer);
 
