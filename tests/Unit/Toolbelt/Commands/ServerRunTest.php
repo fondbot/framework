@@ -9,11 +9,12 @@ use FondBot\Toolbelt\Commands\ServerRun;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class RunServerTest extends TestCase
+class ServerRunTest extends TestCase
 {
     public function test(): void
     {
         $this->container->add('base_path', __DIR__.'/../..');
+
         $commandServer = $this->mock(ServerRun::class);
         $commandServer->shouldReceive('setApplication')->once();
         $commandServer->shouldReceive('isEnabled')->once()->andReturn(true);
