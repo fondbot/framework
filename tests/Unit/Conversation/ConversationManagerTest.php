@@ -113,7 +113,7 @@ class ConversationManagerTest extends TestCase
 
         $driver->shouldReceive('verifyRequest')->andThrow(new InvalidRequest('Invalid request.'));
 
-        $this->assertSame('OK', (new ConversationManager)->handle('foo', $request));
+        $this->assertSame('', (new ConversationManager)->handle('foo', $request));
     }
 
     public function test_handle_webhook_verification(): void

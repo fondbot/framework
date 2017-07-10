@@ -74,7 +74,7 @@ class ConversationManager
             logger()->warning('ConversationManager[handle] - Invalid Request', ['message' => $exception->getMessage()]);
         }
 
-        return 'OK';
+        return '';
     }
 
     /**
