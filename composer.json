@@ -21,7 +21,6 @@
     ],
     "require": {
         "php": "^7.1",
-        "filp/whoops": "^2.1",
         "guzzlehttp/guzzle": "^6.2",
         "jeremeamia/superclosure": "^2.3",
         "league/container": "^2.4",
