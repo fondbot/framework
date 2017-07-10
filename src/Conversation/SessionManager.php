@@ -7,8 +7,8 @@ namespace FondBot\Conversation;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
-use FondBot\Contracts\Cache;
 use FondBot\Channels\Channel;
+use Psr\SimpleCache\CacheInterface;
 use Psr\Container\ContainerInterface;
 
 class SessionManager
@@ -16,7 +16,7 @@ class SessionManager
     private $container;
     private $cache;
 
-    public function __construct(ContainerInterface $container, Cache $cache)
+    public function __construct(ContainerInterface $container, CacheInterface $cache)
     {
         $this->container = $container;
         $this->cache = $cache;
@@ -55,7 +55,7 @@ class SessionManager
     {
         $key = $this->key($session->getChannel(), $session->getChat(), $session->getUser());
 
-        $this->cache->store($key, $session->toArray());
+        $this->cache->set($key, $session->toArray());
     }
 
     /**
@@ -67,7 +67,7 @@ class SessionManager
     {
         $key = $this->key($session->getChannel(), $session->getChat(), $session->getUser());
 
-        $this->cache->forget($key);
+        $this->cache->delete($key);
     }
 
     /**

@@ -5,41 +5,23 @@ declare(strict_types=1);
 namespace FondBot\Cache\Adapters;
 
 use JsonSerializable;
-use FondBot\Cache\Adapter;
-use League\Flysystem\Filesystem;
-use League\Flysystem\FileNotFoundException;
+use Cache\Adapter\Filesystem\FilesystemCachePool;
 
-class FilesystemAdapter extends Adapter
+/**
+ * @deprecated Since 1.1 package cache/cache is used (https://packagist.org/packages/cache/cache)
+ */
+class FilesystemAdapter extends FilesystemCachePool
 {
-    private $filesystem;
-
-    public function __construct(Filesystem $filesystem)
+    public function get($key, $default = null)
     {
-        $this->filesystem = $filesystem;
-    }
+        $value = parent::get($key, $default);
+        $json = json_decode($value, true);
 
-    /**
-     * Retrieve an item from the cache by key.
-     *
-     * @param string $key
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    public function get(string $key, $default = null)
-    {
-        try {
-            $contents = $this->filesystem->read($this->key($key));
-            $json = json_decode($contents, true);
-
-            if (json_last_error() === JSON_ERROR_NONE) {
-                return $json;
-            }
-
-            return $contents;
-        } catch (FileNotFoundException $exception) {
-            return $default;
+        if (json_last_error() === JSON_ERROR_NONE) {
+            return $json;
         }
+
+        return $value;
     }
 
     /**
@@ -56,7 +38,7 @@ class FilesystemAdapter extends Adapter
             $value = json_encode($value);
         }
 
-        $this->filesystem->put($this->key($key), $value);
+        $this->set($key, $value);
     }
 
     /**
@@ -66,14 +48,6 @@ class FilesystemAdapter extends Adapter
      */
     public function forget(string $key): void
     {
-        try {
-            $this->filesystem->delete($this->key($key));
-        } catch (FileNotFoundException $exception) {
-        }
-    }
-
-    private function key(string $key): string
-    {
-        return md5($key);
+        $this->delete($key);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Contracts\Cache;
+use Psr\SimpleCache\CacheInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 class SessionServiceProvider extends AbstractServiceProvider
@@ -26,7 +26,7 @@ class SessionServiceProvider extends AbstractServiceProvider
         $this->container->share(SessionManager::class, function () {
             return new SessionManager(
                 $this->container,
-                $this->container->get(Cache::class)
+                $this->container->get(CacheInterface::class)
             );
         });
     }

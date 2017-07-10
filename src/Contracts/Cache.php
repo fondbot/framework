@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts;
 
+/**
+ * @deprecated Since 1.1 package cache/cache is used (https://packagist.org/packages/cache/cache)
+ */
 interface Cache
 {
     /**
