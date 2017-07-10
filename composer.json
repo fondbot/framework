@@ -21,7 +21,7 @@
     ],
     "require": {
         "php": "^7.1",
-        "guzzlehttp/guzzle": "^6.2",
+        "guzzlehttp/guzzle": "^6.3",
         "jeremeamia/superclosure": "^2.3",
         "league/container": "^2.4",
         "league/flysystem": "^1.0",
