@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation;
 
+use Mockery\Mock;
 use FondBot\Tests\TestCase;
+use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Tests\Classes\TestInteraction;
 
 /**
- * @property mixed|\Mockery\Mock                    $session
- * @property \FondBot\Tests\Classes\TestInteraction interaction
+ * @property mixed|Mock      $session
+ * @property mixed|Mock      $context
+ * @property TestInteraction $interaction
  */
 class InteractionTest extends TestCase
 {
@@ -20,8 +23,10 @@ class InteractionTest extends TestCase
         parent::setUp();
 
         $this->session = $this->mock(Session::class);
+        $this->context = $this->mock(Context::class);
 
         $this->kernel->setSession($this->session);
+        $this->kernel->setContext($this->context);
 
         $this->interaction = new TestInteraction;
     }
@@ -32,7 +37,7 @@ class InteractionTest extends TestCase
 
         $this->session->shouldReceive('getInteraction')->andReturn($this->interaction)->once();
         $this->session->shouldReceive('getMessage')->andReturn($message)->once();
-        $this->session->shouldReceive('setContextValue')->with('key', 'value')->once();
+        $this->context->shouldReceive('set')->with('key', 'value')->once();
 
         $this->interaction->handle($this->kernel);
     }

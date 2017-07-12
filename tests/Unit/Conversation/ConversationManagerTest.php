@@ -11,6 +11,7 @@ use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
+use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
 use FondBot\Drivers\DriverManager;
 use FondBot\Channels\ChannelManager;
@@ -18,6 +19,7 @@ use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Conversable;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
+use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
 use FondBot\Conversation\ConversationManager;
 use FondBot\Drivers\Exceptions\InvalidRequest;
@@ -33,8 +35,10 @@ class ConversationManagerTest extends TestCase
         $channelManager = $this->mock(ChannelManager::class);
         $driverManager = $this->mock(DriverManager::class);
         $sessionManager = $this->mock(SessionManager::class);
+        $contextManager = $this->mock(ContextManager::class);
         $intentManager = $this->mock(IntentManager::class);
         $session = $this->mock(Session::class);
+        $context = $this->mock(Context::class);
         $intent = $this->mock(Intent::class);
         $receivedMessage = $this->mock(ReceivedMessage::class);
         $channelName = $this->faker()->userName;
@@ -43,10 +47,8 @@ class ConversationManagerTest extends TestCase
         $driverManager->shouldReceive('get')->with($channel, $request)->andReturn($driver)->once();
 
         $driver->shouldReceive('verifyRequest')->once();
-        $sessionManager->shouldReceive('load')
-            ->with($channel, $driver)
-            ->andReturn($session)
-            ->once();
+        $sessionManager->shouldReceive('load')->andReturn($session)->once();
+        $contextManager->shouldReceive('load')->andReturn($context)->once();
 
         $session->shouldReceive('getInteraction')->andReturn(null)->once();
 
@@ -58,11 +60,12 @@ class ConversationManagerTest extends TestCase
 
         $session->shouldReceive('setIntent')->with($intent)->once();
         $session->shouldReceive('setInteraction')->with(null)->once();
-        $session->shouldReceive('setContext')->with([])->once();
         $intent->shouldReceive('handle')->with($this->kernel)->once();
-        $sessionManager->shouldReceive('close')->with($session)->once();
 
-        (new ConversationManager())->handle($channelName, $request);
+        $sessionManager->shouldReceive('close')->once();
+        $contextManager->shouldReceive('clear')->once();
+
+        (new ConversationManager)->handle($channelName, $request);
 
         $this->assertSame($driver, $this->kernel->getDriver());
     }
@@ -75,26 +78,27 @@ class ConversationManagerTest extends TestCase
         $channelManager = $this->mock(ChannelManager::class);
         $driverManager = $this->mock(DriverManager::class);
         $sessionManager = $this->mock(SessionManager::class);
+        $contextManager = $this->mock(ContextManager::class);
         $intentManager = $this->mock(IntentManager::class);
         $interaction = $this->mock(Interaction::class);
         $session = $this->mock(Session::class);
+        $context = $this->mock(Context::class);
         $channelName = $this->faker()->userName;
 
         $channelManager->shouldReceive('create')->with($channelName)->andReturn($channel)->once();
         $driverManager->shouldReceive('get')->with($channel, $request)->andReturn($driver)->once();
 
         $driver->shouldReceive('verifyRequest')->once();
-        $sessionManager->shouldReceive('load')
-            ->with($channel, $driver)
-            ->andReturn($session)
-            ->once();
+        $sessionManager->shouldReceive('load')->andReturn($session)->once();
+        $contextManager->shouldReceive('load')->andReturn($context)->once();
 
         $session->shouldReceive('getInteraction')->andReturn($interaction)->atLeast()->once();
 
         $intentManager->shouldReceive('find')->never();
         $interaction->shouldReceive('handle')->with($this->kernel)->once();
 
-        $sessionManager->shouldReceive('close')->with($session)->once();
+        $sessionManager->shouldReceive('close')->once();
+        $contextManager->shouldReceive('clear')->once();
 
         (new ConversationManager)->handle($channelName, $request);
     }
@@ -146,7 +150,6 @@ class ConversationManagerTest extends TestCase
 
         $session->shouldReceive('setIntent')->with($intent)->once();
         $session->shouldReceive('setInteraction')->with(null)->once();
-        $session->shouldReceive('setContext')->with([])->once();
         $intent->shouldReceive('handle')->once();
 
         (new ConversationManager)->restart($intent);
@@ -168,7 +171,6 @@ class ConversationManagerTest extends TestCase
         $this->kernel->setSession($session);
 
         $session->shouldReceive('setInteraction')->with(null)->once();
-        $session->shouldReceive('setContext')->with([])->once();
         $interaction->shouldReceive('handle')->once();
 
         (new ConversationManager)->restart($interaction);

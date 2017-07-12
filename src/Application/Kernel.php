@@ -7,7 +7,9 @@ namespace FondBot\Application;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use League\Container\Container;
+use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
+use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
 
 class Kernel
@@ -18,14 +20,22 @@ class Kernel
     private static $instance;
 
     private $container;
+    private $terminable;
 
     private $driver;
     private $channel;
     private $session;
+    private $context;
 
-    private function __construct(Container $container)
+    private function __construct(Container $container, bool $terminable = true)
     {
         $this->container = $container;
+        $this->terminable = $terminable;
+    }
+
+    public function __destruct()
+    {
+        $this->terminate();
     }
 
     public static function getInstance(): Kernel
@@ -33,9 +43,41 @@ class Kernel
         return static::$instance;
     }
 
-    public static function createInstance(Container $container): Kernel
+    public static function createInstance(Container $container, bool $terminable = true): Kernel
     {
-        return static::$instance = new static($container);
+        return static::$instance = new static($container, $terminable);
+    }
+
+    /**
+     * Boot kernel.
+     *
+     * @param Channel $channel
+     * @param Driver  $driver
+     */
+    public function boot(Channel $channel, Driver $driver): void
+    {
+        $this->session = $this->sessionManager()->load($channel, $driver);
+        $this->context = $this->contextManager()->load($channel, $driver);
+    }
+
+    /**
+     * Perform shutdown tasks.
+     */
+    public function terminate(): void
+    {
+        if (!$this->terminable) {
+            return;
+        }
+
+        // Save session if exists
+        if ($this->session !== null) {
+            $this->sessionManager()->save($this->session);
+        }
+
+        // Save context if exists
+        if ($this->context !== null) {
+            $this->contextManager()->save($this->context);
+        }
     }
 
     /**
@@ -99,27 +141,6 @@ class Kernel
     }
 
     /**
-     * Load session.
-     *
-     * @param Channel $channel
-     * @param Driver  $driver
-     */
-    public function loadSession(Channel $channel, Driver $driver): void
-    {
-        $this->session = $this->sessionManager()->load($channel, $driver);
-    }
-
-    /**
-     * Save session.
-     */
-    public function saveSession(): void
-    {
-        if ($this->session !== null) {
-            $this->sessionManager()->save($this->session);
-        }
-    }
-
-    /**
      * Close session.
      *
      * @throws \Psr\Container\ContainerExceptionInterface
@@ -129,6 +150,37 @@ class Kernel
         if ($this->session !== null) {
             $this->sessionManager()->close($this->session);
             $this->session = null;
+        }
+    }
+
+    /**
+     * Get context.
+     *
+     * @return Context|null
+     */
+    public function getContext(): ?Context
+    {
+        return $this->context;
+    }
+
+    /**
+     * Set context.
+     *
+     * @param Context $context
+     */
+    public function setContext(Context $context): void
+    {
+        $this->context = $context;
+    }
+
+    /**
+     * Clear context.
+     */
+    public function clearContext(): void
+    {
+        if ($this->context !== null) {
+            $this->contextManager()->clear($this->context);
+            $this->context = null;
         }
     }
 
@@ -157,5 +209,15 @@ class Kernel
     private function sessionManager(): SessionManager
     {
         return $this->resolve(SessionManager::class);
+    }
+
+    /**
+     * Get context manager.
+     *
+     * @return ContextManager
+     */
+    private function contextManager(): ContextManager
+    {
+        return $this->resolve(ContextManager::class);
     }
 }

@@ -53,10 +53,6 @@ class SessionManagerTest extends TestCase
         $this->cache->shouldReceive('get')->with($key)->andReturn([
             'intent' => null,
             'interaction' => null,
-            'values' => $values = [
-                'username' => $this->faker()->userName,
-                'uuid' => $this->faker()->uuid,
-            ],
         ])->once();
 
         $session = $this->manager->load($this->channel, $this->driver);

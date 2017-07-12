@@ -8,11 +8,13 @@ use FondBot\Application\Kernel;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Conversation\Traits\SendsMessages;
+use FondBot\Conversation\Traits\InteractsWithContext;
 use FondBot\Conversation\Traits\InteractsWithSession;
 
 abstract class Interaction implements Conversable
 {
     use InteractsWithSession,
+        InteractsWithContext,
         SendsMessages,
         Transitions;
 

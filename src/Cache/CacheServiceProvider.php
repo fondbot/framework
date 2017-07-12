@@ -31,7 +31,7 @@ abstract class CacheServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        $this->container->share(Cache::class, $this->adapter());
+        $this->container->share(Cache::class, $this->adapter()); // BC
         $this->container->share(CacheInterface::class, $this->adapter());
     }
 }

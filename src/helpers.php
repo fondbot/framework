@@ -71,6 +71,18 @@ if (!function_exists('session')) {
     }
 }
 
+if (!function_exists('context')) {
+    /**
+     * Get context.
+     *
+     * @return FondBot\Conversation\Context
+     */
+    function context(): FondBot\Conversation\Context
+    {
+        return kernel()->getContext();
+    }
+}
+
 if (!function_exists('path')) {
     /**
      * Get path.

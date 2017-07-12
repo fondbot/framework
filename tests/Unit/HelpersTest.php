@@ -39,16 +39,14 @@ class HelpersTest extends TestCase
     public function test_resolve(): void
     {
         $this->container->add('foo', 'bar');
-        Kernel::createInstance($this->container);
 
         $this->assertSame('bar', resolve('foo'));
     }
 
     public function test_session(): void
     {
-        $kernel = Kernel::createInstance($this->container);
         $session = $this->mock(Session::class);
-        $kernel->setSession($session);
+        $this->kernel->setSession($session);
 
         $this->assertSame($session, session());
     }
@@ -56,7 +54,6 @@ class HelpersTest extends TestCase
     public function test_path(): void
     {
         $this->container->add('base_path', 'foo');
-        Kernel::createInstance($this->container);
 
         $this->assertSame('foo', path());
         $this->assertSame('foo/bar', path('bar'));
@@ -76,7 +73,6 @@ class HelpersTest extends TestCase
         $logger = new Logger('foo');
 
         $this->container->add(Logger::class, $logger);
-        Kernel::createInstance($this->container);
 
         $this->assertSame($logger, logger());
     }

@@ -50,8 +50,8 @@ class ConversationManager
             // Verify request
             $driver->verifyRequest();
 
-            // Load session
-            kernel()->loadSession($channel, $driver);
+            // Boot kernel
+            kernel()->boot($channel, $driver);
 
             if (!$this->isInConversation()) {
                 $this->converse(
@@ -67,8 +67,7 @@ class ConversationManager
             // Otherwise, save session state
             if (!$this->transitioned) {
                 kernel()->closeSession();
-            } else {
-                kernel()->saveSession();
+                kernel()->clearContext();
             }
         } catch (InvalidRequest $exception) {
             logger()->warning('ConversationManager[handle] - Invalid Request', ['message' => $exception->getMessage()]);
@@ -88,7 +87,6 @@ class ConversationManager
             $session = session();
             $session->setIntent($conversable);
             $session->setInteraction(null);
-            $session->setContext([]);
 
             kernel()->setSession($session);
 
@@ -127,7 +125,6 @@ class ConversationManager
             case $conversable instanceof Interaction:
                 $session = session();
                 $session->setInteraction(null);
-                $session->setContext([]);
 
                 kernel()->setSession($session);
 
