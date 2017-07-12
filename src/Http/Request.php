@@ -42,6 +42,17 @@ class Request
         return $this->parameters;
     }
 
+      /**
+     * Set request parameters. 
+     * 
+     * @param array $parameters
+     * @return array
+     */
+    public function setParameters(array $parameters) : array 
+    {
+        return $this->parameters = $parameters;
+    }
+    
     /**
      * Get single parameter.
      *
