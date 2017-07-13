@@ -13,7 +13,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class LogTest extends TestCase
 {
-    public function test_stream_handler_exists(): void
+    public function testStreamHandlerExists(): void
     {
         $this->container->add(Logger::class, $logger = $this->mock(Logger::class));
 
@@ -44,7 +44,7 @@ class LogTest extends TestCase
         );
     }
 
-    public function test_without_stream_handler(): void
+    public function testWithoutStreamHandler(): void
     {
         $this->container->add(Logger::class, $logger = $this->mock(Logger::class));
 

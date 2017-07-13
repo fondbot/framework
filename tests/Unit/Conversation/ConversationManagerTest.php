@@ -27,7 +27,7 @@ use FondBot\Drivers\Extensions\WebhookVerification;
 
 class ConversationManagerTest extends TestCase
 {
-    public function test_handle_new_dialog(): void
+    public function testHandleNewDialog(): void
     {
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
@@ -70,7 +70,7 @@ class ConversationManagerTest extends TestCase
         $this->assertSame($driver, $this->kernel->getDriver());
     }
 
-    public function test_handle_existing_dialog(): void
+    public function testHandleExistingDialog(): void
     {
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
@@ -103,7 +103,7 @@ class ConversationManagerTest extends TestCase
         (new ConversationManager)->handle($channelName, $request);
     }
 
-    public function test_handle_invalid_request(): void
+    public function testHandleInvalidRequest(): void
     {
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
@@ -120,7 +120,7 @@ class ConversationManagerTest extends TestCase
         $this->assertSame('', (new ConversationManager)->handle('foo', $request));
     }
 
-    public function test_handle_webhook_verification(): void
+    public function testHandleWebhookVerification(): void
     {
         $request = $this->mock(Request::class);
         $channel = $this->mock(Channel::class);
@@ -141,7 +141,7 @@ class ConversationManagerTest extends TestCase
         $this->assertSame($verification, $result);
     }
 
-    public function test_restart_intent(): void
+    public function testRestartIntent(): void
     {
         $intent = $this->mock(Intent::class);
         $session = $this->mock(Session::class);
@@ -155,7 +155,7 @@ class ConversationManagerTest extends TestCase
         (new ConversationManager)->restart($intent);
     }
 
-    public function test_transition(): void
+    public function testTransition(): void
     {
         $conversable = $this->mock(Conversable::class);
         $conversable->shouldReceive('handle')->with($this->kernel)->once();
@@ -163,7 +163,7 @@ class ConversationManagerTest extends TestCase
         (new ConversationManager)->transition($conversable);
     }
 
-    public function test_restart_interaction(): void
+    public function testRestartInteraction(): void
     {
         $interaction = $this->mock(Interaction::class);
         $session = $this->mock(Session::class);

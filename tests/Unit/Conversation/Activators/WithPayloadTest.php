@@ -10,7 +10,7 @@ use FondBot\Conversation\Activators\WithPayload;
 
 class WithPayloadTest extends TestCase
 {
-    public function test_matches(): void
+    public function testMatches(): void
     {
         $message = $this->mock(ReceivedMessage::class);
         $message->shouldReceive('hasData')->andReturn(true)->once();
@@ -21,7 +21,7 @@ class WithPayloadTest extends TestCase
         $this->assertTrue($activator->matches($message));
     }
 
-    public function test_does_not_match(): void
+    public function testDoesNotMatch(): void
     {
         $message = $this->mock(ReceivedMessage::class);
         $message->shouldReceive('hasData')->andReturn(true)->once();

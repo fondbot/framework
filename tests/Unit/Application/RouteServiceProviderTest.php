@@ -12,7 +12,7 @@ use FondBot\Application\RouteServiceProvider;
 
 class RouteServiceProviderTest extends TestCase
 {
-    public function test_without_prefix(): void
+    public function testWithoutPrefix(): void
     {
         $this->container->share(Kernel::class, Kernel::createInstance($this->container));
         $this->container->addServiceProvider(new RouteServiceProvider(''));
@@ -21,7 +21,7 @@ class RouteServiceProviderTest extends TestCase
         $this->assertInstanceOf(RouteCollection::class, $this->container->get('router'));
     }
 
-    public function test_with_prefix(): void
+    public function testWithPrefix(): void
     {
         $prefix = 'foo';
 

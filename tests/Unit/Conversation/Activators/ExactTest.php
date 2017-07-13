@@ -20,7 +20,7 @@ class ExactTest extends TestCase
         $this->message = $this->mock(ReceivedMessage::class);
     }
 
-    public function test_matches_case_sensitive(): void
+    public function testMatchesCaseSensitive(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/start');
 
@@ -30,7 +30,7 @@ class ExactTest extends TestCase
         );
     }
 
-    public function test_does_not_match_case_sensitive(): void
+    public function testDoesNotMatchCaseSensitive(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/Start');
 
@@ -40,7 +40,7 @@ class ExactTest extends TestCase
         );
     }
 
-    public function test_matches_case_insensitive(): void
+    public function testMatchesCaseInsensitive(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/Start');
 
@@ -50,7 +50,7 @@ class ExactTest extends TestCase
         );
     }
 
-    public function test_does_not_match_case_insensitive(): void
+    public function testDoesNotMatchCaseInsensitive(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/Start');
 
@@ -60,7 +60,7 @@ class ExactTest extends TestCase
         );
     }
 
-    public function test_empty_message(): void
+    public function testEmptyMessage(): void
     {
         $this->message->shouldReceive('getText')->andReturn(null);
 

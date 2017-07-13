@@ -10,14 +10,14 @@ use FondBot\Conversation\Traits\Authorization;
 
 class AuthorizationTest extends TestCase
 {
-    public function test_with_method()
+    public function testWithMethod()
     {
         $class = new AuthorizationTraitTestClassWithMethod();
 
         $this->assertFalse($class->passesAuthorization($this->mock(ReceivedMessage::class)));
     }
 
-    public function test_without_method()
+    public function testWithoutMethod()
     {
         $class = new AuthorizationTraitTestClassWithoutMethod();
 

@@ -15,14 +15,14 @@ use FondBot\Conversation\SessionManager;
 
 class KernelTest extends TestCase
 {
-    public function test_getInstance(): void
+    public function testGetInstance(): void
     {
         $kernel = Kernel::createInstance($this->container);
 
         $this->assertSame($kernel, Kernel::getInstance());
     }
 
-    public function test_channel(): void
+    public function testChannel(): void
     {
         $channel = $this->mock(Channel::class);
         $this->kernel->setChannel($channel);
@@ -30,7 +30,7 @@ class KernelTest extends TestCase
         $this->assertSame($channel, $this->kernel->getChannel());
     }
 
-    public function test_driver(): void
+    public function testDriver(): void
     {
         $driver = $this->mock(Driver::class);
         $this->kernel->setDriver($driver);
@@ -38,14 +38,14 @@ class KernelTest extends TestCase
         $this->assertSame($driver, $this->kernel->getDriver());
     }
 
-    public function test_session(): void
+    public function testSession(): void
     {
         $this->kernel->setSession($session = $this->mock(Session::class));
 
         $this->assertSame($session, $this->kernel->getSession());
     }
 
-    public function test_boot(): void
+    public function testBoot(): void
     {
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
@@ -63,7 +63,7 @@ class KernelTest extends TestCase
         $this->assertSame($context, $this->kernel->getContext());
     }
 
-    public function test_closeSession(): void
+    public function testCloseSession(): void
     {
         $sessionManager = $this->mock(SessionManager::class);
 

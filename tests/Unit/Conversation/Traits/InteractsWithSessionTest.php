@@ -12,7 +12,7 @@ use FondBot\Conversation\Traits\InteractsWithSession;
 
 class InteractsWithSessionTest extends TestCase
 {
-    public function test_user(): void
+    public function testUser(): void
     {
         $session = $this->mock(Session::class);
         $user = $this->mock(User::class);

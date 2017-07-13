@@ -31,7 +31,7 @@ class InteractionTest extends TestCase
         $this->interaction = new TestInteraction;
     }
 
-    public function test_run_current_interaction_in_session_and_do_not_run_another_interaction(): void
+    public function testRunCurrentInteractionInSessionAndDoNotRunAnotherInteraction(): void
     {
         $message = $this->mock(ReceivedMessage::class);
 
@@ -42,7 +42,7 @@ class InteractionTest extends TestCase
         $this->interaction->handle($this->kernel);
     }
 
-    public function test_run_current_interaction_not_in_session(): void
+    public function testRunCurrentInteractionNotInSession(): void
     {
         $this->session->shouldReceive('getInteraction')->andReturnNull()->once();
         $this->session->shouldReceive('setInteraction')->with($this->interaction)->once();
@@ -55,7 +55,7 @@ class InteractionTest extends TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessageRegExp /^Alias (.*) is not being managed by the container$/
      */
-    public function test_run_transition_exception(): void
+    public function testRunTransitionException(): void
     {
         $this->interaction->runIncorrect($this->kernel);
     }

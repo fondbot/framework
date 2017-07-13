@@ -12,7 +12,7 @@ use FondBot\Drivers\DriverManager;
 
 class DriverManagerTest extends TestCase
 {
-    public function test_get(): void
+    public function testGet(): void
     {
         $driver = $this->mock(Driver::class);
         $channel = $this->mock(Channel::class);
@@ -33,7 +33,7 @@ class DriverManagerTest extends TestCase
      * @expectedException \FondBot\Drivers\Exceptions\DriverNotFound
      * @expectedExceptionMessage Driver `foo` not found.
      */
-    public function test_get_driver_does_not_exist(): void
+    public function testGetDriverDoesNotExist(): void
     {
         $channel = $this->mock(Channel::class);
         $request = $this->mock(Request::class);
@@ -48,7 +48,7 @@ class DriverManagerTest extends TestCase
      * @expectedException \FondBot\Drivers\Exceptions\InvalidConfiguration
      * @expectedExceptionMessage Invalid `foo` channel configuration.
      */
-    public function test_get_invalid_configuration(): void
+    public function testGetInvalidConfiguration(): void
     {
         $driver = $this->mock(Driver::class);
         $channel = $this->mock(Channel::class);

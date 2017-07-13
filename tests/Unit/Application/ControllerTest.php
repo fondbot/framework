@@ -12,7 +12,7 @@ use FondBot\Conversation\ConversationManager;
 
 class ControllerTest extends TestCase
 {
-    public function test_index(): void
+    public function testIndex(): void
     {
         $request = new Request();
         $response = new Response('php://temp');
@@ -25,7 +25,7 @@ class ControllerTest extends TestCase
         $this->assertRegExp('/FondBot v([0-9]+)\.([0-9]+)\.([0-9]+)/', $response->getBody()->getContents());
     }
 
-    public function test_webhook(): void
+    public function testWebhook(): void
     {
         $conversationManager = $this->mock(ConversationManager::class);
         $request = new Request();

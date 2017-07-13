@@ -14,7 +14,7 @@ use FondBot\Drivers\CommandHandler;
 
 class DriverTest extends TestCase
 {
-    public function test_http()
+    public function testHttp()
     {
         $guzzle = $this->mock(Client::class);
 
@@ -24,7 +24,7 @@ class DriverTest extends TestCase
         $this->assertSame($guzzle, $driver->getHttp());
     }
 
-    public function test_fill(): void
+    public function testFill(): void
     {
         $request = new Request([], []);
 
@@ -37,7 +37,7 @@ class DriverTest extends TestCase
         $this->assertSame('z', $driver->getParameter('foo-bar', 'z'));
     }
 
-    public function test_handle(): void
+    public function testHandle(): void
     {
         $command = $this->mock(Command::class);
         $commandHandler = $this->mock(CommandHandler::class);

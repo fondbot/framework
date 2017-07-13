@@ -29,7 +29,7 @@ class InteractsWithContextTest extends TestCase
         $this->kernel->setContext($context);
     }
 
-    public function test_context(): void
+    public function testContext(): void
     {
         $this->assertSame('bar', $this->context('foo'));
         $this->assertNull($this->context('bar'));
@@ -37,7 +37,7 @@ class InteractsWithContextTest extends TestCase
         $this->assertInstanceOf(Context::class, $this->context());
     }
 
-    public function test_remember(): void
+    public function testRemember(): void
     {
         $this->remember('some', 'value');
 

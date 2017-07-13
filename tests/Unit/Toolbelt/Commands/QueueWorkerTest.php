@@ -17,7 +17,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class QueueWorkerTest extends TestCase
 {
-    public function test_jobs_limit(): void
+    public function testJobsLimit(): void
     {
         $queue = $this->mock(Queue::class);
         $job = new Job(

@@ -9,7 +9,7 @@ use FondBot\Conversation\Intent;
 
 class IntentTest extends TestCase
 {
-    public function test_handle()
+    public function testHandle()
     {
         /** @var Intent $intent */
         $intent = $this->mock(Intent::class)->shouldIgnoreMissing();

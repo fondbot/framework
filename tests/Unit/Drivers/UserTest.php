@@ -9,7 +9,7 @@ use FondBot\Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    public function test_full()
+    public function testFull()
     {
         $user = new User(
             $id = $this->faker()->uuid,
@@ -22,7 +22,7 @@ class UserTest extends TestCase
         $this->assertSame($username, $user->getUsername());
     }
 
-    public function test_accepts_nulls_for_name_and_username()
+    public function testAcceptsNullsForNameAndUsername()
     {
         $user = new User($id = $this->faker()->uuid, null, null);
 

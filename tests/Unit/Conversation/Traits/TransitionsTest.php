@@ -16,7 +16,7 @@ use FondBot\Conversation\Activators\Activator;
 
 class TransitionsTest extends TestCase
 {
-    public function test_jump(): void
+    public function testJump(): void
     {
         $conversationManager = $this->mock(ConversationManager::class);
         $this->container->add('foo', $interaction = $this->mock(Interaction::class));
@@ -31,7 +31,7 @@ class TransitionsTest extends TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Invalid interaction `foo`
      */
-    public function test_jump_invalid_interaction(): void
+    public function testJumpInvalidInteraction(): void
     {
         $conversationManager = $this->mock(ConversationManager::class);
         $this->container->add('foo', $this->mock(Intent::class));
@@ -42,7 +42,7 @@ class TransitionsTest extends TestCase
         $class->jump('foo');
     }
 
-    public function test_restart_intent(): void
+    public function testRestartIntent(): void
     {
         $conversationManager = $this->mock(ConversationManager::class);
         $session = $this->mock(Session::class);
@@ -71,7 +71,7 @@ class TransitionsTest extends TestCase
         $intent->handle($this->kernel);
     }
 
-    public function test_restart_interaction(): void
+    public function testRestartInteraction(): void
     {
         $conversationManager = $this->mock(ConversationManager::class);
         $session = $this->mock(Session::class);

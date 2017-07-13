@@ -20,7 +20,7 @@ class PatternTest extends TestCase
         $this->message = $this->mock(ReceivedMessage::class);
     }
 
-    public function test_string_matches(): void
+    public function testStringMatches(): void
     {
         $this->message->shouldReceive('getText')->andReturn('abc');
 
@@ -30,7 +30,7 @@ class PatternTest extends TestCase
         );
     }
 
-    public function test_string_does_not_match(): void
+    public function testStringDoesNotMatch(): void
     {
         $this->message->shouldReceive('getText')->andReturn('ab');
 

@@ -11,7 +11,7 @@ use FondBot\Cache\Adapters\FilesystemAdapter;
 
 class FilesystemAdapterTest extends TestCase
 {
-    public function test_get(): void
+    public function testGet(): void
     {
         $filesystem = new Filesystem(new MemoryAdapter);
         $adapter = new FilesystemAdapter($filesystem);
@@ -25,7 +25,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertSame('bar', $adapter->get('foo'));
     }
 
-    public function test_store(): void
+    public function testStore(): void
     {
         $filesystem = new Filesystem(new MemoryAdapter);
         $adapter = new FilesystemAdapter($filesystem);
@@ -41,7 +41,7 @@ class FilesystemAdapterTest extends TestCase
         $this->assertSame($collection->toArray(), $adapter->get('bar'));
     }
 
-    public function test_forget(): void
+    public function testForget(): void
     {
         $filesystem = new Filesystem(new MemoryAdapter);
         $adapter = new FilesystemAdapter($filesystem);

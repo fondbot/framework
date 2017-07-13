@@ -45,27 +45,27 @@ class SessionTest extends TestCase
         );
     }
 
-    public function test_getChannel(): void
+    public function testGetChannel(): void
     {
         $this->assertSame($this->channel, $this->session->getChannel());
     }
 
-    public function test_getChat(): void
+    public function testGetChat(): void
     {
         $this->assertSame($this->chat, $this->session->getChat());
     }
 
-    public function test_getSender(): void
+    public function testGetSender(): void
     {
         $this->assertSame($this->sender, $this->session->getUser());
     }
 
-    public function test_getMessage(): void
+    public function testGetMessage(): void
     {
         $this->assertSame($this->message, $this->session->getMessage());
     }
 
-    public function test_intent(): void
+    public function testIntent(): void
     {
         $this->assertSame($this->intent, $this->session->getIntent());
 
@@ -76,7 +76,7 @@ class SessionTest extends TestCase
         $this->assertNotSame($this->intent, $this->session->getIntent());
     }
 
-    public function test_interaction(): void
+    public function testInteraction(): void
     {
         $this->assertSame($this->interaction, $this->session->getInteraction());
 
@@ -87,7 +87,7 @@ class SessionTest extends TestCase
         $this->assertNotSame($this->interaction, $this->session->getInteraction());
     }
 
-    public function test_toArray(): void
+    public function testToArray(): void
     {
         $expected = [
             'intent' => get_class($this->intent),

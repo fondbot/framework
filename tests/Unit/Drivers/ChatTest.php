@@ -9,7 +9,7 @@ use FondBot\Tests\TestCase;
 
 class ChatTest extends TestCase
 {
-    public function test_full()
+    public function testFull()
     {
         $user = new Chat(
             $id = $this->faker()->uuid,

@@ -9,7 +9,7 @@ use FondBot\Tests\TestCase;
 
 class StrTest extends TestCase
 {
-    public function test_contains()
+    public function testContains()
     {
         $string = 'FondBot is a great library for building chatbots.';
 
@@ -17,7 +17,7 @@ class StrTest extends TestCase
         $this->assertFalse(Str::contains($string, ['bad', 'awful', 'human']));
     }
 
-    public function test_endsWith()
+    public function testEndsWith()
     {
         $string = 'FondBot is a great library for building chatbots.';
 
@@ -25,13 +25,13 @@ class StrTest extends TestCase
         $this->assertFalse(Str::endsWith($string, ['manufacturing cars.', 'stuff.']));
     }
 
-    public function test_random()
+    public function testRandom()
     {
         $this->assertSame(16, mb_strlen(Str::random()));
         $this->assertSame($length = random_int(1, 100), mb_strlen(Str::random($length)));
     }
 
-    public function test_lower()
+    public function testLower()
     {
         $string = 'FondBot is a great library for building chatbots.';
 
