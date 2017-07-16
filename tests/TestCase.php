@@ -26,7 +26,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         Carbon::setTestNow(Carbon::now());
 
         $this->container = new Container;
-        $this->kernel = Kernel::createInstance($this->container);
+        $this->kernel = Kernel::createInstance($this->container, false);
         $this->container->add(Kernel::class, $this->kernel);
     }
 

@@ -7,9 +7,10 @@ namespace FondBot\Conversation;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Channels\Channel;
+use FondBot\Contracts\Arrayable;
 use FondBot\Drivers\ReceivedMessage;
 
-class Session
+class Session implements Arrayable
 {
     private $channel;
     private $chat;
@@ -17,7 +18,6 @@ class Session
     private $message;
     private $intent;
     private $interaction;
-    private $context;
 
     public function __construct(
         Channel $channel,
@@ -25,8 +25,7 @@ class Session
         User $user,
         ReceivedMessage $message,
         Intent $intent = null,
-        Interaction $interaction = null,
-        array $context = []
+        Interaction $interaction = null
     ) {
         $this->channel = $channel;
         $this->chat = $chat;
@@ -34,7 +33,6 @@ class Session
         $this->message = $message;
         $this->intent = $intent;
         $this->interaction = $interaction;
-        $this->context = $context;
     }
 
     /**
@@ -118,37 +116,6 @@ class Session
     }
 
     /**
-     * Get context.
-     *
-     * @return array
-     */
-    public function getContext(): array
-    {
-        return $this->context;
-    }
-
-    /**
-     * Set context.
-     *
-     * @param array $context
-     */
-    public function setContext(array $context): void
-    {
-        $this->context = $context;
-    }
-
-    /**
-     * Set single value.
-     *
-     * @param string $key
-     * @param mixed  $value
-     */
-    public function setContextValue(string $key, $value): void
-    {
-        $this->context[$key] = $value;
-    }
-
-    /**
      * Get the instance as an array.
      *
      * @return array
@@ -158,7 +125,6 @@ class Session
         return [
             'intent' => $this->intent !== null ? get_class($this->intent) : null,
             'interaction' => $this->interaction !== null ? get_class($this->interaction) : null,
-            'context' => $this->context,
         ];
     }
 }

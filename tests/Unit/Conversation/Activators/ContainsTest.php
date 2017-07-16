@@ -20,7 +20,7 @@ class ContainsTest extends TestCase
         $this->message = $this->mock(ReceivedMessage::class);
     }
 
-    public function test_matches(): void
+    public function testMatches(): void
     {
         $this->message->shouldReceive('getText')->andReturn('this is foo');
 
@@ -30,7 +30,7 @@ class ContainsTest extends TestCase
         );
     }
 
-    public function test_does_not_match(): void
+    public function testDoesNotMatch(): void
     {
         $this->message->shouldReceive('getText')->andReturn('this is bar');
 
@@ -40,7 +40,7 @@ class ContainsTest extends TestCase
         );
     }
 
-    public function test_message_does_not_have_text(): void
+    public function testMessageDoesNotHaveText(): void
     {
         $this->message->shouldReceive('getText')->andReturn(null);
 

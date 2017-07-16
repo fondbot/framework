@@ -35,15 +35,15 @@ class SessionManager
     public function load(Channel $channel, Driver $driver): Session
     {
         $chat = $driver->getChat();
-        $sender = $driver->getUser();
+        $user = $driver->getUser();
         $message = $driver->getMessage();
-        $key = $this->key($channel, $chat, $sender);
+        $key = $this->key($channel, $chat, $user);
         $value = $this->cache->get($key);
 
         $intent = $value['intent'] !== null ? $this->container->get($value['intent']) : null;
         $interaction = $value['interaction'] !== null ? $this->container->get($value['interaction']) : null;
 
-        return new Session($channel, $chat, $sender, $message, $intent, $interaction, $value['values'] ?? []);
+        return new Session($channel, $chat, $user, $message, $intent, $interaction);
     }
 
     /**
@@ -74,8 +74,8 @@ class SessionManager
      * Get key of session.
      *
      * @param Channel $channel
-     * @param Chat   $chat
-     * @param User   $user
+     * @param Chat    $chat
+     * @param User    $user
      *
      * @return string
      */

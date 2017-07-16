@@ -17,7 +17,7 @@ use FondBot\Conversation\Traits\SendsMessages;
 
 class SendsMessagesTest extends TestCase
 {
-    public function test_sendMessage(): void
+    public function testSendMessage(): void
     {
         $queue = $this->mock(Queue::class);
         $this->kernel->setChannel($this->mock(Channel::class));
@@ -29,7 +29,7 @@ class SendsMessagesTest extends TestCase
         $class->sendMessage($this->faker()->text, $this->mock(Keyboard::class));
     }
 
-    public function test_sendMessage_with_delay(): void
+    public function testSendMessageWithDelay(): void
     {
         $queue = $this->mock(Queue::class);
         $this->kernel->setChannel($this->mock(Channel::class));
@@ -41,7 +41,7 @@ class SendsMessagesTest extends TestCase
         $class->sendMessage($this->faker()->text, $this->mock(Keyboard::class), random_int(1, 10));
     }
 
-    public function test_sendAttachment(): void
+    public function testSendAttachment(): void
     {
         $queue = $this->mock(Queue::class);
         $this->kernel->setChannel($this->mock(Channel::class));
@@ -53,7 +53,7 @@ class SendsMessagesTest extends TestCase
         $class->sendAttachment($this->mock(Attachment::class));
     }
 
-    public function test_sendAttachment_with_delay(): void
+    public function testSendAttachmentWithDelay(): void
     {
         $queue = $this->mock(Queue::class);
         $this->kernel->setChannel($this->mock(Channel::class));
@@ -65,7 +65,7 @@ class SendsMessagesTest extends TestCase
         $class->sendAttachment($this->mock(Attachment::class), random_int(1, 10));
     }
 
-    public function test_sendRequest(): void
+    public function testSendRequest(): void
     {
         $queue = $this->mock(Queue::class);
         $this->kernel->setChannel($this->mock(Channel::class));

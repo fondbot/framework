@@ -20,7 +20,7 @@ class InArrayTest extends TestCase
         $this->message = $this->mock(ReceivedMessage::class);
     }
 
-    public function test_array_matches(): void
+    public function testArrayMatches(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/start');
 
@@ -30,7 +30,7 @@ class InArrayTest extends TestCase
         );
     }
 
-    public function test_array_does_not_match(): void
+    public function testArrayDoesNotMatch(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/stop');
 
@@ -40,7 +40,7 @@ class InArrayTest extends TestCase
         );
     }
 
-    public function test_collection_matches(): void
+    public function testCollectionMatches(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/start');
 
@@ -50,7 +50,7 @@ class InArrayTest extends TestCase
         );
     }
 
-    public function test_collection_does_not_match(): void
+    public function testCollectionDoesNotMatch(): void
     {
         $this->message->shouldReceive('getText')->andReturn('/stop');
 

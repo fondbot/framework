@@ -26,7 +26,7 @@ class AttachmentTest extends TestCase
         $this->assertSame($metadata, $attachment->getMetadata());
     }
 
-    public function test_possibleTypes()
+    public function testPossibleTypes()
     {
         $this->assertSame(collect($this->types())->flatten()->toArray(), Attachment::possibleTypes());
     }

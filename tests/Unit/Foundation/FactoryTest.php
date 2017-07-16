@@ -10,7 +10,7 @@ use FondBot\Foundation\Factory;
 
 class FactoryTest extends TestCase
 {
-    public function test_create(): void
+    public function testCreate(): void
     {
         $this->container->share('resources_path', $resourcesPath = sys_get_temp_dir());
 

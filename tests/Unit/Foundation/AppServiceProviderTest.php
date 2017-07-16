@@ -34,7 +34,7 @@ class AppServiceProviderTest extends TestCase
         unlink($basePath.'/.env');
     }
 
-    public function test_dotenv_invalid_path_exception(): void
+    public function testDotenvInvalidPathException(): void
     {
         $provider = $this->mock(AppServiceProvider::class)->makePartial();
 

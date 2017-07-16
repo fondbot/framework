@@ -23,7 +23,7 @@ class TemplateCompilerTest extends TestCase
         Mockery::getConfiguration()->allowMockingNonExistentMethods(true);
     }
 
-    public function test_compile_self_compiling()
+    public function testCompileSelfCompiling()
     {
         /** @var Template|Mock $template */
         $template = Mockery::mock(Template::class, Arrayable::class);
@@ -82,7 +82,7 @@ class TemplateCompilerTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function test_compile_using_method(): void
+    public function testCompileUsingMethod(): void
     {
         $template = $this->mock(Keyboard::class);
         $args = ['foo' => 'bar'];
@@ -100,7 +100,7 @@ class TemplateCompilerTest extends TestCase
      * @expectedException RuntimeException
      * @expectedExceptionMessage No compile method for "foo".
      */
-    public function test_compile_using_method_but_method_does_not_exist(): void
+    public function testCompileUsingMethodButMethodDoesNotExist(): void
     {
         $template = $this->mock(Keyboard::class);
 

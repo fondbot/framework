@@ -12,12 +12,12 @@ use FondBot\Queue\Adapters\SyncAdapter;
 
 class SyncAdapterTest extends TestCase
 {
-    public function test_pull(): void
+    public function testPull(): void
     {
         $this->assertNull((new SyncAdapter())->pull());
     }
 
-    public function test_push(): void
+    public function testPush(): void
     {
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);
@@ -29,7 +29,7 @@ class SyncAdapterTest extends TestCase
         $adapter->push($channel, $driver, $command);
     }
 
-    public function test_later(): void
+    public function testLater(): void
     {
         $channel = $this->mock(Channel::class);
         $driver = $this->mock(Driver::class);

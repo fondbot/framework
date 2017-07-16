@@ -11,7 +11,7 @@ use FondBot\Conversation\Session;
 
 class HelpersTest extends TestCase
 {
-    public function test_env(): void
+    public function testEnv(): void
     {
         $_ENV['foo'] = 'bar';
         $this->assertSame('bar', env('foo'));
@@ -29,40 +29,37 @@ class HelpersTest extends TestCase
         $this->assertSame('y', env('x', 'y'));
     }
 
-    public function test_kernel(): void
+    public function testKernel(): void
     {
         $kernel = Kernel::createInstance($this->container);
 
         $this->assertSame($kernel, kernel());
     }
 
-    public function test_resolve(): void
+    public function testResolve(): void
     {
         $this->container->add('foo', 'bar');
-        Kernel::createInstance($this->container);
 
         $this->assertSame('bar', resolve('foo'));
     }
 
-    public function test_session(): void
+    public function testSession(): void
     {
-        $kernel = Kernel::createInstance($this->container);
         $session = $this->mock(Session::class);
-        $kernel->setSession($session);
+        $this->kernel->setSession($session);
 
         $this->assertSame($session, session());
     }
 
-    public function test_path(): void
+    public function testPath(): void
     {
         $this->container->add('base_path', 'foo');
-        Kernel::createInstance($this->container);
 
         $this->assertSame('foo', path());
         $this->assertSame('foo/bar', path('bar'));
     }
 
-    public function test_resources_path(): void
+    public function testResourcesPath(): void
     {
         $this->container->add('resources_path', 'foo');
         Kernel::createInstance($this->container);
@@ -71,12 +68,11 @@ class HelpersTest extends TestCase
         $this->assertSame('foo/bar', resources('bar'));
     }
 
-    public function test_logger(): void
+    public function testLogger(): void
     {
         $logger = new Logger('foo');
 
         $this->container->add(Logger::class, $logger);
-        Kernel::createInstance($this->container);
 
         $this->assertSame($logger, logger());
     }

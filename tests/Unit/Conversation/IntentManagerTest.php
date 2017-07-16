@@ -23,7 +23,7 @@ class IntentManagerTest extends TestCase
         $this->manager = new IntentManager();
     }
 
-    public function test_returns_fallback_intent_if_no_intent_found(): void
+    public function testReturnsFallbackIntentIfNoIntentFound(): void
     {
         $this->manager->add($intent = $this->mock(Intent::class));
         $this->manager->setFallbackIntent(new FallbackIntent());
@@ -37,7 +37,7 @@ class IntentManagerTest extends TestCase
         $this->assertInstanceOf(FallbackIntent::class, $result);
     }
 
-    public function test_finds_intent_by_activator(): void
+    public function testFindsIntentByActivator(): void
     {
         $this->manager->add($intent = $this->mock(Intent::class));
 
@@ -53,7 +53,7 @@ class IntentManagerTest extends TestCase
         $this->assertSame($intent, $result);
     }
 
-    public function test_finds_intent_by_activator_but_does_not_pass_authorization(): void
+    public function testFindsIntentByActivatorButDoesNotPassAuthorization(): void
     {
         $this->manager->add($intent = $this->mock(Intent::class));
 
