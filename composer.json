@@ -1,81 +1,81 @@
 {
-    "name": "fondbot/framework",
-    "description": "FondBot framework.",
-    "type": "library",
-    "keywords": [
-        "fondbot",
-        "bot",
-        "bots",
-        "chatbots",
-        "telegram",
-        "facebook messenger",
-        "vk"
-    ],
-    "license": "MIT",
-    "homepage": "https://fondbot.com",
-    "authors": [
-        {
-            "name": "Vladimir Yuldashev",
-            "email": "vladimir@fondbot.com"
-        }
-    ],
-    "require": {
-        "php": "^7.1",
-        "cache/cache": "^0.4.0",
-        "guzzlehttp/guzzle": "^6.3",
-        "jeremeamia/superclosure": "^2.3",
-        "league/container": "^2.4",
-        "league/flysystem": "^1.0",
-        "league/route": "^3.0",
-        "monolog/monolog": "^1.22",
-        "nesbot/carbon": "^1.22",
-        "spatie/regex": "^1.1",
-        "symfony/console": "^3.2",
-        "symfony/process": "^3.2",
-        "tightenco/collect": "^5.4",
-        "vlucas/phpdotenv": "^2.4",
-        "zendframework/zend-diactoros": "^1.4",
-        "zumba/json-serializer": "^2.1"
-    },
-    "require-dev": {
-        "composer/composer": "^1.4",
-    "fzaninotto/faker": "^1.6",
-        "larapack/dd": "^1.1",
-        "league/flysystem-memory": "^1.0",
-    "mockery/mockery": "^0.9.9",
-        "pda/pheanstalk": "^3.1",
-        "phpunit/phpunit": "^6",
-        "sllh/php-cs-fixer-styleci-bridge": "^2.1"
-    },
-    "suggest": {
-        "pda/pheanstalk": "Required for Beanstalkd queue."
-    },
-    "autoload": {
-        "psr-4": {
-            "FondBot\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "FondBot\\Tests\\": "tests/"
-        }
-    },
-    "scripts": {
-        "test": "vendor/bin/phpunit",
-        "cs": "php-cs-fixer fix --allow-risky=yes"
-    },
-    "config": {
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.0-dev"
-        }
+  "name": "fondbot/framework",
+  "description": "FondBot framework.",
+  "type": "library",
+  "keywords": [
+    "fondbot",
+    "bot",
+    "bots",
+    "chatbots",
+    "telegram",
+    "facebook messenger",
+    "vk"
+  ],
+  "license": "MIT",
+  "homepage": "https://fondbot.com",
+  "authors": [
+    {
+      "name": "Vladimir Yuldashev",
+      "email": "vladimir@fondbot.com"
     }
+  ],
+  "require": {
+    "php": "^7.1",
+    "cache/cache": "^0.4.0",
+    "guzzlehttp/guzzle": "^6.3",
+    "jeremeamia/superclosure": "^2.3",
+    "league/container": "^2.4",
+    "league/flysystem": "^1.0",
+    "league/route": "^3.0",
+    "monolog/monolog": "^1.22",
+    "nesbot/carbon": "^1.22",
+    "spatie/regex": "^1.1",
+    "symfony/console": "^3.2",
+    "symfony/process": "^3.2",
+    "tightenco/collect": "^5.4",
+    "vlucas/phpdotenv": "^2.4",
+    "zendframework/zend-diactoros": "^1.4",
+    "zumba/json-serializer": "^2.1"
+  },
+  "require-dev": {
+    "composer/composer": "^1.4",
+    "fzaninotto/faker": "^1.6",
+    "larapack/dd": "^1.1",
+    "league/flysystem-memory": "^1.0",
+    "mockery/mockery": "^0.9.9",
+    "pda/pheanstalk": "^3.1",
+    "phpunit/phpunit": "^6",
+    "sllh/php-cs-fixer-styleci-bridge": "^2.1"
+  },
+  "suggest": {
+    "pda/pheanstalk": "Required for Beanstalkd queue."
+  },
+  "autoload": {
+    "psr-4": {
+      "FondBot\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "FondBot\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "cs": "php-cs-fixer fix --allow-risky=yes"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.0-dev"
+    }
+  }
 }
