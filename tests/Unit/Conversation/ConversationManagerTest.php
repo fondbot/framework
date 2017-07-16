@@ -6,13 +6,11 @@ namespace FondBot\Tests\Unit\Conversation;
 
 use FondBot\Tests\TestCase;
 use FondBot\Conversation\Intent;
-use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Conversable;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\IntentManager;
-use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
 use FondBot\Conversation\ConversationManager;
 
@@ -21,10 +19,8 @@ class ConversationManagerTest extends TestCase
     public function testHandleNewDialog(): void
     {
         $sessionManager = $this->mock(SessionManager::class);
-        $contextManager = $this->mock(ContextManager::class);
         $intentManager = $this->mock(IntentManager::class);
         $session = $this->mock(Session::class);
-        $context = $this->mock(Context::class);
         $intent = $this->mock(Intent::class);
         $receivedMessage = $this->mock(ReceivedMessage::class);
 
@@ -42,7 +38,6 @@ class ConversationManagerTest extends TestCase
         $intent->shouldReceive('handle')->with($this->kernel)->once();
 
         $sessionManager->shouldReceive('close')->once();
-        $contextManager->shouldReceive('clear')->once();
 
         (new ConversationManager($this->kernel))->handle($receivedMessage);
     }
@@ -50,7 +45,6 @@ class ConversationManagerTest extends TestCase
     public function testHandleExistingDialog(): void
     {
         $sessionManager = $this->mock(SessionManager::class);
-        $contextManager = $this->mock(ContextManager::class);
         $intentManager = $this->mock(IntentManager::class);
         $interaction = $this->mock(Interaction::class);
         $session = $this->mock(Session::class);
@@ -64,7 +58,6 @@ class ConversationManagerTest extends TestCase
         $interaction->shouldReceive('handle')->with($this->kernel)->once();
 
         $sessionManager->shouldReceive('close')->once();
-        $contextManager->shouldReceive('clear')->once();
 
         (new ConversationManager($this->kernel))->handle($receivedMessage);
     }

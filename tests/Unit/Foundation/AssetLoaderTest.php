@@ -46,7 +46,7 @@ class AssetLoaderTest extends TestCase
         $this->filesystem = $filesystem;
     }
 
-    public function test_all(): void
+    public function testAll(): void
     {
         $this->filesystem->put('bootstrap/assets.json', json_encode([
             'driver' => ['Acme\BarDriver', 'Acme\FooDriver'],
@@ -65,7 +65,7 @@ class AssetLoaderTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function test_all_by_type(): void
+    public function testAllByType(): void
     {
         $this->filesystem->put('bootstrap/assets.json', json_encode([
             'driver' => ['Acme\BarDriver', 'Acme\FooDriver'],
@@ -82,7 +82,7 @@ class AssetLoaderTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function test_discover(): void
+    public function testDiscover(): void
     {
         $loader = new Assets($this->filesystem);
         $loader->discover();

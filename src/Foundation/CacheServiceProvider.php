@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace FondBot\Foundation;
 
 use Psr\SimpleCache\CacheInterface;
-use Psr\SimpleCache\CacheInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 abstract class CacheServiceProvider extends AbstractServiceProvider
