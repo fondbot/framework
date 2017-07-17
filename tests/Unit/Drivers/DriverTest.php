@@ -14,7 +14,7 @@ use Psr\Http\Message\RequestInterface;
 
 class DriverTest extends TestCase
 {
-    public function test_initialize(): void
+    public function testInitialize(): void
     {
         $channel = $this->mock(Channel::class);
         $request = $this->mock(RequestInterface::class);
@@ -31,7 +31,7 @@ class DriverTest extends TestCase
         $this->assertSame('', $driver->getParameters()['bar']);
     }
 
-    public function test_handle(): void
+    public function testHandle(): void
     {
         $command = $this->mock(Command::class);
         $commandHandler = $this->mock(CommandHandler::class);

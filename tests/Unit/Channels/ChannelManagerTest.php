@@ -10,7 +10,7 @@ use FondBot\Channels\ChannelManager;
 
 class ChannelManagerTest extends TestCase
 {
-    public function test_create(): void
+    public function testCreate(): void
     {
         $name = 'fake';
         $parameters = [
@@ -30,7 +30,7 @@ class ChannelManagerTest extends TestCase
         $this->assertSame($parameters['token'], $result->getParameter('token'));
     }
 
-    public function test_all(): void
+    public function testAll(): void
     {
         $manager = new ChannelManager();
         $manager->add('foo', ['foo' => 'bar']);
@@ -42,7 +42,7 @@ class ChannelManagerTest extends TestCase
      * @expectedException \FondBot\Channels\Exceptions\ChannelNotFound
      * @expectedExceptionMessage Channel `fake` not found.
      */
-    public function test_create_exception(): void
+    public function testCreateException(): void
     {
         $manager = new ChannelManager();
 

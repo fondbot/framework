@@ -17,7 +17,7 @@ use FondBot\Queue\Adapters\BeanstalkdAdapter;
 
 class BeanstalkdAdapterTest extends TestCase
 {
-    public function test_pull_returns_job(): void
+    public function testPullReturnsJob(): void
     {
         $pheanstalk = $this->mock(Pheanstalk::class);
         $pheanstalkJob = $this->mock(PheanstalkJob::class);
@@ -43,7 +43,7 @@ class BeanstalkdAdapterTest extends TestCase
         $this->assertEquals($job, $result);
     }
 
-    public function test_pull_returns_null(): void
+    public function testPullReturnsNull(): void
     {
         $pheanstalk = $this->mock(Pheanstalk::class);
 
@@ -55,7 +55,7 @@ class BeanstalkdAdapterTest extends TestCase
         $this->assertNull($adapter->pull());
     }
 
-    public function test_push(): void
+    public function testPush(): void
     {
         $pheanstalk = $this->mock(Pheanstalk::class);
 
@@ -70,7 +70,7 @@ class BeanstalkdAdapterTest extends TestCase
         $adapter->push($channel, $driver, $command);
     }
 
-    public function test_later(): void
+    public function testLater(): void
     {
         $pheanstalk = $this->mock(Pheanstalk::class);
 

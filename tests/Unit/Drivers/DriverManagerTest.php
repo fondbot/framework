@@ -10,7 +10,7 @@ use FondBot\Drivers\DriverManager;
 
 class DriverManagerTest extends TestCase
 {
-    public function test_get(): void
+    public function testGet(): void
     {
         $driver = $this->mock(Driver::class);
         $manager = new DriverManager;
@@ -26,7 +26,7 @@ class DriverManagerTest extends TestCase
      * @expectedException \FondBot\Drivers\Exceptions\DriverNotFound
      * @expectedExceptionMessage Driver `foo` not found.
      */
-    public function test_get_driver_does_not_exist(): void
+    public function testGetDriverDoesNotExist(): void
     {
         $manager = new DriverManager;
 

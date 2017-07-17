@@ -22,7 +22,7 @@ class CommandHandlerTest extends TestCase
         Mockery::getConfiguration()->allowMockingNonExistentMethods(true);
     }
 
-    public function test_method_exists(): void
+    public function testMethodExists(): void
     {
         $driver = $this->mock(Driver::class);
         $command = $this->mock(SendMessage::class);
@@ -39,7 +39,7 @@ class CommandHandlerTest extends TestCase
      * @expectedException RuntimeException
      * @expectedExceptionMessage No handle method for "foo".
      */
-    public function test_method_does_not_exist(): void
+    public function testMethodDoesNotExist(): void
     {
         $driver = $this->mock(Driver::class);
         $command = $this->mock(Command::class);

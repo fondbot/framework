@@ -9,7 +9,7 @@ use FondBot\Tests\TestCase;
 
 class ArrTest extends TestCase
 {
-    public function test_exists(): void
+    public function testExists(): void
     {
         $array = ['name' => $this->faker()->name];
 
@@ -20,7 +20,7 @@ class ArrTest extends TestCase
         $this->assertTrue(Arr::exists($collection, 'last_name'));
     }
 
-    public function test_has(): void
+    public function testHas(): void
     {
         $array = ['user' => ['name' => $this->faker()->name]];
 
@@ -31,7 +31,7 @@ class ArrTest extends TestCase
         $this->assertFalse(Arr::has($array, ['user.last_name']));
     }
 
-    public function test_get(): void
+    public function testGet(): void
     {
         $array = ['user' => ['name' => $this->faker()->name]];
         $this->assertEquals($array['user'], Arr::get($array, 'user'));
@@ -40,7 +40,7 @@ class ArrTest extends TestCase
         $this->assertEquals($array, Arr::get($array, null));
     }
 
-    public function test_set(): void
+    public function testSet(): void
     {
         $array = ['user' => ['name' => $this->faker()->name]];
 
@@ -53,7 +53,7 @@ class ArrTest extends TestCase
         $this->assertEquals(['user' => ['data' => ['id' => $uuid], 'name' => 'Vladimir']], $array);
     }
 
-    public function test_forget(): void
+    public function testForget(): void
     {
         $array = ['user' => ['name' => $this->faker()->name]];
 

@@ -26,12 +26,12 @@ class FallbackIntentTest extends TestCase
         $this->intent = new FallbackIntent;
     }
 
-    public function test_activators(): void
+    public function testActivators(): void
     {
         $this->assertSame([], $this->intent->activators());
     }
 
-    public function test_run(): void
+    public function testRun(): void
     {
         $queue = $this->mock(Queue::class);
         $channel = $this->mock(Channel::class);

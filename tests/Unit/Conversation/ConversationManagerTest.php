@@ -16,7 +16,7 @@ use FondBot\Conversation\ConversationManager;
 
 class ConversationManagerTest extends TestCase
 {
-    public function test_handle_new_dialog(): void
+    public function testHandleNewDialog(): void
     {
         $sessionManager = $this->mock(SessionManager::class);
         $intentManager = $this->mock(IntentManager::class);
@@ -35,14 +35,14 @@ class ConversationManagerTest extends TestCase
 
         $session->shouldReceive('setIntent')->with($intent)->once();
         $session->shouldReceive('setInteraction')->with(null)->once();
-        $session->shouldReceive('setContext')->with([])->once();
         $intent->shouldReceive('handle')->with($this->kernel)->once();
-        $sessionManager->shouldReceive('close')->with($session)->once();
+
+        $sessionManager->shouldReceive('close')->once();
 
         (new ConversationManager($this->kernel))->handle($receivedMessage);
     }
 
-    public function test_handle_existing_dialog(): void
+    public function testHandleExistingDialog(): void
     {
         $sessionManager = $this->mock(SessionManager::class);
         $intentManager = $this->mock(IntentManager::class);
@@ -57,12 +57,12 @@ class ConversationManagerTest extends TestCase
         $intentManager->shouldReceive('find')->never();
         $interaction->shouldReceive('handle')->with($this->kernel)->once();
 
-        $sessionManager->shouldReceive('close')->with($session)->once();
+        $sessionManager->shouldReceive('close')->once();
 
         (new ConversationManager($this->kernel))->handle($receivedMessage);
     }
 
-    public function test_restart_intent(): void
+    public function testRestartIntent(): void
     {
         $intent = $this->mock(Intent::class);
         $session = $this->mock(Session::class);
@@ -71,13 +71,12 @@ class ConversationManagerTest extends TestCase
 
         $session->shouldReceive('setIntent')->with($intent)->once();
         $session->shouldReceive('setInteraction')->with(null)->once();
-        $session->shouldReceive('setContext')->with([])->once();
         $intent->shouldReceive('handle')->once();
 
         (new ConversationManager($this->kernel))->restart($intent);
     }
 
-    public function test_transition(): void
+    public function testTransition(): void
     {
         $conversable = $this->mock(Conversable::class);
         $conversable->shouldReceive('handle')->with($this->kernel)->once();
@@ -85,7 +84,7 @@ class ConversationManagerTest extends TestCase
         (new ConversationManager($this->kernel))->transition($conversable);
     }
 
-    public function test_restart_interaction(): void
+    public function testRestartInteraction(): void
     {
         $interaction = $this->mock(Interaction::class);
         $session = $this->mock(Session::class);
@@ -93,7 +92,6 @@ class ConversationManagerTest extends TestCase
         $this->kernel->setSession($session);
 
         $session->shouldReceive('setInteraction')->with(null)->once();
-        $session->shouldReceive('setContext')->with([])->once();
         $interaction->shouldReceive('handle')->once();
 
         (new ConversationManager($this->kernel))->restart($interaction);

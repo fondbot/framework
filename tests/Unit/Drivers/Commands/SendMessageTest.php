@@ -33,7 +33,7 @@ class SendMessageTest extends TestCase
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Either text or template should be set.
      */
-    public function test_text_and_template_null()
+    public function testTextAndTemplateNull()
     {
         new SendMessage(
             $this->mock(Chat::class),

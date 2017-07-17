@@ -46,8 +46,7 @@ class ConversationManager
             // Otherwise, save session state
             if (!$this->transitioned) {
                 $this->kernel->closeSession();
-            } else {
-                $this->kernel->saveSession();
+                $this->kernel->clearContext();
             }
         } catch (InvalidRequest $exception) {
             logger()->warning('ConversationManager[handle] - Invalid Request', ['message' => $exception->getMessage()]);
@@ -65,7 +64,6 @@ class ConversationManager
             $session = $this->kernel->getSession();
             $session->setIntent($conversable);
             $session->setInteraction(null);
-            $session->setContext([]);
 
             $this->kernel->setSession($session);
 
@@ -104,7 +102,6 @@ class ConversationManager
             case $conversable instanceof Interaction:
                 $session = $this->kernel->getSession();
                 $session->setInteraction(null);
-                $session->setContext([]);
 
                 $this->kernel->setSession($session);
 
