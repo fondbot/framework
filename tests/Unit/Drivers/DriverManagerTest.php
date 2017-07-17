@@ -32,4 +32,13 @@ class DriverManagerTest extends TestCase
 
         $manager->get('foo');
     }
+
+    public function test_all()
+    {
+        $manager = new DriverManager;
+        $driver = $this->mock(Driver::class);
+        $driver->shouldReceive('getShortName')->once();
+        $manager->add($driver);
+        $this->assertCount(1, $manager->all());
+    }
 }
