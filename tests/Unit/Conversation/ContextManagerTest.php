@@ -89,7 +89,7 @@ class ContextManagerTest extends TestCase
         $this->contextManager->save($this->context);
     }
 
-    public function test_clear()
+    public function test_clear() : void
     {
         $this->context->shouldReceive('getChannel')->once()->andReturn($this->channel);
         $this->context->shouldReceive('getChat')->once()->andReturn($this->chat);
