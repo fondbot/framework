@@ -15,6 +15,25 @@ use FondBot\Conversation\SessionManager;
 
 class KernelTest extends TestCase
 {
+    /**
+     * @var ContextManager
+     */
+    protected $contextManager;
+
+    /**
+     * @var SessionManager
+     */
+    protected $sessionManager;
+
+    public function setUp() : void
+    {
+        parent::setUp();
+        $this->contextManager = $this->mock(ContextManager::class);
+        $this->sessionManager = $this->mock(SessionManager::class);
+        $this->container->share(ContextManager::class, $this->contextManager);
+        $this->container->share(SessionManager::class, $this->sessionManager);
+    }
+
     public function testGetInstance(): void
     {
         $kernel = Kernel::createInstance($this->container);
@@ -74,5 +93,38 @@ class KernelTest extends TestCase
         $this->kernel->closeSession();
 
         $this->assertNull($this->kernel->getSession());
+    }
+
+    public function testClearContext() : void
+    {
+        $context = $this->mock(Context::class);
+        $this->contextManager->shouldReceive('clear')->once();
+        $this->kernel->setContext($context);
+        $this->kernel->clearContext($context);
+    }
+
+    public function testTerminate() : void
+    {
+        $this->kernel->terminate();
+    }
+
+    public function testTerminateSessionManager() : void
+    {
+        $kernel  = Kernel::createInstance($this->container, true);
+        $session = $this->mock(Session::class);
+
+        $this->sessionManager->shouldReceive('save')->once();
+        $kernel->setSession($session);
+        $kernel->terminate();
+    }
+
+    public function testContextManager() : void
+    {
+        $kernel  = Kernel::createInstance($this->container, true);
+        $context = $this->mock(Context::class);
+
+        $this->contextManager->shouldReceive('save')->once();
+        $kernel->setContext($context);
+        $kernel->terminate();
     }
 }
