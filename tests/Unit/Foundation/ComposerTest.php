@@ -80,7 +80,7 @@ class ComposerTest extends TestCase
         TestComposer::postInstall($this->event);
     }
 
-    public function test_postUpdate()
+    public function test_postUpdate() : void
     {
         $this->createBootstrap();
         $this->composer->shouldReceive('getConfig')->once()->andReturn($this->config);
@@ -93,7 +93,7 @@ class ComposerTest extends TestCase
     /**
      * Create file and folder bootstrap
      */
-    private function createBootstrap()
+    private function createBootstrap() : void
     {
         if (!file_exists($this->bootstrapPath)) {
             mkdir($this->bootstrapFolder);
