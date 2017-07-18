@@ -55,7 +55,7 @@ class ComposerTest extends TestCase
         }
     }
 
-    public function test_postInstall_file_not_exist(): void
+    public function testPostInstallFileNotExist(): void
     {
         $composer = $this->mock(Composer::class);
         $event    = $this->mock(Event::class);
@@ -69,7 +69,7 @@ class ComposerTest extends TestCase
          TestComposer::postInstall($event);
     }
 
-    public function test_postInstall() : void
+    public function testPostInstall() : void
     {
         $this->createBootstrap();
         $this->config->shouldReceive('get')->once()->with('vendor-dir')->andReturn('vendor');
@@ -80,7 +80,7 @@ class ComposerTest extends TestCase
         TestComposer::postInstall($this->event);
     }
 
-    public function test_postUpdate() : void
+    public function testPostUpdate() : void
     {
         $this->createBootstrap();
         $this->composer->shouldReceive('getConfig')->once()->andReturn($this->config);
