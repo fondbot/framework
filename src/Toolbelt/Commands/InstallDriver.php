@@ -46,7 +46,7 @@ class InstallDriver extends Command
             // If driver is not official we should ask user to confirm installation
             if ($driver['official'] !== true) {
                 if (!$this->confirm('"'.$name.'" is not official. Still want to install?')) {
-                    exit;
+                    return;
                 }
             }
 
