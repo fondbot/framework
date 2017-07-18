@@ -6,7 +6,11 @@ php:
 
 sudo: false
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 before_script:
-  - COMPOSER_DISCARD_CHANGES=1 composer install --prefer-source --no-interaction
+  - COMPOSER_DISCARD_CHANGES=1 composer update --prefer-source --no-interaction
 script:
   - composer test
