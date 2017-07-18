@@ -11,24 +11,6 @@ use FondBot\Conversation\Session;
 
 class HelpersTest extends TestCase
 {
-    public function testEnv(): void
-    {
-        $_ENV['foo'] = 'bar';
-        $this->assertSame('bar', env('foo'));
-
-        $_ENV['foo'] = 'true';
-        $this->assertTrue(env('foo'));
-
-        $_ENV['foo'] = 'false';
-        $this->assertFalse(env('foo'));
-
-        $_ENV['foo'] = 'null';
-        $this->assertNull(env('foo'));
-
-        $this->assertNull(env('x'));
-        $this->assertSame('y', env('x', 'y'));
-    }
-
     public function testKernel(): void
     {
         $kernel = Kernel::createInstance($this->container);
