@@ -1,15 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Foundation;
 
 use Composer\Config;
-use FondBot\Foundation\Assets;
 use RuntimeException;
-use Composer\Script\Event;
-use FondBot\Foundation\Composer as TestComposer;
-use FondBot\Tests\TestCase;
 use Composer\Composer;
+use Composer\Script\Event;
+use FondBot\Tests\TestCase;
+use FondBot\Foundation\Assets;
+use FondBot\Foundation\Composer as TestComposer;
 
 class ComposerTest extends TestCase
 {
@@ -35,13 +36,14 @@ class ComposerTest extends TestCase
      * @var Config
      */
     protected $config;
+
     public function setUp() : void
     {
         parent::setUp();
-        $this->event    = $this->mock(Event::class);
+        $this->event = $this->mock(Event::class);
         $this->composer = $this->mock(Composer::class);
-        $this->assets   = $this->mock(Assets::class);
-        $this->config   = $this->mock(Config::class);
+        $this->assets = $this->mock(Assets::class);
+        $this->config = $this->mock(Config::class);
 
         $this->container->share(Assets::class, $this->assets);
     }
@@ -58,15 +60,15 @@ class ComposerTest extends TestCase
     public function testPostInstallFileNotExist(): void
     {
         $composer = $this->mock(Composer::class);
-        $event    = $this->mock(Event::class);
-        $config   = $this->mock(Config::class);
+        $event = $this->mock(Event::class);
+        $config = $this->mock(Config::class);
 
         $config->shouldReceive('get')->once()->with('vendor-dir')->andReturn('vendor');
         $composer->shouldReceive('getConfig')->once()->andReturn($config);
         $event->shouldReceive('getComposer')->once()->andReturn($composer);
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Bootstrap file does not exist.');
-         TestComposer::postInstall($event);
+        TestComposer::postInstall($event);
     }
 
     public function testPostInstall() : void
@@ -91,7 +93,7 @@ class ComposerTest extends TestCase
     }
 
     /**
-     * Create file and folder bootstrap
+     * Create file and folder bootstrap.
      */
     private function createBootstrap() : void
     {

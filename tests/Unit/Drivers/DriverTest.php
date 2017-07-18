@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Drivers;
 
-use FondBot\Drivers\Chat;
-use FondBot\Drivers\ReceivedMessage;
-use FondBot\Drivers\TemplateCompiler;
-use FondBot\Drivers\User;
-use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
 use Mockery\Mock;
+use GuzzleHttp\Client;
+use FondBot\Drivers\Chat;
+use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Drivers\Command;
+use GuzzleHttp\HandlerStack;
 use FondBot\Channels\Channel;
+use GuzzleHttp\Psr7\Response;
 use FondBot\Drivers\CommandHandler;
+use GuzzleHttp\Handler\MockHandler;
+use FondBot\Drivers\ReceivedMessage;
+use FondBot\Drivers\TemplateCompiler;
 use Psr\Http\Message\RequestInterface;
 
 class DriverTest extends TestCase
@@ -32,6 +32,7 @@ class DriverTest extends TestCase
         parent::setUp();
         $this->guzzle = $this->mock(Client::class);
     }
+
     public function testInitialize(): void
     {
         $channel = $this->mock(Channel::class);
@@ -65,9 +66,9 @@ class DriverTest extends TestCase
 
     public function testPostMethod() : void
     {
-        $string  = $this->faker()->randomLetter;
+        $string = $this->faker()->randomLetter;
         $mock = new MockHandler([
-            new Response(200, [])
+            new Response(200, []),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -78,9 +79,9 @@ class DriverTest extends TestCase
 
     public function testGetMethod() : void
     {
-        $string  = $this->faker()->randomLetter;
+        $string = $this->faker()->randomLetter;
         $mock = new MockHandler([
-            new Response(200, [])
+            new Response(200, []),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -112,16 +113,14 @@ class DriverTest extends TestCase
         $this->assertSame('bar', $driver->getParameters()['foo']);
         $this->assertSame('', $driver->getParameters()['bar']);
         $this->assertEquals([], $driver->getRequestJson());
-
     }
 
     private function createExtendDriver(Client $client = null) : Driver
     {
-        return new class($client ?? new Client()) extends Driver{
-
+        return new class($client ?? new Client()) extends Driver {
             public function getTemplateCompiler(): ?TemplateCompiler
             {
-               return null;
+                return null;
             }
 
             public function getCommandHandler(): CommandHandler
@@ -141,7 +140,6 @@ class DriverTest extends TestCase
 
             public function verifyRequest(): void
             {
-
             }
 
             public function getUser(): User
@@ -156,7 +154,7 @@ class DriverTest extends TestCase
 
             public function getDefaultParameters(): array
             {
-              return [];
+                return [];
             }
         };
     }

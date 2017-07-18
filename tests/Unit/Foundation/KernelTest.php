@@ -110,7 +110,7 @@ class KernelTest extends TestCase
 
     public function testTerminateSessionManager() : void
     {
-        $kernel  = Kernel::createInstance($this->container, true);
+        $kernel = Kernel::createInstance($this->container, true);
         $session = $this->mock(Session::class);
 
         $this->sessionManager->shouldReceive('save')->once();
@@ -120,7 +120,7 @@ class KernelTest extends TestCase
 
     public function testContextManager() : void
     {
-        $kernel  = Kernel::createInstance($this->container, true);
+        $kernel = Kernel::createInstance($this->container, true);
         $context = $this->mock(Context::class);
 
         $this->contextManager->shouldReceive('save')->once();
