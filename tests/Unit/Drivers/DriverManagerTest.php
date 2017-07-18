@@ -33,7 +33,7 @@ class DriverManagerTest extends TestCase
         $manager->get('foo');
     }
 
-    public function test_all()
+    public function testAll()
     {
         $manager = new DriverManager;
         $driver = $this->mock(Driver::class);
