@@ -20,7 +20,7 @@
     }
   ],
   "require": {
-    "php": "^7.1",
+    "php": ">=7.1",
     "cache/cache": "^0.4.0",
     "guzzlehttp/guzzle": "^6.3",
     "jeremeamia/superclosure": "^2.3",
