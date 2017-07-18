@@ -63,7 +63,6 @@ class InstallDriver extends Command
 
         if ($installed !== false) {
             $this->error('Driver is already installed.');
-
             return;
         }
 
