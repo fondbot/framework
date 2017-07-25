@@ -6,16 +6,14 @@ namespace FondBot\Drivers;
 
 use RuntimeException;
 use GuzzleHttp\Client;
-use FondBot\Helpers\Arr;
 use FondBot\Channels\Channel;
 use Illuminate\Support\Collection;
 use Psr\Http\Message\RequestInterface;
-use FondBot\Queue\SerializableForQueue;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Contracts\Driver as DriverContract;
 
-abstract class Driver implements DriverContract, SerializableForQueue
+abstract class Driver implements DriverContract
 {
     /** @var Collection */
     protected $parameters;
@@ -59,9 +57,9 @@ abstract class Driver implements DriverContract, SerializableForQueue
         $parameters = [];
 
         foreach ($this->getDefaultParameters() as $key => $value) {
-            $value = Arr::get($channel->getParameters(), $key, $value);
+            $value = array_get($channel->getParameters(), $key, $value);
 
-            Arr::set($parameters, $key, $value);
+            array_set($parameters, $key, $value);
         }
 
         $this->parameters = collect($parameters);

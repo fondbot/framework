@@ -20,7 +20,7 @@ trait Transitions
     protected function jump(string $interaction): void
     {
         /** @var Interaction $instance */
-        $instance = resolve($interaction);
+        $instance = kernel()->resolve($interaction);
 
         if (!$instance instanceof Interaction) {
             throw new InvalidArgumentException('Invalid interaction `'.$interaction.'`');
@@ -39,6 +39,6 @@ trait Transitions
 
     private function conversationManager(): ConversationManager
     {
-        return resolve(ConversationManager::class);
+        return kernel()->resolve(ConversationManager::class);
     }
 }

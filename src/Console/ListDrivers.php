@@ -2,31 +2,22 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Toolbelt\Commands;
+namespace FondBot\Console;
 
 use GuzzleHttp\Client;
-use FondBot\Toolbelt\Command;
 use FondBot\Foundation\Kernel;
+use Illuminate\Console\Command;
 use FondBot\Drivers\DriverManager;
 use Symfony\Component\Console\Helper\Table;
 
 class ListDrivers extends Command
 {
-    protected function configure(): void
-    {
-        $this
-            ->setName('driver:list')
-            ->setDescription('Get list of all available drivers');
-    }
+    protected $signature = 'driver:list';
+    protected $description = 'Get list of all available drivers';
 
-    public function handle(): void
+    public function handle(Client $http, DriverManager $manager): void
     {
-        /** @var Client $http */
-        $http = resolve(Client::class);
-        /** @var DriverManager $driverManager */
-        $driverManager = resolve(DriverManager::class);
-
-        $installedDrivers = collect($driverManager->all())->keys()->toArray();
+        $installedDrivers = collect($manager->all())->keys()->toArray();
 
         $response = $http->request('GET', 'https://fondbot.com/api/drivers', [
             'form_params' => ['version' => Kernel::VERSION],

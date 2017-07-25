@@ -35,11 +35,11 @@ class ConversationManagerTest extends TestCase
 
         $session->shouldReceive('setIntent')->with($intent)->once();
         $session->shouldReceive('setInteraction')->with(null)->once();
-        $intent->shouldReceive('handle')->with($this->kernel)->once();
+        $intent->shouldReceive('handle')->once();
 
         $sessionManager->shouldReceive('close')->once();
 
-        (new ConversationManager($this->kernel))->handle($receivedMessage);
+        (new ConversationManager)->handle($receivedMessage);
     }
 
     public function testHandleExistingDialog(): void
@@ -55,11 +55,11 @@ class ConversationManagerTest extends TestCase
         $session->shouldReceive('getInteraction')->andReturn($interaction)->atLeast()->once();
 
         $intentManager->shouldReceive('find')->never();
-        $interaction->shouldReceive('handle')->with($this->kernel)->once();
+        $interaction->shouldReceive('handle')->once();
 
         $sessionManager->shouldReceive('close')->once();
 
-        (new ConversationManager($this->kernel))->handle($receivedMessage);
+        (new ConversationManager)->handle($receivedMessage);
     }
 
     public function testRestartIntent(): void
@@ -73,15 +73,15 @@ class ConversationManagerTest extends TestCase
         $session->shouldReceive('setInteraction')->with(null)->once();
         $intent->shouldReceive('handle')->once();
 
-        (new ConversationManager($this->kernel))->restart($intent);
+        (new ConversationManager)->restart($intent);
     }
 
     public function testTransition(): void
     {
         $conversable = $this->mock(Conversable::class);
-        $conversable->shouldReceive('handle')->with($this->kernel)->once();
+        $conversable->shouldReceive('handle')->once();
 
-        (new ConversationManager($this->kernel))->transition($conversable);
+        (new ConversationManager)->transition($conversable);
     }
 
     public function testRestartInteraction(): void
@@ -94,6 +94,6 @@ class ConversationManagerTest extends TestCase
         $session->shouldReceive('setInteraction')->with(null)->once();
         $interaction->shouldReceive('handle')->once();
 
-        (new ConversationManager($this->kernel))->restart($interaction);
+        (new ConversationManager)->restart($interaction);
     }
 }

@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace FondBot\Foundation;
 
 use FondBot\Drivers\Driver;
+use FondBot\Drivers\Command;
 use FondBot\Channels\Channel;
-use League\Container\Container;
+use Illuminate\Bus\Dispatcher;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
 use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
+use Illuminate\Contracts\Container\Container;
 
 class Kernel
 {
-    public const VERSION = '2.0.0';
+    public const VERSION = '2.0';
 
     /** @var Kernel */
     private static $instance;
@@ -142,8 +144,6 @@ class Kernel
 
     /**
      * Close session.
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function closeSession(): void
     {
@@ -188,23 +188,30 @@ class Kernel
      * Resolve an alias from container.
      *
      * @param string $alias
-     * @param array  $args
      *
      * @return mixed
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function resolve(string $alias, array $args = [])
+    public function resolve(string $alias)
     {
-        return $this->container->get($alias, $args);
+        return $this->container->make($alias);
+    }
+
+    /**
+     * Dispatch command to driver.
+     *
+     * @param Command $command
+     */
+    public function dispatch(Command $command): void
+    {
+        $dispatcher = $this->resolve(Dispatcher::class);
+
+        $dispatcher->dispatch($command);
     }
 
     /**
      * Get session manager.
      *
      * @return SessionManager
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
      */
     private function sessionManager(): SessionManager
     {

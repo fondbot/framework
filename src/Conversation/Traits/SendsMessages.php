@@ -6,7 +6,6 @@ namespace FondBot\Conversation\Traits;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
-use FondBot\Contracts\Queue;
 use FondBot\Contracts\Template;
 use FondBot\Templates\Attachment;
 use FondBot\Drivers\Commands\SendMessage;
@@ -24,16 +23,13 @@ trait SendsMessages
      */
     protected function sendMessage(string $text = null, Template $template = null, int $delay = 0): void
     {
-        /** @var Queue $queue */
-        $queue = resolve(Queue::class);
-
         $command = new SendMessage($this->getChat(), $this->getUser(), $text, $template);
 
         if ($delay > 0) {
-            $queue->later(kernel()->getChannel(), kernel()->getDriver(), $command, $delay);
-        } else {
-            $queue->push(kernel()->getChannel(), kernel()->getDriver(), $command);
+            $command->delay($delay);
         }
+
+        kernel()->dispatch($command);
     }
 
     /**
@@ -41,21 +37,16 @@ trait SendsMessages
      *
      * @param Attachment $attachment
      * @param int        $delay
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
      */
     protected function sendAttachment(Attachment $attachment, int $delay = 0): void
     {
-        /** @var Queue $queue */
-        $queue = resolve(Queue::class);
-
         $command = new SendAttachment($this->getChat(), $this->getUser(), $attachment);
 
-        if ($delay === 0) {
-            $queue->push(kernel()->getChannel(), kernel()->getDriver(), $command);
-        } else {
-            $queue->later(kernel()->getChannel(), kernel()->getDriver(), $command, $delay);
+        if ($delay > 0) {
+            $command->delay($delay);
         }
+
+        kernel()->dispatch($command);
     }
 
     /**
@@ -63,16 +54,17 @@ trait SendsMessages
      *
      * @param string $endpoint
      * @param array  $parameters
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @param int    $delay
      */
-    protected function sendRequest(string $endpoint, array $parameters = []): void
+    protected function sendRequest(string $endpoint, array $parameters = [], int $delay = 0): void
     {
-        /** @var Queue $queue */
-        $queue = resolve(Queue::class);
-
         $command = new SendRequest($this->getChat(), $this->getUser(), $endpoint, $parameters);
-        $queue->push(kernel()->getChannel(), kernel()->getDriver(), $command);
+
+        if ($delay > 0) {
+            $command->delay($delay);
+        }
+
+        kernel()->dispatch($command);
     }
 
     /**

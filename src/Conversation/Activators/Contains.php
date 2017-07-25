@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Activators;
 
-use FondBot\Helpers\Str;
 use FondBot\Drivers\ReceivedMessage;
 
 class Contains implements Activator
@@ -33,6 +32,6 @@ class Contains implements Activator
             return false;
         }
 
-        return Str::contains($text, (array) $this->needles);
+        return str_contains($text, (array) $this->needles);
     }
 }

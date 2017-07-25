@@ -12,14 +12,13 @@ class ChannelManager
     private $channels;
 
     /**
-     * Add channel.
+     * Register channels.
      *
-     * @param string $name
-     * @param array  $parameters
+     * @param array $channels
      */
-    public function add(string $name, array $parameters): void
+    public function register(array $channels): void
     {
-        $this->channels[$name] = $parameters;
+        $this->channels = $channels;
     }
 
     /**

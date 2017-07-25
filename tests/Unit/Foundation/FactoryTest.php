@@ -7,14 +7,19 @@ namespace FondBot\Tests\Unit\Foundation;
 use FondBot\Tests\TestCase;
 use FondBot\Foundation\Kernel;
 use FondBot\Foundation\Factory;
+use Illuminate\Contracts\Foundation\Application;
 
 class FactoryTest extends TestCase
 {
     public function testCreate(): void
     {
-        $this->container->share('resources_path', $resourcesPath = sys_get_temp_dir());
+        $this->markTestIncomplete();
+        $application = $this->mock(Application::class);
+        $application->shouldReceive('register');
+        $application->shouldReceive('singleton');
+        $application->shouldReceive('make');
 
-        $result = Factory::create($this->container);
+        $result = Factory::create($application);
 
         $this->assertInstanceOf(Kernel::class, $result);
         $this->assertSame($result, $result->resolve(Kernel::class));

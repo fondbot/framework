@@ -8,13 +8,13 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
-use Psr\SimpleCache\CacheInterface;
+use Illuminate\Contracts\Cache\Store;
 
 class ContextManager
 {
     private $cache;
 
-    public function __construct(CacheInterface $cache)
+    public function __construct(Store $cache)
     {
         $this->cache = $cache;
     }
@@ -35,7 +35,7 @@ class ContextManager
 
         $value = $this->cache->get($key, []);
 
-        return new Context($value['chat'], $value['user'], $value['items']);
+        return new Context($channel, $value['chat'], $value['user'], $value['items']);
     }
 
     /**
@@ -47,7 +47,7 @@ class ContextManager
     {
         $key = $this->key($context->getChannel(), $context->getChat(), $context->getUser());
 
-        $this->cache->set($key, $context->toArray());
+        $this->cache->forever($key, $context->toArray());
     }
 
     /**
@@ -59,7 +59,7 @@ class ContextManager
     {
         $key = $this->key($context->getChannel(), $context->getChat(), $context->getUser());
 
-        $this->cache->delete($key);
+        $this->cache->forget($key);
     }
 
     /**

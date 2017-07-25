@@ -9,7 +9,7 @@ use FondBot\Drivers\User;
 use FondBot\Drivers\Command;
 use FondBot\Templates\Attachment;
 
-class SendAttachment implements Command
+class SendAttachment extends Command
 {
     private $chat;
     private $recipient;

@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace FondBot\Drivers;
 
-use FondBot\Queue\SerializableForQueue;
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-interface Command extends SerializableForQueue
+abstract class Command implements ShouldQueue
 {
+    use InteractsWithQueue, Queueable, SerializesModels;
+
     /**
      * Get name.
      *
      * @return string
      */
-    public function getName(): string;
+    abstract public function getName(): string;
 }

@@ -8,7 +8,7 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Command;
 
-class SendRequest implements Command
+class SendRequest extends Command
 {
     private $chat;
     private $recipient;

@@ -8,15 +8,15 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
-use Psr\SimpleCache\CacheInterface;
-use Psr\Container\ContainerInterface;
+use Illuminate\Contracts\Cache\Store;
+use Illuminate\Contracts\Container\Container;
 
 class SessionManager
 {
     private $container;
     private $cache;
 
-    public function __construct(ContainerInterface $container, CacheInterface $cache)
+    public function __construct(Container $container, Store $cache)
     {
         $this->container = $container;
         $this->cache = $cache;
@@ -29,8 +29,6 @@ class SessionManager
      * @param Driver  $driver
      *
      * @return Session
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function load(Channel $channel, Driver $driver): Session
     {
@@ -40,8 +38,8 @@ class SessionManager
         $key = $this->key($channel, $chat, $user);
         $value = $this->cache->get($key);
 
-        $intent = $value['intent'] !== null ? $this->container->get($value['intent']) : null;
-        $interaction = $value['interaction'] !== null ? $this->container->get($value['interaction']) : null;
+        $intent = $value['intent'] !== null ? $this->container->make($value['intent']) : null;
+        $interaction = $value['interaction'] !== null ? $this->container->make($value['interaction']) : null;
 
         return new Session($channel, $chat, $user, $message, $intent, $interaction);
     }
@@ -55,7 +53,7 @@ class SessionManager
     {
         $key = $this->key($session->getChannel(), $session->getChat(), $session->getUser());
 
-        $this->cache->set($key, $session->toArray());
+        $this->cache->forever($key, $session->toArray());
     }
 
     /**
@@ -67,7 +65,7 @@ class SessionManager
     {
         $key = $this->key($session->getChannel(), $session->getChat(), $session->getUser());
 
-        $this->cache->delete($key);
+        $this->cache->forget($key);
     }
 
     /**

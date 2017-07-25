@@ -79,9 +79,7 @@ abstract class TemplateCompiler
                 return $value;
             };
 
-            $result = array_map($transformer, $array);
-
-            return $result;
+            return array_map($transformer, $array);
         }
 
         // Otherwise, we look for a compile method

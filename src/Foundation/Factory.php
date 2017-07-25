@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 namespace FondBot\Foundation;
 
-use League\Container\Container;
-use League\Container\ReflectionContainer;
-use FondBot\Drivers\DriverServiceProvider;
-use FondBot\Conversation\SessionServiceProvider;
+use FondBot\Providers\DriverServiceProvider;
+use Illuminate\Contracts\Foundation\Application;
 
 class Factory
 {
-    public static function create(Container $container): Kernel
+    public static function create(Application $application): Kernel
     {
-        $container->delegate(new ReflectionContainer);
-
         // Load service providers
-        $container->addServiceProvider(new DriverServiceProvider);
-        $container->addServiceProvider(new SessionServiceProvider);
+        $application->register(DriverServiceProvider::class);
 
         // Boot kernel
-        $kernel = Kernel::createInstance($container);
+        $kernel = Kernel::createInstance($application);
 
-        $container->add(Kernel::class, $kernel);
+        $application->singleton(Kernel::class, $kernel);
 
         return $kernel;
     }

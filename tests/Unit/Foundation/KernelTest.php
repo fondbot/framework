@@ -13,25 +13,18 @@ use FondBot\Conversation\Session;
 use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
 
+/**
+ * @property mixed|\Mockery\Mock contextManager
+ * @property mixed|\Mockery\Mock sessionManager
+ */
 class KernelTest extends TestCase
 {
-    /**
-     * @var ContextManager
-     */
-    protected $contextManager;
-
-    /**
-     * @var SessionManager
-     */
-    protected $sessionManager;
-
     public function setUp() : void
     {
         parent::setUp();
+
         $this->contextManager = $this->mock(ContextManager::class);
         $this->sessionManager = $this->mock(SessionManager::class);
-        $this->container->share(ContextManager::class, $this->contextManager);
-        $this->container->share(SessionManager::class, $this->sessionManager);
     }
 
     public function testGetInstance(): void

@@ -8,73 +8,87 @@ use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
-use FondBot\Contracts\Queue;
 use FondBot\Channels\Channel;
 use FondBot\Foundation\Kernel;
+use Illuminate\Bus\Dispatcher;
 use FondBot\Templates\Keyboard;
 use FondBot\Templates\Attachment;
+use FondBot\Drivers\Commands\SendMessage;
+use FondBot\Drivers\Commands\SendRequest;
+use FondBot\Drivers\Commands\SendAttachment;
+use Illuminate\Support\Testing\Fakes\BusFake;
 use FondBot\Conversation\Traits\SendsMessages;
 
 class SendsMessagesTest extends TestCase
 {
     public function testSendMessage(): void
     {
-        $queue = $this->mock(Queue::class);
+        /** @var BusFake $dispatcher */
+        $dispatcher = $this->container->make(Dispatcher::class);
+
         $this->kernel->setChannel($this->mock(Channel::class));
         $this->kernel->setDriver($this->mock(Driver::class));
 
-        $queue->shouldReceive('push')->once();
-
         $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
         $class->sendMessage($this->faker()->text, $this->mock(Keyboard::class));
+
+        $dispatcher->assertDispatched(SendMessage::class);
     }
 
     public function testSendMessageWithDelay(): void
     {
-        $queue = $this->mock(Queue::class);
+        /** @var BusFake $dispatcher */
+        $dispatcher = $this->container->make(Dispatcher::class);
+
         $this->kernel->setChannel($this->mock(Channel::class));
         $this->kernel->setDriver($this->mock(Driver::class));
 
-        $queue->shouldReceive('later')->once();
-
         $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
         $class->sendMessage($this->faker()->text, $this->mock(Keyboard::class), random_int(1, 10));
+
+        $dispatcher->assertDispatched(SendMessage::class);
     }
 
     public function testSendAttachment(): void
     {
-        $queue = $this->mock(Queue::class);
+        /** @var BusFake $dispatcher */
+        $dispatcher = $this->container->make(Dispatcher::class);
+
         $this->kernel->setChannel($this->mock(Channel::class));
         $this->kernel->setDriver($this->mock(Driver::class));
 
-        $queue->shouldReceive('push')->once();
-
         $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
         $class->sendAttachment($this->mock(Attachment::class));
+
+        $dispatcher->assertDispatched(SendAttachment::class);
     }
 
     public function testSendAttachmentWithDelay(): void
     {
-        $queue = $this->mock(Queue::class);
+        /** @var BusFake $dispatcher */
+        $dispatcher = $this->container->make(Dispatcher::class);
+
         $this->kernel->setChannel($this->mock(Channel::class));
         $this->kernel->setDriver($this->mock(Driver::class));
 
-        $queue->shouldReceive('later')->once();
-
         $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
         $class->sendAttachment($this->mock(Attachment::class), random_int(1, 10));
+
+        $dispatcher->assertDispatched(SendAttachment::class);
     }
 
     public function testSendRequest(): void
     {
-        $queue = $this->mock(Queue::class);
+        /** @var BusFake $dispatcher */
+        $dispatcher = $this->container->make(Dispatcher::class);
+
         $this->kernel->setChannel($this->mock(Channel::class));
         $this->kernel->setDriver($this->mock(Driver::class));
 
-        $queue->shouldReceive('push')->once();
-
         $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
         $class->sendRequest('endpoint', ['foo' => 'bar']);
+
+        $dispatcher->assertDispatched(SendRequest::class);
     }
 }
 

@@ -14,6 +14,6 @@ class ControllerTest extends TestCase
         $controller = new Controller($this->kernel);
         $response = $controller->run();
 
-        $this->assertRegExp('/FondBot v([0-9]+)\.([0-9]+)\.([0-9]+)/', (string) $response->getBody());
+        $this->assertRegExp('/FondBot v.*/', $response);
     }
 }

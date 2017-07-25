@@ -9,19 +9,19 @@ use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
+use FondBot\Conversation\Intent;
 use FondBot\Conversation\Session;
-use Psr\SimpleCache\CacheInterface;
 use FondBot\Drivers\ReceivedMessage;
+use FondBot\Conversation\Interaction;
 use FondBot\Conversation\SessionManager;
 
 /**
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $channel
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $chat
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $sender
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $receivedMessage
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $driver
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $cache
- * @property SessionManager                             $manager
+ * @property mixed|\Mockery\Mock channel
+ * @property mixed|\Mockery\Mock chat
+ * @property mixed|\Mockery\Mock sender
+ * @property mixed|\Mockery\Mock receivedMessage
+ * @property mixed|\Mockery\Mock driver
+ * @property SessionManager      manager
  */
 class SessionManagerTest extends TestCase
 {
@@ -34,9 +34,8 @@ class SessionManagerTest extends TestCase
         $this->sender = $this->mock(User::class);
         $this->receivedMessage = $this->mock(ReceivedMessage::class);
         $this->driver = $this->mock(Driver::class);
-        $this->cache = $this->mock(CacheInterface::class);
 
-        $this->manager = new SessionManager($this->container, $this->cache);
+        $this->manager = new SessionManager($this->container, $this->cache());
     }
 
     public function testLoad(): void
@@ -47,13 +46,15 @@ class SessionManagerTest extends TestCase
         $this->chat->shouldReceive('getId')->andReturn($chatId = $this->faker()->uuid)->atLeast()->once();
         $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
-        $key = 'session.foo.'.$chatId.'.'.$senderId;
+        $this->container->instance('foo-intent', $intent = $this->mock(Intent::class));
+        $this->container->instance('bar-interaction', $interaction = $this->mock(Interaction::class));
+
+        $this->cache()->forever('session.foo.'.$chatId.'.'.$senderId, [
+            'intent' => 'foo-intent',
+            'interaction' => 'bar-interaction',
+        ]);
 
         $this->channel->shouldReceive('getName')->andReturn('foo')->once();
-        $this->cache->shouldReceive('get')->with($key)->andReturn([
-            'intent' => null,
-            'interaction' => null,
-        ])->once();
 
         $session = $this->manager->load($this->channel, $this->driver);
 
@@ -63,9 +64,8 @@ class SessionManagerTest extends TestCase
     public function testSave(): void
     {
         $sessionArray = [
-            'intent' => null,
-            'interaction' => null,
-            'values' => ['key1' => 'value1'],
+            'intent' => 'foo',
+            'interaction' => 'bar',
         ];
 
         $session = $this->mock(Session::class);
@@ -77,11 +77,9 @@ class SessionManagerTest extends TestCase
         $this->chat->shouldReceive('getId')->andReturn($chatId = $this->faker()->uuid)->atLeast()->once();
         $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
-        $key = 'session.foo.'.$chatId.'.'.$senderId;
-
-        $this->cache->shouldReceive('set')->with($key, $sessionArray)->once();
-
         $this->manager->save($session);
+
+        $this->assertSame($sessionArray, $this->cache()->get('session.foo.'.$chatId.'.'.$senderId));
     }
 
     public function testClose(): void
@@ -96,8 +94,10 @@ class SessionManagerTest extends TestCase
 
         $key = 'session.foo.'.$chatId.'.'.$senderId;
 
-        $this->cache->shouldReceive('delete')->with($key)->once();
+        $this->cache()->forever($key, 'foo');
 
         $this->manager->close($session);
+
+        $this->assertNull($this->cache()->get($key));
     }
 }

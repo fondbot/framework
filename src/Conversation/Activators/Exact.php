@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Activators;
 
-use FondBot\Helpers\Str;
+use Illuminate\Support\Str;
 use FondBot\Drivers\ReceivedMessage;
 
 class Exact implements Activator

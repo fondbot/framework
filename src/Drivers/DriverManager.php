@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Drivers;
 
-use FondBot\Helpers\Arr;
 use FondBot\Drivers\Exceptions\DriverNotFound;
 use FondBot\Drivers\Exceptions\InvalidConfiguration;
 
@@ -13,14 +12,16 @@ class DriverManager
     /** @var Driver[] */
     private $drivers = [];
 
-    /**
-     * Add driver.
-     *
-     * @param Driver $driver
-     */
-    public function add(Driver $driver): void
+    public function register(array $drivers): void
     {
-        $this->drivers[$driver->getShortName()] = $driver;
+        /** @var Driver|string $driver */
+        foreach ($drivers as $driver) {
+            if (!$driver instanceof Driver) {
+                $driver = kernel($driver);
+            }
+
+            $this->drivers[$driver->getShortName()] = $driver;
+        }
     }
 
     /**
@@ -45,7 +46,7 @@ class DriverManager
      */
     public function get(string $name): Driver
     {
-        $driver = Arr::get($this->drivers, $name);
+        $driver = array_get($this->drivers, $name);
 
         if ($driver === null || !$driver instanceof Driver) {
             throw new DriverNotFound('Driver `'.$name.'` not found.');

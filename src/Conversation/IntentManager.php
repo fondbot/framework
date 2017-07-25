@@ -15,6 +15,16 @@ class IntentManager
     private $fallbackIntent;
 
     /**
+     * Register intents.
+     *
+     * @param array  $intents
+     * @param string $fallbackIntent
+     */
+    public function register(array $intents, string $fallbackIntent): void
+    {
+    }
+
+    /**
      * Find intent.
      *
      * @param ReceivedMessage $message

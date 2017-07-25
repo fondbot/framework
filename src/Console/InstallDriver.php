@@ -2,29 +2,21 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Toolbelt\Commands;
+namespace FondBot\Console;
 
 use GuzzleHttp\Client;
-use FondBot\Toolbelt\Command;
 use FondBot\Foundation\Kernel;
+use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Console\Input\InputArgument;
+use Illuminate\Contracts\Filesystem\Filesystem;
 
 class InstallDriver extends Command
 {
-    protected function configure(): void
-    {
-        $this
-            ->setName('driver:install')
-            ->setDescription('Install driver')
-            ->addArgument('name', InputArgument::REQUIRED, 'Driver name');
-    }
+    protected $signature = 'driver:install 
+                            {name : Driver name to be installed}';
 
-    public function handle(): void
+    public function handle(Client $http, Filesystem $filesystem): void
     {
-        /** @var Client $http */
-        $http = resolve(Client::class);
-
         $response = $http->request('GET', 'https://fondbot.com/api/drivers', [
             'form_params' => ['version' => Kernel::VERSION],
         ]);
@@ -32,7 +24,7 @@ class InstallDriver extends Command
         $items = json_decode((string) $response->getBody(), true);
 
         // Check if package is listed in store
-        $name = $this->getArgument('name');
+        $name = $this->argument('name');
         $drivers = collect($items);
 
         $driver = $drivers->first(function ($item) use ($name) {
@@ -41,7 +33,7 @@ class InstallDriver extends Command
 
         if ($driver === null) {
             $this->error('"'.$name.'" is not found in the official drivers list.');
-            $package = $this->input('Type composer package name if you know which one you want to install');
+            $package = $this->ask('Type composer package name if you know which one you want to install');
         } else {
             // If driver is not official we should ask user to confirm installation
             if ($driver['official'] !== true) {
@@ -54,7 +46,7 @@ class InstallDriver extends Command
         }
 
         // Determine if package is already installed
-        $composer = json_decode($this->filesystem()->read('composer.json'), true);
+        $composer = json_decode($filesystem->get('composer.json'), true);
         $installed = collect($composer['require'])
             ->merge($composer['require-dev'])
             ->search(function ($_, $item) use ($package) {
@@ -82,6 +74,6 @@ class InstallDriver extends Command
             exit($result);
         }
 
-        $this->success('Driver installed.');
+        $this->info('Driver installed.');
     }
 }

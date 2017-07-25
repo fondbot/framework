@@ -5,33 +5,25 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Conversation;
 
 use FondBot\Tests\TestCase;
-use League\Flysystem\MountManager;
-use League\Flysystem\FilesystemInterface;
 use FondBot\Conversation\ConversationCreator;
 
 class ConversationCreatorTest extends TestCase
 {
     public function testCreateIntent(): void
     {
-        $mountManager = $this->mock(MountManager::class);
-        $filesystem = $this->mock(FilesystemInterface::class);
-        $mountManager->shouldReceive('getFilesystem')->once()->with('local')->andReturn($filesystem);
+        $this->filesystem()->put('vendor/fondbot/framework/resources/stubs/Intent.stub', file_get_contents('resources/stubs/Intent.stub'));
 
-        $filesystem->shouldReceive('read')->once()->with('vendor/fondbot/framework/resources/stubs/Intent.stub')->andReturn('foo');
-        $filesystem->shouldReceive('write')->once();
+        (new ConversationCreator($this->filesystem()))->createIntent('foo', 'bar', 'baz');
 
-        (new ConversationCreator($mountManager))->createIntent('foo', 'bar', 'baz');
+        $this->assertTrue($this->filesystem()->exists('foo/Intents/BazIntent.php'));
     }
 
     public function testCreateInteraction(): void
     {
-        $mountManager = $this->mock(MountManager::class);
-        $filesystem = $this->mock(FilesystemInterface::class);
-        $mountManager->shouldReceive('getFilesystem')->once()->with('local')->andReturn($filesystem);
+        $this->filesystem()->put('vendor/fondbot/framework/resources/stubs/Interaction.stub', file_get_contents('resources/stubs/Interaction.stub'));
 
-        $filesystem->shouldReceive('read')->once()->with('vendor/fondbot/framework/resources/stubs/Interaction.stub')->andReturn('foo');
-        $filesystem->shouldReceive('write')->once();
+        (new ConversationCreator($this->filesystem()))->createInteraction('foo', 'bar', 'baz');
 
-        (new ConversationCreator($mountManager))->createInteraction('foo', 'bar', 'baz');
+        $this->assertTrue($this->filesystem()->exists('foo/Interactions/BazInteraction.php'));
     }
 }

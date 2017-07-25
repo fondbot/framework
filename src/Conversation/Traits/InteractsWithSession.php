@@ -6,13 +6,9 @@ namespace FondBot\Conversation\Traits;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
-use FondBot\Foundation\Kernel;
 
 trait InteractsWithSession
 {
-    /** @var Kernel */
-    protected $kernel;
-
     /**
      * Get chat.
      *
@@ -20,7 +16,7 @@ trait InteractsWithSession
      */
     protected function getChat(): Chat
     {
-        return $this->kernel->getSession()->getChat();
+        return kernel()->getSession()->getChat();
     }
 
     /**
@@ -30,6 +26,6 @@ trait InteractsWithSession
      */
     protected function getUser(): User
     {
-        return $this->kernel->getSession()->getUser();
+        return kernel()->getSession()->getUser();
     }
 }

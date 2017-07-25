@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use FondBot\Helpers\Arr;
-
 class Channel
 {
     private $name;
@@ -59,6 +57,6 @@ class Channel
      */
     public function getParameter(string $name, $default = null)
     {
-        return Arr::get($this->parameters, $name, $default);
+        return array_get($this->parameters, $name, $default);
     }
 }

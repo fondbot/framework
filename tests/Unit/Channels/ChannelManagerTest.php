@@ -18,9 +18,8 @@ class ChannelManagerTest extends TestCase
             'token' => $this->faker()->sha1,
         ];
 
-        $manager = new ChannelManager();
-
-        $manager->add($name, $parameters);
+        $manager = new ChannelManager;
+        $manager->register([$name => $parameters]);
 
         $result = $manager->create($name);
 
@@ -32,8 +31,8 @@ class ChannelManagerTest extends TestCase
 
     public function testAll(): void
     {
-        $manager = new ChannelManager();
-        $manager->add('foo', ['foo' => 'bar']);
+        $manager = new ChannelManager;
+        $manager->register(['foo' => ['foo' => 'bar']]);
 
         $this->assertSame(['foo' => ['foo' => 'bar']], $manager->all());
     }
@@ -44,7 +43,7 @@ class ChannelManagerTest extends TestCase
      */
     public function testCreateException(): void
     {
-        $manager = new ChannelManager();
+        $manager = new ChannelManager;
 
         $manager->create('fake');
     }

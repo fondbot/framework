@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Foundation\Kernel;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Conversation\Traits\SendsMessages;
@@ -34,20 +33,15 @@ abstract class Interaction implements Conversable
 
     /**
      * Handle interaction.
-     *
-     * @param Kernel $kernel
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function handle(Kernel $kernel): void
+    public function handle(): void
     {
-        $this->kernel = $kernel;
-        $session = $this->kernel->getSession();
+        $session = kernel()->getSession();
 
         if ($session->getInteraction() instanceof $this) {
             $this->process($session->getMessage());
         } else {
-            $this->kernel->getSession()->setInteraction($this);
+            kernel()->getSession()->setInteraction($this);
             $this->run($session->getMessage());
         }
     }

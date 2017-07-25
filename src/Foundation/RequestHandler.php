@@ -52,7 +52,7 @@ class RequestHandler
         $driver->verifyRequest();
 
         // Load session
-        $this->kernel->loadSession($channel, $driver);
+        $this->kernel->boot($channel, $driver);
 
         // Process conversation
         $this->conversationManager->handle($driver->getMessage());

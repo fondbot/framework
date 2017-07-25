@@ -10,7 +10,6 @@ use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
-use Psr\SimpleCache\CacheInterface;
 use FondBot\Conversation\ContextManager;
 
 class ContextManagerTest extends TestCase
@@ -18,61 +17,71 @@ class ContextManagerTest extends TestCase
     public function testLoad(): void
     {
         $channel = $this->mock(Channel::class);
-        $cache = $this->mock(CacheInterface::class);
         $chat = $this->mock(Chat::class);
         $user = $this->mock(User::class);
         $driver = $this->mock(Driver::class);
+        $items = ['foo' => 'bar'];
 
         $driver->shouldReceive('getChat')->andReturn($chat)->once();
         $driver->shouldReceive('getUser')->andReturn($user)->once();
-        $cache->shouldReceive('get')->andReturn(['chat' => $channel, 'user' => $chat, 'items' => $user])->once();
 
         $channel->shouldReceive('getName')->andReturn('foo')->once();
-        $chat->shouldReceive('getId')->andReturn($this->faker()->uuid)->once();
-        $user->shouldReceive('getId')->andReturn($this->faker()->uuid)->once();
+        $chat->shouldReceive('getId')->andReturn('bar')->once();
+        $user->shouldReceive('getId')->andReturn('baz')->once();
 
-        (new ContextManager($cache))->load($channel, $driver);
+        $this->cache()->forever('context.foo.bar.baz', compact('chat', 'user', 'items'));
+
+        $result = (new ContextManager($this->cache()))->load($channel, $driver);
+
+        $this->assertInstanceOf(Context::class, $result);
+        $this->assertSame($channel, $result->getChannel());
+        $this->assertSame($chat, $result->getChat());
+        $this->assertSame($user, $result->getUser());
+        $this->assertSame($items, $result->toArray());
     }
 
     public function testSave(): void
     {
-        $cache = $this->mock(CacheInterface::class);
         $context = $this->mock(Context::class);
         $channel = $this->mock(Channel::class);
         $chat = $this->mock(Chat::class);
         $user = $this->mock(User::class);
+        $items = ['foo' => 'bar'];
 
         $context->shouldReceive('getChannel')->once()->andReturn($channel);
         $context->shouldReceive('getChat')->once()->andReturn($chat);
         $context->shouldReceive('getUser')->once()->andReturn($user);
-        $context->shouldReceive('toArray')->once();
+        $context->shouldReceive('toArray')->once()->andReturn($items);
 
         $channel->shouldReceive('getName')->once()->andReturn('foo');
-        $chat->shouldReceive('getId')->once()->andReturn($this->faker()->uuid);
-        $user->shouldReceive('getId')->once()->andReturn($this->faker()->uuid);
+        $chat->shouldReceive('getId')->once()->andReturn('bar');
+        $user->shouldReceive('getId')->once()->andReturn('baz');
 
-        $cache->shouldReceive('set')->once();
+        (new ContextManager($this->cache()))->save($context);
 
-        (new ContextManager($cache))->save($context);
+        $this->assertSame($items, $this->cache()->get('context.foo.bar.baz'));
     }
 
     public function testClear(): void
     {
-        $cache = $this->mock(CacheInterface::class);
         $context = $this->mock(Context::class);
         $channel = $this->mock(Channel::class);
         $chat = $this->mock(Chat::class);
         $user = $this->mock(User::class);
+        $items = ['foo' => 'bar'];
 
         $context->shouldReceive('getChannel')->once()->andReturn($channel);
         $context->shouldReceive('getChat')->once()->andReturn($chat);
         $context->shouldReceive('getUser')->once()->andReturn($user);
 
         $channel->shouldReceive('getName')->once()->andReturn('foo');
-        $chat->shouldReceive('getId')->once()->andReturn($this->faker()->uuid);
-        $user->shouldReceive('getId')->once()->andReturn($this->faker()->uuid);
+        $chat->shouldReceive('getId')->once()->andReturn('bar');
+        $user->shouldReceive('getId')->once()->andReturn('baz');
 
-        $cache->shouldReceive('delete')->once();
-        (new ContextManager($cache))->clear($context);
+        $this->cache()->forever('context.foo.bar.baz', $items);
+
+        (new ContextManager($this->cache()))->clear($context);
+
+        $this->assertNull($this->cache()->get('context.foo.bar.baz'));
     }
 }

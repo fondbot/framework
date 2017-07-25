@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Helpers\Str;
-use League\Flysystem\MountManager;
+use Illuminate\Support\Str;
+use Illuminate\Contracts\Filesystem\Filesystem;
 
 class ConversationCreator
 {
     private $filesystem;
 
-    public function __construct(MountManager $manager)
+    public function __construct(Filesystem $filesystem)
     {
-        $this->filesystem = $manager->getFilesystem('local');
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -22,13 +22,10 @@ class ConversationCreator
      * @param string $directory
      * @param string $namespace
      * @param string $name
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     * @throws \League\Flysystem\FileExistsException
      */
     public function createIntent(string $directory, string $namespace, string $name): void
     {
-        $contents = $this->filesystem->read('vendor/fondbot/framework/resources/stubs/Intent.stub');
+        $contents = $this->filesystem->get('vendor/fondbot/framework/resources/stubs/Intent.stub');
 
         $className = $this->className($name, 'Intent');
 
@@ -39,7 +36,7 @@ class ConversationCreator
 
         $path = $directory.'/Intents/'.$this->filename($className);
 
-        $this->filesystem->write($path, $contents);
+        $this->filesystem->put($path, $contents);
     }
 
     /**
@@ -48,13 +45,10 @@ class ConversationCreator
      * @param string $directory
      * @param string $namespace
      * @param string $name
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     * @throws \League\Flysystem\FileExistsException
      */
     public function createInteraction(string $directory, string $namespace, string $name): void
     {
-        $contents = $this->filesystem->read('vendor/fondbot/framework/resources/stubs/Interaction.stub');
+        $contents = $this->filesystem->get('vendor/fondbot/framework/resources/stubs/Interaction.stub');
 
         $className = $this->className($name, 'Interaction');
 
@@ -64,7 +58,7 @@ class ConversationCreator
 
         $path = $directory.'/Interactions/'.$this->filename($className);
 
-        $this->filesystem->write($path, $contents);
+        $this->filesystem->put($path, $contents);
     }
 
     /**
@@ -136,7 +130,7 @@ class ConversationCreator
      */
     private function className(string $name, string $postfix): string
     {
-        $name = trim($name);
+        $name = trim(Str::ucfirst($name));
         if (!Str::endsWith($name, $postfix)) {
             $name .= $postfix;
         }

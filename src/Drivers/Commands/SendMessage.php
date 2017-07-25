@@ -10,7 +10,7 @@ use FondBot\Drivers\Command;
 use InvalidArgumentException;
 use FondBot\Contracts\Template;
 
-class SendMessage implements Command
+class SendMessage extends Command
 {
     private $chat;
     private $recipient;

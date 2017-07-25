@@ -57,8 +57,10 @@ class TemplateCompilerTest extends TestCase
         /** @var TemplateCompiler|Mock $compiler */
         $compiler = $this->mock(TemplateCompiler::class)->shouldAllowMockingProtectedMethods()->makePartial();
 
-        $compiler->shouldReceive('compilePayloadButton')->with($payloadButton,
-            $args)->andReturn(['payload' => 'button'])->once();
+        $compiler->shouldReceive('compilePayloadButton')->with(
+            $payloadButton,
+            $args
+        )->andReturn(['payload' => 'button'])->once();
 
         $result = $compiler->compile($template, $args);
         $expected = [

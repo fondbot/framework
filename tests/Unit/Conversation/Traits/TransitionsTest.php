@@ -19,7 +19,7 @@ class TransitionsTest extends TestCase
     public function testJump(): void
     {
         $conversationManager = $this->mock(ConversationManager::class);
-        $this->container->add('foo', $interaction = $this->mock(Interaction::class));
+        $this->container->instance('foo', $interaction = $this->mock(Interaction::class));
 
         $conversationManager->shouldReceive('transition')->with($interaction)->once();
 
@@ -34,7 +34,7 @@ class TransitionsTest extends TestCase
     public function testJumpInvalidInteraction(): void
     {
         $conversationManager = $this->mock(ConversationManager::class);
-        $this->container->add('foo', $this->mock(Intent::class));
+        $this->container->instance('foo', $this->mock(Intent::class));
 
         $conversationManager->shouldReceive('converse')->never();
 
