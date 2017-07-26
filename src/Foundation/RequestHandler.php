@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Foundation;
 
+use Illuminate\Http\Request;
 use FondBot\Channels\Channel;
 use FondBot\Drivers\DriverManager;
-use Psr\Http\Message\RequestInterface;
 use FondBot\Conversation\ConversationManager;
 use FondBot\Drivers\Extensions\WebhookVerification;
 
@@ -28,11 +28,11 @@ class RequestHandler
 
     /**
      * @param Channel          $channel
-     * @param RequestInterface $request
+     * @param Request $request
      *
      * @return mixed
      */
-    public function handle(Channel $channel, RequestInterface $request)
+    public function handle(Channel $channel, Request $request)
     {
         $driver = $this->driverManager->get($channel->getDriver());
 

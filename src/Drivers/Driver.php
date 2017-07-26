@@ -6,9 +6,9 @@ namespace FondBot\Drivers;
 
 use RuntimeException;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 use FondBot\Channels\Channel;
 use Illuminate\Support\Collection;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use FondBot\Drivers\Exceptions\InvalidRequest;
 use FondBot\Contracts\Driver as DriverContract;
@@ -18,7 +18,7 @@ abstract class Driver implements DriverContract
     /** @var Collection */
     protected $parameters;
 
-    /** @var RequestInterface */
+    /** @var Request */
     protected $request;
 
     protected $guzzle;
@@ -45,12 +45,12 @@ abstract class Driver implements DriverContract
     /**
      * Initialize gateway with parameters.
      *
-     * @param Channel          $channel
-     * @param RequestInterface $request
+     * @param Channel $channel
+     * @param Request $request
      *
      * @return Driver|DriverContract|static
      */
-    public function initialize(Channel $channel, RequestInterface $request): DriverContract
+    public function initialize(Channel $channel, Request $request): DriverContract
     {
         $this->request = $request;
 
@@ -78,13 +78,13 @@ abstract class Driver implements DriverContract
     }
 
     /**
-     * Get request body as json.
+     * Get request.
      *
-     * @return array
+     * @return Request
      */
-    public function getRequestJson(): array
+    public function getRequest(): Request
     {
-        return json_decode((string) $this->request->getBody(), true) ?? [];
+        return $this->request;
     }
 
     /**

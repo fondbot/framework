@@ -6,9 +6,9 @@ namespace FondBot\Controllers;
 
 use FondBot\Foundation\Kernel;
 
-class Controller
+class IndexController
 {
-    public function run(): string
+    public function show(): string
     {
         return 'FondBot v'.Kernel::VERSION;
     }

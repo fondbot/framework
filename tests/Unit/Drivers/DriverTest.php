@@ -12,13 +12,13 @@ use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Drivers\Command;
 use GuzzleHttp\HandlerStack;
+use Illuminate\Http\Request;
 use FondBot\Channels\Channel;
 use GuzzleHttp\Psr7\Response;
 use FondBot\Drivers\CommandHandler;
 use GuzzleHttp\Handler\MockHandler;
 use FondBot\Drivers\ReceivedMessage;
 use FondBot\Drivers\TemplateCompiler;
-use Psr\Http\Message\RequestInterface;
 
 class DriverTest extends TestCase
 {
@@ -36,7 +36,7 @@ class DriverTest extends TestCase
     public function testInitialize(): void
     {
         $channel = $this->mock(Channel::class);
-        $request = $this->mock(RequestInterface::class);
+        $request = Request::create('/');
 
         /** @var Driver|Mock $driver */
         $driver = $this->mock(Driver::class)->makePartial();
@@ -99,12 +99,11 @@ class DriverTest extends TestCase
     public function testGetRequestJson() : void
     {
         $channel = $this->mock(Channel::class);
-        $request = $this->mock(RequestInterface::class);
+        $request = Request::create('/');
 
         /** @var Driver|Mock $driver */
         $driver = $this->mock(Driver::class)->makePartial();
 
-        $request->shouldReceive('getBody');
         $channel->shouldReceive('getParameters')->andReturn(['foo' => 'bar'])->atLeast()->once();
         $driver->shouldReceive('getDefaultParameters')->andReturn(['foo' => '', 'bar' => ''])->once();
 
@@ -112,7 +111,6 @@ class DriverTest extends TestCase
 
         $this->assertSame('bar', $driver->getParameters()['foo']);
         $this->assertSame('', $driver->getParameters()['bar']);
-        $this->assertEquals([], $driver->getRequestJson());
     }
 
     private function createExtendDriver(Client $client = null) : Driver

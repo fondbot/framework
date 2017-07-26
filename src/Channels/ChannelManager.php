@@ -9,7 +9,7 @@ use FondBot\Channels\Exceptions\ChannelNotFound;
 class ChannelManager
 {
     /** @var array */
-    private $channels;
+    private $channels = [];
 
     /**
      * Register channels.
@@ -41,7 +41,7 @@ class ChannelManager
      */
     public function create(string $name): Channel
     {
-        if (!isset($this->channels[$name])) {
+        if (!array_has($this->channels, $name)) {
             throw new ChannelNotFound('Channel `'.$name.'` not found.');
         }
 

@@ -34,6 +34,7 @@
   },
   "require-dev": {
     "fzaninotto/faker": "^1.6",
+    "laravel/lumen-framework": "^5.4",
     "league/flysystem": "^1.0",
     "league/flysystem-memory": "^1.0",
     "mockery/mockery": "^0.9.9",
