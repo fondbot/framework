@@ -34,6 +34,7 @@ class Exact implements Activator
 
         if (!$this->caseSensitive) {
             $text = Str::lower($text);
+            $this->value = Str::lower($this->value);
         }
 
         return hash_equals($this->value, $text);
