@@ -11,6 +11,6 @@ cache:
     - $HOME/.composer/cache
 
 before_script:
-  - COMPOSER_DISCARD_CHANGES=1 composer update --prefer-source --no-interaction
+  - COMPOSER_DISCARD_CHANGES=1 composer update --prefer-dist --no-interaction --no-suggest
 script:
   - composer test
