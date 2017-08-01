@@ -22,20 +22,15 @@
   "require": {
     "php": ">=7.1",
     "guzzlehttp/guzzle": "^6.3",
-    "illuminate/bus": "^5.5",
-    "illuminate/cache": "^5.5",
-    "illuminate/container": "^5.5",
     "illuminate/contracts": "^5.5",
-    "illuminate/filesystem": "^5.5",
     "illuminate/http": "^5.5",
-    "illuminate/log": "^5.5",
-    "illuminate/queue": "^5.5",
     "illuminate/support": "^5.5",
     "spatie/regex": "^1.1"
   },
   "require-dev": {
     "fzaninotto/faker": "^1.6",
-    "league/flysystem": "^1.0",
+    "illuminate/cache": "^5.5",
+    "illuminate/container": "^5.5",
     "league/flysystem-memory": "^1.0",
     "mockery/mockery": "^0.9.9",
     "phpunit/phpunit": "^6.2"
@@ -60,13 +55,14 @@
   "extra": {
     "branch-alias": {
       "dev-master": "2.0-dev"
-    },
-    "laravel": {
-      "providers": [
-        "FondBot\\Foundation\\ServiceProvider"
-      ]
     }
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:illuminate/support.git"
+    }
+  ],
   "config": {
     "preferred-install": "dist",
     "sort-packages": true

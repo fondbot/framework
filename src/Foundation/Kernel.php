@@ -7,11 +7,11 @@ namespace FondBot\Foundation;
 use FondBot\Drivers\Driver;
 use FondBot\Drivers\Command;
 use FondBot\Channels\Channel;
-use Illuminate\Bus\Dispatcher;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
 use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
+use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Container\Container;
 
 class Kernel

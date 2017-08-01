@@ -25,10 +25,6 @@ trait SendsMessages
     {
         $command = new SendMessage($this->getChat(), $this->getUser(), $text, $template);
 
-        if ($delay > 0) {
-            $command->delay($delay);
-        }
-
         kernel()->dispatch($command);
     }
 
@@ -41,10 +37,6 @@ trait SendsMessages
     protected function sendAttachment(Attachment $attachment, int $delay = 0): void
     {
         $command = new SendAttachment($this->getChat(), $this->getUser(), $attachment);
-
-        if ($delay > 0) {
-            $command->delay($delay);
-        }
 
         kernel()->dispatch($command);
     }
@@ -59,10 +51,6 @@ trait SendsMessages
     protected function sendRequest(string $endpoint, array $parameters = [], int $delay = 0): void
     {
         $command = new SendRequest($this->getChat(), $this->getUser(), $endpoint, $parameters);
-
-        if ($delay > 0) {
-            $command->delay($delay);
-        }
 
         kernel()->dispatch($command);
     }
