@@ -60,7 +60,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "git@github.com:illuminate/support.git"
+      "url": "https://github.com/illuminate/support.git"
     }
   ],
   "config": {
