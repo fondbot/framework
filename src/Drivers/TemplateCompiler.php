@@ -7,9 +7,9 @@ namespace FondBot\Drivers;
 use RuntimeException;
 use FondBot\Contracts\Template;
 use FondBot\Templates\Keyboard;
-use FondBot\Contracts\Arrayable;
 use FondBot\Templates\Keyboard\UrlButton;
 use FondBot\Templates\Keyboard\ReplyButton;
+use Illuminate\Contracts\Support\Arrayable;
 use FondBot\Templates\Keyboard\PayloadButton;
 
 abstract class TemplateCompiler
@@ -70,9 +70,13 @@ abstract class TemplateCompiler
             $transformer = function ($value) use (&$transformer, $args) {
                 if (is_array($value)) {
                     return array_map($transformer, $value);
-                } elseif ($value instanceof Arrayable) {
+                }
+
+                if ($value instanceof Arrayable) {
                     return array_map($transformer, $value->toArray());
-                } elseif ($value instanceof Template) {
+                }
+
+                if ($value instanceof Template) {
                     return $this->compile($value, $args);
                 }
 

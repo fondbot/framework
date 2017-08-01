@@ -10,8 +10,8 @@ use RuntimeException;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Template;
 use FondBot\Templates\Keyboard;
-use FondBot\Contracts\Arrayable;
 use FondBot\Drivers\TemplateCompiler;
+use Illuminate\Contracts\Support\Arrayable;
 use FondBot\Templates\Keyboard\PayloadButton;
 
 class TemplateCompilerTest extends TestCase

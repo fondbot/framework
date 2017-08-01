@@ -7,7 +7,7 @@ namespace FondBot\Conversation;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Channels\Channel;
-use FondBot\Contracts\Arrayable;
+use Illuminate\Contracts\Support\Arrayable;
 
 class Context implements Arrayable
 {

@@ -7,8 +7,8 @@ namespace FondBot\Conversation;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Channels\Channel;
-use FondBot\Contracts\Arrayable;
 use FondBot\Drivers\ReceivedMessage;
+use Illuminate\Contracts\Support\Arrayable;
 
 class Session implements Arrayable
 {
