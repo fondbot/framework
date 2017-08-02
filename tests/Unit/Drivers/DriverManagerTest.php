@@ -17,7 +17,7 @@ class DriverManagerTest extends TestCase
 
         $driver->shouldReceive('getShortName')->andReturn('foo')->once();
 
-        $manager->register([$driver]);
+        $manager->register($driver);
 
         $this->assertSame($driver, $manager->get('foo'));
     }
@@ -36,11 +36,13 @@ class DriverManagerTest extends TestCase
     public function testAll(): void
     {
         $manager = new DriverManager;
-        $driver = $this->mock(Driver::class);
+        /** @var mixed $driver1 */
+        $driver1 = $this->mock(Driver::class)->makePartial();
+        /** @var mixed $driver2 */
+        $driver2 = $this->mock(Driver::class)->makePartial();
 
-        $driver->shouldReceive('getShortName')->once();
-
-        $manager->register([$driver]);
+        $manager->register($driver1);
+        $manager->register($driver2);
 
         $this->assertCount(1, $manager->all());
     }
