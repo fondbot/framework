@@ -6,7 +6,6 @@ namespace FondBot\Tests\Unit\Conversation;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
-use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
@@ -19,11 +18,7 @@ class ContextManagerTest extends TestCase
         $channel = $this->mock(Channel::class);
         $chat = $this->mock(Chat::class);
         $user = $this->mock(User::class);
-        $driver = $this->mock(Driver::class);
         $items = ['foo' => 'bar'];
-
-        $driver->shouldReceive('getChat')->andReturn($chat)->once();
-        $driver->shouldReceive('getUser')->andReturn($user)->once();
 
         $channel->shouldReceive('getName')->andReturn('foo')->once();
         $chat->shouldReceive('getId')->andReturn('bar')->once();
@@ -31,7 +26,7 @@ class ContextManagerTest extends TestCase
 
         $this->cache()->forever('context.foo.bar.baz', compact('chat', 'user', 'items'));
 
-        $result = (new ContextManager($this->cache()))->load($channel, $driver);
+        $result = (new ContextManager($this->cache()))->load($channel, $chat, $user);
 
         $this->assertInstanceOf(Context::class, $result);
         $this->assertSame($channel, $result->getChannel());

@@ -51,18 +51,6 @@ class Kernel
     }
 
     /**
-     * Boot kernel.
-     *
-     * @param Channel $channel
-     * @param Driver  $driver
-     */
-    public function boot(Channel $channel, Driver $driver): void
-    {
-        $this->session = $this->sessionManager()->load($channel, $driver);
-        $this->context = $this->contextManager()->load($channel, $driver);
-    }
-
-    /**
      * Perform shutdown tasks.
      */
     public function terminate(): void

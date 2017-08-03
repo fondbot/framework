@@ -18,7 +18,7 @@ use FondBot\Conversation\SessionManager;
 /**
  * @property mixed|\Mockery\Mock channel
  * @property mixed|\Mockery\Mock chat
- * @property mixed|\Mockery\Mock sender
+ * @property mixed|\Mockery\Mock $user
  * @property mixed|\Mockery\Mock receivedMessage
  * @property mixed|\Mockery\Mock driver
  * @property SessionManager      manager
@@ -31,7 +31,7 @@ class SessionManagerTest extends TestCase
 
         $this->channel = $this->mock(Channel::class);
         $this->chat = $this->mock(Chat::class);
-        $this->sender = $this->mock(User::class);
+        $this->user = $this->mock(User::class);
         $this->receivedMessage = $this->mock(ReceivedMessage::class);
         $this->driver = $this->mock(Driver::class);
 
@@ -40,11 +40,8 @@ class SessionManagerTest extends TestCase
 
     public function testLoad(): void
     {
-        $this->driver->shouldReceive('getChat')->andReturn($this->chat)->once();
-        $this->driver->shouldReceive('getUser')->andReturn($this->sender)->once();
-        $this->driver->shouldReceive('getMessage')->andReturn($this->receivedMessage)->once();
         $this->chat->shouldReceive('getId')->andReturn($chatId = $this->faker()->uuid)->atLeast()->once();
-        $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
+        $this->user->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
         $this->container->instance('foo-intent', $intent = $this->mock(Intent::class));
         $this->container->instance('bar-interaction', $interaction = $this->mock(Interaction::class));
@@ -56,7 +53,7 @@ class SessionManagerTest extends TestCase
 
         $this->channel->shouldReceive('getName')->andReturn('foo')->once();
 
-        $session = $this->manager->load($this->channel, $this->driver);
+        $session = $this->manager->load($this->channel, $this->chat, $this->user, $this->receivedMessage);
 
         $this->assertInstanceOf(Session::class, $session);
     }
@@ -71,11 +68,12 @@ class SessionManagerTest extends TestCase
         $session = $this->mock(Session::class);
         $session->shouldReceive('getChannel')->andReturn($this->channel)->atLeast()->once();
         $session->shouldReceive('getChat')->andReturn($this->chat)->atLeast()->once();
-        $session->shouldReceive('getUser')->andReturn($this->sender)->atLeast()->once();
+        $session->shouldReceive('getUser')->andReturn($this->user)->atLeast()->once();
         $session->shouldReceive('toArray')->andReturn($sessionArray)->atLeast()->once();
+
         $this->channel->shouldReceive('getName')->andReturn('foo')->once();
         $this->chat->shouldReceive('getId')->andReturn($chatId = $this->faker()->uuid)->atLeast()->once();
-        $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
+        $this->user->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
         $this->manager->save($session);
 
@@ -87,10 +85,10 @@ class SessionManagerTest extends TestCase
         $session = $this->mock(Session::class);
         $session->shouldReceive('getChannel')->andReturn($this->channel)->once();
         $session->shouldReceive('getChat')->andReturn($this->chat)->atLeast()->once();
-        $session->shouldReceive('getUser')->andReturn($this->sender)->once();
+        $session->shouldReceive('getUser')->andReturn($this->user)->once();
         $this->channel->shouldReceive('getName')->andReturn('foo')->once();
         $this->chat->shouldReceive('getId')->andReturn($chatId = $this->faker()->uuid)->atLeast()->once();
-        $this->sender->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
+        $this->user->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
         $key = 'session.foo.'.$chatId.'.'.$senderId;
 

@@ -57,24 +57,6 @@ class KernelTest extends TestCase
         $this->assertSame($session, $this->kernel->getSession());
     }
 
-    public function testBoot(): void
-    {
-        $channel = $this->mock(Channel::class);
-        $driver = $this->mock(Driver::class);
-        $session = $this->mock(Session::class);
-        $context = $this->mock(Context::class);
-        $sessionManager = $this->mock(SessionManager::class);
-        $contextManager = $this->mock(ContextManager::class);
-
-        $sessionManager->shouldReceive('load')->with($channel, $driver)->andReturn($session)->once();
-        $contextManager->shouldReceive('load')->with($channel, $driver)->andReturn($context)->once();
-
-        $this->kernel->boot($channel, $driver);
-
-        $this->assertSame($session, $this->kernel->getSession());
-        $this->assertSame($context, $this->kernel->getContext());
-    }
-
     public function testCloseSession(): void
     {
         $sessionManager = $this->mock(SessionManager::class);

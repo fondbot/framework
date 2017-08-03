@@ -6,7 +6,6 @@ namespace FondBot\Conversation;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
-use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use Illuminate\Contracts\Cache\Store;
 
@@ -23,14 +22,13 @@ class ContextManager
      * Load context.
      *
      * @param Channel $channel
-     * @param Driver  $driver
+     * @param Chat    $chat
+     * @param User    $user
      *
      * @return Context
      */
-    public function load(Channel $channel, Driver $driver): Context
+    public function load(Channel $channel, Chat $chat, User $user): Context
     {
-        $chat = $driver->getChat();
-        $user = $driver->getUser();
         $key = $this->key($channel, $chat, $user);
 
         $value = $this->cache->get($key, []);
@@ -73,6 +71,6 @@ class ContextManager
      */
     private function key(Channel $channel, Chat $chat, User $user): string
     {
-        return 'context.'.$channel->getName().'.'.$chat->getId().'.'.$user->getId();
+        return implode('.', ['context', $channel->getName(), $chat->getId(), $user->getId()]);
     }
 }

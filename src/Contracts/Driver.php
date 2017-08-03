@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts;
 
+use FondBot\Drivers\Chat;
+use FondBot\Drivers\User;
 use Illuminate\Http\Request;
-use FondBot\Channels\Channel;
+use FondBot\Templates\Attachment;
+use Illuminate\Support\Collection;
 
 interface Driver
 {
@@ -37,12 +40,56 @@ interface Driver
     public function getDefaultParameters(): array;
 
     /**
-     * Initialize gateway with request and parameters.
+     * Initialize driver.
      *
-     * @param Channel $channel
-     * @param Request $request
+     * @param array $parameters
      *
      * @return Driver|static
      */
-    public function initialize(Channel $channel, Request $request): Driver;
+    public function initialize(array $parameters): Driver;
+
+    /**
+     * Get driver parameters.
+     *
+     * @return Collection
+     */
+    public function getParameters(): Collection;
+
+    /**
+     * Create event based on incoming request.
+     *
+     * @param Request $request
+     *
+     * @return Event
+     */
+    public function createEvent(Request $request): Event;
+
+    /**
+     * Send message.
+     *
+     * @param Chat          $chat
+     * @param User          $recipient
+     * @param string        $text
+     * @param Template|null $template
+     */
+    public function sendMessage(Chat $chat, User $recipient, string $text, Template $template = null): void;
+
+    /**
+     * Send attachment.
+     *
+     * @param Chat       $chat
+     * @param User       $recipient
+     * @param Attachment $attachment
+     */
+    public function sendAttachment(Chat $chat, User $recipient, Attachment $attachment): void;
+
+    /**
+     * Send low-level request.
+     *
+     * @param Chat   $chat
+     * @param User   $recipient
+     * @param string $endpoint
+     * @param array  $parameters
+     */
+    public function sendRequest(Chat $chat, User $recipient, string $endpoint, array $parameters = []): void;
 }
