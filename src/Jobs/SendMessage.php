@@ -2,16 +2,20 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Drivers\Commands;
+namespace FondBot\Jobs;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
-use FondBot\Drivers\Command;
+use Illuminate\Bus\Queueable;
 use InvalidArgumentException;
 use FondBot\Contracts\Template;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendMessage extends Command
+class SendMessage implements ShouldQueue
 {
+    use InteractsWithQueue, Queueable;
+
     private $chat;
     private $recipient;
     private $text;
@@ -29,33 +33,8 @@ class SendMessage extends Command
         $this->template = $template;
     }
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName(): string
+    public function handle(): void
     {
-        return 'SendMessage';
-    }
-
-    public function getChat(): Chat
-    {
-        return $this->chat;
-    }
-
-    public function getRecipient(): User
-    {
-        return $this->recipient;
-    }
-
-    public function getText(): ?string
-    {
-        return $this->text;
-    }
-
-    public function getTemplate(): ?Template
-    {
-        return $this->template;
+        // TODO
     }
 }

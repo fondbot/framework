@@ -7,9 +7,9 @@ namespace FondBot\Tests\Unit\Drivers\Commands;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
+use FondBot\Jobs\SendMessage;
 use InvalidArgumentException;
 use FondBot\Contracts\Template;
-use FondBot\Drivers\Commands\SendMessage;
 
 class SendMessageTest extends TestCase
 {
@@ -21,12 +21,6 @@ class SendMessageTest extends TestCase
         $template = $this->mock(Template::class);
 
         $command = new SendMessage($chat, $recipient, $text, $template);
-
-        $this->assertSame('SendMessage', $command->getName());
-        $this->assertSame($chat, $command->getChat());
-        $this->assertSame($recipient, $command->getRecipient());
-        $this->assertSame($text, $command->getText());
-        $this->assertSame($template, $command->getTemplate());
     }
 
     /**

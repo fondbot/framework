@@ -9,13 +9,13 @@ use FondBot\Drivers\User;
 use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
+use FondBot\Jobs\SendMessage;
+use FondBot\Jobs\SendRequest;
 use FondBot\Foundation\Kernel;
 use FondBot\Templates\Keyboard;
+use FondBot\Jobs\SendAttachment;
 use FondBot\Templates\Attachment;
 use Illuminate\Contracts\Bus\Dispatcher;
-use FondBot\Drivers\Commands\SendMessage;
-use FondBot\Drivers\Commands\SendRequest;
-use FondBot\Drivers\Commands\SendAttachment;
 use Illuminate\Support\Testing\Fakes\BusFake;
 use FondBot\Conversation\Traits\SendsMessages;
 

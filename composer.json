@@ -22,8 +22,10 @@
   "require": {
     "php": ">=7.1",
     "guzzlehttp/guzzle": "^6.3",
+    "illuminate/bus": "^5.5",
     "illuminate/contracts": "^5.5",
     "illuminate/http": "^5.5",
+    "illuminate/queue": "^5.5",
     "illuminate/support": "^5.5",
     "spatie/regex": "^1.1"
   },

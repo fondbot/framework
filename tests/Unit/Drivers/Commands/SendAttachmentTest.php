@@ -7,8 +7,8 @@ namespace FondBot\Tests\Unit\Drivers\Commands;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
+use FondBot\Jobs\SendAttachment;
 use FondBot\Templates\Attachment;
-use FondBot\Drivers\Commands\SendAttachment;
 
 class SendAttachmentTest extends TestCase
 {
@@ -19,10 +19,5 @@ class SendAttachmentTest extends TestCase
         $attachment = $this->mock(Attachment::class);
 
         $command = new SendAttachment($chat, $recipient, $attachment);
-
-        $this->assertSame('SendAttachment', $command->getName());
-        $this->assertSame($chat, $command->getChat());
-        $this->assertSame($recipient, $command->getRecipient());
-        $this->assertSame($attachment, $command->getAttachment());
     }
 }

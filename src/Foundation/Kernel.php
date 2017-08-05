@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace FondBot\Foundation;
 
 use FondBot\Drivers\Driver;
-use FondBot\Drivers\Command;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
@@ -185,15 +184,15 @@ class Kernel
     }
 
     /**
-     * Dispatch command to driver.
+     * Dispatch job.
      *
-     * @param Command $command
+     * @param mixed $job
      */
-    public function dispatch(Command $command): void
+    public function dispatch($job): void
     {
         $dispatcher = $this->resolve(Dispatcher::class);
 
-        $dispatcher->dispatch($command);
+        $dispatcher->dispatch($job);
     }
 
     /**

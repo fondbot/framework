@@ -7,7 +7,7 @@ namespace FondBot\Tests\Unit\Drivers\Commands;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
-use FondBot\Drivers\Commands\SendRequest;
+use FondBot\Jobs\SendRequest;
 
 class SendRequestTest extends TestCase
 {
@@ -19,11 +19,5 @@ class SendRequestTest extends TestCase
         $parameters = ['foo' => 'bar'];
 
         $command = new SendRequest($chat, $recipient, $endpoint, $parameters);
-
-        $this->assertSame('SendRequest', $command->getName());
-        $this->assertSame($chat, $command->getChat());
-        $this->assertSame($recipient, $command->getRecipient());
-        $this->assertSame($endpoint, $command->getEndpoint());
-        $this->assertSame($parameters, $command->getParameters());
     }
 }

@@ -6,11 +6,11 @@ namespace FondBot\Conversation\Traits;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
+use FondBot\Jobs\SendMessage;
+use FondBot\Jobs\SendRequest;
 use FondBot\Contracts\Template;
+use FondBot\Jobs\SendAttachment;
 use FondBot\Templates\Attachment;
-use FondBot\Drivers\Commands\SendMessage;
-use FondBot\Drivers\Commands\SendRequest;
-use FondBot\Drivers\Commands\SendAttachment;
 
 trait SendsMessages
 {
@@ -23,9 +23,9 @@ trait SendsMessages
      */
     protected function sendMessage(string $text = null, Template $template = null, int $delay = 0): void
     {
-        $command = new SendMessage($this->getChat(), $this->getUser(), $text, $template);
-
-        kernel()->dispatch($command);
+        kernel()->dispatch(
+            (new SendMessage($this->getChat(), $this->getUser(), $text, $template))->delay($delay)
+        );
     }
 
     /**
@@ -36,9 +36,9 @@ trait SendsMessages
      */
     protected function sendAttachment(Attachment $attachment, int $delay = 0): void
     {
-        $command = new SendAttachment($this->getChat(), $this->getUser(), $attachment);
-
-        kernel()->dispatch($command);
+        kernel()->dispatch(
+            (new SendAttachment($this->getChat(), $this->getUser(), $attachment))->delay($delay)
+        );
     }
 
     /**
@@ -50,9 +50,9 @@ trait SendsMessages
      */
     protected function sendRequest(string $endpoint, array $parameters = [], int $delay = 0): void
     {
-        $command = new SendRequest($this->getChat(), $this->getUser(), $endpoint, $parameters);
-
-        kernel()->dispatch($command);
+        kernel()->dispatch(
+            (new SendRequest($this->getChat(), $this->getUser(), $endpoint, $parameters))->delay($delay)
+        );
     }
 
     /**
