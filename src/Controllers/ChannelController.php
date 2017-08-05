@@ -20,7 +20,7 @@ class ChannelController
     public function webhook($channel, RequestHandler $handler, Request $request)
     {
         if (is_string($channel)) {
-            $channel = $this->manager->create($channel);
+            $channel = $this->manager->get($channel);
         }
 
         return $handler->handle($channel, $request);

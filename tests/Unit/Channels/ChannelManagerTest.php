@@ -21,7 +21,7 @@ class ChannelManagerTest extends TestCase
         $manager = new ChannelManager;
         $manager->register([$name => $parameters]);
 
-        $result = $manager->create($name);
+        $result = $manager->get($name);
 
         $this->assertInstanceOf(Channel::class, $result);
         $this->assertSame($name, $result->getName());
@@ -41,10 +41,10 @@ class ChannelManagerTest extends TestCase
      * @expectedException \FondBot\Channels\Exceptions\ChannelNotFound
      * @expectedExceptionMessage Channel `fake` not found.
      */
-    public function testCreateException(): void
+    public function testGetException(): void
     {
         $manager = new ChannelManager;
 
-        $manager->create('fake');
+        $manager->get('fake');
     }
 }

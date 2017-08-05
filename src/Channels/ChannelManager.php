@@ -32,14 +32,14 @@ class ChannelManager
     }
 
     /**
-     * Create channel.
+     * Get channel by name.
      *
      * @param string $name
      *
      * @return Channel
      * @throws ChannelNotFound
      */
-    public function create(string $name): Channel
+    public function get(string $name): Channel
     {
         if (!array_has($this->channels, $name)) {
             throw new ChannelNotFound('Channel `'.$name.'` not found.');
