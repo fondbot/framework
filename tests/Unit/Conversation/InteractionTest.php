@@ -4,55 +4,46 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation;
 
-use Mockery\Mock;
+use Mockery\MockInterface;
 use FondBot\Tests\TestCase;
-use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Events\MessageReceived;
 use FondBot\Conversation\Interaction;
 
-/**
- * @property mixed|\Mockery\Mock                                  $session
- * @property mixed|Mock      $context
- * @property Interaction|\Mockery\Mock $interaction
- */
 class InteractionTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->session = $this->mock(Session::class);
-        $this->context = $this->mock(Context::class);
-
-        $this->kernel->setSession($this->session);
-        $this->kernel->setContext($this->context);
-
-        $this->interaction = $this->mock(Interaction::class)->makePartial();
-    }
-
     public function testRunCurrentInteractionInSessionAndDoNotRunAnotherInteraction(): void
     {
-        $message = $this->mock(ReceivedMessage::class);
+        $session = $this->mock(Session::class);
+        /** @var Interaction|MockInterface $interaction */
+        $interaction = $this->mock(Interaction::class)->makePartial();
 
-        $this->session->shouldReceive('getInteraction')->andReturn($this->interaction)->once();
-        $this->session->shouldReceive('getMessage')->andReturn($message)->once();
+        $this->setSession($session);
 
-        $this->interaction->shouldReceive('process')->with($message)->once();
+        $message = $this->mock(MessageReceived::class);
 
-        $this->interaction->handle($this->kernel);
+        $session->shouldReceive('getInteraction')->andReturn($interaction)->once();
+
+        $interaction->shouldReceive('process')->with($message)->once();
+
+        $interaction->handle($message);
     }
 
     public function testRunCurrentInteractionNotInSession(): void
     {
-        $message = $this->mock(ReceivedMessage::class);
+        $session = $this->mock(Session::class);
+        /** @var Interaction|MockInterface $interaction */
+        $interaction = $this->mock(Interaction::class)->makePartial();
 
-        $this->session->shouldReceive('getInteraction')->andReturn(null)->once();
-        $this->session->shouldReceive('setInteraction')->with($this->interaction)->once();
-        $this->session->shouldReceive('getMessage')->andReturn($message)->once();
+        $this->setSession($session);
 
-        $this->interaction->shouldReceive('run')->with($message)->once();
+        $message = $this->mock(MessageReceived::class);
 
-        $this->interaction->handle($this->kernel);
+        $session->shouldReceive('getInteraction')->andReturn(null)->once();
+        $session->shouldReceive('setInteraction')->with($interaction)->once();
+
+        $interaction->shouldReceive('run')->with($message)->once();
+
+        $interaction->handle($message);
     }
 }

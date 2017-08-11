@@ -4,33 +4,38 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation\Traits;
 
-use FondBot\Drivers\Chat;
-use FondBot\Drivers\User;
-use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
-use FondBot\Channels\Channel;
-use FondBot\Jobs\SendMessage;
-use FondBot\Jobs\SendRequest;
-use FondBot\Foundation\Kernel;
-use FondBot\Templates\Keyboard;
-use FondBot\Jobs\SendAttachment;
+use FondBot\Contracts\Template;
+use FondBot\Conversation\Session;
 use FondBot\Templates\Attachment;
 use Illuminate\Contracts\Bus\Dispatcher;
+use FondBot\Foundation\Commands\SendMessage;
+use FondBot\Foundation\Commands\SendRequest;
 use Illuminate\Support\Testing\Fakes\BusFake;
 use FondBot\Conversation\Traits\SendsMessages;
+use FondBot\Foundation\Commands\SendAttachment;
 
 class SendsMessagesTest extends TestCase
 {
+    use SendsMessages;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $session = $this->mock(Session::class);
+        $session->shouldReceive('getChat')->atLeast()->once();
+        $session->shouldReceive('getUser')->atLeast()->once();
+
+        $this->setSession($session);
+    }
+
     public function testSendMessage(): void
     {
         /** @var BusFake $dispatcher */
         $dispatcher = $this->container->make(Dispatcher::class);
 
-        $this->kernel->setChannel($this->mock(Channel::class));
-        $this->kernel->setDriver($this->mock(Driver::class));
-
-        $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
-        $class->sendMessage($this->faker()->text, $this->mock(Keyboard::class));
+        $this->sendMessage($this->faker()->text, $this->mock(Template::class));
 
         $dispatcher->assertDispatched(SendMessage::class);
     }
@@ -40,11 +45,7 @@ class SendsMessagesTest extends TestCase
         /** @var BusFake $dispatcher */
         $dispatcher = $this->container->make(Dispatcher::class);
 
-        $this->kernel->setChannel($this->mock(Channel::class));
-        $this->kernel->setDriver($this->mock(Driver::class));
-
-        $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
-        $class->sendMessage($this->faker()->text, $this->mock(Keyboard::class), random_int(1, 10));
+        $this->sendMessage($this->faker()->text, $this->mock(Template::class), random_int(1, 10));
 
         $dispatcher->assertDispatched(SendMessage::class);
     }
@@ -54,11 +55,7 @@ class SendsMessagesTest extends TestCase
         /** @var BusFake $dispatcher */
         $dispatcher = $this->container->make(Dispatcher::class);
 
-        $this->kernel->setChannel($this->mock(Channel::class));
-        $this->kernel->setDriver($this->mock(Driver::class));
-
-        $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
-        $class->sendAttachment($this->mock(Attachment::class));
+        $this->sendAttachment($this->mock(Attachment::class));
 
         $dispatcher->assertDispatched(SendAttachment::class);
     }
@@ -68,11 +65,7 @@ class SendsMessagesTest extends TestCase
         /** @var BusFake $dispatcher */
         $dispatcher = $this->container->make(Dispatcher::class);
 
-        $this->kernel->setChannel($this->mock(Channel::class));
-        $this->kernel->setDriver($this->mock(Driver::class));
-
-        $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
-        $class->sendAttachment($this->mock(Attachment::class), random_int(1, 10));
+        $this->sendAttachment($this->mock(Attachment::class), random_int(1, 10));
 
         $dispatcher->assertDispatched(SendAttachment::class);
     }
@@ -82,53 +75,8 @@ class SendsMessagesTest extends TestCase
         /** @var BusFake $dispatcher */
         $dispatcher = $this->container->make(Dispatcher::class);
 
-        $this->kernel->setChannel($this->mock(Channel::class));
-        $this->kernel->setDriver($this->mock(Driver::class));
-
-        $class = new SendsMessagesTraitTestClass($this->kernel, $this->mock(Chat::class), $this->mock(User::class));
-        $class->sendRequest('endpoint', ['foo' => 'bar']);
+        $this->sendRequest('endpoint', ['foo' => 'bar']);
 
         $dispatcher->assertDispatched(SendRequest::class);
-    }
-}
-
-class SendsMessagesTraitTestClass
-{
-    use SendsMessages;
-
-    protected $kernel;
-    private $chat;
-    private $user;
-
-    public function __construct(Kernel $kernel, Chat $chat, User $user)
-    {
-        $this->kernel = $kernel;
-        $this->chat = $chat;
-        $this->user = $user;
-    }
-
-    public function __call($name, $arguments)
-    {
-        return $this->$name(...$arguments);
-    }
-
-    /**
-     * Get chat.
-     *
-     * @return Chat
-     */
-    protected function getChat(): Chat
-    {
-        return $this->chat;
-    }
-
-    /**
-     * Get user.
-     *
-     * @return User
-     */
-    protected function getUser(): User
-    {
-        return $this->user;
     }
 }

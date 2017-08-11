@@ -11,7 +11,6 @@ use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Session;
-use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 use FondBot\Conversation\SessionManager;
 
@@ -32,7 +31,6 @@ class SessionManagerTest extends TestCase
         $this->channel = $this->mock(Channel::class);
         $this->chat = $this->mock(Chat::class);
         $this->user = $this->mock(User::class);
-        $this->receivedMessage = $this->mock(ReceivedMessage::class);
         $this->driver = $this->mock(Driver::class);
 
         $this->manager = new SessionManager($this->container, $this->cache());
@@ -53,7 +51,7 @@ class SessionManagerTest extends TestCase
 
         $this->channel->shouldReceive('getName')->andReturn('foo')->once();
 
-        $session = $this->manager->load($this->channel, $this->chat, $this->user, $this->receivedMessage);
+        $session = $this->manager->load($this->channel, $this->chat, $this->user);
 
         $this->assertInstanceOf(Session::class, $session);
     }

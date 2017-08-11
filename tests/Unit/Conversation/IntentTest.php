@@ -6,6 +6,7 @@ namespace FondBot\Tests\Unit\Conversation;
 
 use FondBot\Tests\TestCase;
 use FondBot\Conversation\Intent;
+use FondBot\Events\MessageReceived;
 
 class IntentTest extends TestCase
 {
@@ -13,6 +14,7 @@ class IntentTest extends TestCase
     {
         /** @var Intent $intent */
         $intent = $this->mock(Intent::class)->shouldIgnoreMissing();
-        $intent->handle($this->kernel);
+
+        $intent->handle($this->mock(MessageReceived::class));
     }
 }

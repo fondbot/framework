@@ -7,9 +7,9 @@ namespace FondBot\Tests\Unit\Drivers\Commands;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
-use FondBot\Jobs\SendMessage;
 use InvalidArgumentException;
 use FondBot\Contracts\Template;
+use FondBot\Foundation\Commands\SendMessage;
 
 class SendMessageTest extends TestCase
 {

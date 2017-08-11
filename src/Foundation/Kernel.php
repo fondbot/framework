@@ -5,48 +5,55 @@ declare(strict_types=1);
 namespace FondBot\Foundation;
 
 use FondBot\Drivers\Driver;
+use FondBot\Contracts\Event;
+use Illuminate\Http\Request;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
 use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
-use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Container\Container;
 
 class Kernel
 {
     public const VERSION = '2.0';
 
-    /** @var Kernel */
-    private static $instance;
-
     private $container;
-    private $terminable;
 
-    private $driver;
+    /** @var Channel */
     private $channel;
+
+    /** @var Driver */
+    private $driver;
+
+    /** @var Event */
+    private $event;
+
     private $session;
     private $context;
 
-    private function __construct(Container $container, bool $terminable = true)
+    public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->terminable = $terminable;
     }
 
-    public function __destruct()
+    /**
+     * Initialize kernel.
+     *
+     * @param Channel $channel
+     * @param Request $request
+     */
+    public function initialize(Channel $channel, Request $request): void
     {
-        $this->terminate();
-    }
+        // Set channel
+        $this->channel = $channel;
 
-    public static function getInstance(): Kernel
-    {
-        return static::$instance;
-    }
+        // Resolve channel driver and initialize it
+        $this->driver = $this->container->make($channel->getDriver());
+        $this->driver->initialize($channel->getParameters());
 
-    public static function createInstance(Container $container, bool $terminable = true): Kernel
-    {
-        return static::$instance = new static($container, $terminable);
+        // Resolve event from driver
+        $this->event = $this->driver->createEvent($request);
     }
 
     /**
@@ -54,10 +61,6 @@ class Kernel
      */
     public function terminate(): void
     {
-        if (!$this->terminable) {
-            return;
-        }
-
         // Save session if exists
         if ($this->session !== null) {
             $this->sessionManager()->save($this->session);
@@ -80,16 +83,6 @@ class Kernel
     }
 
     /**
-     * Set channel.
-     *
-     * @param Channel $channel
-     */
-    public function setChannel(Channel $channel): void
-    {
-        $this->channel = $channel;
-    }
-
-    /**
      * Get current driver.
      *
      * @return Driver|null
@@ -100,13 +93,13 @@ class Kernel
     }
 
     /**
-     * Set driver.
+     * Get event.
      *
-     * @param Driver $driver
+     * @return Event
      */
-    public function setDriver(Driver $driver): void
+    public function getEvent(): Event
     {
-        $this->driver = $driver;
+        return $this->event;
     }
 
     /**
@@ -172,37 +165,13 @@ class Kernel
     }
 
     /**
-     * Resolve an alias from container.
-     *
-     * @param string $alias
-     *
-     * @return mixed
-     */
-    public function resolve(string $alias)
-    {
-        return $this->container->make($alias);
-    }
-
-    /**
-     * Dispatch job.
-     *
-     * @param mixed $job
-     */
-    public function dispatch($job): void
-    {
-        $dispatcher = $this->resolve(Dispatcher::class);
-
-        $dispatcher->dispatch($job);
-    }
-
-    /**
      * Get session manager.
      *
      * @return SessionManager
      */
     private function sessionManager(): SessionManager
     {
-        return $this->resolve(SessionManager::class);
+        return $this->container->make(SessionManager::class);
     }
 
     /**
@@ -212,6 +181,6 @@ class Kernel
      */
     private function contextManager(): ContextManager
     {
-        return $this->resolve(ContextManager::class);
+        return $this->container->make(ContextManager::class);
     }
 }

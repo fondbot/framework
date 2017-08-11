@@ -2,28 +2,29 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Jobs;
+namespace FondBot\Foundation\Commands;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use Illuminate\Bus\Queueable;
-use FondBot\Templates\Attachment;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendAttachment implements ShouldQueue
+class SendRequest implements ShouldQueue
 {
     use InteractsWithQueue, Queueable;
 
     private $chat;
     private $recipient;
-    private $attachment;
+    private $endpoint;
+    private $parameters;
 
-    public function __construct(Chat $chat, User $recipient, Attachment $attachment)
+    public function __construct(Chat $chat, User $recipient, string $endpoint, array $parameters = [])
     {
         $this->chat = $chat;
         $this->recipient = $recipient;
-        $this->attachment = $attachment;
+        $this->endpoint = $endpoint;
+        $this->parameters = $parameters;
     }
 
     public function handle(): void

@@ -7,7 +7,6 @@ namespace FondBot\Conversation;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Channels\Channel;
-use FondBot\Drivers\ReceivedMessage;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Contracts\Container\Container;
 
@@ -28,11 +27,10 @@ class SessionManager
      * @param Channel         $channel
      * @param Chat            $chat
      * @param User            $user
-     * @param ReceivedMessage $message
      *
      * @return Session
      */
-    public function load(Channel $channel, Chat $chat, User $user, ReceivedMessage $message): Session
+    public function load(Channel $channel, Chat $chat, User $user): Session
     {
         $key = $this->key($channel, $chat, $user);
         $value = $this->cache->get($key);
@@ -40,7 +38,7 @@ class SessionManager
         $intent = $value['intent'] !== null ? $this->container->make($value['intent']) : null;
         $interaction = $value['interaction'] !== null ? $this->container->make($value['interaction']) : null;
 
-        return new Session($channel, $chat, $user, $message, $intent, $interaction);
+        return new Session($channel, $chat, $user, $intent, $interaction);
     }
 
     /**

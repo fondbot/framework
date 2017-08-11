@@ -7,7 +7,7 @@ namespace FondBot\Tests\Unit\Drivers\Commands;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
-use FondBot\Jobs\SendRequest;
+use FondBot\Foundation\Commands\SendRequest;
 
 class SendRequestTest extends TestCase
 {

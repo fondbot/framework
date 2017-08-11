@@ -15,10 +15,8 @@ class InteractsWithContextTest extends TestCase
 {
     use InteractsWithContext;
 
-    protected function setUp(): void
+    public function testContext(): void
     {
-        parent::setUp();
-
         $context = new Context(
             $this->mock(Channel::class),
             $this->mock(Chat::class),
@@ -26,11 +24,8 @@ class InteractsWithContextTest extends TestCase
             ['foo' => 'bar']
         );
 
-        $this->kernel->setContext($context);
-    }
+        $this->setContext($context);
 
-    public function testContext(): void
-    {
         $this->assertSame('bar', $this->context('foo'));
         $this->assertNull($this->context('bar'));
         $this->assertSame('foo', $this->context('bar', 'foo'));
@@ -39,6 +34,15 @@ class InteractsWithContextTest extends TestCase
 
     public function testRemember(): void
     {
+        $context = new Context(
+            $this->mock(Channel::class),
+            $this->mock(Chat::class),
+            $this->mock(User::class),
+            ['foo' => 'bar']
+        );
+
+        $this->setContext($context);
+
         $this->remember('some', 'value');
 
         $this->assertSame('value', $this->context('some'));

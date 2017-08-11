@@ -4,40 +4,37 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation\Traits;
 
+use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
-use FondBot\Foundation\Kernel;
 use FondBot\Conversation\Session;
 use FondBot\Conversation\Traits\InteractsWithSession;
 
 class InteractsWithSessionTest extends TestCase
 {
+    use InteractsWithSession;
+
+    public function testChat(): void
+    {
+        $session = $this->mock(Session::class);
+        $chat = $this->mock(Chat::class);
+
+        $this->setSession($session);
+
+        $session->shouldReceive('getChat')->andReturn($chat)->once();
+
+        $this->assertSame($chat, $this->getChat());
+    }
+
     public function testUser(): void
     {
         $session = $this->mock(Session::class);
         $user = $this->mock(User::class);
 
-        $this->kernel->setSession($session);
+        $this->setSession($session);
+
         $session->shouldReceive('getUser')->andReturn($user)->once();
 
-        $class = new InteractsWithSessionTraitTestClass($this->kernel);
-        $this->assertSame($user, $class->getUser());
-    }
-}
-
-class InteractsWithSessionTraitTestClass
-{
-    use InteractsWithSession;
-
-    protected $kernel;
-
-    public function __construct(Kernel $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
-    public function __call($name, $arguments)
-    {
-        return $this->$name(...$arguments);
+        $this->assertSame($user, $this->getUser());
     }
 }

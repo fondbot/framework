@@ -10,6 +10,8 @@ use Faker\Factory;
 use Faker\Generator;
 use FondBot\Foundation\Kernel;
 use Illuminate\Cache\ArrayStore;
+use FondBot\Conversation\Context;
+use FondBot\Conversation\Session;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -17,15 +19,16 @@ use League\Flysystem\Memory\MemoryAdapter;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Testing\Fakes\BusFake;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 use League\Flysystem\Filesystem as LeagueFilesystem;
 use Illuminate\Contracts\Container\Container as ContainerContract;
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+abstract class TestCase extends BaseTestCase
 {
     /** @var Container */
     protected $container;
 
-    /** @var Kernel */
+    /** @var Mockery\MockInterface */
     protected $kernel;
 
     protected function setUp(): void
@@ -39,13 +42,27 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     private function createApplication(): void
     {
-        $this->container = new Container;
-        $this->kernel = Kernel::createInstance($this->container, false);
+        $this->container = Container::setInstance(new Container);
+        $this->kernel = $this->mock(Kernel::class);
 
         $this->container->instance(Kernel::class, $this->kernel);
         $this->container->instance(ContainerContract::class, $this->container);
 
         $this->container->instance(Dispatcher::class, new BusFake);
+    }
+
+    protected function setSession(Session $session)
+    {
+        $this->kernel->shouldReceive('getSession')->andReturn($session)->atLeast()->once();
+
+        return $this;
+    }
+
+    protected function setContext(Context $context)
+    {
+        $this->kernel->shouldReceive('getContext')->andReturn($context)->atLeast()->once();
+
+        return $this;
     }
 
     protected function cache(): Store
@@ -91,7 +108,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @return mixed|Mockery\Mock
      */
-    protected function mock($class, array $args = null)
+    protected function mock(string $class, array $args = null)
     {
         if ($args !== null) {
             $instance = Mockery::mock($class, $args);

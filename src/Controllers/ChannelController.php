@@ -4,25 +4,35 @@ declare(strict_types=1);
 
 namespace FondBot\Controllers;
 
-use Illuminate\Http\Request;
-use FondBot\Channels\ChannelManager;
-use FondBot\Foundation\RequestHandler;
+use FondBot\Foundation\Kernel;
+use Illuminate\Contracts\Events\Dispatcher;
+use FondBot\Drivers\Extensions\WebhookVerification;
 
 class ChannelController
 {
-    private $manager;
+    private $kernel;
+    private $events;
 
-    public function __construct(ChannelManager $manager)
+    public function __construct(Kernel $kernel, Dispatcher $events)
     {
-        $this->manager = $manager;
+        $this->kernel = $kernel;
+        $this->events = $events;
     }
 
-    public function webhook($channel, RequestHandler $handler, Request $request)
+    public function webhook()
     {
-        if (is_string($channel)) {
-            $channel = $this->manager->get($channel);
+        $driver = $this->kernel->getDriver();
+
+        // If driver supports webhook verification
+        // We need to check if current request belongs to verification process
+        if ($driver instanceof WebhookVerification && $driver->isVerificationRequest()) {
+            return $driver->verifyWebhook();
         }
 
-        return $handler->handle($channel, $request);
+        $event = $this->kernel->getEvent();
+
+        $this->events->dispatch($event);
+
+        return $event;
     }
 }

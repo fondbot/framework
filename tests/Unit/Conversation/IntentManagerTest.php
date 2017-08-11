@@ -6,7 +6,7 @@ namespace FondBot\Tests\Unit\Conversation;
 
 use FondBot\Tests\TestCase;
 use FondBot\Conversation\Intent;
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Events\MessageReceived;
 use FondBot\Conversation\IntentManager;
 use FondBot\Conversation\FallbackIntent;
 use FondBot\Conversation\Activators\Activator;
@@ -31,7 +31,7 @@ class IntentManagerTest extends TestCase
         $intent->shouldReceive('activators')->andReturn([$activator = $this->mock(Activator::class)])->once();
         $activator->shouldReceive('matches')->andReturn(false)->once();
 
-        $message = $this->mock(ReceivedMessage::class);
+        $message = $this->mock(MessageReceived::class);
 
         $result = $this->manager->find($message);
         $this->assertInstanceOf(FallbackIntent::class, $result);
@@ -45,7 +45,7 @@ class IntentManagerTest extends TestCase
         $intent->shouldReceive('passesAuthorization')->andReturn(true)->once();
         $activator->shouldReceive('matches')->andReturn(true)->once();
 
-        $message = $this->mock(ReceivedMessage::class);
+        $message = $this->mock(MessageReceived::class);
         $message->shouldReceive('getText')->andReturn('/example');
 
         $result = $this->manager->find($message);
@@ -61,7 +61,7 @@ class IntentManagerTest extends TestCase
         $intent->shouldReceive('passesAuthorization')->andReturn(false)->once();
         $activator->shouldReceive('matches')->andReturn(true)->once();
 
-        $message = $this->mock(ReceivedMessage::class);
+        $message = $this->mock(MessageReceived::class);
         $message->shouldReceive('getText')->andReturn('/example');
 
         $result = $this->manager->find($message);

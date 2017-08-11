@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Activators;
 
 use Illuminate\Support\Collection;
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Events\MessageReceived;
 
 class InArray implements Activator
 {
@@ -27,11 +27,11 @@ class InArray implements Activator
     /**
      * Result of matching activator.
      *
-     * @param ReceivedMessage $message
+     * @param MessageReceived $message
      *
      * @return bool
      */
-    public function matches(ReceivedMessage $message): bool
+    public function matches(MessageReceived $message): bool
     {
         $haystack = $this->values;
 

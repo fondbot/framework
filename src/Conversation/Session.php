@@ -7,7 +7,7 @@ namespace FondBot\Conversation;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Channels\Channel;
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Contracts\Conversable;
 use Illuminate\Contracts\Support\Arrayable;
 
 class Session implements Arrayable
@@ -15,7 +15,6 @@ class Session implements Arrayable
     private $channel;
     private $chat;
     private $user;
-    private $message;
     private $intent;
     private $interaction;
 
@@ -23,14 +22,12 @@ class Session implements Arrayable
         Channel $channel,
         Chat $chat,
         User $user,
-        ReceivedMessage $message,
         Intent $intent = null,
         Interaction $interaction = null
     ) {
         $this->channel = $channel;
         $this->chat = $chat;
         $this->user = $user;
-        $this->message = $message;
         $this->intent = $intent;
         $this->interaction = $interaction;
     }
@@ -63,16 +60,6 @@ class Session implements Arrayable
     public function getUser(): User
     {
         return $this->user;
-    }
-
-    /**
-     * Get message received from user.
-     *
-     * @return ReceivedMessage
-     */
-    public function getMessage(): ReceivedMessage
-    {
-        return $this->message;
     }
 
     /**

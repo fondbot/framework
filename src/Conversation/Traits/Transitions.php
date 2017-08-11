@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Traits;
 
 use InvalidArgumentException;
+use Illuminate\Container\Container;
 use FondBot\Conversation\Interaction;
-use FondBot\Conversation\ConversationManager;
 
 trait Transitions
 {
@@ -20,13 +20,13 @@ trait Transitions
     protected function jump(string $interaction): void
     {
         /** @var Interaction $instance */
-        $instance = kernel()->resolve($interaction);
+        $instance = Container::getInstance()->make($interaction);
 
         if (!$instance instanceof Interaction) {
             throw new InvalidArgumentException('Invalid interaction `'.$interaction.'`');
         }
 
-        $this->conversationManager()->transition($instance);
+        // TODO
     }
 
     /**
@@ -34,11 +34,6 @@ trait Transitions
      */
     protected function restart(): void
     {
-        $this->conversationManager()->restart($this);
-    }
-
-    private function conversationManager(): ConversationManager
-    {
-        return kernel()->resolve(ConversationManager::class);
+        // TODO
     }
 }

@@ -6,41 +6,27 @@ namespace FondBot\Tests\Unit\Conversation\Activators;
 
 use FondBot\Tests\TestCase;
 use FondBot\Templates\Attachment;
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Events\MessageReceived;
 use FondBot\Conversation\Activators\WithAttachment;
 
-/**
- * @property mixed|\Mockery\Mock message
- */
 class WithAttachmentTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->message = $this->mock(ReceivedMessage::class);
-    }
-
     public function testMatchesWithoutType(): void
     {
+        $message = new MessageReceived('/start', null, new Attachment());
+
         $activator = new WithAttachment;
 
-        $this->message->shouldReceive('hasAttachment')->andReturn(true)->atLeast()->once();
-
-        $this->assertTrue(
-            $activator->matches($this->message)
-        );
+        $this->assertTrue($activator->matches($message));
     }
 
     public function testDoesNotMatchWithoutType(): void
     {
+        $message = new MessageReceived('/start', null, null);
+
         $activator = new WithAttachment;
 
-        $this->message->shouldReceive('hasAttachment')->andReturn(false)->atLeast()->once();
-
-        $this->assertFalse(
-            $activator->matches($this->message)
-        );
+        $this->assertFalse($activator->matches($message));
     }
 
     /**
@@ -53,12 +39,9 @@ class WithAttachmentTest extends TestCase
         $activator = new WithAttachment($type);
         $attachment = (new Attachment)->setType($type);
 
-        $this->message->shouldReceive('hasAttachment')->andReturn(true)->atLeast()->once();
-        $this->message->shouldReceive('getAttachment')->andReturn($attachment)->atLeast()->once();
+        $message = new MessageReceived('/start', null, $attachment);
 
-        $this->assertTrue(
-            $activator->matches($this->message)
-        );
+        $this->assertTrue($activator->matches($message));
     }
 
     /**
@@ -77,12 +60,9 @@ class WithAttachmentTest extends TestCase
 
         $attachment = (new Attachment)->setType($otherType);
 
-        $this->message->shouldReceive('hasAttachment')->andReturn(true)->atLeast()->once();
-        $this->message->shouldReceive('getAttachment')->andReturn($attachment)->atLeast()->once();
+        $message = new MessageReceived('/start', null, $attachment);
 
-        $this->assertFalse(
-            $activator->matches($this->message)
-        );
+        $this->assertFalse($activator->matches($message));
     }
 
     public function types(): array

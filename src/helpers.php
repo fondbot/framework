@@ -6,19 +6,11 @@ if (!function_exists('kernel')) {
     /**
      * Get kernel instance.
      *
-     * @param string|null $resolve
-     *
-     * @return FondBot\Foundation\Kernel|mixed
+     * @return FondBot\Foundation\Kernel
      */
-    function kernel(string $resolve = null)
+    function kernel()
     {
-        $instance = FondBot\Foundation\Kernel::getInstance();
-
-        if ($resolve !== null) {
-            return $instance->resolve($resolve);
-        }
-
-        return $instance;
+        return Illuminate\Container\Container::getInstance()->get(FondBot\Foundation\Kernel::class);
     }
 }
 

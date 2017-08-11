@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Events\MessageReceived;
 use FondBot\Conversation\Activators\Activator;
 
 class FallbackIntent extends Intent
@@ -19,7 +19,7 @@ class FallbackIntent extends Intent
         return [];
     }
 
-    public function run(ReceivedMessage $message): void
+    public function run(MessageReceived $message): void
     {
         $text = collect([
             'Sorry, I could not understand you.',

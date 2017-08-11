@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Activators;
 
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Events\MessageReceived;
 
 class WithAttachment implements Activator
 {
@@ -18,16 +18,16 @@ class WithAttachment implements Activator
     /**
      * Result of matching activator.
      *
-     * @param ReceivedMessage $message
+     * @param MessageReceived $message
      *
      * @return bool
      */
-    public function matches(ReceivedMessage $message): bool
+    public function matches(MessageReceived $message): bool
     {
         if ($this->type === null) {
-            return $message->hasAttachment();
+            return $message->getAttachment() !== null;
         }
 
-        return $message->hasAttachment() && hash_equals($message->getAttachment()->getType(), $this->type);
+        return hash_equals($message->getAttachment()->getType(), $this->type);
     }
 }

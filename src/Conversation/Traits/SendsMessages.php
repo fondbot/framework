@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Drivers\Chat;
-use FondBot\Drivers\User;
-use FondBot\Jobs\SendMessage;
-use FondBot\Jobs\SendRequest;
 use FondBot\Contracts\Template;
-use FondBot\Jobs\SendAttachment;
 use FondBot\Templates\Attachment;
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Bus\Dispatcher;
+use FondBot\Foundation\Commands\SendMessage;
+use FondBot\Foundation\Commands\SendRequest;
+use FondBot\Foundation\Commands\SendAttachment;
 
 trait SendsMessages
 {
@@ -23,8 +23,11 @@ trait SendsMessages
      */
     protected function sendMessage(string $text = null, Template $template = null, int $delay = 0): void
     {
-        kernel()->dispatch(
-            (new SendMessage($this->getChat(), $this->getUser(), $text, $template))->delay($delay)
+        /** @var Dispatcher $dispatcher */
+        $dispatcher = Container::getInstance()->make(Dispatcher::class);
+
+        $dispatcher->dispatch(
+            (new SendMessage(session()->getChat(), session()->getUser(), $text, $template))->delay($delay)
         );
     }
 
@@ -36,8 +39,11 @@ trait SendsMessages
      */
     protected function sendAttachment(Attachment $attachment, int $delay = 0): void
     {
-        kernel()->dispatch(
-            (new SendAttachment($this->getChat(), $this->getUser(), $attachment))->delay($delay)
+        /** @var Dispatcher $dispatcher */
+        $dispatcher = Container::getInstance()->make(Dispatcher::class);
+
+        $dispatcher->dispatch(
+            (new SendAttachment(session()->getChat(), session()->getUser(), $attachment))->delay($delay)
         );
     }
 
@@ -50,22 +56,11 @@ trait SendsMessages
      */
     protected function sendRequest(string $endpoint, array $parameters = [], int $delay = 0): void
     {
-        kernel()->dispatch(
-            (new SendRequest($this->getChat(), $this->getUser(), $endpoint, $parameters))->delay($delay)
+        /** @var Dispatcher $dispatcher */
+        $dispatcher = Container::getInstance()->make(Dispatcher::class);
+
+        $dispatcher->dispatch(
+            (new SendRequest(session()->getChat(), session()->getUser(), $endpoint, $parameters))->delay($delay)
         );
     }
-
-    /**
-     * Get chat.
-     *
-     * @return Chat
-     */
-    abstract protected function getChat(): Chat;
-
-    /**
-     * Get user.
-     *
-     * @return User
-     */
-    abstract protected function getUser(): User;
 }

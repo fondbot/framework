@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Jobs;
+namespace FondBot\Foundation\Commands;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;

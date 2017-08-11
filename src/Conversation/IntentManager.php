@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Events\MessageReceived;
 
 class IntentManager
 {
@@ -27,11 +27,11 @@ class IntentManager
     /**
      * Find intent.
      *
-     * @param ReceivedMessage $message
+     * @param MessageReceived $message
      *
      * @return Intent|null
      */
-    public function find(ReceivedMessage $message): ?Intent
+    public function find(MessageReceived $message): ?Intent
     {
         foreach ($this->intents as $intent) {
             foreach ($intent->activators() as $activator) {

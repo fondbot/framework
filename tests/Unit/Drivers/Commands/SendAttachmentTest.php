@@ -7,8 +7,8 @@ namespace FondBot\Tests\Unit\Drivers\Commands;
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
 use FondBot\Tests\TestCase;
-use FondBot\Jobs\SendAttachment;
 use FondBot\Templates\Attachment;
+use FondBot\Foundation\Commands\SendAttachment;
 
 class SendAttachmentTest extends TestCase
 {

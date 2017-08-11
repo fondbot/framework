@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Conversation\Activators;
 
 use FondBot\Tests\TestCase;
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Events\MessageReceived;
 use FondBot\Conversation\Activators\WithPayload;
 
 class WithPayloadTest extends TestCase
 {
     public function testMatches(): void
     {
-        $message = $this->mock(ReceivedMessage::class);
-        $message->shouldReceive('hasData')->andReturn(true)->once();
-        $message->shouldReceive('getData')->andReturn('foo')->once();
+        $message = new MessageReceived('/start', null, null, 'foo');
 
         $activator = new WithPayload('foo');
 
@@ -23,9 +21,7 @@ class WithPayloadTest extends TestCase
 
     public function testDoesNotMatch(): void
     {
-        $message = $this->mock(ReceivedMessage::class);
-        $message->shouldReceive('hasData')->andReturn(true)->once();
-        $message->shouldReceive('getData')->andReturn('foo')->once();
+        $message = new MessageReceived('/start', null, null, 'foo');
 
         $activator = new WithPayload('bar');
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Conversation\Traits;
 
 use FondBot\Tests\TestCase;
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Events\MessageReceived;
 use FondBot\Conversation\Traits\Authorization;
 
 class AuthorizationTest extends TestCase
@@ -14,14 +14,14 @@ class AuthorizationTest extends TestCase
     {
         $class = new AuthorizationTraitTestClassWithMethod();
 
-        $this->assertFalse($class->passesAuthorization($this->mock(ReceivedMessage::class)));
+        $this->assertFalse($class->passesAuthorization($this->mock(MessageReceived::class)));
     }
 
     public function testWithoutMethod()
     {
         $class = new AuthorizationTraitTestClassWithoutMethod();
 
-        $this->assertTrue($class->passesAuthorization($this->mock(ReceivedMessage::class)));
+        $this->assertTrue($class->passesAuthorization($this->mock(MessageReceived::class)));
     }
 }
 
@@ -32,11 +32,11 @@ class AuthorizationTraitTestClassWithMethod
     /**
      * Determine if passes the authorization check.
      *
-     * @param \FondBot\Drivers\ReceivedMessage $message
+     * @param MessageReceived $message
      *
      * @return bool
      */
-    public function authorize(ReceivedMessage $message): bool
+    public function authorize(MessageReceived $message): bool
     {
         return false;
     }

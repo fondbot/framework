@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Contracts\Conversable;
+use FondBot\Events\MessageReceived;
 use FondBot\Conversation\Traits\Transitions;
 use FondBot\Conversation\Traits\SendsMessages;
 use FondBot\Conversation\Traits\InteractsWithContext;
@@ -20,29 +21,31 @@ abstract class Interaction implements Conversable
     /**
      * Run interaction.
      *
-     * @param ReceivedMessage $message
+     * @param MessageReceived $message
      */
-    abstract public function run(ReceivedMessage $message): void;
+    abstract public function run(MessageReceived $message): void;
 
     /**
      * Process received message.
      *
-     * @param ReceivedMessage $reply
+     * @param MessageReceived $reply
      */
-    abstract public function process(ReceivedMessage $reply): void;
+    abstract public function process(MessageReceived $reply): void;
 
     /**
      * Handle interaction.
+     *
+     * @param MessageReceived $message
      */
-    public function handle(): void
+    public function handle(MessageReceived $message): void
     {
-        $session = kernel()->getSession();
+        $session = session();
 
         if ($session->getInteraction() instanceof $this) {
-            $this->process($session->getMessage());
+            $this->process($message);
         } else {
-            kernel()->getSession()->setInteraction($this);
-            $this->run($session->getMessage());
+            session()->setInteraction($this);
+            $this->run($message);
         }
     }
 }

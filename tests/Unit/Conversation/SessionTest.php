@@ -10,14 +10,12 @@ use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Session;
-use FondBot\Drivers\ReceivedMessage;
 use FondBot\Conversation\Interaction;
 
 /**
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $channel
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $chat
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $sender
- * @property mixed|\Mockery\Mock|\Mockery\MockInterface $message
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $intent
  * @property mixed|\Mockery\Mock|\Mockery\MockInterface $interaction
  * @property Session                                    $session
@@ -31,7 +29,6 @@ class SessionTest extends TestCase
         $this->channel = $this->mock(Channel::class);
         $this->chat = $this->mock(Chat::class);
         $this->sender = $this->mock(User::class);
-        $this->message = $this->mock(ReceivedMessage::class);
         $this->intent = $this->mock(Intent::class);
         $this->interaction = $this->mock(Interaction::class);
 
@@ -39,7 +36,6 @@ class SessionTest extends TestCase
             $this->channel,
             $this->chat,
             $this->sender,
-            $this->message,
             $this->intent,
             $this->interaction
         );
@@ -58,11 +54,6 @@ class SessionTest extends TestCase
     public function testGetSender(): void
     {
         $this->assertSame($this->sender, $this->session->getUser());
-    }
-
-    public function testGetMessage(): void
-    {
-        $this->assertSame($this->message, $this->session->getMessage());
     }
 
     public function testIntent(): void
