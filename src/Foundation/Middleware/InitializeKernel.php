@@ -25,7 +25,7 @@ class InitializeKernel
     {
         $channel = $this->resolveChannel($request->route('channel'));
 
-        $this->kernel->initialize($channel, $request);
+        $this->kernel->initialize($channel);
 
         return $next($request);
     }

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace FondBot\Foundation;
 
 use FondBot\Drivers\Driver;
-use FondBot\Contracts\Event;
-use Illuminate\Http\Request;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
@@ -26,9 +24,6 @@ class Kernel
     /** @var Driver */
     private $driver;
 
-    /** @var Event */
-    private $event;
-
     private $session;
     private $context;
 
@@ -41,9 +36,8 @@ class Kernel
      * Initialize kernel.
      *
      * @param Channel $channel
-     * @param Request $request
      */
-    public function initialize(Channel $channel, Request $request): void
+    public function initialize(Channel $channel): void
     {
         // Set channel
         $this->channel = $channel;
@@ -51,9 +45,6 @@ class Kernel
         // Resolve channel driver and initialize it
         $this->driver = $this->container->make($channel->getDriver());
         $this->driver->initialize($channel->getParameters());
-
-        // Resolve event from driver
-        $this->event = $this->driver->createEvent($request);
     }
 
     /**
@@ -90,16 +81,6 @@ class Kernel
     public function getDriver(): ?Driver
     {
         return $this->driver;
-    }
-
-    /**
-     * Get event.
-     *
-     * @return Event
-     */
-    public function getEvent(): Event
-    {
-        return $this->event;
     }
 
     /**
