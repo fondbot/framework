@@ -8,6 +8,7 @@ use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
+use FondBot\Drivers\DriverManager;
 use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
 use Illuminate\Contracts\Container\Container;
@@ -43,7 +44,7 @@ class Kernel
         $this->channel = $channel;
 
         // Resolve channel driver and initialize it
-        $this->driver = $this->container->make($channel->getDriver());
+        $this->driver = $this->driverManager()->driver($channel->getDriver());
         $this->driver->initialize($channel->getParameters());
     }
 
@@ -163,5 +164,15 @@ class Kernel
     private function contextManager(): ContextManager
     {
         return $this->container->make(ContextManager::class);
+    }
+
+    /**
+     * Get driver manager.
+     *
+     * @return DriverManager
+     */
+    private function driverManager(): DriverManager
+    {
+        return $this->container->make(DriverManager::class);
     }
 }
