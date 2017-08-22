@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace FondBot\Foundation;
 
-use FondBot\Drivers\Driver;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
 use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
+use Illuminate\Contracts\Bus\Dispatcher;
+use FondBot\Foundation\Commands\SaveContext;
+use FondBot\Foundation\Commands\SaveSession;
 use Illuminate\Contracts\Container\Container;
 
 class Kernel
@@ -17,19 +19,21 @@ class Kernel
     public const VERSION = '2.0';
 
     private $container;
+    private $bus;
 
     /** @var Channel */
     private $channel;
 
-    /** @var Driver */
-    private $driver;
-
+    /** @var Session|null */
     private $session;
+
+    /** @var Context|null */
     private $context;
 
-    public function __construct(Container $container)
+    public function __construct(Container $container, Dispatcher $bus)
     {
         $this->container = $container;
+        $this->bus = $bus;
     }
 
     /**
@@ -39,7 +43,6 @@ class Kernel
      */
     public function initialize(Channel $channel): void
     {
-        // Set channel
         $this->channel = $channel;
     }
 
@@ -50,12 +53,12 @@ class Kernel
     {
         // Save session if exists
         if ($this->session !== null) {
-            $this->sessionManager()->save($this->session);
+            $this->bus->dispatch(new SaveSession($this->session));
         }
 
         // Save context if exists
         if ($this->context !== null) {
-            $this->contextManager()->save($this->context);
+            $this->bus->dispatch(new SaveContext($this->context));
         }
     }
 
@@ -67,16 +70,6 @@ class Kernel
     public function getChannel(): ?Channel
     {
         return $this->channel;
-    }
-
-    /**
-     * Get current driver.
-     *
-     * @return Driver|null
-     */
-    public function getDriver(): ?Driver
-    {
-        return $this->driver;
     }
 
     /**

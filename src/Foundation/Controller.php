@@ -18,7 +18,7 @@ class Controller
 
     public function webhook(Kernel $kernel, Dispatcher $events, Request $request): Event
     {
-        $driver = $kernel->getDriver();
+        $driver = $kernel->getChannel()->getDriver();
 
         // If driver supports webhook verification
         // We need to check if current request belongs to verification process
