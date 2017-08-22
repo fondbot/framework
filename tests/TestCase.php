@@ -25,7 +25,7 @@ use Illuminate\Contracts\Container\Container as ContainerContract;
 
 abstract class TestCase extends BaseTestCase
 {
-    /** @var Container */
+    /** @var Container|mixed */
     protected $container;
 
     /** @var Mockery\MockInterface */

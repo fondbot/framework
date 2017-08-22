@@ -29,16 +29,16 @@ abstract class Driver implements DriverContract
     /**
      * Initialize driver.
      *
-     * @param array $parameters
+     * @param Collection $parameters
      *
      * @return Driver|DriverContract|static
      */
-    public function initialize(array $parameters): DriverContract
+    public function initialize(Collection $parameters): DriverContract
     {
         foreach ($this->getDefaultParameters() as $key => $value) {
-            $value = array_get($parameters, $key, $value);
+            $value = $parameters->get($key, $value);
 
-            array_set($parameters, $key, $value);
+            $parameters->put($key, $value);
         }
 
         $this->parameters = collect($parameters);

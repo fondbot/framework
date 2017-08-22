@@ -6,6 +6,7 @@ namespace FondBot\Tests\Unit\Channels;
 
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
+use FondBot\Tests\Mocks\FakeDriver;
 use FondBot\Channels\ChannelManager;
 
 class ChannelManagerTest extends TestCase
@@ -17,21 +18,24 @@ class ChannelManagerTest extends TestCase
             'driver' => 'fake',
             'token' => $this->faker()->sha1,
         ];
+        $driver = new FakeDriver;
 
-        $manager = new ChannelManager;
+        $manager = new ChannelManager($this->container);
+        $manager->extend('fake', function () use (&$driver) {
+            return $driver;
+        });
         $manager->register([$name => $parameters]);
 
         $result = $manager->get($name);
 
         $this->assertInstanceOf(Channel::class, $result);
         $this->assertSame($name, $result->getName());
-        $this->assertSame(collect($parameters)->except('driver')->toArray(), $result->getParameters());
-        $this->assertSame($parameters['token'], $result->getParameter('token'));
+        $this->assertSame($driver, $result->getDriver());
     }
 
     public function testAll(): void
     {
-        $manager = new ChannelManager;
+        $manager = new ChannelManager($this->container);
         $manager->register(['foo' => ['foo' => 'bar']]);
 
         $this->assertSame(['foo' => ['foo' => 'bar']], $manager->all());
@@ -43,8 +47,15 @@ class ChannelManagerTest extends TestCase
      */
     public function testGetException(): void
     {
-        $manager = new ChannelManager;
+        $manager = new ChannelManager($this->container);
 
         $manager->get('fake');
+    }
+
+    public function testNoDefaultDriver(): void
+    {
+        $manager = new ChannelManager($this->container);
+
+        $this->assertNull($manager->getDefaultDriver());
     }
 }

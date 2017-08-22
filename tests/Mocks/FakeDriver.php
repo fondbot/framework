@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Contracts;
+namespace FondBot\Tests\Mocks;
 
 use FondBot\Drivers\Chat;
 use FondBot\Drivers\User;
+use FondBot\Drivers\Driver;
+use FondBot\Contracts\Event;
 use Illuminate\Http\Request;
+use FondBot\Contracts\Template;
 use FondBot\Templates\Attachment;
-use Illuminate\Support\Collection;
 
-interface Driver
+class FakeDriver extends Driver
 {
     /**
      * Get gateway display name.
@@ -19,16 +21,10 @@ interface Driver
      *
      * @return string
      */
-    public function getName(): string;
-
-    /**
-     * Get driver short name.
-     *
-     * This name is used as an alias for configuration.
-     *
-     * @return string
-     */
-    public function getShortName(): string;
+    public function getName(): string
+    {
+        return 'fake';
+    }
 
     /**
      * Define driver default parameters.
@@ -37,23 +33,10 @@ interface Driver
      *
      * @return array
      */
-    public function getDefaultParameters(): array;
-
-    /**
-     * Initialize driver.
-     *
-     * @param Collection $parameters
-     *
-     * @return Driver|static
-     */
-    public function initialize(Collection $parameters): Driver;
-
-    /**
-     * Get driver parameters.
-     *
-     * @return Collection
-     */
-    public function getParameters(): Collection;
+    public function getDefaultParameters(): array
+    {
+        return ['token' => str_random()];
+    }
 
     /**
      * Create event based on incoming request.
@@ -62,7 +45,10 @@ interface Driver
      *
      * @return Event
      */
-    public function createEvent(Request $request): Event;
+    public function createEvent(Request $request): Event
+    {
+        // TODO: Implement createEvent() method.
+    }
 
     /**
      * Send message.
@@ -72,7 +58,10 @@ interface Driver
      * @param string        $text
      * @param Template|null $template
      */
-    public function sendMessage(Chat $chat, User $recipient, string $text, Template $template = null): void;
+    public function sendMessage(Chat $chat, User $recipient, string $text, Template $template = null): void
+    {
+        // TODO: Implement sendMessage() method.
+    }
 
     /**
      * Send attachment.
@@ -81,7 +70,10 @@ interface Driver
      * @param User       $recipient
      * @param Attachment $attachment
      */
-    public function sendAttachment(Chat $chat, User $recipient, Attachment $attachment): void;
+    public function sendAttachment(Chat $chat, User $recipient, Attachment $attachment): void
+    {
+        // TODO: Implement sendAttachment() method.
+    }
 
     /**
      * Send low-level request.
@@ -91,5 +83,8 @@ interface Driver
      * @param string $endpoint
      * @param array  $parameters
      */
-    public function sendRequest(Chat $chat, User $recipient, string $endpoint, array $parameters = []): void;
+    public function sendRequest(Chat $chat, User $recipient, string $endpoint, array $parameters = []): void
+    {
+        // TODO: Implement sendRequest() method.
+    }
 }

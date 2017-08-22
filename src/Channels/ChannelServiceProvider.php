@@ -24,7 +24,7 @@ class ChannelServiceProvider extends ServiceProvider
                 })
                 ->toArray();
 
-            $manager = new ChannelManager;
+            $manager = new ChannelManager($this->app);
             $manager->register($channels);
 
             return $manager;

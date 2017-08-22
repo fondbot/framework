@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
+use FondBot\Drivers\Driver;
+
 class Channel
 {
     private $name;
     private $driver;
-    private $parameters;
 
-    public function __construct(string $name, string $driver, array $parameters)
+    public function __construct(string $name, Driver $driver)
     {
         $this->name = $name;
         $this->driver = $driver;
-        $this->parameters = $parameters;
     }
 
     /**
@@ -28,35 +28,12 @@ class Channel
     }
 
     /**
-     * Get driver name.
+     * Get driver.
      *
-     * @return string
+     * @return Driver
      */
-    public function getDriver(): string
+    public function getDriver(): Driver
     {
         return $this->driver;
-    }
-
-    /**
-     * Channel parameters.
-     *
-     * @return array
-     */
-    public function getParameters(): array
-    {
-        return $this->parameters;
-    }
-
-    /**
-     * Get single parameter value.
-     *
-     * @param string $name
-     * @param null   $default
-     *
-     * @return mixed
-     */
-    public function getParameter(string $name, $default = null)
-    {
-        return array_get($this->parameters, $name, $default);
     }
 }

@@ -4,9 +4,16 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
+use FondBot\Drivers\Driver;
+use Illuminate\Support\Manager;
 use FondBot\Channels\Exceptions\ChannelNotFound;
 
-class ChannelManager
+/**
+ * Class ChannelManager.
+ *
+ * @method Driver createDriver($driver)
+ */
+class ChannelManager extends Manager
 {
     /** @var array */
     private $channels = [];
@@ -45,11 +52,22 @@ class ChannelManager
             throw new ChannelNotFound('Channel `'.$name.'` not found.');
         }
 
-        $data = collect($this->channels[$name]);
+        $parameters = $this->channels[$name];
 
-        $driver = $data->get('driver');
-        $parameters = $data->except('driver')->toArray();
+        // Create driver and initialize it with channel parameters
+        $driver = $this->createDriver($parameters['driver']);
+        $driver->initialize(collect($parameters)->except('driver'));
 
-        return new Channel($name, $driver, $parameters);
+        return new Channel($name, $driver);
+    }
+
+    /**
+     * Get the default driver name.
+     *
+     * @return string
+     */
+    public function getDefaultDriver()
+    {
+        return null;
     }
 }
