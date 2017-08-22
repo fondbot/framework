@@ -14,12 +14,14 @@ class UserTest extends TestCase
         $user = new User(
             $id = $this->faker()->uuid,
             $name = $this->faker()->name,
-            $username = $this->faker()->userName
+            $username = $this->faker()->userName,
+            $data = ['foo' => 'bar']
         );
 
         $this->assertSame($id, $user->getId());
         $this->assertSame($name, $user->getName());
         $this->assertSame($username, $user->getUsername());
+        $this->assertSame($data, $user->getData());
     }
 
     public function testAcceptsNullsForNameAndUsername()
