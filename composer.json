@@ -27,7 +27,8 @@
     "illuminate/http": "5.5.*",
     "illuminate/queue": "5.5.*",
     "illuminate/support": "5.5.*",
-    "spatie/regex": "^1.1"
+    "spatie/regex": "^1.1",
+    "symfony/serializer": "^3.3"
   },
   "require-dev": {
     "fzaninotto/faker": "^1.6",
