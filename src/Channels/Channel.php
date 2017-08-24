@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use FondBot\Drivers\Driver;
-
 class Channel
 {
     private $name;

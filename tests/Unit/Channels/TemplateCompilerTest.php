@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Drivers;
+namespace FondBot\Tests\Unit\Channels;
 
 use Mockery;
 use Mockery\Mock;
@@ -10,7 +10,7 @@ use RuntimeException;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Template;
 use FondBot\Templates\Keyboard;
-use FondBot\Drivers\TemplateCompiler;
+use FondBot\Channels\TemplateCompiler;
 use Illuminate\Contracts\Support\Arrayable;
 use FondBot\Templates\Keyboard\PayloadButton;
 

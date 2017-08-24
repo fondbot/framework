@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Mocks;
 
-use FondBot\Drivers\Chat;
-use FondBot\Drivers\User;
-use FondBot\Drivers\Driver;
+use FondBot\Channels\Chat;
+use FondBot\Channels\User;
+use FondBot\Channels\Driver;
 use FondBot\Contracts\Event;
 use Illuminate\Http\Request;
 use FondBot\Contracts\Template;

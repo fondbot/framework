@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Foundation\Commands;
 
-use FondBot\Drivers\Chat;
-use FondBot\Drivers\User;
+use FondBot\Channels\Chat;
+use FondBot\Channels\User;
 use Illuminate\Bus\Queueable;
 use InvalidArgumentException;
 use FondBot\Contracts\Template;

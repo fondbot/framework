@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Drivers;
+namespace FondBot\Channels;
 
 use Illuminate\Support\Collection;
 use FondBot\Contracts\Driver as DriverContract;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Drivers;
+namespace FondBot\Tests\Unit\Channels;
 
 use Mockery\Mock;
 use GuzzleHttp\Client;
-use FondBot\Drivers\Driver;
 use FondBot\Tests\TestCase;
+use FondBot\Channels\Driver;
 use GuzzleHttp\HandlerStack;
 use Illuminate\Http\Request;
 use FondBot\Channels\Channel;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Drivers\Extensions;
+namespace FondBot\Channels\Extensions;
 
 /**
  * Driver required webhook verification.

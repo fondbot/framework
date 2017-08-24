@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts;
 
-use FondBot\Drivers\Chat;
-use FondBot\Drivers\User;
+use FondBot\Channels\Chat;
+use FondBot\Channels\User;
 use Illuminate\Http\Request;
 use FondBot\Templates\Attachment;
 use Illuminate\Support\Collection;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Drivers\Exceptions;
+namespace FondBot\Channels\Exceptions;
 
 use Exception;
 

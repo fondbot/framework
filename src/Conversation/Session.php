@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use FondBot\Drivers\Chat;
-use FondBot\Drivers\User;
+use FondBot\Channels\Chat;
+use FondBot\Channels\User;
 use FondBot\Channels\Channel;
 use FondBot\Contracts\Conversable;
 use Illuminate\Contracts\Support\Arrayable;

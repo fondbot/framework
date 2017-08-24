@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Drivers;
+namespace FondBot\Tests\Unit\Channels;
 
-use FondBot\Drivers\User;
+use FondBot\Channels\User;
 use FondBot\Tests\TestCase;
 
 class UserTest extends TestCase

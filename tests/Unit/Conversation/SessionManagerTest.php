@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation;
 
-use FondBot\Drivers\Chat;
-use FondBot\Drivers\User;
-use FondBot\Drivers\Driver;
+use FondBot\Channels\Chat;
+use FondBot\Channels\User;
 use FondBot\Tests\TestCase;
+use FondBot\Channels\Driver;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Session;

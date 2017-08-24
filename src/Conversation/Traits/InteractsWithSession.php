@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use FondBot\Drivers\Chat;
-use FondBot\Drivers\User;
+use FondBot\Channels\Chat;
+use FondBot\Channels\User;
 
 trait InteractsWithSession
 {

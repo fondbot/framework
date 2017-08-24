@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
-use FondBot\Drivers\Driver;
 use Illuminate\Support\Manager;
 use FondBot\Channels\Exceptions\ChannelNotFound;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Drivers\Commands;
+namespace FondBot\Tests\Unit\Channels\Commands;
 
-use FondBot\Drivers\Chat;
-use FondBot\Drivers\User;
+use FondBot\Channels\Chat;
+use FondBot\Channels\User;
 use FondBot\Tests\TestCase;
 use FondBot\Foundation\Commands\SendRequest;
 

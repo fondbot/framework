@@ -7,7 +7,7 @@ namespace FondBot\Foundation;
 use FondBot\Contracts\Event;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Events\Dispatcher;
-use FondBot\Drivers\Extensions\WebhookVerification;
+use FondBot\Channels\Extensions\WebhookVerification;
 
 class Controller
 {
