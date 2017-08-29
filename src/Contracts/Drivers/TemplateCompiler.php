@@ -89,7 +89,7 @@ abstract class TemplateCompiler
         // Otherwise, we look for a compile method
         $method = 'compile'.ucfirst($template->getName());
         if (!method_exists($this, $method)) {
-            throw new RuntimeException(''.$template->getName().' can not be compiled.');
+            throw new RuntimeException('"'.$template->getName().'" cannot be compiled.');
         }
 
         return $this->$method($template, $args);

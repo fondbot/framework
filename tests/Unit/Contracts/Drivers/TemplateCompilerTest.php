@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Channels;
+namespace FondBot\Tests\Unit\Contracts\Drivers;
 
 use Mockery;
 use Mockery\Mock;
@@ -10,9 +10,9 @@ use RuntimeException;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Template;
 use FondBot\Templates\Keyboard;
-use FondBot\Channels\TemplateCompiler;
 use Illuminate\Contracts\Support\Arrayable;
 use FondBot\Templates\Keyboard\PayloadButton;
+use FondBot\Contracts\Drivers\TemplateCompiler;
 
 class TemplateCompilerTest extends TestCase
 {
@@ -100,7 +100,7 @@ class TemplateCompilerTest extends TestCase
 
     /**
      * @expectedException RuntimeException
-     * @expectedExceptionMessage No compile method for "foo".
+     * @expectedExceptionMessage "foo" cannot be compiled.
      */
     public function testCompileUsingMethodButMethodDoesNotExist(): void
     {
