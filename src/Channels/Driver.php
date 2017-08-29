@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Channels;
 
 use Illuminate\Support\Collection;
-use FondBot\Contracts\Driver as DriverContract;
+use FondBot\Contracts\Channels\Driver as DriverContract;
 
 abstract class Driver implements DriverContract
 {

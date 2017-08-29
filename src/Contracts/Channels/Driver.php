@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Contracts;
+namespace FondBot\Contracts\Channels;
 
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
+use FondBot\Contracts\Event;
 use Illuminate\Http\Request;
+use FondBot\Contracts\Template;
 use FondBot\Templates\Attachment;
 use Illuminate\Support\Collection;
 
