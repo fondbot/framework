@@ -11,7 +11,7 @@ class RouteServiceProvider extends BaseRouteServiceProvider
 {
     protected $namespace = 'FondBot\Foundation';
 
-    public function map()
+    public function map(): void
     {
         Route::get('/', 'FondBot\Foundation\Controller@index');
 

@@ -15,8 +15,8 @@ class ListChannels extends Command
     public function handle(ChannelManager $manager): void
     {
         $rows = collect($manager->all())
-            ->transform(function ($item, $name) {
-                return [$name, $item['driver'], route('fondbot.webhook', $name)];
+            ->transform(function ($item, $name) use ($manager) {
+                return [$name, $manager->driver($item['driver'])->getName(), route('fondbot.webhook', $name)];
             })
             ->toArray();
 

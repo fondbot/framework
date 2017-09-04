@@ -10,6 +10,7 @@ use FondBot\Channels\Exceptions\ChannelNotFound;
 /**
  * Class ChannelManager.
  *
+ * @method Driver driver($driver = null)
  * @method Driver createDriver($driver)
  */
 class ChannelManager extends Manager
