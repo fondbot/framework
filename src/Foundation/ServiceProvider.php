@@ -6,8 +6,10 @@ namespace FondBot\Foundation;
 
 use FondBot\Events\EventServiceProvider;
 use FondBot\Channels\ChannelServiceProvider;
+use FondBot\Toolbelt\ToolbeltServiceProvider;
 use Illuminate\Support\AggregateServiceProvider;
 use FondBot\Conversation\ConversationServiceProvider;
+use FondBot\Foundation\Providers\RouteServiceProvider;
 
 class ServiceProvider extends AggregateServiceProvider
 {
@@ -15,5 +17,7 @@ class ServiceProvider extends AggregateServiceProvider
         ChannelServiceProvider::class,
         ConversationServiceProvider::class,
         EventServiceProvider::class,
+        ToolbeltServiceProvider::class,
+        RouteServiceProvider::class,
     ];
 }

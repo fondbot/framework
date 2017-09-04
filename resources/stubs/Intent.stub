@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace ___NAMESPACE___;
+namespace DummyRootNamespaceDummyNamespace;
 
 use FondBot\Conversation\Activators\Activator;
 use FondBot\Conversation\Intent;
 use FondBot\Drivers\ReceivedMessage;
 
-class ___CLASSNAME___ extends Intent
+class DummyClass extends Intent
 {
     /**
      * Intent activators.
@@ -18,7 +18,7 @@ class ___CLASSNAME___ extends Intent
     public function activators(): array
     {
         return [
-            $this->exact('/___NAME___'),
+            $this->exact('/DummyClass'),
         ];
     }
 

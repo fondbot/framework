@@ -35,7 +35,7 @@ class HandleConversation
         } else {
             $dispatcher->dispatch(
                 new Converse(
-                    session()->getInteraction(),
+                    kernel()->getSession()->getInteraction(),
                     $message
                 )
             );
@@ -72,6 +72,6 @@ class HandleConversation
      */
     private function isInConversation(): bool
     {
-        return session()->getInteraction() !== null;
+        return kernel()->getSession()->getInteraction() !== null;
     }
 }

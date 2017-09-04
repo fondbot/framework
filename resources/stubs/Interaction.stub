@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ___NAMESPACE___;
+namespace DummyRootNamespaceDummyNamespace;
 
 use FondBot\Conversation\Interaction;
 use FondBot\Drivers\ReceivedMessage;
 
-class ___CLASSNAME___ extends Interaction
+class DummyClass extends Interaction
 {
     /**
      * Run interaction.

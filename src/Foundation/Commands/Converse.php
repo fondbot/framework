@@ -23,7 +23,7 @@ class Converse
     public function handle(): void
     {
         if ($this->conversable instanceof Intent) {
-            $session = session();
+            $session = kernel()->getSession();
             $session->setIntent($this->conversable);
             $session->setInteraction(null);
 

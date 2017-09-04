@@ -11,7 +11,7 @@ use FondBot\Channels\Extensions\WebhookVerification;
 
 class Controller
 {
-    public function index()
+    public function index(): string
     {
         return 'FondBot v'.Kernel::VERSION;
     }

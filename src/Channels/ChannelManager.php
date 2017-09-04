@@ -65,7 +65,7 @@ class ChannelManager extends Manager
      *
      * @return string
      */
-    public function getDefaultDriver()
+    public function getDefaultDriver(): ?string
     {
         return null;
     }

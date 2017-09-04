@@ -14,18 +14,6 @@ if (!function_exists('kernel')) {
     }
 }
 
-if (!function_exists('session')) {
-    /**
-     * Get session.
-     *
-     * @return FondBot\Conversation\Session
-     */
-    function session(): FondBot\Conversation\Session
-    {
-        return kernel()->getSession();
-    }
-}
-
 if (!function_exists('context')) {
     /**
      * Get context.

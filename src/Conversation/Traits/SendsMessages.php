@@ -27,7 +27,7 @@ trait SendsMessages
         $dispatcher = Container::getInstance()->make(Dispatcher::class);
 
         $dispatcher->dispatch(
-            (new SendMessage(session()->getChat(), session()->getUser(), $text, $template))->delay($delay)
+            (new SendMessage(kernel()->getSession()->getChat(), kernel()->getSession()->getUser(), $text, $template))->delay($delay)
         );
     }
 
@@ -43,7 +43,7 @@ trait SendsMessages
         $dispatcher = Container::getInstance()->make(Dispatcher::class);
 
         $dispatcher->dispatch(
-            (new SendAttachment(session()->getChat(), session()->getUser(), $attachment))->delay($delay)
+            (new SendAttachment(kernel()->getSession()->getChat(), kernel()->getSession()->getUser(), $attachment))->delay($delay)
         );
     }
 
@@ -60,7 +60,7 @@ trait SendsMessages
         $dispatcher = Container::getInstance()->make(Dispatcher::class);
 
         $dispatcher->dispatch(
-            (new SendRequest(session()->getChat(), session()->getUser(), $endpoint, $parameters))->delay($delay)
+            (new SendRequest(kernel()->getSession()->getChat(), kernel()->getSession()->getUser(), $endpoint, $parameters))->delay($delay)
         );
     }
 }

@@ -16,7 +16,7 @@ trait InteractsWithSession
      */
     protected function getChat(): Chat
     {
-        return session()->getChat();
+        return kernel()->getSession()->getChat();
     }
 
     /**
@@ -26,6 +26,6 @@ trait InteractsWithSession
      */
     protected function getUser(): User
     {
-        return session()->getUser();
+        return kernel()->getSession()->getUser();
     }
 }

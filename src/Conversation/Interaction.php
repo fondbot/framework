@@ -39,12 +39,12 @@ abstract class Interaction implements Conversable
      */
     public function handle(MessageReceived $message): void
     {
-        $session = session();
+        $session = kernel()->getSession();
 
         if ($session->getInteraction() instanceof $this) {
             $this->process($message);
         } else {
-            session()->setInteraction($this);
+            kernel()->getSession()->setInteraction($this);
             $this->run($message);
         }
     }
