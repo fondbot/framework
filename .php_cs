@@ -2,6 +2,7 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->exclude('vendor')
+    ->in(__DIR__.'/config')
     ->in(__DIR__.'/src')
     ->in(__DIR__.'/tests')
     ->name('*.php')
