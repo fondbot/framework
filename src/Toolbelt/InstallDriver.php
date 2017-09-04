@@ -45,6 +45,6 @@ class InstallDriver extends Command
             exit($result);
         }
 
-        $this->info('Driver installed.');
+        $this->info('Driver installed. ✔');
     }
 }
