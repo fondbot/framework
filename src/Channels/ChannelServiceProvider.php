@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace FondBot\Channels;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Config\Repository;
 
 class ChannelServiceProvider extends ServiceProvider
 {
@@ -17,25 +16,16 @@ class ChannelServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(ChannelManager::class, function () {
-            /** @var array $channels */
-            $channels = collect($this->config())
-                ->mapWithKeys(function (array $parameters, string $name) {
-                    return [$name => $parameters];
-                })
-                ->toArray();
+            return tap(new ChannelManager($this->app), function (ChannelManager $manager) {
+                /** @var array $channels */
+                $channels = collect(config('fondbot.channels'))
+                    ->mapWithKeys(function (array $parameters, string $name) {
+                        return [$name => $parameters];
+                    })
+                    ->toArray();
 
-            $manager = new ChannelManager($this->app);
-            $manager->register($channels);
-
-            return $manager;
+                $manager->register($channels);
+            });
         });
-    }
-
-    private function config(): array
-    {
-        /** @var Repository $config */
-        $config = $this->app[Repository::class];
-
-        return $config->get('fondbot.channels');
     }
 }

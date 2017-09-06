@@ -30,13 +30,12 @@ class ConversationServiceProvider extends ServiceProvider
     private function registerIntentManager(): void
     {
         $this->app->singleton(IntentManager::class, function () {
-            $intents = config('fondbot.conversation.intents');
-            $fallbackIntent = config('fondbot.conversation.fallback_intent', FallbackIntent::class);
+            return tap(new IntentManager, function (IntentManager $manager) {
+                $intents = config('fondbot.conversation.intents');
+                $fallbackIntent = config('fondbot.conversation.fallback_intent', FallbackIntent::class);
 
-            $manager = new IntentManager;
-            $manager->register($intents, $fallbackIntent);
-
-            return $manager;
+                $manager->register($intents, $fallbackIntent);
+            });
         });
     }
 }
