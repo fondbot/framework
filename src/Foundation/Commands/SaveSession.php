@@ -6,9 +6,12 @@ namespace FondBot\Foundation\Commands;
 
 use FondBot\Conversation\Session;
 use FondBot\Conversation\SessionManager;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 class SaveSession
 {
+    use Dispatchable;
+
     private $session;
 
     public function __construct(Session $session)

@@ -12,7 +12,7 @@ class InArrayTest extends TestCase
 {
     public function testArrayMatches(): void
     {
-        $message = new MessageReceived('/start');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start');
 
         $activator = new InArray(['/bye', '/start', '/test']);
         $this->assertTrue(
@@ -22,7 +22,7 @@ class InArrayTest extends TestCase
 
     public function testArrayDoesNotMatch(): void
     {
-        $message = new MessageReceived('/stop');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/stop');
 
         $activator = new InArray(['/bye', '/start', '/test']);
 
@@ -31,7 +31,7 @@ class InArrayTest extends TestCase
 
     public function testCollectionMatches(): void
     {
-        $message = new MessageReceived('/start');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start');
 
         $activator = new InArray(collect(['/bye', '/start', '/test']));
 
@@ -40,7 +40,7 @@ class InArrayTest extends TestCase
 
     public function testCollectionDoesNotMatch(): void
     {
-        $message = new MessageReceived('/stop');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/stop');
 
         $activator = new InArray(collect(['/bye', '/start', '/test']));
 

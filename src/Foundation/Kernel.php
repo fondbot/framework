@@ -10,16 +10,14 @@ use FondBot\Conversation\Session;
 use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
 use Illuminate\Contracts\Bus\Dispatcher;
-use FondBot\Foundation\Commands\SaveContext;
-use FondBot\Foundation\Commands\SaveSession;
 use Illuminate\Contracts\Container\Container;
+use FondBot\Foundation\Commands\TerminateKernel;
 
 class Kernel
 {
     public const VERSION = '2.0';
 
     private $container;
-    private $bus;
 
     /** @var Channel */
     private $channel;
@@ -33,7 +31,6 @@ class Kernel
     public function __construct(Container $container, Dispatcher $bus)
     {
         $this->container = $container;
-        $this->bus = $bus;
     }
 
     /**
@@ -44,22 +41,8 @@ class Kernel
     public function initialize(Channel $channel): void
     {
         $this->channel = $channel;
-    }
 
-    /**
-     * Perform shutdown tasks.
-     */
-    public function terminate(): void
-    {
-        // Save session if exists
-        if ($this->session !== null) {
-            $this->bus->dispatch(new SaveSession($this->session));
-        }
-
-        // Save context if exists
-        if ($this->context !== null) {
-            $this->bus->dispatch(new SaveContext($this->context));
-        }
+        TerminateKernel::dispatch();
     }
 
     /**

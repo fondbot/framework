@@ -4,50 +4,53 @@ declare(strict_types=1);
 
 namespace FondBot\Foundation\Listeners;
 
+use FondBot\Foundation\Kernel;
 use FondBot\Conversation\Intent;
+use FondBot\Conversation\Session;
 use FondBot\Events\MessageReceived;
 use FondBot\Conversation\IntentManager;
-use Illuminate\Contracts\Bus\Dispatcher;
 use FondBot\Foundation\Commands\Converse;
-use Illuminate\Contracts\Container\Container;
+use FondBot\Foundation\Commands\LoadSession;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class HandleConversation
 {
-    private $container;
+    use DispatchesJobs;
 
-    public function __construct(Container $container)
+    private $kernel;
+    private $intentManager;
+
+    public function __construct(Kernel $kernel, IntentManager $intentManager)
     {
-        $this->container = $container;
+        $this->kernel = $kernel;
+        $this->intentManager = $intentManager;
     }
 
     public function handle(MessageReceived $message): void
     {
-        /** @var Dispatcher $dispatcher */
-        $dispatcher = $this->container->make(Dispatcher::class);
+        /** @var Session $session */
+        $session = $this->dispatch(new LoadSession($this->kernel->getChannel(), $message->getChat(), $message->getFrom()));
 
-        if (!$this->isInConversation()) {
-            $dispatcher->dispatch(
+        $this->kernel->setSession($session);
+
+        // If there is no interaction in session
+        // Try to find intent and run it
+        // Otherwise, run interaction
+        if (!$this->isInConversation($session)) {
+            dispatch(
                 new Converse(
                     $this->findIntent($message),
                     $message
                 )
             );
         } else {
-            $dispatcher->dispatch(
+            dispatch(
                 new Converse(
-                    kernel()->getSession()->getInteraction(),
+                    $session->getInteraction(),
                     $message
                 )
             );
         }
-
-        // TODO
-        // Close session if conversation has not been transitioned
-        // Otherwise, save session state
-//        if (!$this->transitioned) {
-//            kernel()->closeSession();
-//            kernel()->clearContext();
-//        }
     }
 
     /**
@@ -59,19 +62,18 @@ class HandleConversation
      */
     private function findIntent(MessageReceived $event): Intent
     {
-        /** @var IntentManager $intentManager */
-        $intentManager = $this->container->make(IntentManager::class);
-
-        return $intentManager->find($event);
+        return $this->intentManager->find($event);
     }
 
     /**
      * Determine if conversation started.
      *
+     * @param Session $session
+     *
      * @return bool
      */
-    private function isInConversation(): bool
+    private function isInConversation(Session $session): bool
     {
-        return kernel()->getSession()->getInteraction() !== null;
+        return $session->getInteraction() !== null;
     }
 }

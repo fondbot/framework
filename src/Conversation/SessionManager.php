@@ -7,7 +7,7 @@ namespace FondBot\Conversation;
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Channels\Channel;
-use Illuminate\Contracts\Cache\Store;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Container\Container;
 
 class SessionManager
@@ -15,7 +15,7 @@ class SessionManager
     private $container;
     private $cache;
 
-    public function __construct(Container $container, Store $cache)
+    public function __construct(Container $container, Repository $cache)
     {
         $this->container = $container;
         $this->cache = $cache;

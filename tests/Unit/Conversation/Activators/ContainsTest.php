@@ -12,7 +12,7 @@ class ContainsTest extends TestCase
 {
     public function testMatches(): void
     {
-        $message = new MessageReceived('this is foo');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), 'this is foo');
 
         $activator = new Contains('foo');
 
@@ -21,7 +21,7 @@ class ContainsTest extends TestCase
 
     public function testDoesNotMatch(): void
     {
-        $message = new MessageReceived('this is bar');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), 'this is bar');
 
         $activator = new Contains('foo');
 
@@ -30,7 +30,7 @@ class ContainsTest extends TestCase
 
     public function testMessageDoesNotHaveText(): void
     {
-        $message = new MessageReceived('');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '');
 
         $activator = new Contains('foo');
 

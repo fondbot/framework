@@ -8,8 +8,11 @@ use Mockery;
 use Carbon\Carbon;
 use Faker\Factory;
 use Faker\Generator;
+use FondBot\Channels\Chat;
+use FondBot\Channels\User;
 use FondBot\Foundation\Kernel;
 use Illuminate\Cache\ArrayStore;
+use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
 use Illuminate\Container\Container;
@@ -65,13 +68,13 @@ abstract class TestCase extends BaseTestCase
         return $this;
     }
 
-    protected function cache(): Store
+    protected function cache(): Repository
     {
         if (!$this->container->bound(Store::class)) {
             $this->container->instance(Store::class, new ArrayStore);
         }
 
-        return $this->container->make(Store::class);
+        return new Repository($this->container->make(Store::class));
     }
 
     protected function filesystem(): FilesystemAdapter
@@ -99,6 +102,16 @@ abstract class TestCase extends BaseTestCase
     protected function faker(): Generator
     {
         return Factory::create();
+    }
+
+    protected function fakeChat(): Chat
+    {
+        return new Chat($this->faker()->uuid, $this->faker()->word);
+    }
+
+    protected function fakeUser(): User
+    {
+        return new User($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
     }
 
     /**

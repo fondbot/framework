@@ -12,7 +12,7 @@ class ExactTest extends TestCase
 {
     public function testMatchesCaseSensitive(): void
     {
-        $message = new MessageReceived('/start');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start');
 
         $activator = new Exact('/start', true);
 
@@ -21,7 +21,7 @@ class ExactTest extends TestCase
 
     public function testDoesNotMatchCaseSensitive(): void
     {
-        $message = new MessageReceived('/Start');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/Start');
 
         $activator = new Exact('/start', true);
 
@@ -30,7 +30,7 @@ class ExactTest extends TestCase
 
     public function testMatchesCaseInsensitive(): void
     {
-        $message = new MessageReceived('/Start');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/Start');
 
         $activator = new Exact('/start');
 
@@ -39,7 +39,7 @@ class ExactTest extends TestCase
 
     public function testDoesNotMatchCaseInsensitive(): void
     {
-        $message = new MessageReceived('/Start');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/Start');
 
         $activator = new Exact('/stop');
 
@@ -48,7 +48,7 @@ class ExactTest extends TestCase
 
     public function testEmptyMessage(): void
     {
-        $message = new MessageReceived('');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '');
 
         $activator = new Exact('/start');
 

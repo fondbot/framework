@@ -23,7 +23,9 @@
     "php": ">=7.1",
     "guzzlehttp/guzzle": "^6.3",
     "laravel/framework": "5.5.*",
-    "spatie/regex": "^1.1"
+    "spatie/regex": "^1.1",
+    "symfony/property-access": "^3.3",
+    "symfony/serializer": "^3.3"
   },
   "require-dev": {
     "fzaninotto/faker": "^1.6",

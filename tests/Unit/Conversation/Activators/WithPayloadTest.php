@@ -12,7 +12,7 @@ class WithPayloadTest extends TestCase
 {
     public function testMatches(): void
     {
-        $message = new MessageReceived('/start', null, null, 'foo');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, null, 'foo');
 
         $activator = new WithPayload('foo');
 
@@ -21,7 +21,7 @@ class WithPayloadTest extends TestCase
 
     public function testDoesNotMatch(): void
     {
-        $message = new MessageReceived('/start', null, null, 'foo');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, null, 'foo');
 
         $activator = new WithPayload('bar');
 

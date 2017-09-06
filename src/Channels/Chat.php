@@ -13,7 +13,7 @@ class Chat
     private $title;
     private $type;
 
-    public function __construct(string $id, string $title, string $type = self::TYPE_PRIVATE)
+    public function __construct(string $id, string $title = null, string $type = self::TYPE_PRIVATE)
     {
         $this->id = $id;
         $this->title = $title;
@@ -35,7 +35,7 @@ class Chat
      *
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
-use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Cache\Repository as Cache;
 
 class ConversationServiceProvider extends ServiceProvider
 {
@@ -24,31 +23,20 @@ class ConversationServiceProvider extends ServiceProvider
     private function registerSessionManager(): void
     {
         $this->app->singleton(SessionManager::class, function () {
-            return new SessionManager(
-                $this->app,
-                $this->app->make(Store::class)
-            );
+            return new SessionManager($this->app, resolve(Cache::class));
         });
     }
 
     private function registerIntentManager(): void
     {
         $this->app->singleton(IntentManager::class, function () {
-            $intents = array_get($this->config(), 'intents', []);
-            $fallbackIntent = array_get($this->config(), 'fallback_intent', FallbackIntent::class);
+            $intents = config('fondbot.conversation.intents');
+            $fallbackIntent = config('fondbot.conversation.fallback_intent', FallbackIntent::class);
 
             $manager = new IntentManager;
             $manager->register($intents, $fallbackIntent);
 
             return $manager;
         });
-    }
-
-    private function config(): array
-    {
-        /** @var Repository $config */
-        $config = $this->app[Repository::class];
-
-        return $config->get('fondbot.conversation');
     }
 }

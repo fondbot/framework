@@ -7,13 +7,13 @@ namespace FondBot\Conversation;
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Channels\Channel;
-use Illuminate\Contracts\Cache\Store;
+use Illuminate\Contracts\Cache\Repository;
 
 class ContextManager
 {
     private $cache;
 
-    public function __construct(Store $cache)
+    public function __construct(Repository $cache)
     {
         $this->cache = $cache;
     }

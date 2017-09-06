@@ -13,7 +13,7 @@ class WithAttachmentTest extends TestCase
 {
     public function testMatchesWithoutType(): void
     {
-        $message = new MessageReceived('/start', null, new Attachment());
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, new Attachment());
 
         $activator = new WithAttachment;
 
@@ -22,7 +22,7 @@ class WithAttachmentTest extends TestCase
 
     public function testDoesNotMatchWithoutType(): void
     {
-        $message = new MessageReceived('/start', null, null);
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, null);
 
         $activator = new WithAttachment;
 
@@ -39,7 +39,7 @@ class WithAttachmentTest extends TestCase
         $activator = new WithAttachment($type);
         $attachment = (new Attachment)->setType($type);
 
-        $message = new MessageReceived('/start', null, $attachment);
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, $attachment);
 
         $this->assertTrue($activator->matches($message));
     }
@@ -60,7 +60,7 @@ class WithAttachmentTest extends TestCase
 
         $attachment = (new Attachment)->setType($otherType);
 
-        $message = new MessageReceived('/start', null, $attachment);
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, $attachment);
 
         $this->assertFalse($activator->matches($message));
     }

@@ -12,7 +12,7 @@ class PatternTest extends TestCase
 {
     public function testStringMatches(): void
     {
-        $message = new MessageReceived('abc');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), 'abc');
 
         $activator = new Pattern('/abc/');
 
@@ -21,7 +21,7 @@ class PatternTest extends TestCase
 
     public function testStringDoesNotMatch(): void
     {
-        $message = new MessageReceived('ab');
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), 'ab');
 
         $activator = new Pattern('/abc/');
 
