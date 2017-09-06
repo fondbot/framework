@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Contracts;
+namespace FondBot\Contracts\Conversation;
 
 use FondBot\Events\MessageReceived;
 

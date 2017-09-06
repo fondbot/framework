@@ -7,7 +7,7 @@ namespace FondBot\Foundation;
 use FondBot\Contracts\Event;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Events\Dispatcher;
-use FondBot\Channels\Extensions\WebhookVerification;
+use FondBot\Contracts\Channels\WebhookVerification;
 
 class Controller
 {
@@ -22,8 +22,8 @@ class Controller
 
         // If driver supports webhook verification
         // We need to check if current request belongs to verification process
-        if ($driver instanceof WebhookVerification && $driver->isVerificationRequest()) {
-            return $driver->verifyWebhook();
+        if ($driver instanceof WebhookVerification && $driver->isVerificationRequest($request)) {
+            return $driver->verifyWebhook($request);
         }
 
         // Resolve event from driver and dispatch it

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Foundation\Commands;
 
 use FondBot\Conversation\Intent;
-use FondBot\Contracts\Conversable;
 use FondBot\Events\MessageReceived;
 use FondBot\Conversation\Interaction;
+use FondBot\Contracts\Conversation\Conversable;
 
 class Converse
 {
