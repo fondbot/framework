@@ -25,7 +25,7 @@ class FallbackIntentTest extends TestCase
         $chat = $this->mock(Chat::class);
         $user = $this->mock(User::class);
 
-        $this->kernel->shouldReceive('getSession')->andReturn($session)->atLeast()->once();
+        $this->setSession($session);
 
         $session->shouldReceive('getChat')->andReturn($chat)->atLeast()->once();
         $session->shouldReceive('getUser')->andReturn($user)->atLeast()->once();

@@ -8,10 +8,9 @@ use FondBot\Tests\TestCase;
 use FondBot\Contracts\Template;
 use FondBot\Conversation\Session;
 use FondBot\Templates\Attachment;
-use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Support\Facades\Bus;
 use FondBot\Foundation\Commands\SendMessage;
 use FondBot\Foundation\Commands\SendRequest;
-use Illuminate\Support\Testing\Fakes\BusFake;
 use FondBot\Conversation\Traits\SendsMessages;
 use FondBot\Foundation\Commands\SendAttachment;
 
@@ -32,51 +31,46 @@ class SendsMessagesTest extends TestCase
 
     public function testSendMessage(): void
     {
-        /** @var BusFake $dispatcher */
-        $dispatcher = $this->container->make(Dispatcher::class);
+        Bus::fake();
 
         $this->sendMessage($this->faker()->text, $this->mock(Template::class));
 
-        $dispatcher->assertDispatched(SendMessage::class);
+        Bus::assertDispatched(SendMessage::class);
     }
 
     public function testSendMessageWithDelay(): void
     {
-        /** @var BusFake $dispatcher */
-        $dispatcher = $this->container->make(Dispatcher::class);
+        Bus::fake();
 
         $this->sendMessage($this->faker()->text, $this->mock(Template::class), random_int(1, 10));
 
-        $dispatcher->assertDispatched(SendMessage::class);
+        Bus::assertDispatched(SendMessage::class);
     }
 
     public function testSendAttachment(): void
     {
-        /** @var BusFake $dispatcher */
-        $dispatcher = $this->container->make(Dispatcher::class);
+        Bus::fake();
 
         $this->sendAttachment($this->mock(Attachment::class));
 
-        $dispatcher->assertDispatched(SendAttachment::class);
+        Bus::assertDispatched(SendAttachment::class);
     }
 
     public function testSendAttachmentWithDelay(): void
     {
-        /** @var BusFake $dispatcher */
-        $dispatcher = $this->container->make(Dispatcher::class);
+        Bus::fake();
 
         $this->sendAttachment($this->mock(Attachment::class), random_int(1, 10));
 
-        $dispatcher->assertDispatched(SendAttachment::class);
+        Bus::assertDispatched(SendAttachment::class);
     }
 
     public function testSendRequest(): void
     {
-        /** @var BusFake $dispatcher */
-        $dispatcher = $this->container->make(Dispatcher::class);
+        Bus::fake();
 
         $this->sendRequest('endpoint', ['foo' => 'bar']);
 
-        $dispatcher->assertDispatched(SendRequest::class);
+        Bus::assertDispatched(SendRequest::class);
     }
 }

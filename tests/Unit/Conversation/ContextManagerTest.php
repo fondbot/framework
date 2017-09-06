@@ -8,11 +8,23 @@ use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
+use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
+use Illuminate\Support\Facades\Cache;
 use FondBot\Conversation\ContextManager;
 
 class ContextManagerTest extends TestCase
 {
+    /** @var ContextManager */
+    private $contextManager;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->contextManager = new ContextManager(resolve(Repository::class));
+    }
+
     public function testLoad(): void
     {
         $channel = $this->mock(Channel::class);
@@ -24,9 +36,9 @@ class ContextManagerTest extends TestCase
         $chat->shouldReceive('getId')->andReturn('bar')->once();
         $user->shouldReceive('getId')->andReturn('baz')->once();
 
-        $this->cache()->forever('context.foo.bar.baz', compact('chat', 'user', 'items'));
+        Cache::forever('context.foo.bar.baz', compact('chat', 'user', 'items'));
 
-        $result = (new ContextManager($this->cache()))->load($channel, $chat, $user);
+        $result = $this->contextManager->load($channel, $chat, $user);
 
         $this->assertInstanceOf(Context::class, $result);
         $this->assertSame($channel, $result->getChannel());
@@ -52,9 +64,9 @@ class ContextManagerTest extends TestCase
         $chat->shouldReceive('getId')->once()->andReturn('bar');
         $user->shouldReceive('getId')->once()->andReturn('baz');
 
-        (new ContextManager($this->cache()))->save($context);
+        $this->contextManager->save($context);
 
-        $this->assertSame($items, $this->cache()->get('context.foo.bar.baz'));
+        $this->assertSame($items, resolve(Repository::class)->get('context.foo.bar.baz'));
     }
 
     public function testClear(): void
@@ -73,10 +85,10 @@ class ContextManagerTest extends TestCase
         $chat->shouldReceive('getId')->once()->andReturn('bar');
         $user->shouldReceive('getId')->once()->andReturn('baz');
 
-        $this->cache()->forever('context.foo.bar.baz', $items);
+        Cache::forever('context.foo.bar.baz', $items);
 
-        (new ContextManager($this->cache()))->clear($context);
+        $this->contextManager->clear($context);
 
-        $this->assertNull($this->cache()->get('context.foo.bar.baz'));
+        $this->assertNull(Cache::get('context.foo.bar.baz'));
     }
 }

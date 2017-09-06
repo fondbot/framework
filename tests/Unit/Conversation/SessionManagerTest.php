@@ -10,8 +10,10 @@ use FondBot\Tests\TestCase;
 use FondBot\Channels\Driver;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
+use Illuminate\Cache\Repository;
 use FondBot\Conversation\Session;
 use FondBot\Conversation\Interaction;
+use Illuminate\Support\Facades\Cache;
 use FondBot\Conversation\SessionManager;
 
 /**
@@ -33,7 +35,7 @@ class SessionManagerTest extends TestCase
         $this->user = $this->mock(User::class);
         $this->driver = $this->mock(Driver::class);
 
-        $this->manager = new SessionManager($this->container, $this->cache());
+        $this->manager = new SessionManager($this->app, resolve(Repository::class));
     }
 
     public function testLoad(): void
@@ -41,10 +43,10 @@ class SessionManagerTest extends TestCase
         $this->chat->shouldReceive('getId')->andReturn($chatId = $this->faker()->uuid)->atLeast()->once();
         $this->user->shouldReceive('getId')->andReturn($senderId = $this->faker()->uuid)->atLeast()->once();
 
-        $this->container->instance('foo-intent', $intent = $this->mock(Intent::class));
-        $this->container->instance('bar-interaction', $interaction = $this->mock(Interaction::class));
+        $this->app->instance('foo-intent', $intent = $this->mock(Intent::class));
+        $this->app->instance('bar-interaction', $interaction = $this->mock(Interaction::class));
 
-        $this->cache()->forever('session.foo.'.$chatId.'.'.$senderId, [
+        Cache::forever('session.foo.'.$chatId.'.'.$senderId, [
             'intent' => 'foo-intent',
             'interaction' => 'bar-interaction',
         ]);
@@ -75,7 +77,7 @@ class SessionManagerTest extends TestCase
 
         $this->manager->save($session);
 
-        $this->assertSame($sessionArray, $this->cache()->get('session.foo.'.$chatId.'.'.$senderId));
+        $this->assertSame($sessionArray, Cache::get('session.foo.'.$chatId.'.'.$senderId));
     }
 
     public function testClose(): void
@@ -90,10 +92,10 @@ class SessionManagerTest extends TestCase
 
         $key = 'session.foo.'.$chatId.'.'.$senderId;
 
-        $this->cache()->forever($key, 'foo');
+        Cache::forever($key, 'foo');
 
         $this->manager->close($session);
 
-        $this->assertNull($this->cache()->get($key));
+        $this->assertNull(Cache::get($key));
     }
 }

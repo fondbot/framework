@@ -20,7 +20,7 @@ class ChannelManagerTest extends TestCase
         ];
         $driver = new FakeDriver;
 
-        $manager = new ChannelManager($this->container);
+        $manager = new ChannelManager($this->app);
         $manager->extend('fake', function () use (&$driver) {
             return $driver;
         });
@@ -35,7 +35,7 @@ class ChannelManagerTest extends TestCase
 
     public function testAll(): void
     {
-        $manager = new ChannelManager($this->container);
+        $manager = new ChannelManager($this->app);
         $manager->register(['foo' => ['foo' => 'bar']]);
 
         $this->assertSame(['foo' => ['foo' => 'bar']], $manager->all());
@@ -47,14 +47,14 @@ class ChannelManagerTest extends TestCase
      */
     public function testGetException(): void
     {
-        $manager = new ChannelManager($this->container);
+        $manager = new ChannelManager($this->app);
 
         $manager->get('fake');
     }
 
     public function testNoDefaultDriver(): void
     {
-        $manager = new ChannelManager($this->container);
+        $manager = new ChannelManager($this->app);
 
         $this->assertNull($manager->getDefaultDriver());
     }

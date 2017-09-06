@@ -9,7 +9,6 @@ use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
 use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
-use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Container\Container;
 use FondBot\Foundation\Commands\TerminateKernel;
 
@@ -28,7 +27,7 @@ class Kernel
     /** @var Context|null */
     private $context;
 
-    public function __construct(Container $container, Dispatcher $bus)
+    public function __construct(Container $container)
     {
         $this->container = $container;
     }

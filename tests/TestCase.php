@@ -5,53 +5,30 @@ declare(strict_types=1);
 namespace FondBot\Tests;
 
 use Mockery;
-use Carbon\Carbon;
 use Faker\Factory;
 use Faker\Generator;
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Foundation\Kernel;
-use Illuminate\Cache\ArrayStore;
-use Illuminate\Cache\Repository;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Cache\Store;
-use Illuminate\Contracts\Bus\Dispatcher;
-use League\Flysystem\Memory\MemoryAdapter;
-use Illuminate\Filesystem\FilesystemAdapter;
-use Illuminate\Support\Testing\Fakes\BusFake;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use PHPUnit\Framework\TestCase as BaseTestCase;
-use League\Flysystem\Filesystem as LeagueFilesystem;
-use Illuminate\Contracts\Container\Container as ContainerContract;
+use FondBot\Foundation\ServiceProvider;
 
-abstract class TestCase extends BaseTestCase
+abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    /** @var Container|mixed */
-    protected $container;
-
-    /** @var Mockery\MockInterface */
+    /** @var Mockery\Mock|mixed */
     protected $kernel;
 
     protected function setUp(): void
     {
         parent::setUp();
-        Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
-        Carbon::setTestNow(Carbon::now());
 
-        $this->createApplication();
+        $this->kernel = $this->mock(Kernel::class);
     }
 
-    private function createApplication(): void
+    protected function getPackageProviders($app): array
     {
-        $this->container = Container::setInstance(new Container);
-        $this->kernel = $this->mock(Kernel::class);
-
-        $this->container->instance(Kernel::class, $this->kernel);
-        $this->container->instance(ContainerContract::class, $this->container);
-
-        $this->container->instance(Dispatcher::class, new BusFake);
+        return [ServiceProvider::class];
     }
 
     protected function setSession(Session $session)
@@ -66,52 +43,6 @@ abstract class TestCase extends BaseTestCase
         $this->kernel->shouldReceive('getContext')->andReturn($context)->atLeast()->once();
 
         return $this;
-    }
-
-    protected function cache(): Repository
-    {
-        if (!$this->container->bound(Store::class)) {
-            $this->container->instance(Store::class, new ArrayStore);
-        }
-
-        return new Repository($this->container->make(Store::class));
-    }
-
-    protected function filesystem(): FilesystemAdapter
-    {
-        if (!$this->container->bound(Filesystem::class)) {
-            $adapter = new FilesystemAdapter(
-                new LeagueFilesystem(
-                    new MemoryAdapter
-                )
-            );
-
-            $this->container->instance(Filesystem::class, $adapter);
-        }
-
-        return $this->container->make(Filesystem::class);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        Mockery::close();
-    }
-
-    protected function faker(): Generator
-    {
-        return Factory::create();
-    }
-
-    protected function fakeChat(): Chat
-    {
-        return new Chat($this->faker()->uuid, $this->faker()->word);
-    }
-
-    protected function fakeUser(): User
-    {
-        return new User($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
     }
 
     /**
@@ -129,8 +60,23 @@ abstract class TestCase extends BaseTestCase
             $instance = Mockery::mock($class);
         }
 
-        $this->container->instance($class, $instance);
+        $this->app->instance($class, $instance);
 
         return $instance;
+    }
+
+    protected function faker(): Generator
+    {
+        return Factory::create();
+    }
+
+    protected function fakeChat(): Chat
+    {
+        return new Chat($this->faker()->uuid, $this->faker()->word);
+    }
+
+    protected function fakeUser(): User
+    {
+        return new User($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
     }
 }

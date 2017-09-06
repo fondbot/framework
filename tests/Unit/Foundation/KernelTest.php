@@ -10,7 +10,6 @@ use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
 use FondBot\Conversation\ContextManager;
 use FondBot\Conversation\SessionManager;
-use Illuminate\Support\Testing\Fakes\BusFake;
 
 /**
  * @property mixed|\Mockery\Mock contextManager
@@ -33,7 +32,7 @@ class KernelTest extends TestCase
 
         $sessionManager->shouldReceive('close')->with($session)->once();
 
-        $kernel = new Kernel($this->container, new BusFake);
+        $kernel = new Kernel($this->app);
         $kernel->setSession($session);
         $kernel->closeSession();
 
@@ -45,7 +44,7 @@ class KernelTest extends TestCase
         $context = $this->mock(Context::class);
         $this->contextManager->shouldReceive('clear')->once();
 
-        $kernel = new Kernel($this->container, new BusFake);
+        $kernel = new Kernel($this->app);
         $kernel->setContext($context);
         $kernel->clearContext($context);
 
