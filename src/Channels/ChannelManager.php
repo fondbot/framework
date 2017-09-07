@@ -6,6 +6,7 @@ namespace FondBot\Channels;
 
 use Illuminate\Support\Manager;
 use FondBot\Channels\Exceptions\ChannelNotFound;
+use FondBot\Contracts\Channels\Manager as ManagerContract;
 
 /**
  * Class ChannelManager.
@@ -13,7 +14,7 @@ use FondBot\Channels\Exceptions\ChannelNotFound;
  * @method Driver driver($driver = null)
  * @method Driver createDriver($driver)
  */
-class ChannelManager extends Manager
+class ChannelManager extends Manager implements ManagerContract
 {
     /** @var array */
     private $channels = [];
@@ -39,14 +40,14 @@ class ChannelManager extends Manager
     }
 
     /**
-     * Get channel by name.
+     * Create channel.
      *
      * @param string $name
      *
      * @return Channel
      * @throws ChannelNotFound
      */
-    public function get(string $name): Channel
+    public function create(string $name): Channel
     {
         if (!array_has($this->channels, $name)) {
             throw new ChannelNotFound('Channel `'.$name.'` not found.');

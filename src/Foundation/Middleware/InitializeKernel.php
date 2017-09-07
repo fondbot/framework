@@ -8,14 +8,14 @@ use Closure;
 use Illuminate\Http\Request;
 use FondBot\Channels\Channel;
 use FondBot\Foundation\Kernel;
-use FondBot\Channels\ChannelManager;
+use FondBot\Contracts\Channels\Manager;
 
 class InitializeKernel
 {
     private $kernel;
     private $channelManager;
 
-    public function __construct(Kernel $kernel, ChannelManager $channelManager)
+    public function __construct(Kernel $kernel, Manager $channelManager)
     {
         $this->kernel = $kernel;
         $this->channelManager = $channelManager;
@@ -33,7 +33,7 @@ class InitializeKernel
     private function resolveChannel($value): Channel
     {
         if (is_string($value)) {
-            $value = $this->channelManager->get($value);
+            $value = $this->channelManager->create($value);
         }
 
         return $value;

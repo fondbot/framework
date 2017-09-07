@@ -26,7 +26,7 @@ class ChannelManagerTest extends TestCase
         });
         $manager->register([$name => $parameters]);
 
-        $result = $manager->get($name);
+        $result = $manager->create($name);
 
         $this->assertInstanceOf(Channel::class, $result);
         $this->assertSame($name, $result->getName());
@@ -45,11 +45,11 @@ class ChannelManagerTest extends TestCase
      * @expectedException \FondBot\Channels\Exceptions\ChannelNotFound
      * @expectedExceptionMessage Channel `fake` not found.
      */
-    public function testGetException(): void
+    public function testCreateException(): void
     {
         $manager = new ChannelManager($this->app);
 
-        $manager->get('fake');
+        $manager->create('fake');
     }
 
     public function testNoDefaultDriver(): void
