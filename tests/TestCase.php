@@ -13,6 +13,8 @@ use FondBot\Foundation\Kernel;
 use FondBot\Conversation\Context;
 use FondBot\Conversation\Session;
 use FondBot\Foundation\ServiceProvider;
+use FondBot\Foundation\Providers\ChannelServiceProvider;
+use FondBot\Foundation\Providers\ConversationServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -28,7 +30,11 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getPackageProviders($app): array
     {
-        return [ServiceProvider::class];
+        return [
+            ServiceProvider::class,
+            ChannelServiceProvider::class,
+            ConversationServiceProvider::class,
+        ];
     }
 
     protected function setSession(Session $session)
