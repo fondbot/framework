@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Foundation\Listeners;
 
 use FondBot\Foundation\Kernel;
-use FondBot\Conversation\Intent;
 use FondBot\Conversation\Session;
 use FondBot\Events\MessageReceived;
-use FondBot\Conversation\IntentManager;
 use FondBot\Foundation\Commands\Converse;
+use FondBot\Contracts\Conversation\Manager;
 use FondBot\Foundation\Commands\LoadSession;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -18,12 +17,12 @@ class HandleConversation
     use DispatchesJobs;
 
     private $kernel;
-    private $intentManager;
+    private $conversation;
 
-    public function __construct(Kernel $kernel, IntentManager $intentManager)
+    public function __construct(Kernel $kernel, Manager $conversation)
     {
         $this->kernel = $kernel;
-        $this->intentManager = $intentManager;
+        $this->conversation = $conversation;
     }
 
     public function handle(MessageReceived $message): void
@@ -34,12 +33,12 @@ class HandleConversation
         $this->kernel->setSession($session);
 
         // If there is no interaction in session
-        // Try to find intent and run it
+        // Try to match intent and run it
         // Otherwise, run interaction
         if (!$this->isInConversation($session)) {
             dispatch(
                 new Converse(
-                    $this->findIntent($message),
+                    $this->conversation->matchIntent($message),
                     $message
                 )
             );
@@ -51,18 +50,6 @@ class HandleConversation
                 )
             );
         }
-    }
-
-    /**
-     * Find matching intent.
-     *
-     * @param MessageReceived $event
-     *
-     * @return Intent|null
-     */
-    private function findIntent(MessageReceived $event): Intent
-    {
-        return $this->intentManager->find($event);
     }
 
     /**

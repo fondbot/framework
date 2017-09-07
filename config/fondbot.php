@@ -11,12 +11,4 @@ return [
         ],
     ],
 
-    'conversation' => [
-        'intents' => [
-
-        ],
-
-        'fallbackIntent' => FondBot\Conversation\FallbackIntent::class,
-    ],
-
 ];

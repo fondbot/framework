@@ -20,6 +20,7 @@ class ToolbeltServiceProvider extends ServiceProvider
                 ListDrivers::class,
                 InstallDriver::class,
                 ListChannels::class,
+                ListIntents::class,
             ]);
         }
     }

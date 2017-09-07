@@ -15,13 +15,6 @@ use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 
 class Application extends BaseApplication
 {
-    public function __construct($basePath = null)
-    {
-        parent::__construct($basePath);
-
-        $this->configure();
-    }
-
     /** {@inheritdoc} */
     public function version(): string
     {
@@ -34,8 +27,11 @@ class Application extends BaseApplication
         return $this->basePath('vendor/fondbot/framework/config');
     }
 
-    private function configure(): void
+    /** {@inheritdoc} */
+    protected function registerBaseBindings(): void
     {
+        parent::registerBaseBindings();
+
         $this->singleton(HttpKernelContract::class, HttpKernel::class);
         $this->singleton(ConsoleKernelContract::class, ConsoleKernel::class);
         $this->singleton(ExceptionHandlerContract::class, ExceptionsHandler::class);

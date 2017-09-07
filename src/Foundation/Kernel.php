@@ -18,7 +18,7 @@ class Kernel
 
     private $container;
 
-    /** @var Channel */
+    /** @var Channel|null */
     private $channel;
 
     /** @var Session|null */
