@@ -9,10 +9,11 @@ use FondBot\Channels\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 class SendRequest implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue, Queueable, Dispatchable;
 
     private $chat;
     private $recipient;

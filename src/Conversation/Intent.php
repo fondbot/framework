@@ -11,12 +11,10 @@ use FondBot\Conversation\Traits\HasActivators;
 use FondBot\Conversation\Traits\SendsMessages;
 use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Conversation\Traits\InteractsWithContext;
-use FondBot\Conversation\Traits\InteractsWithSession;
 
 abstract class Intent implements Conversable
 {
-    use InteractsWithSession,
-        InteractsWithContext,
+    use InteractsWithContext,
         SendsMessages,
         Authorization,
         HasActivators,

@@ -10,10 +10,11 @@ use Illuminate\Bus\Queueable;
 use FondBot\Templates\Attachment;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 class SendAttachment implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue, Queueable, Dispatchable;
 
     private $chat;
     private $recipient;

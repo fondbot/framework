@@ -4,8 +4,31 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
+use FondBot\Channels\Chat;
+use FondBot\Channels\User;
+
 trait InteractsWithContext
 {
+    /**
+     * Get chat.
+     *
+     * @return Chat
+     */
+    protected function getChat(): Chat
+    {
+        return kernel()->getContext()->getChat();
+    }
+
+    /**
+     * Get user.
+     *
+     * @return User
+     */
+    protected function getUser(): User
+    {
+        return kernel()->getContext()->getUser();
+    }
+
     /**
      * Get the whole context or a single value.
      *

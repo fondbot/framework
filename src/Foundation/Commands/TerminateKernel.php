@@ -24,12 +24,23 @@ class TerminateKernel
 
         // Save session if exists
         if ($session = $kernel->getSession()) {
-            SaveSession::dispatch($session);
+//            SaveSession::dispatch($session);
         }
 
         // Save context if exists
         if ($context = $kernel->getContext()) {
-            SaveContext::dispatch($context);
+//            SaveContext::dispatch($context);
         }
+        //
+//        /**
+//         * Clear context.
+//         */
+//        public function clearContext(): void
+//    {
+//        if ($this->context !== null) {
+//            $this->contextManager()->clear($this->context);
+//            $this->context = null;
+//        }
+//    }
     }
 }

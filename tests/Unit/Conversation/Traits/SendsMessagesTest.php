@@ -6,7 +6,7 @@ namespace FondBot\Tests\Unit\Conversation\Traits;
 
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Template;
-use FondBot\Conversation\Session;
+use FondBot\Conversation\Context;
 use FondBot\Templates\Attachment;
 use Illuminate\Support\Facades\Bus;
 use FondBot\Foundation\Commands\SendMessage;
@@ -22,11 +22,11 @@ class SendsMessagesTest extends TestCase
     {
         parent::setUp();
 
-        $session = $this->mock(Session::class);
-        $session->shouldReceive('getChat')->atLeast()->once();
-        $session->shouldReceive('getUser')->atLeast()->once();
+        $context = $this->mock(Context::class);
+        $context->shouldReceive('getChat')->atLeast()->once();
+        $context->shouldReceive('getUser')->atLeast()->once();
 
-        $this->setSession($session);
+        $this->setContext($context);
     }
 
     public function testSendMessage(): void

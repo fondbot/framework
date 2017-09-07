@@ -11,10 +11,11 @@ use InvalidArgumentException;
 use FondBot\Contracts\Template;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 class SendMessage implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue, Queueable, Dispatchable;
 
     private $chat;
     private $recipient;

@@ -8,12 +8,15 @@ use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Channels\Channel;
 use Illuminate\Contracts\Support\Arrayable;
+use FondBot\Contracts\Conversation\Conversable;
 
 class Context implements Arrayable
 {
     private $channel;
     private $chat;
     private $user;
+    private $intent;
+    private $interaction;
     private $items;
 
     public function __construct(Channel $channel, Chat $chat, User $user, array $items = [])
@@ -55,6 +58,46 @@ class Context implements Arrayable
     }
 
     /**
+     * Get current intent.
+     *
+     * @return Intent|Conversable|null
+     */
+    public function getIntent(): ?Intent
+    {
+        return $this->intent;
+    }
+
+    /**
+     * Set intent.
+     *
+     * @param Intent $intent
+     */
+    public function setIntent(Intent $intent): void
+    {
+        $this->intent = $intent;
+    }
+
+    /**
+     * Get interaction.
+     *
+     * @return Interaction|Conversable|null
+     */
+    public function getInteraction(): ?Interaction
+    {
+        return $this->interaction;
+    }
+
+    /**
+     * Set interaction.
+     *
+     * @param Interaction|null $interaction
+     */
+    public function setInteraction(?Interaction $interaction): void
+    {
+        $this->interaction = $interaction;
+    }
+
+    /**
      * Get item.
      *
      * @param string $key
@@ -85,6 +128,10 @@ class Context implements Arrayable
      */
     public function toArray(): array
     {
-        return $this->items->toArray();
+        return [
+            'intent' => $this->intent ? get_class($this->intent) : null,
+            'interaction' => $this->interaction ? get_class($this->interaction) : null,
+            'items' => $this->items->toArray(),
+        ];
     }
 }

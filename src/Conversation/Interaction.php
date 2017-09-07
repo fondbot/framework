@@ -9,12 +9,10 @@ use FondBot\Conversation\Traits\Transitions;
 use FondBot\Conversation\Traits\SendsMessages;
 use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Conversation\Traits\InteractsWithContext;
-use FondBot\Conversation\Traits\InteractsWithSession;
 
 abstract class Interaction implements Conversable
 {
-    use InteractsWithSession,
-        InteractsWithContext,
+    use InteractsWithContext,
         SendsMessages,
         Transitions;
 
@@ -39,12 +37,12 @@ abstract class Interaction implements Conversable
      */
     public function handle(MessageReceived $message): void
     {
-        $session = kernel()->getSession();
+        $context = kernel()->getContext();
 
-        if ($session->getInteraction() instanceof $this) {
+        if ($context->getInteraction() instanceof $this) {
             $this->process($message);
         } else {
-            kernel()->getSession()->setInteraction($this);
+            $context->setInteraction($this);
             $this->run($message);
         }
     }

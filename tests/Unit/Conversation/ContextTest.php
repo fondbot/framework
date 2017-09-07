@@ -24,6 +24,8 @@ class ContextTest extends TestCase
         $this->assertSame($channel, $context->getChannel());
         $this->assertSame($chat, $context->getChat());
         $this->assertSame($user, $context->getUser());
+        $this->assertNull($context->getIntent());
+        $this->assertNull($context->getInteraction());
 
         $this->assertSame('bar', $context->get('foo'));
         $this->assertNull($context->get('bar'));
@@ -31,8 +33,15 @@ class ContextTest extends TestCase
         $context->set('bar', 'foo');
         $this->assertSame('foo', $context->get('bar'));
 
-        $items['bar'] = 'foo';
+        $payload = [
+            'intent' => null,
+            'interaction' => null,
+            'items' => [
+                'foo' => 'bar',
+                'bar' => 'foo',
+            ],
+        ];
 
-        $this->assertSame($items, $context->toArray());
+        $this->assertSame($payload, $context->toArray());
     }
 }

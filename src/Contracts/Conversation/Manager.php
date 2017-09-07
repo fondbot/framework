@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts\Conversation;
 
+use FondBot\Channels\Chat;
+use FondBot\Channels\User;
+use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
+use FondBot\Conversation\Context;
 use FondBot\Events\MessageReceived;
 
 interface Manager
@@ -38,4 +42,22 @@ interface Manager
      * @return Intent|null
      */
     public function matchIntent(MessageReceived $messageReceived): ?Intent;
+
+    /**
+     * Resolve conversation context.
+     *
+     * @param Channel $channel
+     * @param Chat    $chat
+     * @param User    $user
+     *
+     * @return Context
+     */
+    public function resolveContext(Channel $channel, Chat $chat, User $user): Context;
+
+    /**
+     * Save context.
+     *
+     * @param Context $context
+     */
+    public function saveContext(Context $context): void;
 }

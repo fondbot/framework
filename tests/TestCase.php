@@ -11,7 +11,6 @@ use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Foundation\Kernel;
 use FondBot\Conversation\Context;
-use FondBot\Conversation\Session;
 use FondBot\Foundation\ServiceProvider;
 use FondBot\Foundation\Providers\ChannelServiceProvider;
 use FondBot\Foundation\Providers\ConversationServiceProvider;
@@ -35,13 +34,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             ChannelServiceProvider::class,
             ConversationServiceProvider::class,
         ];
-    }
-
-    protected function setSession(Session $session)
-    {
-        $this->kernel->shouldReceive('getSession')->andReturn($session)->atLeast()->once();
-
-        return $this;
     }
 
     protected function setContext(Context $context)

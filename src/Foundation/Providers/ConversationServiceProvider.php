@@ -11,7 +11,6 @@ use FondBot\Framework\Application;
 use Symfony\Component\Finder\Finder;
 use Illuminate\Support\ServiceProvider;
 use FondBot\Conversation\FallbackIntent;
-use FondBot\Conversation\SessionManager;
 use Symfony\Component\Finder\SplFileInfo;
 use FondBot\Contracts\Conversation\Manager;
 use FondBot\Conversation\ConversationManager;
@@ -31,7 +30,6 @@ class ConversationServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerManager();
-        $this->registerSessionManager();
     }
 
     /**
@@ -81,16 +79,9 @@ class ConversationServiceProvider extends ServiceProvider
     private function registerManager(): void
     {
         $this->app->singleton('conversation', function () {
-            return new ConversationManager;
+            return new ConversationManager($this->app[Cache::class]);
         });
 
         $this->app->alias('conversation', Manager::class);
-    }
-
-    private function registerSessionManager(): void
-    {
-        $this->app->singleton(SessionManager::class, function () {
-            return new SessionManager($this->app, resolve(Cache::class));
-        });
     }
 }

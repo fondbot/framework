@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace FondBot\Foundation\Listeners;
 
 use FondBot\Foundation\Kernel;
-use FondBot\Conversation\Session;
+use FondBot\Conversation\Context;
 use FondBot\Events\MessageReceived;
 use FondBot\Foundation\Commands\Converse;
 use FondBot\Contracts\Conversation\Manager;
-use FondBot\Foundation\Commands\LoadSession;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class HandleConversation
@@ -27,15 +26,19 @@ class HandleConversation
 
     public function handle(MessageReceived $message): void
     {
-        /** @var Session $session */
-        $session = $this->dispatch(new LoadSession($this->kernel->getChannel(), $message->getChat(), $message->getFrom()));
+        /** @var Context $context */
+        $context = $this->conversation->resolveContext(
+            $this->kernel->getChannel(),
+            $message->getChat(),
+            $message->getFrom()
+        );
 
-        $this->kernel->setSession($session);
+        $this->kernel->setContext($context);
 
         // If there is no interaction in session
         // Try to match intent and run it
         // Otherwise, run interaction
-        if (!$this->isInConversation($session)) {
+        if (!$this->isInConversation($context)) {
             dispatch(
                 new Converse(
                     $this->conversation->matchIntent($message),
@@ -45,7 +48,7 @@ class HandleConversation
         } else {
             dispatch(
                 new Converse(
-                    $session->getInteraction(),
+                    $context->getInteraction(),
                     $message
                 )
             );
@@ -55,12 +58,12 @@ class HandleConversation
     /**
      * Determine if conversation started.
      *
-     * @param Session $session
+     * @param Context $context
      *
      * @return bool
      */
-    private function isInConversation(Session $session): bool
+    private function isInConversation(Context $context): bool
     {
-        return $session->getInteraction() !== null;
+        return $context->getInteraction() !== null;
     }
 }
