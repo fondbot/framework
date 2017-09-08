@@ -7,33 +7,32 @@ namespace FondBot\Foundation\Commands;
 use FondBot\Conversation\Intent;
 use FondBot\Events\MessageReceived;
 use FondBot\Conversation\Interaction;
+use Illuminate\Foundation\Bus\Dispatchable;
 use FondBot\Contracts\Conversation\Conversable;
 
 class Converse
 {
-    private $conversable;
-    private $message;
+    use Dispatchable;
 
-    public function __construct(Conversable $conversable, MessageReceived $message)
+    private $conversable;
+    private $messageReceived;
+
+    public function __construct(Conversable $conversable, MessageReceived $messageReceived)
     {
         $this->conversable = $conversable;
-        $this->message = $message;
+        $this->messageReceived = $messageReceived;
     }
 
     public function handle(): void
     {
         if ($this->conversable instanceof Intent) {
-            $session = kernel()->getSession();
-            $session->setIntent($this->conversable);
-            $session->setInteraction(null);
+            context()->setIntent($this->conversable)->setInteraction(null);
 
-            kernel()->setSession($session);
-
-            $this->conversable->handle($this->message);
+            $this->conversable->handle($this->messageReceived);
         } elseif ($this->conversable instanceof Interaction) {
-            $this->conversable->handle($this->message);
+            $this->conversable->handle($this->messageReceived);
         } else {
-            $this->conversable->handle($this->message);
+            $this->conversable->handle($this->messageReceived);
         }
     }
 }

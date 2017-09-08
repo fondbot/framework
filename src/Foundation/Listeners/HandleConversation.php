@@ -39,14 +39,14 @@ class HandleConversation
         // Try to match intent and run it
         // Otherwise, run interaction
         if (!$this->isInConversation($context)) {
-            dispatch(
+            dispatch_now(
                 new Converse(
                     $this->conversation->matchIntent($message),
                     $message
                 )
             );
         } else {
-            dispatch(
+            dispatch_now(
                 new Converse(
                     $context->getInteraction(),
                     $message

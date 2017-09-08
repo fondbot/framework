@@ -71,10 +71,14 @@ class Context implements Arrayable
      * Set intent.
      *
      * @param Intent $intent
+     *
+     * @return Context
      */
-    public function setIntent(Intent $intent): void
+    public function setIntent(Intent $intent): Context
     {
         $this->intent = $intent;
+
+        return $this;
     }
 
     /**
@@ -91,10 +95,14 @@ class Context implements Arrayable
      * Set interaction.
      *
      * @param Interaction|null $interaction
+     *
+     * @return Context
      */
-    public function setInteraction(?Interaction $interaction): void
+    public function setInteraction(?Interaction $interaction): Context
     {
         $this->interaction = $interaction;
+
+        return $this;
     }
 
     /**
@@ -115,10 +123,14 @@ class Context implements Arrayable
      *
      * @param string $key
      * @param mixed  $value
+     *
+     * @return Context
      */
-    public function set(string $key, $value): void
+    public function set(string $key, $value): Context
     {
         $this->items->put($key, $value);
+
+        return $this;
     }
 
     /**
