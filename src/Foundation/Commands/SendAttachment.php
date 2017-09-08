@@ -6,6 +6,7 @@ namespace FondBot\Foundation\Commands;
 
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
+use FondBot\Channels\Channel;
 use Illuminate\Bus\Queueable;
 use FondBot\Templates\Attachment;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,12 +17,14 @@ class SendAttachment implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, Dispatchable;
 
+    private $channel;
     private $chat;
     private $recipient;
     private $attachment;
 
-    public function __construct(Chat $chat, User $recipient, Attachment $attachment)
+    public function __construct(Channel $channel, Chat $chat, User $recipient, Attachment $attachment)
     {
+        $this->channel = $channel;
         $this->chat = $chat;
         $this->recipient = $recipient;
         $this->attachment = $attachment;
@@ -29,6 +32,7 @@ class SendAttachment implements ShouldQueue
 
     public function handle(): void
     {
-        // TODO
+        $driver = $this->channel->getDriver();
+        $driver->sendAttachment($this->chat, $this->recipient, $this->attachment);
     }
 }

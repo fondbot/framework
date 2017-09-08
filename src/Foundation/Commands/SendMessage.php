@@ -6,6 +6,7 @@ namespace FondBot\Foundation\Commands;
 
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
+use FondBot\Channels\Channel;
 use Illuminate\Bus\Queueable;
 use InvalidArgumentException;
 use FondBot\Contracts\Template;
@@ -17,17 +18,24 @@ class SendMessage implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, Dispatchable;
 
+    private $channel;
     private $chat;
     private $recipient;
     private $text;
     private $template;
 
-    public function __construct(Chat $chat, User $recipient, string $text = null, Template $template = null)
-    {
+    public function __construct(
+        Channel $channel,
+        Chat $chat,
+        User $recipient,
+        string $text = null,
+        Template $template = null
+    ) {
         if ($text === null && $template === null) {
             throw new InvalidArgumentException('Either text or template should be set.');
         }
 
+        $this->channel = $channel;
         $this->chat = $chat;
         $this->recipient = $recipient;
         $this->text = $text;
@@ -36,6 +44,7 @@ class SendMessage implements ShouldQueue
 
     public function handle(): void
     {
-        // TODO
+        $driver = $this->channel->getDriver();
+        $driver->sendMessage($this->chat, $this->recipient, $this->text, $this->template);
     }
 }

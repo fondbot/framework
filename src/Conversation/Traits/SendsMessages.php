@@ -22,6 +22,7 @@ trait SendsMessages
     protected function sendMessage(string $text = null, Template $template = null, int $delay = 0): void
     {
         SendMessage::dispatch(
+            context()->getChannel(),
             context()->getChat(),
             context()->getUser(),
             $text,
@@ -38,6 +39,7 @@ trait SendsMessages
     protected function sendAttachment(Attachment $attachment, int $delay = 0): void
     {
         SendAttachment::dispatch(
+            context()->getChannel(),
             context()->getChat(),
             context()->getUser(),
             $attachment
@@ -54,6 +56,7 @@ trait SendsMessages
     protected function sendRequest(string $endpoint, array $parameters = [], int $delay = 0): void
     {
         SendRequest::dispatch(
+            context()->getChannel(),
             context()->getChat(),
             context()->getUser(),
             $endpoint,

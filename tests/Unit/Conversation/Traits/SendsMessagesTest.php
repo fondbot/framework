@@ -23,6 +23,7 @@ class SendsMessagesTest extends TestCase
         parent::setUp();
 
         $context = $this->mock(Context::class);
+        $context->shouldReceive('getChannel')->atLeast()->once();
         $context->shouldReceive('getChat')->atLeast()->once();
         $context->shouldReceive('getUser')->atLeast()->once();
 
