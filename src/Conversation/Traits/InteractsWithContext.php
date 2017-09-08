@@ -16,7 +16,7 @@ trait InteractsWithContext
      */
     protected function getChat(): Chat
     {
-        return kernel()->getContext()->getChat();
+        return context()->getChat();
     }
 
     /**
@@ -26,7 +26,7 @@ trait InteractsWithContext
      */
     protected function getUser(): User
     {
-        return kernel()->getContext()->getUser();
+        return context()->getUser();
     }
 
     /**

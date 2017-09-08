@@ -37,7 +37,7 @@ abstract class Interaction implements Conversable
      */
     public function handle(MessageReceived $message): void
     {
-        $context = kernel()->getContext();
+        $context = context();
 
         if ($context->getInteraction() instanceof $this) {
             $this->process($message);

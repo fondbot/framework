@@ -79,7 +79,7 @@ class ConversationServiceProvider extends ServiceProvider
     private function registerManager(): void
     {
         $this->app->singleton('conversation', function () {
-            return new ConversationManager($this->app[Cache::class]);
+            return new ConversationManager($this->app, $this->app[Cache::class]);
         });
 
         $this->app->alias('conversation', Manager::class);

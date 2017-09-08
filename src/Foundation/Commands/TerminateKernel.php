@@ -22,13 +22,8 @@ class TerminateKernel
 //            kernel()->clearContext();
 //        }
 
-        // Save session if exists
-        if ($session = $kernel->getSession()) {
-//            SaveSession::dispatch($session);
-        }
-
         // Save context if exists
-        if ($context = $kernel->getContext()) {
+        if ($context = context()) {
 //            SaveContext::dispatch($context);
         }
         //

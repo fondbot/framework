@@ -10,16 +10,19 @@ use FondBot\Channels\Channel;
 use Illuminate\Cache\Repository;
 use FondBot\Events\MessageReceived;
 use FondBot\Contracts\Conversation\Manager;
+use Illuminate\Contracts\Foundation\Application;
 
 class ConversationManager implements Manager
 {
     private $intents = [];
     private $fallbackIntent;
 
+    private $application;
     private $cache;
 
-    public function __construct(Repository $cache)
+    public function __construct(Application $application, Repository $cache)
     {
+        $this->application = $application;
         $this->cache = $cache;
     }
 
@@ -105,6 +108,9 @@ class ConversationManager implements Manager
             $context->setInteraction($value['interaction']);
         }
 
+        // Bind resolved instance to the container
+        $this->application->instance('fondbot.conversation.context', $context);
+
         return $context;
     }
 
@@ -124,5 +130,19 @@ class ConversationManager implements Manager
     private function getCacheKeyForContext(Channel $channel, Chat $chat, User $user): string
     {
         return implode('.', ['context', $channel->getName(), $chat->getId(), $user->getId()]);
+    }
+
+    /**
+     * Get current context.
+     *
+     * @return Context|null
+     */
+    public function getContext(): ?Context
+    {
+        if (!$this->application->has('fondbot.conversation.context')) {
+            return null;
+        }
+
+        return $this->application->get('fondbot.conversation.context');
     }
 }

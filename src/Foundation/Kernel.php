@@ -49,16 +49,6 @@ class Kernel
     }
 
     /**
-     * Get context.
-     *
-     * @return Context|null
-     */
-    public function getContext(): ?Context
-    {
-        return $this->context;
-    }
-
-    /**
      * Set context.
      *
      * @param Context $context

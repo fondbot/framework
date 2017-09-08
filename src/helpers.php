@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use FondBot\Contracts\Conversation\Manager;
+
 if (!function_exists('kernel')) {
     /**
      * Get kernel instance.
@@ -10,7 +12,7 @@ if (!function_exists('kernel')) {
      */
     function kernel()
     {
-        return Illuminate\Container\Container::getInstance()->get(FondBot\Foundation\Kernel::class);
+        return resolve(FondBot\Foundation\Kernel::class);
     }
 }
 
@@ -22,6 +24,9 @@ if (!function_exists('context')) {
      */
     function context(): FondBot\Conversation\Context
     {
-        return kernel()->getContext();
+        /** @var Manager $conversation */
+        $conversation = resolve(Manager::class);
+
+        return $conversation->getContext();
     }
 }

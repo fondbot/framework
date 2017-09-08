@@ -60,4 +60,11 @@ interface Manager
      * @param Context $context
      */
     public function saveContext(Context $context): void;
+
+    /**
+     * Get current context.
+     *
+     * @return Context|null
+     */
+    public function getContext(): ?Context;
 }

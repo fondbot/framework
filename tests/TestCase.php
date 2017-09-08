@@ -38,7 +38,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function setContext(Context $context)
     {
-        $this->kernel->shouldReceive('getContext')->andReturn($context)->atLeast()->once();
+        $this->app->instance('fondbot.conversation.context', $context);
 
         return $this;
     }
