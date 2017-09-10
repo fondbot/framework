@@ -6,7 +6,6 @@ namespace FondBot\Foundation\Commands;
 
 use FondBot\Conversation\Intent;
 use FondBot\Events\MessageReceived;
-use FondBot\Conversation\Interaction;
 use Illuminate\Foundation\Bus\Dispatchable;
 use FondBot\Contracts\Conversation\Conversable;
 
@@ -27,12 +26,8 @@ class Converse
     {
         if ($this->conversable instanceof Intent) {
             context()->setIntent($this->conversable)->setInteraction(null);
-
-            $this->conversable->handle($this->messageReceived);
-        } elseif ($this->conversable instanceof Interaction) {
-            $this->conversable->handle($this->messageReceived);
-        } else {
-            $this->conversable->handle($this->messageReceived);
         }
+
+        $this->conversable->handle($this->messageReceived);
     }
 }
