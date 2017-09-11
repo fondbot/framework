@@ -11,6 +11,11 @@ use FondBot\Conversation\Context;
 
 trait InteractsWithContext
 {
+    /**
+     * Get channel.
+     *
+     * @return Channel
+     */
     protected function getChannel(): Channel
     {
         return $this->context()->getChannel();

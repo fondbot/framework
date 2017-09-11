@@ -7,7 +7,6 @@ namespace FondBot\Foundation\Listeners;
 use FondBot\Foundation\Kernel;
 use FondBot\Conversation\Context;
 use FondBot\Events\MessageReceived;
-use FondBot\Foundation\Commands\Converse;
 use FondBot\Contracts\Conversation\Manager;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -24,33 +23,26 @@ class HandleConversation
         $this->conversation = $conversation;
     }
 
-    public function handle(MessageReceived $message): void
+    public function handle(MessageReceived $messageReceived): void
     {
         /** @var Context $context */
         $context = $this->conversation->resolveContext(
             $this->kernel->getChannel(),
-            $message->getChat(),
-            $message->getFrom()
+            $messageReceived->getChat(),
+            $messageReceived->getFrom()
         );
 
         // If there is no interaction in session
         // Try to match intent and run it
         // Otherwise, run interaction
         if (!$this->isInConversation($context)) {
-            dispatch_now(
-                new Converse(
-                    $this->conversation->matchIntent($message),
-                    $message
-                )
-            );
+            $conversable = $this->conversation->matchIntent($messageReceived);
         } else {
-            dispatch_now(
-                new Converse(
-                    $context->getInteraction(),
-                    $message
-                )
-            );
+            $conversable = $context->getInteraction();
         }
+
+        $this->conversation->setReceivedMessage($messageReceived);
+        $this->conversation->converse($conversable);
     }
 
     /**

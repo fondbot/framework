@@ -76,6 +76,13 @@ interface Manager
     public function getContext(): ?Context;
 
     /**
+     * Define received message.
+     *
+     * @param MessageReceived $messageReceived
+     */
+    public function setReceivedMessage(MessageReceived $messageReceived): void;
+
+    /**
      * Mark conversation as transitioned.
      */
     public function markAsTransitioned(): void;
@@ -86,4 +93,25 @@ interface Manager
      * @return bool
      */
     public function transitioned(): bool;
+
+    /**
+     * Start conversation.
+     *
+     * @param Conversable     $conversable
+     */
+    public function converse(Conversable $conversable): void;
+
+    /**
+     * Transition to intent or interaction.
+     *
+     * @param string $conversable
+     */
+    public function transition(string $conversable): void;
+
+    /**
+     * Restart current dialog.
+     *
+     * @param Conversable $conversable
+     */
+    public function restart(Conversable $conversable): void;
 }

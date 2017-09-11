@@ -4,29 +4,20 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Traits;
 
-use InvalidArgumentException;
-use Illuminate\Container\Container;
-use FondBot\Conversation\Interaction;
+use FondBot\Contracts\Conversation\Manager;
 
 trait Transitions
 {
     /**
-     * Jump to another interaction.
-     *
-     * @param string $interaction
+     * Jump to intent or interaction.
      *
      * @throws \InvalidArgumentException
      */
-    protected function jump(string $interaction): void
+    public static function jump(): void
     {
-        /** @var Interaction $instance */
-        $instance = Container::getInstance()->make($interaction);
-
-        if (!$instance instanceof Interaction) {
-            throw new InvalidArgumentException('Invalid interaction `'.$interaction.'`');
-        }
-
-        // TODO
+        /** @var Manager $conversation */
+        $conversation = resolve(Manager::class);
+        $conversation->transition(static::class);
     }
 
     /**
@@ -34,6 +25,8 @@ trait Transitions
      */
     protected function restart(): void
     {
-        // TODO
+        /** @var Manager $conversation */
+        $conversation = resolve(Manager::class);
+        $conversation->restart($this);
     }
 }
