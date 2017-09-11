@@ -107,11 +107,11 @@ class ConversationManager implements Manager
         $context = new Context($channel, $chat, $user);
 
         if ($value['intent'] !== null) {
-            $context->setIntent($value['intent']);
+            $context->setIntent(resolve($value['intent']));
         }
 
         if ($value['interaction'] !== null) {
-            $context->setInteraction($value['interaction']);
+            $context->setInteraction(resolve($value['interaction']));
         }
 
         // Bind resolved instance to the container

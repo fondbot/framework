@@ -44,6 +44,7 @@ class SendMessage implements ShouldQueue
 
     public function handle(): void
     {
+        logger('SendMessage.handle');
         $driver = $this->channel->getDriver();
         $driver->sendMessage($this->chat, $this->recipient, $this->text, $this->template);
     }
