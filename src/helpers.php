@@ -20,13 +20,23 @@ if (!function_exists('context')) {
     /**
      * Get context.
      *
-     * @return FondBot\Conversation\Context
+     * @param string|null $key
+     *
+     * @param mixed|null  $default
+     *
+     * @return \FondBot\Conversation\Context|mixed
      */
-    function context(): FondBot\Conversation\Context
+    function context(string $key = null, $default = null)
     {
         /** @var Manager $conversation */
         $conversation = resolve(Manager::class);
 
-        return $conversation->getContext();
+        $context = $conversation->getContext();
+
+        if ($key === null) {
+            return $context;
+        }
+
+        return $context->get($key, $default);
     }
 }

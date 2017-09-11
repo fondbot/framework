@@ -6,9 +6,16 @@ namespace FondBot\Conversation\Traits;
 
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
+use FondBot\Channels\Channel;
+use FondBot\Conversation\Context;
 
 trait InteractsWithContext
 {
+    protected function getChannel(): Channel
+    {
+        return $this->context()->getChannel();
+    }
+
     /**
      * Get chat.
      *
@@ -16,7 +23,7 @@ trait InteractsWithContext
      */
     protected function getChat(): Chat
     {
-        return context()->getChat();
+        return $this->context()->getChat();
     }
 
     /**
@@ -26,7 +33,7 @@ trait InteractsWithContext
      */
     protected function getUser(): User
     {
-        return context()->getUser();
+        return $this->context()->getUser();
     }
 
     /**
@@ -35,17 +42,11 @@ trait InteractsWithContext
      * @param string|null $key
      * @param mixed       $default
      *
-     * @return array|mixed
+     * @return Context|mixed
      */
     protected function context(string $key = null, $default = null)
     {
-        $context = context();
-
-        if ($key === null) {
-            return $context;
-        }
-
-        return $context->get($key, $default);
+        return context($key, $default);
     }
 
     /**
@@ -56,8 +57,6 @@ trait InteractsWithContext
      */
     protected function remember(string $key, $value): void
     {
-        $context = context();
-
-        $context->set($key, $value);
+        context()->set($key, $value);
     }
 }

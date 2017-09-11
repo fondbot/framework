@@ -15,16 +15,64 @@ class InteractsWithContextTest extends TestCase
 {
     use InteractsWithContext;
 
-    public function testContext(): void
+    public function testGetChannel()
     {
-        $context = new Context(
-            $this->mock(Channel::class),
-            $this->mock(Chat::class),
-            $this->mock(User::class),
-            ['foo' => 'bar']
+        $channel = $this->mock(Channel::class);
+
+        $this->setContext(
+            new Context(
+                $channel,
+                $this->mock(Chat::class),
+                $this->mock(User::class),
+                ['foo' => 'bar']
+            )
         );
 
-        $this->setContext($context);
+        $this->assertSame($channel, $this->getChannel());
+    }
+
+    public function testGetChat()
+    {
+        $chat = $this->mock(Chat::class);
+
+        $this->setContext(
+            new Context(
+                $this->mock(Channel::class),
+                $chat,
+                $this->mock(User::class),
+                ['foo' => 'bar']
+            )
+        );
+
+        $this->assertSame($chat, $this->getChat());
+    }
+
+    public function testGetUser()
+    {
+        $user = $this->mock(User::class);
+
+        $this->setContext(
+            new Context(
+                $this->mock(Channel::class),
+                $this->mock(Chat::class),
+                $user,
+                ['foo' => 'bar']
+            )
+        );
+
+        $this->assertSame($user, $this->getUser());
+    }
+
+    public function testContext(): void
+    {
+        $this->setContext(
+            new Context(
+                $this->mock(Channel::class),
+                $this->mock(Chat::class),
+                $this->mock(User::class),
+                ['foo' => 'bar']
+            )
+        );
 
         $this->assertSame('bar', $this->context('foo'));
         $this->assertNull($this->context('bar'));
@@ -34,14 +82,14 @@ class InteractsWithContextTest extends TestCase
 
     public function testRemember(): void
     {
-        $context = new Context(
-            $this->mock(Channel::class),
-            $this->mock(Chat::class),
-            $this->mock(User::class),
-            ['foo' => 'bar']
+        $this->setContext(
+            new Context(
+                $this->mock(Channel::class),
+                $this->mock(Chat::class),
+                $this->mock(User::class),
+                ['foo' => 'bar']
+            )
         );
-
-        $this->setContext($context);
 
         $this->remember('some', 'value');
 
