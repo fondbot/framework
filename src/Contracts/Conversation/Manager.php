@@ -62,9 +62,28 @@ interface Manager
     public function saveContext(Context $context): void;
 
     /**
+     * Flush context.
+     *
+     * @param Context $context
+     */
+    public function flushContext(Context $context): void;
+
+    /**
      * Get current context.
      *
      * @return Context|null
      */
     public function getContext(): ?Context;
+
+    /**
+     * Mark conversation as transitioned.
+     */
+    public function markAsTransitioned(): void;
+
+    /**
+     * Determine if conversation has been transitioned.
+     *
+     * @return bool
+     */
+    public function transitioned(): bool;
 }

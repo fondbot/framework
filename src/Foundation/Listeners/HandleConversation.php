@@ -33,8 +33,6 @@ class HandleConversation
             $message->getFrom()
         );
 
-        $this->kernel->setContext($context);
-
         // If there is no interaction in session
         // Try to match intent and run it
         // Otherwise, run interaction

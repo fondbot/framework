@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Foundation;
 
 use FondBot\Channels\Channel;
-use FondBot\Conversation\Context;
 use Illuminate\Contracts\Container\Container;
-use FondBot\Foundation\Commands\TerminateKernel;
 
 class Kernel
 {
@@ -17,9 +15,6 @@ class Kernel
 
     /** @var Channel|null */
     private $channel;
-
-    /** @var Context|null */
-    private $context;
 
     public function __construct(Container $container)
     {
@@ -34,8 +29,6 @@ class Kernel
     public function initialize(Channel $channel): void
     {
         $this->channel = $channel;
-
-        TerminateKernel::dispatch();
     }
 
     /**
@@ -46,15 +39,5 @@ class Kernel
     public function getChannel(): ?Channel
     {
         return $this->channel;
-    }
-
-    /**
-     * Set context.
-     *
-     * @param Context $context
-     */
-    public function setContext(Context $context): void
-    {
-        $this->context = $context;
     }
 }

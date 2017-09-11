@@ -18,6 +18,11 @@ class API
         $this->client = $client;
     }
 
+    /**
+     * Get all available drivers.
+     *
+     * @return Collection
+     */
     public function getDrivers(): Collection
     {
         $response = $this->client->get(self::URL.'/drivers', ['form_params' => ['version' => Kernel::VERSION]]);
@@ -25,6 +30,13 @@ class API
         return collect(json_decode((string) $response->getBody(), true));
     }
 
+    /**
+     * Find driver by name.
+     *
+     * @param string $name
+     *
+     * @return array|null
+     */
     public function findDriver(string $name): ?array
     {
         return $this->getDrivers()->first(function ($item) use ($name) {

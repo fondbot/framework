@@ -20,6 +20,8 @@ class ConversationManager implements Manager
     private $application;
     private $cache;
 
+    private $transitioned = false;
+
     public function __construct(Application $application, Repository $cache)
     {
         $this->application = $application;
@@ -127,9 +129,16 @@ class ConversationManager implements Manager
         );
     }
 
-    private function getCacheKeyForContext(Channel $channel, Chat $chat, User $user): string
+    /**
+     * Flush context.
+     *
+     * @param Context $context
+     */
+    public function flushContext(Context $context): void
     {
-        return implode('.', ['context', $channel->getName(), $chat->getId(), $user->getId()]);
+        $this->cache->forget(
+            $this->getCacheKeyForContext($context->getChannel(), $context->getChat(), $context->getUser())
+        );
     }
 
     /**
@@ -144,5 +153,47 @@ class ConversationManager implements Manager
         }
 
         return $this->application->get('fondbot.conversation.context');
+    }
+
+    /**
+     * Mark conversation as transitioned.
+     */
+    public function markAsTransitioned(): void
+    {
+        $this->transitioned = true;
+    }
+
+    /**
+     * Determine if conversation has been transitioned.
+     *
+     * @return bool
+     */
+    public function transitioned(): bool
+    {
+        return $this->transitioned;
+    }
+
+    public function __destruct()
+    {
+        $context = $this->getContext();
+
+        if ($context === null) {
+            return;
+        }
+
+        // Close session if conversation has not been transitioned
+        if (!$this->transitioned()) {
+            $this->flushContext($context);
+        }
+
+        // Save context if exists
+        if ($context = context()) {
+            $this->saveContext($context);
+        }
+    }
+
+    private function getCacheKeyForContext(Channel $channel, Chat $chat, User $user): string
+    {
+        return implode('.', ['context', $channel->getName(), $chat->getId(), $user->getId()]);
     }
 }
