@@ -251,7 +251,7 @@ class ConversationManager implements Manager
         }
 
         // Save context if exists
-        if ($context = context()) {
+        if ($this->transitioned() && $context = context()) {
             $this->saveContext($context);
         }
     }

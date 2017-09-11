@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace DummyRootNamespaceDummyNamespace;
 
 use FondBot\Conversation\Interaction;
-use FondBot\Drivers\ReceivedMessage;
+use FondBot\Events\MessageReceived;
 
 class DummyClass extends Interaction
 {
     /**
      * Run interaction.
      *
-     * @param ReceivedMessage $message
+     * @param MessageReceived $message
      */
-    public function run(ReceivedMessage $message): void
+    public function run(MessageReceived $message): void
     {
         // Send message, show keyboard or do something else...
     }
@@ -22,9 +22,9 @@ class DummyClass extends Interaction
     /**
      * Process received message.
      *
-     * @param ReceivedMessage $reply
+     * @param MessageReceived $reply
      */
-    public function process(ReceivedMessage $reply): void
+    public function process(MessageReceived $reply): void
     {
         // Process reply to the message you sent in method "run".
     }
