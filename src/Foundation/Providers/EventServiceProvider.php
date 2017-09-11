@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Events;
+namespace FondBot\Foundation\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use FondBot\Events\MessageReceived;
 use Illuminate\Contracts\Events\Dispatcher;
 use FondBot\Foundation\Listeners\HandleConversation;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        parent::register();
+
         /** @var Dispatcher $events */
         $events = $this->app['events'];
 
