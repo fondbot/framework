@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Contracts\Channels;
 
 use FondBot\Channels\Channel;
+use Illuminate\Support\Collection;
 
 /**
  * @mixin \Illuminate\Support\Manager
@@ -21,9 +22,18 @@ interface Manager
     /**
      * Get all channels.
      *
-     * @return array
+     * @return Collection
      */
-    public function all(): array;
+    public function all(): Collection;
+
+    /**
+     * Get channels by driver.
+     *
+     * @param string $driver
+     *
+     * @return Collection
+     */
+    public function getByDriver(string $driver): Collection;
 
     /**
      * Create channel.

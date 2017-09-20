@@ -38,7 +38,16 @@ class ChannelManagerTest extends TestCase
         $manager = new ChannelManager($this->app);
         $manager->register(['foo' => ['foo' => 'bar']]);
 
-        $this->assertSame(['foo' => ['foo' => 'bar']], $manager->all());
+        $this->assertEquals(collect(['foo' => ['foo' => 'bar']]), $manager->all());
+    }
+
+    public function testGetByDriver(): void
+    {
+        $manager = new ChannelManager($this->app);
+        $manager->register(['foo' => ['driver' => 'foo'], 'bar' => ['driver' => FakeDriver::class]]);
+
+        $this->assertEquals(collect(['foo' => ['driver' => 'foo']]), $manager->getByDriver('foo'));
+        $this->assertEquals(collect(['bar' => ['driver' => FakeDriver::class]]), $manager->getByDriver(FakeDriver::class));
     }
 
     /**

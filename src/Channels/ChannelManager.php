@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Channels;
 
 use Illuminate\Support\Manager;
+use Illuminate\Support\Collection;
 use FondBot\Channels\Exceptions\ChannelNotFound;
 use FondBot\Contracts\Channels\Manager as ManagerContract;
 
@@ -16,8 +17,13 @@ use FondBot\Contracts\Channels\Manager as ManagerContract;
  */
 class ChannelManager extends Manager implements ManagerContract
 {
-    /** @var array */
-    private $channels = [];
+    /** @var Collection */
+    private $channels;
+
+    public function __construct()
+    {
+        $this->channels = collect([]);
+    }
 
     /**
      * Register channels.
@@ -26,17 +32,31 @@ class ChannelManager extends Manager implements ManagerContract
      */
     public function register(array $channels): void
     {
-        $this->channels = $channels;
+        $this->channels = collect($channels);
     }
 
     /**
      * Get all channels.
      *
-     * @return array
+     * @return Collection
      */
-    public function all(): array
+    public function all(): Collection
     {
         return $this->channels;
+    }
+
+    /**
+     * Get channels by driver.
+     *
+     * @param string $driver
+     *
+     * @return Collection
+     */
+    public function getByDriver(string $driver): Collection
+    {
+        return $this->channels->filter(function (array $channel) use ($driver) {
+            return $channel['driver'] === $driver;
+        });
     }
 
     /**
