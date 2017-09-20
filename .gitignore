@@ -1,6 +1,5 @@
-/.idea
-/build
-/vendor
-
+/.idea/
+/build/
+/vendor/
 composer.lock
 .phpunit-watcher-cache.php

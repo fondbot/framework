@@ -21,9 +21,7 @@ abstract class Driver implements DriverContract
      */
     public function getShortName(): string
     {
-        $shortName = explode('\\', get_class($this));
-
-        return collect($shortName)->last();
+        return class_basename($this);
     }
 
     /**
@@ -53,6 +51,6 @@ abstract class Driver implements DriverContract
      */
     public function getParameters(): Collection
     {
-        return $this->parameters;
+        return $this->parameters ?? collect($this->getDefaultParameters());
     }
 }

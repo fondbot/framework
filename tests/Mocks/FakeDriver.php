@@ -35,7 +35,7 @@ class FakeDriver extends Driver
      */
     public function getDefaultParameters(): array
     {
-        return ['token' => str_random()];
+        return ['foo' => '', 'token' => str_random()];
     }
 
     /**

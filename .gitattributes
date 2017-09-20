@@ -1,6 +1,4 @@
 * text=auto
-*.css linguist-vendored
-*.scss linguist-vendored
 
 .editorconfig export-ignore
 .gitattributes export-ignore
