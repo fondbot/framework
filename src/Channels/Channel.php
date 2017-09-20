@@ -34,4 +34,14 @@ class Channel
     {
         return $this->driver;
     }
+
+    /**
+     * Get webhook URL.
+     *
+     * @return string
+     */
+    public function getWebhookUrl(): string
+    {
+        return route('fondbot.webhook', $this->name);
+    }
 }
