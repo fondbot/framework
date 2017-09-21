@@ -7,12 +7,14 @@ namespace FondBot\Templates\Keyboard;
 class ReplyButton extends Button
 {
     /**
-     * Get name.
+     * Create a new reply button instance.
      *
-     * @return string
+     * @param string $label
+     *
+     * @return static
      */
-    public function getName(): string
+    public static function create(string $label)
     {
-        return 'ReplyButton';
+        return new static($label);
     }
 }

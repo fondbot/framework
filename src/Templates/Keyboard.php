@@ -10,7 +10,25 @@ use FondBot\Templates\Keyboard\Button;
 class Keyboard implements Template
 {
     /** @var Button[] */
-    private $buttons = [];
+    private $buttons;
+
+    /**
+     * @param Button[] $buttons
+     */
+    public function __construct(array $buttons = [])
+    {
+        $this->buttons = $buttons;
+    }
+
+    /**
+     * @param Button[] $buttons
+     *
+     * @return static
+     */
+    public static function create(array $buttons = [])
+    {
+        return new static($buttons);
+    }
 
     /**
      * Get name.

@@ -10,6 +10,21 @@ abstract class Button implements Template
 {
     protected $label;
 
+    public function __construct(string $label)
+    {
+        $this->label = $label;
+    }
+
+    /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return class_basename($this);
+    }
+
     /**
      * Get label.
      *

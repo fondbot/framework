@@ -8,14 +8,24 @@ class PayloadButton extends Button
 {
     private $payload;
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName(): string
+    public function __construct(string $label, $payload)
     {
-        return 'PayloadButton';
+        parent::__construct($label);
+
+        $this->payload = $payload;
+    }
+
+    /**
+     * Create a new payload button instance.
+     *
+     * @param string $label
+     * @param $payload
+     *
+     * @return static
+     */
+    public static function create(string $label, $payload)
+    {
+        return new static($label, $payload);
     }
 
     /**

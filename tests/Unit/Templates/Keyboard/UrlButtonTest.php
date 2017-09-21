@@ -15,10 +15,7 @@ class UrlButtonTest extends TestCase
         $url = $this->faker()->url;
         $parameters = ['foo' => 'bar'];
 
-        $button = (new UrlButton)
-            ->setLabel($label)
-            ->setUrl($url)
-            ->setParameters($parameters);
+        $button = UrlButton::create($label, $url, $parameters);
 
         $this->assertSame('UrlButton', $button->getName());
         $this->assertSame($label, $button->getLabel());
