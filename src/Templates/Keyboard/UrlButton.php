@@ -7,14 +7,12 @@ namespace FondBot\Templates\Keyboard;
 class UrlButton extends Button
 {
     private $url;
-    private $parameters;
 
     public function __construct(string $label, string $url, array $parameters = [])
     {
-        parent::__construct($label);
+        parent::__construct($label, $parameters);
 
         $this->url = $url;
-        $this->parameters = $parameters;
     }
 
     public static function create(string $label, string $url, array $parameters = [])
@@ -42,30 +40,6 @@ class UrlButton extends Button
     public function setUrl($url): UrlButton
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Get parameters.
-     *
-     * @return array
-     */
-    public function getParameters(): array
-    {
-        return $this->parameters;
-    }
-
-    /**
-     * Set parameters.
-     *
-     * @param mixed $parameters
-     *
-     * @return UrlButton
-     */
-    public function setParameters(array $parameters): UrlButton
-    {
-        $this->parameters = $parameters;
 
         return $this;
     }

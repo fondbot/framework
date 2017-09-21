@@ -9,10 +9,12 @@ use FondBot\Contracts\Template;
 abstract class Button implements Template
 {
     protected $label;
+    protected $parameters;
 
-    public function __construct(string $label)
+    public function __construct(string $label, array $parameters = [])
     {
         $this->label = $label;
+        $this->parameters = $parameters;
     }
 
     /**
@@ -42,9 +44,33 @@ abstract class Button implements Template
      *
      * @return static
      */
-    public function setLabel(string $label)
+    public function setLabel(string $label): Button
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get button parameters.
+     *
+     * @return array
+     */
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * Set parameters.
+     *
+     * @param array $parameters
+     *
+     * @return static
+     */
+    public function setParameters(array $parameters): Button
+    {
+        $this->parameters = $parameters;
 
         return $this;
     }

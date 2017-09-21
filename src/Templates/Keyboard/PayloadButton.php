@@ -8,9 +8,9 @@ class PayloadButton extends Button
 {
     private $payload;
 
-    public function __construct(string $label, $payload)
+    public function __construct(string $label, $payload, array $parameters = [])
     {
-        parent::__construct($label);
+        parent::__construct($label, $parameters);
 
         $this->payload = $payload;
     }
@@ -19,13 +19,14 @@ class PayloadButton extends Button
      * Create a new payload button instance.
      *
      * @param string $label
-     * @param $payload
+     * @param mixed  $payload
+     * @param array  $parameters
      *
      * @return static
      */
-    public static function create(string $label, $payload)
+    public static function create(string $label, $payload, array $parameters = [])
     {
-        return new static($label, $payload);
+        return new static($label, $payload, $parameters);
     }
 
     /**
