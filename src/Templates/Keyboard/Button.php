@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Templates\Keyboard;
 
 use FondBot\Contracts\Template;
+use Illuminate\Support\Collection;
 
 abstract class Button implements Template
 {
@@ -14,7 +15,7 @@ abstract class Button implements Template
     public function __construct(string $label, array $parameters = [])
     {
         $this->label = $label;
-        $this->parameters = $parameters;
+        $this->parameters = collect($parameters);
     }
 
     /**
@@ -54,9 +55,9 @@ abstract class Button implements Template
     /**
      * Get button parameters.
      *
-     * @return array
+     * @return Collection
      */
-    public function getParameters(): array
+    public function getParameters(): Collection
     {
         return $this->parameters;
     }

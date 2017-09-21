@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Contracts;
 
+use Illuminate\Support\Collection;
+
 interface Template
 {
     /**
@@ -16,7 +18,7 @@ interface Template
     /**
      * Get parameters.
      *
-     * @return array
+     * @return Collection
      */
-    public function getParameters(): array;
+    public function getParameters(): Collection;
 }

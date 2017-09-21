@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Templates;
 
 use FondBot\Contracts\Template;
+use Illuminate\Support\Collection;
 use FondBot\Templates\Keyboard\Button;
 
 class Keyboard implements Template
@@ -20,7 +21,7 @@ class Keyboard implements Template
     public function __construct(array $buttons = [], array $parameters = [])
     {
         $this->buttons = $buttons;
-        $this->parameters = $parameters;
+        $this->parameters = collect($parameters);
     }
 
     /**
@@ -71,9 +72,9 @@ class Keyboard implements Template
     /**
      * Get keyboard parameters.
      *
-     * @return array
+     * @return Collection
      */
-    public function getParameters(): array
+    public function getParameters(): Collection
     {
         return $this->parameters;
     }

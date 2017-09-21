@@ -22,6 +22,6 @@ class KeyboardTest extends TestCase
         $this->assertInstanceOf(Keyboard::class, $keyboard);
         $this->assertSame('Keyboard', $keyboard->getName());
         $this->assertSame($buttons, $keyboard->getButtons());
-        $this->assertSame(['foo' => 'bar'], $keyboard->getParameters());
+        $this->assertEquals(collect(['foo' => 'bar']), $keyboard->getParameters());
     }
 }
