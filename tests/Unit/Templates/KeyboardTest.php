@@ -17,12 +17,11 @@ class KeyboardTest extends TestCase
             $this->mock(Button::class),
         ];
 
-        $keyboard = (new Keyboard)
-            ->addButton($buttons[0])
-            ->addButton($buttons[1]);
+        $keyboard = Keyboard::create($buttons, ['foo' => 'bar']);
 
         $this->assertInstanceOf(Keyboard::class, $keyboard);
         $this->assertSame('Keyboard', $keyboard->getName());
         $this->assertSame($buttons, $keyboard->getButtons());
+        $this->assertSame(['foo' => 'bar'], $keyboard->getParameters());
     }
 }

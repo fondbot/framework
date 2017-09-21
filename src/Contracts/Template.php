@@ -12,4 +12,11 @@ interface Template
      * @return string
      */
     public function getName(): string;
+
+    /**
+     * Get parameters.
+     *
+     * @return array
+     */
+    public function getParameters(): array;
 }
