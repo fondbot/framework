@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Drivers;
 
-use Illuminate\Contracts\Support\Arrayable;
 use stdClass;
 use JsonMapper;
+use Illuminate\Contracts\Support\Arrayable;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;

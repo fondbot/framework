@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Contracts\Drivers;
+namespace FondBot\Drivers;
 
 use RuntimeException;
 use FondBot\Contracts\Template;
