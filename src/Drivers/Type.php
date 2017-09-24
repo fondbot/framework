@@ -6,24 +6,48 @@ namespace FondBot\Drivers;
 
 use stdClass;
 use JsonMapper;
+use FondBot\Contracts\Template;
 use Illuminate\Contracts\Support\Arrayable;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 
-abstract class Type implements Arrayable
+abstract class Type
 {
     /**
-     * Create a new instance from json.
+     * Create type from template.
+     *
+     * @param Template|Template[] $templates
+     *
+     * @return Type|Type[]|mixed
+     */
+    public static function createFromTemplate($templates)
+    {
+        $callback = function (Template $template) {
+            $to = static::class;
+
+            return $to::create($template);
+        };
+
+        if (!is_array($templates)) {
+            return $callback($templates);
+        }
+
+        return collect($templates)->transform($callback)->toArray();
+    }
+
+    /**
+     * Create type from json.
      *
      * @param stdClass|array|Arrayable $value
      * @param bool                     $array
      *
      * @return Type|static|stdClass|array
      */
-    public static function fromJson($value, bool $array = false)
+    public static function createFromJson($value, bool $array = false)
     {
-        if (is_array($value)) {
+        if ($value instanceof Arrayable) {
+            $value = $value->toArray();
+        }
+
+        if (is_array($value) || is_object($value)) {
             $value = json_decode(json_encode($value));
         }
 
@@ -31,18 +55,5 @@ abstract class Type implements Arrayable
         $mapper = new JsonMapper;
 
         return $array ? $mapper->mapArray($value, [], $class) : $mapper->map($value, new $class);
-    }
-
-    /**
-     * Get the instance as an array.
-     *
-     * @return array
-     */
-    public function toArray(): ?array
-    {
-        $normalizer = new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter);
-        $serializer = new Serializer([$normalizer]);
-
-        return $serializer->normalize($this);
     }
 }

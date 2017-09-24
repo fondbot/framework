@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Channels;
 
 use Illuminate\Support\Collection;
+use FondBot\Drivers\TemplateCompiler;
 use FondBot\Contracts\Channels\Driver as DriverContract;
 
 abstract class Driver implements DriverContract
@@ -52,5 +53,15 @@ abstract class Driver implements DriverContract
     public function getParameters(): Collection
     {
         return $this->parameters ?? collect($this->getDefaultParameters());
+    }
+
+    /**
+     * Get template compiler instance.
+     *
+     * @return TemplateCompiler|null
+     */
+    public function getTemplateCompiler(): ?TemplateCompiler
+    {
+        return null;
     }
 }

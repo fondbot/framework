@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use FondBot\Contracts\Template;
 use FondBot\Templates\Attachment;
 use Illuminate\Support\Collection;
+use FondBot\Drivers\TemplateCompiler;
 
 interface Driver
 {
@@ -58,6 +59,13 @@ interface Driver
     public function getParameters(): Collection;
 
     /**
+     * Get template compiler instance.
+     *
+     * @return TemplateCompiler|null
+     */
+    public function getTemplateCompiler(): ?TemplateCompiler;
+
+    /**
      * Create event based on incoming request.
      *
      * @param Request $request
@@ -69,9 +77,9 @@ interface Driver
     /**
      * Send message.
      *
-     * @param Chat          $chat
-     * @param User          $recipient
-     * @param string        $text
+     * @param Chat $chat
+     * @param User $recipient
+     * @param string $text
      * @param Template|null $template
      */
     public function sendMessage(Chat $chat, User $recipient, string $text, Template $template = null): void;
@@ -79,8 +87,8 @@ interface Driver
     /**
      * Send attachment.
      *
-     * @param Chat       $chat
-     * @param User       $recipient
+     * @param Chat $chat
+     * @param User $recipient
      * @param Attachment $attachment
      */
     public function sendAttachment(Chat $chat, User $recipient, Attachment $attachment): void;
@@ -88,10 +96,10 @@ interface Driver
     /**
      * Send low-level request.
      *
-     * @param Chat   $chat
-     * @param User   $recipient
+     * @param Chat $chat
+     * @param User $recipient
      * @param string $endpoint
-     * @param array  $parameters
+     * @param array $parameters
      */
     public function sendRequest(Chat $chat, User $recipient, string $endpoint, array $parameters = []): void;
 }
