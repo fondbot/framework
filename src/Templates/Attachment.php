@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Templates;
 
+use Illuminate\Support\Collection;
+
 class Attachment
 {
     public const TYPE_FILE = 'file';
@@ -14,24 +16,25 @@ class Attachment
     private $type;
     private $path;
     private $metadata;
+    private $parameters;
 
-    /**
-     * Get type.
-     *
-     * @return string
-     */
+    public function __construct(string $type, string $path, array $parameters = [])
+    {
+        $this->type = $type;
+        $this->path = $path;
+        $this->parameters = collect($parameters);
+    }
+
+    public static function create(string $type, string $path, array $parameters = [])
+    {
+        return new static($type, $path, $parameters);
+    }
+
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * Set type.
-     *
-     * @param string $type
-     *
-     * @return Attachment
-     */
     public function setType(string $type): Attachment
     {
         $this->type = $type;
@@ -39,23 +42,11 @@ class Attachment
         return $this;
     }
 
-    /**
-     * Get path.
-     *
-     * @return string
-     */
     public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * Set path.
-     *
-     * @param string $path
-     *
-     * @return Attachment
-     */
     public function setPath(string $path): Attachment
     {
         $this->path = $path;
@@ -63,23 +54,11 @@ class Attachment
         return $this;
     }
 
-    /**
-     * Get metadata.
-     *
-     * @return array
-     */
     public function getMetadata(): array
     {
         return $this->metadata;
     }
 
-    /**
-     * Set metadata.
-     *
-     * @param array $metadata
-     *
-     * @return Attachment
-     */
     public function setMetadata(array $metadata): Attachment
     {
         $this->metadata = $metadata;
@@ -87,11 +66,18 @@ class Attachment
         return $this;
     }
 
-    /**
-     * Get all types.
-     *
-     * @return array
-     */
+    public function getParameters(): Collection
+    {
+        return $this->parameters;
+    }
+
+    public function setParameters(array $parameters): Attachment
+    {
+        $this->parameters = collect($parameters);
+
+        return $this;
+    }
+
     public static function possibleTypes(): array
     {
         return [

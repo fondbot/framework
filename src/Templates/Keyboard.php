@@ -35,19 +35,12 @@ class Keyboard implements Template
         return new static($buttons, $parameters);
     }
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return 'Keyboard';
     }
 
     /**
-     * Get buttons.
-     *
      * @return Button[]
      */
     public function getButtons(): array
@@ -55,13 +48,6 @@ class Keyboard implements Template
         return $this->buttons;
     }
 
-    /**
-     * Add button.
-     *
-     * @param Button $button
-     *
-     * @return Keyboard
-     */
     public function addButton(Button $button): Keyboard
     {
         $this->buttons[] = $button;
@@ -69,23 +55,11 @@ class Keyboard implements Template
         return $this;
     }
 
-    /**
-     * Get keyboard parameters.
-     *
-     * @return Collection
-     */
     public function getParameters(): Collection
     {
         return $this->parameters;
     }
 
-    /**
-     * Set keyboard parameters.
-     *
-     * @param array $parameters
-     *
-     * @return Keyboard
-     */
     public function setParameters(array $parameters): Keyboard
     {
         $this->parameters = $parameters;

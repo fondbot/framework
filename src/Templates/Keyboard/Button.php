@@ -71,7 +71,7 @@ abstract class Button implements Template
      */
     public function setParameters(array $parameters): Button
     {
-        $this->parameters = $parameters;
+        $this->parameters = collect($parameters);
 
         return $this;
     }
