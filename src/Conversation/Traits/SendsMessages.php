@@ -13,13 +13,13 @@ use FondBot\Foundation\Commands\SendAttachment;
 trait SendsMessages
 {
     /**
-     * Send message to user.
+     * Reply to user.
      *
      * @param string|null   $text
      * @param Template|null $template
      * @param int           $delay
      */
-    protected function sendMessage(string $text = null, Template $template = null, int $delay = 0): void
+    protected function reply(string $text = null, Template $template = null, int $delay = 0): void
     {
         SendMessage::dispatch(
             context()->getChannel(),

@@ -30,20 +30,20 @@ class SendsMessagesTest extends TestCase
         $this->setContext($context);
     }
 
-    public function testSendMessage(): void
+    public function testReply(): void
     {
         Bus::fake();
 
-        $this->sendMessage($this->faker()->text, $this->mock(Template::class));
+        $this->reply($this->faker()->text, $this->mock(Template::class));
 
         Bus::assertDispatched(SendMessage::class);
     }
 
-    public function testSendMessageWithDelay(): void
+    public function testReplyWithDelay(): void
     {
         Bus::fake();
 
-        $this->sendMessage($this->faker()->text, $this->mock(Template::class), random_int(1, 10));
+        $this->reply($this->faker()->text, $this->mock(Template::class), random_int(1, 10));
 
         Bus::assertDispatched(SendMessage::class);
     }

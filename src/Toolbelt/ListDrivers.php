@@ -10,8 +10,8 @@ use FondBot\Channels\ChannelManager;
 
 class ListDrivers extends Command
 {
-    protected $signature = 'fondbot:driver-list';
-    protected $description = 'Get list of installed drivers';
+    protected $signature = 'driver:list';
+    protected $description = 'List add installed drivers';
 
     public function handle(API $api, ChannelManager $manager): void
     {

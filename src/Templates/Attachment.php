@@ -15,7 +15,6 @@ class Attachment
 
     private $type;
     private $path;
-    private $metadata;
     private $parameters;
 
     public function __construct(string $type, string $path, array $parameters = [])
@@ -50,18 +49,6 @@ class Attachment
     public function setPath(string $path): Attachment
     {
         $this->path = $path;
-
-        return $this;
-    }
-
-    public function getMetadata(): array
-    {
-        return $this->metadata;
-    }
-
-    public function setMetadata(array $metadata): Attachment
-    {
-        $this->metadata = $metadata;
 
         return $this;
     }

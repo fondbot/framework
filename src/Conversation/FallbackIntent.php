@@ -27,6 +27,6 @@ class FallbackIntent extends Intent
             'My developer did not teach to do that.',
         ])->random();
 
-        $this->sendMessage($text);
+        $this->reply($text);
     }
 }

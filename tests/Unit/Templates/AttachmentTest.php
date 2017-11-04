@@ -16,14 +16,11 @@ class AttachmentTest extends TestCase
      */
     public function test(string $type)
     {
-        $attachment = (new Attachment)
-            ->setType($type)
-            ->setPath($path = $this->faker()->url)
-            ->setMetadata($metadata = ['foo' => 'bar']);
+        $attachment = Attachment::create($type, $path = $this->faker()->url, $parameters = ['foo' => 'bar']);
 
         $this->assertSame($type, $attachment->getType());
         $this->assertSame($path, $attachment->getPath());
-        $this->assertSame($metadata, $attachment->getMetadata());
+        $this->assertSame($parameters, $attachment->getParameters()->toArray());
     }
 
     public function testPossibleTypes()

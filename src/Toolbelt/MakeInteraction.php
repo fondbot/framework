@@ -8,7 +8,7 @@ use Illuminate\Console\GeneratorCommand;
 
 class MakeInteraction extends GeneratorCommand
 {
-    protected $name = 'fondbot:make-interaction';
+    protected $name = 'make:interaction';
     protected $description = 'Create a new interaction class';
     protected $type = 'Interaction';
 
