@@ -6,6 +6,7 @@ namespace FondBot\Drivers;
 
 use stdClass;
 use JsonMapper;
+use RuntimeException;
 use FondBot\Contracts\Template;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -55,5 +56,15 @@ abstract class Type
         $mapper = new JsonMapper;
 
         return $array ? $mapper->mapArray($value, [], $class) : $mapper->map($value, new $class);
+    }
+
+    /**
+     * Convert type to native format.
+     *
+     * @return mixed
+     */
+    public function toNative()
+    {
+        throw new RuntimeException('This type does not support convertation to native driver format.');
     }
 }
