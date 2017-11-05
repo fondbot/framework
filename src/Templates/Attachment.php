@@ -29,6 +29,26 @@ class Attachment
         return new static($type, $path, $parameters);
     }
 
+    public static function file(string $path, array $parameters = [])
+    {
+        return new static(self::TYPE_FILE, $path, $parameters);
+    }
+
+    public static function image(string $path, array $parameters = [])
+    {
+        return new static(self::TYPE_IMAGE, $path, $parameters);
+    }
+
+    public static function audio(string $path, array $parameters = [])
+    {
+        return new static(self::TYPE_AUDIO, $path, $parameters);
+    }
+
+    public static function video(string $path, array $parameters = [])
+    {
+        return new static(self::TYPE_VIDEO, $path, $parameters);
+    }
+
     public function getType(): string
     {
         return $this->type;
