@@ -23,9 +23,9 @@ abstract class TemplateCompiler
      *
      * @param Template $template
      *
-     * @return Type|null
+     * @return Type|mixed|null
      */
-    public function compile(Template $template): ?Type
+    public function compile(Template $template)
     {
         // Otherwise, we look for a compile method
         $method = 'compile'.ucfirst($template->getName());
@@ -33,6 +33,9 @@ abstract class TemplateCompiler
             return null;
         }
 
-        return $this->$method($template);
+        /** @var Type $type */
+        $type = $this->$method($template);
+
+        return $type->toNative() ?? $type;
     }
 }

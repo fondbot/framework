@@ -6,7 +6,6 @@ namespace FondBot\Drivers;
 
 use stdClass;
 use JsonMapper;
-use RuntimeException;
 use FondBot\Contracts\Template;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -65,6 +64,6 @@ abstract class Type
      */
     public function toNative()
     {
-        throw new RuntimeException('This type does not support convertation to native driver format.');
+        return null;
     }
 }
