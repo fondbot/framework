@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
+use Illuminate\Support\Collection;
+
 class User
 {
     private $id;
@@ -16,34 +18,24 @@ class User
         $this->id = $id;
         $this->name = $name;
         $this->username = $username;
-        $this->data = $data;
+        $this->data = collect($data);
     }
 
-    /**
-     * Identifier.
-     *
-     * @return string
-     */
+    public static function create(string $id, string $name = null, string $username = null, array $data = [])
+    {
+        return new static($id, $name, $username, $data);
+    }
+
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * Full name.
-     *
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * Username.
-     *
-     * @return string|null
-     */
     public function getUsername(): ?string
     {
         return $this->username;
@@ -52,9 +44,9 @@ class User
     /**
      * Additional user information.
      *
-     * @return array
+     * @return Collection
      */
-    public function getData(): array
+    public function getData(): Collection
     {
         return $this->data;
     }

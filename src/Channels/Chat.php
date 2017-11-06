@@ -20,31 +20,21 @@ class Chat
         $this->type = $type;
     }
 
-    /**
-     * Get chat identifier.
-     *
-     * @return string
-     */
+    public static function create(string $id, string $title = null, string $type = self::TYPE_PRIVATE)
+    {
+        return new static($id, $title, $type);
+    }
+
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * Get title of the chat.
-     *
-     * @return string
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * Get type of the chat.
-     *
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;

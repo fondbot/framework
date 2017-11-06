@@ -70,7 +70,7 @@ return PhpCsFixer\Config::create()
         'phpdoc_types' => true,
         'phpdoc_var_without_name' => true,
         'psr4' => true,
-        'self_accessor' => true,
+        'self_accessor' => false,
         'short_scalar_cast' => true,
         'single_blank_line_before_namespace' => true,
         'single_quote' => true,

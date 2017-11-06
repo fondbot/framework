@@ -32,43 +32,25 @@ class ConversationManager implements Manager
         $this->cache = $cache;
     }
 
-    /**
-     * Register intent.
-     *
-     * @param string $class
-     */
+    /** {@inheritdoc} */
     public function registerIntent(string $class): void
     {
         $this->intents[] = $class;
     }
 
-    /**
-     * Register fallback intent.
-     *
-     * @param string $class
-     */
+    /** {@inheritdoc} */
     public function registerFallbackIntent(string $class): void
     {
         $this->fallbackIntent = $class;
     }
 
-    /**
-     * Get all registered intents.
-     *
-     * @return array
-     */
+    /** {@inheritdoc} */
     public function getIntents(): array
     {
         return $this->intents;
     }
 
-    /**
-     * Match intent by received message.
-     *
-     * @param MessageReceived $messageReceived
-     *
-     * @return Intent|null
-     */
+    /** {@inheritdoc} */
     public function matchIntent(MessageReceived $messageReceived): ?Intent
     {
         foreach ($this->intents as $intent) {
@@ -86,15 +68,7 @@ class ConversationManager implements Manager
         return resolve($this->fallbackIntent);
     }
 
-    /**
-     * Resolve conversation context.
-     *
-     * @param Channel $channel
-     * @param Chat    $chat
-     * @param User    $user
-     *
-     * @return Context|null
-     */
+    /** {@inheritdoc} */
     public function resolveContext(Channel $channel, Chat $chat, User $user): Context
     {
         $value = $this->cache->get($this->getCacheKeyForContext($channel, $chat, $user), [
@@ -120,11 +94,7 @@ class ConversationManager implements Manager
         return $context;
     }
 
-    /**
-     * Save context.
-     *
-     * @param Context $context
-     */
+    /** {@inheritdoc} */
     public function saveContext(Context $context): void
     {
         $this->cache->forever(
@@ -133,11 +103,7 @@ class ConversationManager implements Manager
         );
     }
 
-    /**
-     * Flush context.
-     *
-     * @param Context $context
-     */
+    /** {@inheritdoc} */
     public function flushContext(Context $context): void
     {
         $this->cache->forget(
@@ -145,11 +111,7 @@ class ConversationManager implements Manager
         );
     }
 
-    /**
-     * Get current context.
-     *
-     * @return Context|null
-     */
+    /** {@inheritdoc} */
     public function getContext(): ?Context
     {
         if (!$this->application->has('fondbot.conversation.context')) {
@@ -159,39 +121,25 @@ class ConversationManager implements Manager
         return $this->application->get('fondbot.conversation.context');
     }
 
-    /**
-     * Define received message.
-     *
-     * @param MessageReceived $messageReceived
-     */
+    /** {@inheritdoc} */
     public function setReceivedMessage(MessageReceived $messageReceived): void
     {
         $this->messageReceived = $messageReceived;
     }
 
-    /**
-     * Mark conversation as transitioned.
-     */
+    /** {@inheritdoc} */
     public function markAsTransitioned(): void
     {
         $this->transitioned = true;
     }
 
-    /**
-     * Determine if conversation has been transitioned.
-     *
-     * @return bool
-     */
+    /** {@inheritdoc} */
     public function transitioned(): bool
     {
         return $this->transitioned;
     }
 
-    /**
-     * Start conversation.
-     *
-     * @param Conversable $conversable
-     */
+    /** {@inheritdoc} */
     public function converse(Conversable $conversable): void
     {
         if ($conversable instanceof Intent) {
@@ -201,11 +149,7 @@ class ConversationManager implements Manager
         $conversable->handle($this->messageReceived);
     }
 
-    /**
-     * Jump to interaction.
-     *
-     * @param string $conversable
-     */
+    /** {@inheritdoc} */
     public function transition(string $conversable): void
     {
         /** @var Interaction $instance */
@@ -219,11 +163,7 @@ class ConversationManager implements Manager
         $this->markAsTransitioned();
     }
 
-    /**
-     * Restart current dialog.
-     *
-     * @param Conversable $conversable
-     */
+    /** {@inheritdoc} */
     public function restart(Conversable $conversable): void
     {
         if ($conversable instanceof Intent) {

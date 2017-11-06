@@ -21,7 +21,7 @@ class UserTest extends TestCase
         $this->assertSame($id, $user->getId());
         $this->assertSame($name, $user->getName());
         $this->assertSame($username, $user->getUsername());
-        $this->assertSame($data, $user->getData());
+        $this->assertSame($data, $user->getData()->toArray());
     }
 
     public function testAcceptsNullsForNameAndUsername()

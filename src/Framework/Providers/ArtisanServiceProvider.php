@@ -41,7 +41,6 @@ class ArtisanServiceProvider extends BaseArtisanServiceProvider
         'ScheduleFinish' => ScheduleFinishCommand::class,
         'ScheduleRun' => ScheduleRunCommand::class,
         'StorageLink' => 'command.storage.link',
-        'Up' => 'command.up',
     ];
 
     /**
