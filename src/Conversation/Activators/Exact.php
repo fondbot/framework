@@ -10,8 +10,8 @@ use FondBot\Contracts\Conversation\Activator;
 
 class Exact implements Activator
 {
-    private $value;
-    private $caseSensitive;
+    protected $value;
+    protected $caseSensitive;
 
     public function __construct(string $value, bool $caseSensitive = false)
     {

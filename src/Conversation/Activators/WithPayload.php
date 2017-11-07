@@ -9,7 +9,7 @@ use FondBot\Contracts\Conversation\Activator;
 
 class WithPayload implements Activator
 {
-    private $value;
+    protected $value;
 
     public function __construct(string $value)
     {

@@ -9,7 +9,7 @@ use FondBot\Contracts\Conversation\Activator;
 
 class Contains implements Activator
 {
-    private $needles;
+    protected $needles;
 
     /**
      * @param array|string $needles

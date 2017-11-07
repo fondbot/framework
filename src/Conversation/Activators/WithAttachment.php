@@ -9,7 +9,7 @@ use FondBot\Contracts\Conversation\Activator;
 
 class WithAttachment implements Activator
 {
-    private $type;
+    protected $type;
 
     public function __construct(string $type = null)
     {

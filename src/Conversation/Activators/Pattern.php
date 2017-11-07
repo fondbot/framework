@@ -10,7 +10,7 @@ use FondBot\Contracts\Conversation\Activator;
 
 class Pattern implements Activator
 {
-    private $value;
+    protected $value;
 
     public function __construct(string $value)
     {

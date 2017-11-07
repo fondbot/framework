@@ -10,8 +10,8 @@ use FondBot\Contracts\Conversation\Activator;
 
 class InArray implements Activator
 {
-    private $values;
-    private $strict;
+    protected $values;
+    protected $strict;
 
     /**
      * InArray constructor.
