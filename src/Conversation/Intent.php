@@ -21,7 +21,7 @@ abstract class Intent implements Conversable
     /**
      * Intent activators.
      *
-     * @return Activator[]
+     * @return \FondBot\Contracts\Conversation\Activator[]
      */
     abstract public function activators(): array;
 

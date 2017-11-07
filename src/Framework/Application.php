@@ -22,12 +22,6 @@ class Application extends BaseApplication
     }
 
     /** {@inheritdoc} */
-    public function configPath($path = ''): string
-    {
-        return $this->basePath('vendor/fondbot/framework/config');
-    }
-
-    /** {@inheritdoc} */
     protected function registerBaseBindings(): void
     {
         parent::registerBaseBindings();

@@ -13,7 +13,7 @@ class DummyClass extends Intent
     /**
      * Intent activators.
      *
-     * @return Activator[]
+     * @return \FondBot\Contracts\Conversation\Activator[]
      */
     public function activators(): array
     {
