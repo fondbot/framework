@@ -2,36 +2,28 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation\Traits;
+namespace FondBot\Conversation;
 
 use Illuminate\Support\Collection;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\InArray;
 use FondBot\Conversation\Activators\Pattern;
 use FondBot\Conversation\Activators\Contains;
-use FondBot\Conversation\Activators\Activator;
 use FondBot\Conversation\Activators\WithPayload;
 use FondBot\Conversation\Activators\WithAttachment;
 
-trait HasActivators
+class Activator
 {
-    /**
-     * Intent activators.
-     *
-     * @return Activator[]
-     */
-    abstract public function activators(): array;
-
     /**
      * Create "Exact" activator.
      *
      * @param string $value
      *
-     * @param bool   $caseSensitive
+     * @param bool $caseSensitive
      *
      * @return Exact
      */
-    protected function exact(string $value, bool $caseSensitive = false): Exact
+    public static function exact(string $value, bool $caseSensitive = false): Exact
     {
         return new Exact($value, $caseSensitive);
     }
@@ -41,7 +33,7 @@ trait HasActivators
      *
      * @return Contains
      */
-    protected function contains($needles): Contains
+    public static function contains($needles): Contains
     {
         return new Contains($needles);
     }
@@ -53,7 +45,7 @@ trait HasActivators
      *
      * @return Pattern
      */
-    protected function pattern(string $value): Pattern
+    public static function pattern(string $value): Pattern
     {
         return new Pattern($value);
     }
@@ -62,11 +54,11 @@ trait HasActivators
      * Create "InArray" activator.
      *
      * @param array|Collection $values
-     * @param bool             $strict
+     * @param bool $strict
      *
      * @return InArray
      */
-    protected function inArray($values, bool $strict = true): InArray
+    public static function inArray($values, bool $strict = true): InArray
     {
         return new InArray($values, $strict);
     }
@@ -78,7 +70,7 @@ trait HasActivators
      *
      * @return WithAttachment
      */
-    protected function withAttachment(string $type = null): WithAttachment
+    public static function withAttachment(string $type = null): WithAttachment
     {
         return new WithAttachment($type);
     }
@@ -90,7 +82,7 @@ trait HasActivators
      *
      * @return WithPayload
      */
-    protected function withPayload(string $value): WithPayload
+    public static function withPayload(string $value): WithPayload
     {
         return new WithPayload($value);
     }

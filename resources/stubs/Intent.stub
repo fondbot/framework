@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DummyRootNamespaceDummyNamespace;
 
-use FondBot\Conversation\Activators\Activator;
+use FondBot\Conversation\Activator;
 use FondBot\Conversation\Intent;
 use FondBot\Events\MessageReceived;
 
@@ -18,7 +18,7 @@ class DummyClass extends Intent
     public function activators(): array
     {
         return [
-            $this->exact('/DummyClass'),
+            Activator::exact('/DummyClass'),
         ];
     }
 

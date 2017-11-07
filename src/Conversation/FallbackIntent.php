@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Events\MessageReceived;
-use FondBot\Conversation\Activators\Activator;
+use FondBot\Contracts\Conversation\Activator;
 
 class FallbackIntent extends Intent
 {

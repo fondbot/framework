@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Activators;
 
 use FondBot\Events\MessageReceived;
+use FondBot\Contracts\Conversation\Activator;
 
 class WithAttachment implements Activator
 {
