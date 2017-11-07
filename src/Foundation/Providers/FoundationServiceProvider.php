@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Foundation\Providers;
 
 use FondBot\Foundation\Kernel;
-use FondBot\Foundation\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class FoundationServiceProvider extends ServiceProvider
 {
