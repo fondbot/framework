@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Toolbelt;
 
 use FondBot\Foundation\API;
+use FondBot\Foundation\Kernel;
 use Illuminate\Console\Command;
 use FondBot\Foundation\Composer;
 
@@ -22,7 +23,7 @@ class InstallDriver extends Command
         $driver = $api->findDriver($this->argument('name'));
 
         if ($driver === null) {
-            $this->error('"'.$name.'" is not found in the available drivers list.');
+            $this->error('"'.$name.'" is not found in the available drivers list or is not yet supported by current FondBot version ('.Kernel::VERSION.').');
 
             exit(0);
         }

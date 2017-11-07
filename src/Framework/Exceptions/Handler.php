@@ -15,7 +15,7 @@ class Handler extends BaseHandler
     {
         // Catch all exceptions if route is webhook
         if ($request->routeIs('fondbot.webhook')) {
-            return '';
+            return 'Something went wrong.';
         }
 
         return parent::render($request, $e);

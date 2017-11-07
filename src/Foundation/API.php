@@ -25,7 +25,7 @@ class API
      */
     public function getDrivers(): Collection
     {
-        $response = $this->client->get(self::URL.'/drivers', ['form_params' => ['version' => Kernel::VERSION]]);
+        $response = $this->client->get(self::URL.'/drivers', ['json' => ['version' => Kernel::VERSION]]);
 
         return collect(json_decode((string) $response->getBody(), true));
     }
