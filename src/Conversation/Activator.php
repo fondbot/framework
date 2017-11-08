@@ -6,8 +6,8 @@ namespace FondBot\Conversation;
 
 use Illuminate\Support\Collection;
 use FondBot\Conversation\Activators\Exact;
+use FondBot\Conversation\Activators\Regex;
 use FondBot\Conversation\Activators\InArray;
-use FondBot\Conversation\Activators\Pattern;
 use FondBot\Conversation\Activators\Contains;
 use FondBot\Conversation\Activators\WithPayload;
 use FondBot\Conversation\Activators\WithAttachment;
@@ -39,15 +39,15 @@ class Activator
     }
 
     /**
-     * Create "Pattern" activator.
+     * Create "Regex" activator.
      *
      * @param string $value
      *
-     * @return Pattern
+     * @return Regex
      */
-    public static function pattern(string $value): Pattern
+    public static function regex(string $value): Regex
     {
-        return new Pattern($value);
+        return new Regex($value);
     }
 
     /**

@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Activators;
 
-use Spatie\Regex\Regex;
 use FondBot\Events\MessageReceived;
+use Spatie\Regex\Regex as SpatieRegex;
 use FondBot\Contracts\Conversation\Activator;
 
-class Pattern implements Activator
+class Regex implements Activator
 {
-    protected $value;
+    protected $pattern;
 
-    public function __construct(string $value)
+    public function __construct(string $pattern)
     {
-        $this->value = $value;
+        $this->pattern = $pattern;
     }
 
     /**
@@ -28,6 +28,6 @@ class Pattern implements Activator
     {
         $text = $message->getText();
 
-        return Regex::match($this->value, $text)->hasMatch();
+        return SpatieRegex::match($this->pattern, $text)->hasMatch();
     }
 }

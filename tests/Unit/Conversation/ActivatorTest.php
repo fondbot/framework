@@ -7,8 +7,8 @@ namespace FondBot\Tests\Unit\Conversation;
 use FondBot\Tests\TestCase;
 use FondBot\Conversation\Activator;
 use FondBot\Conversation\Activators\Exact;
+use FondBot\Conversation\Activators\Regex;
 use FondBot\Conversation\Activators\InArray;
-use FondBot\Conversation\Activators\Pattern;
 use FondBot\Conversation\Activators\Contains;
 use FondBot\Conversation\Activators\WithPayload;
 use FondBot\Conversation\Activators\WithAttachment;
@@ -25,9 +25,9 @@ class ActivatorTest extends TestCase
         $this->assertInstanceOf(Contains::class, Activator::contains($this->faker()->word));
     }
 
-    public function testPattern(): void
+    public function testRegex(): void
     {
-        $this->assertInstanceOf(Pattern::class, Activator::pattern($this->faker()->word));
+        $this->assertInstanceOf(Regex::class, Activator::regex($this->faker()->word));
     }
 
     public function testInArray(): void

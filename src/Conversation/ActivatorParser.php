@@ -6,8 +6,8 @@ namespace FondBot\Conversation;
 
 use InvalidArgumentException;
 use FondBot\Conversation\Activators\Exact;
+use FondBot\Conversation\Activators\Regex;
 use FondBot\Conversation\Activators\InArray;
-use FondBot\Conversation\Activators\Pattern;
 use FondBot\Contracts\Conversation\Activator;
 use FondBot\Conversation\Activators\Contains;
 use FondBot\Conversation\Activators\WithPayload;
@@ -22,7 +22,7 @@ class ActivatorParser
         'contains' => Contains::class,
         'exact' => Exact::class,
         'in_array' => InArray::class,
-        'pattern' => Pattern::class,
+        'pattern' => Regex::class,
         'with_attachment' => WithAttachment::class,
         'with_payload' => WithPayload::class,
     ];
