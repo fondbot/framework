@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Tests\Unit\Conversation;
 
-use FondBot\Conversation\ConversationManager;
 use FondBot\Tests\TestCase;
+use FondBot\Conversation\ConversationManager;
 
 class ConversationManagerTest extends TestCase
 {
