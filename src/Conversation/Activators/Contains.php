@@ -16,6 +16,10 @@ class Contains implements Activator
      */
     public function __construct($needles)
     {
+        if (is_string($needles)) {
+            $needles = str_getcsv($needles);
+        }
+
         $this->needles = $needles;
     }
 

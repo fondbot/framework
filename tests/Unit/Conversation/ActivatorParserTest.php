@@ -12,11 +12,11 @@ use FondBot\Conversation\Activators\InArray;
 
 class ActivatorParserTest extends TestCase
 {
-    public function testSuccess(): void
+    public function testCanParseStringsAndObjects(): void
     {
         $parser = new ActivatorParser([
             'exact:foo',
-            'in_array:1,2',
+            'in_array:foo,bar',
             Activator::exact('bar', true),
         ]);
 
@@ -26,6 +26,7 @@ class ActivatorParserTest extends TestCase
 
         $this->assertInstanceOf(Exact::class, $result[0]);
         $this->assertInstanceOf(InArray::class, $result[1]);
+        $this->assertAttributeEquals(['foo', 'bar'], 'values', $result[1]);
         $this->assertInstanceOf(Exact::class, $result[2]);
     }
 

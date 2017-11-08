@@ -10,6 +10,14 @@ use FondBot\Conversation\Activators\InArray;
 
 class InArrayTest extends TestCase
 {
+    public function testConstructor(): void
+    {
+        $activator = new InArray(['foo', 'bar'], false);
+
+        $this->assertAttributeEquals(['foo', 'bar'], 'values', $activator);
+        $this->assertAttributeEquals(false, 'strict', $activator);
+    }
+
     public function testArrayMatches(): void
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start');

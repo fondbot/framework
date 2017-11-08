@@ -10,6 +10,15 @@ use FondBot\Conversation\Activators\Contains;
 
 class ContainsTest extends TestCase
 {
+    public function testConstructor(): void
+    {
+        $activator = new Contains(['foo', 'bar']);
+        $this->assertAttributeEquals(['foo', 'bar'], 'needles', $activator);
+
+        $activator = new Contains('foo,bar');
+        $this->assertAttributeEquals(['foo', 'bar'], 'needles', $activator);
+    }
+
     public function testMatches(): void
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), 'this is foo');
