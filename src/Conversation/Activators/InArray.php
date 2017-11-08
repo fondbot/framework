@@ -21,6 +21,10 @@ class InArray implements Activator
      */
     public function __construct($values, bool $strict = true)
     {
+        if (!is_array($values) && !$values instanceof Collection) {
+            $values = str_getcsv($values);
+        }
+
         $this->values = $values;
         $this->strict = $strict;
     }

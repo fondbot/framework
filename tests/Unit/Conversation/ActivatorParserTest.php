@@ -8,22 +8,25 @@ use FondBot\Tests\TestCase;
 use FondBot\Conversation\Activator;
 use FondBot\Conversation\ActivatorParser;
 use FondBot\Conversation\Activators\Exact;
+use FondBot\Conversation\Activators\InArray;
 
 class ActivatorParserTest extends TestCase
 {
     public function testSuccess(): void
     {
         $parser = new ActivatorParser([
-           'exact:foo',
+            'exact:foo',
+            'in_array:1,2',
             Activator::exact('bar', true),
         ]);
 
         $result = $parser->getResult();
 
-        $this->assertCount(2, $result);
+        $this->assertCount(3, $result);
 
         $this->assertInstanceOf(Exact::class, $result[0]);
-        $this->assertInstanceOf(Exact::class, $result[1]);
+        $this->assertInstanceOf(InArray::class, $result[1]);
+        $this->assertInstanceOf(Exact::class, $result[2]);
     }
 
     /**
