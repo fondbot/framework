@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Activators;
 
+use FondBot\Templates\Attachment;
 use FondBot\Events\MessageReceived;
 use FondBot\Contracts\Conversation\Activator;
 
@@ -14,6 +15,34 @@ class WithAttachment implements Activator
     public function __construct(string $type = null)
     {
         $this->type = $type;
+    }
+
+    public function file(): self
+    {
+        $this->type = Attachment::TYPE_FILE;
+
+        return $this;
+    }
+
+    public function image(): self
+    {
+        $this->type = Attachment::TYPE_IMAGE;
+
+        return $this;
+    }
+
+    public function audio(): self
+    {
+        $this->type = Attachment::TYPE_AUDIO;
+
+        return $this;
+    }
+
+    public function video(): self
+    {
+        $this->type = Attachment::TYPE_VIDEO;
+
+        return $this;
     }
 
     /**

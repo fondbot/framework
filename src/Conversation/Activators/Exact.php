@@ -19,6 +19,13 @@ class Exact implements Activator
         $this->caseSensitive = $caseSensitive;
     }
 
+    public function caseSensitive(bool $caseSensitive): self
+    {
+        $this->caseSensitive = $caseSensitive;
+
+        return $this;
+    }
+
     /**
      * Result of matching activator.
      *

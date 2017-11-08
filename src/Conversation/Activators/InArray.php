@@ -25,6 +25,13 @@ class InArray implements Activator
         $this->strict = $strict;
     }
 
+    public function strict(bool $strict): self
+    {
+        $this->strict = $strict;
+
+        return $this;
+    }
+
     /**
      * Result of matching activator.
      *
