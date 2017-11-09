@@ -25,6 +25,10 @@ class InitializeKernel
     {
         $channel = $this->resolveChannel($request->route('channel'));
 
+        if ($channel->getSecret() !== null && $request->route('secret') !== $channel->getSecret()) {
+            abort(403);
+        }
+
         $this->kernel->initialize($channel);
 
         return $next($request);

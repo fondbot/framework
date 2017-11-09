@@ -8,40 +8,32 @@ class Channel
 {
     private $name;
     private $driver;
+    private $secret;
 
-    public function __construct(string $name, Driver $driver)
+    public function __construct(string $name, Driver $driver, string $secret = null)
     {
         $this->name = $name;
         $this->driver = $driver;
+        $this->secret = $secret;
     }
 
-    /**
-     * Name of the channel.
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Get driver.
-     *
-     * @return Driver
-     */
     public function getDriver(): Driver
     {
         return $this->driver;
     }
 
-    /**
-     * Get webhook URL.
-     *
-     * @return string
-     */
+    public function getSecret(): ?string
+    {
+        return $this->secret;
+    }
+
     public function getWebhookUrl(): string
     {
-        return route('fondbot.webhook', $this->name);
+        return route('fondbot.webhook', [$this->name, $this->secret]);
     }
 }

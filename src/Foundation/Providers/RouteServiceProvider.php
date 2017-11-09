@@ -16,8 +16,8 @@ class RouteServiceProvider extends BaseRouteServiceProvider
         Route::get('/', 'FondBot\Foundation\Controller@index');
 
         Route::group(['middleware' => 'fondbot.webhook'], function () {
-            Route::get('webhook/{channel}', 'FondBot\Foundation\Controller@webhook')->name('fondbot.webhook');
-            Route::post('webhook/{channel}', 'FondBot\Foundation\Controller@webhook')->name('fondbot.webhook');
+            Route::get('webhook/{channel}/{secret?}', 'FondBot\Foundation\Controller@webhook')->name('fondbot.webhook');
+            Route::post('webhook/{channel}/{secret?}', 'FondBot\Foundation\Controller@webhook')->name('fondbot.webhook');
         });
     }
 }

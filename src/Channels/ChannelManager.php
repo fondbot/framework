@@ -79,7 +79,7 @@ class ChannelManager extends Manager implements ManagerContract
         $driver = $this->createDriver($parameters['driver']);
         $driver->initialize(collect($parameters)->except('driver'));
 
-        return new Channel($name, $driver);
+        return new Channel($name, $driver, $parameters['webhook-secret'] ?? null);
     }
 
     /**
