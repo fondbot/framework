@@ -57,7 +57,7 @@ class ConversationManager implements Manager
             /** @var Intent $intent */
             $intent = resolve($intent);
 
-            $activators = (new ActivatorParser($intent->activators()))->getResult();
+            $activators = ActivatorParser::parse($intent->activators());
 
             foreach ($activators as $activator) {
                 if ($activator->matches($messageReceived) && $intent->passesAuthorization($messageReceived)) {

@@ -11,29 +11,19 @@ use FondBot\Contracts\Conversation\Activator;
 class InArray implements Activator
 {
     protected $values;
-    protected $strict;
 
     /**
      * InArray constructor.
      *
      * @param array|Collection $values
-     * @param bool             $strict
      */
-    public function __construct($values, bool $strict = true)
+    public function __construct($values)
     {
-        if (!is_array($values) && !$values instanceof Collection) {
-            $values = str_getcsv($values);
+        if ($values instanceof Collection) {
+            $values = $values->toArray();
         }
 
         $this->values = $values;
-        $this->strict = $strict;
-    }
-
-    public function strict(bool $strict): self
-    {
-        $this->strict = $strict;
-
-        return $this;
     }
 
     /**
@@ -51,6 +41,6 @@ class InArray implements Activator
             $haystack = $haystack->toArray();
         }
 
-        return in_array($message->getText(), $haystack, $this->strict);
+        return in_array($message->getText(), $haystack, false);
     }
 }

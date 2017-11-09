@@ -9,9 +9,9 @@ use FondBot\Conversation\Activator;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\Regex;
 use FondBot\Conversation\Activators\InArray;
+use FondBot\Conversation\Activators\Payload;
 use FondBot\Conversation\Activators\Contains;
-use FondBot\Conversation\Activators\WithPayload;
-use FondBot\Conversation\Activators\WithAttachment;
+use FondBot\Conversation\Activators\Attachment;
 
 class ActivatorTest extends TestCase
 {
@@ -35,14 +35,14 @@ class ActivatorTest extends TestCase
         $this->assertInstanceOf(InArray::class, Activator::inArray([1, 2, 3]));
     }
 
-    public function testWithAttachment(): void
+    public function testAttachment(): void
     {
-        $this->assertInstanceOf(WithAttachment::class, Activator::withAttachment());
-        $this->assertInstanceOf(WithAttachment::class, Activator::withAttachment($this->faker()->word));
+        $this->assertInstanceOf(Attachment::class, Activator::attachment());
+        $this->assertInstanceOf(Attachment::class, Activator::attachment($this->faker()->word));
     }
 
-    public function testWithPayload(): void
+    public function testPayload(): void
     {
-        $this->assertInstanceOf(WithPayload::class, Activator::withPayload($this->faker()->word));
+        $this->assertInstanceOf(Payload::class, Activator::payload($this->faker()->word));
     }
 }

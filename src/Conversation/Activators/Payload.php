@@ -7,7 +7,7 @@ namespace FondBot\Conversation\Activators;
 use FondBot\Events\MessageReceived;
 use FondBot\Contracts\Conversation\Activator;
 
-class WithPayload implements Activator
+class Payload implements Activator
 {
     protected $value;
 

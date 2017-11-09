@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Conversation\Activators;
 
 use FondBot\Tests\TestCase;
-use FondBot\Templates\Attachment;
 use FondBot\Events\MessageReceived;
-use FondBot\Conversation\Activators\WithAttachment;
+use FondBot\Templates\Attachment as Template;
+use FondBot\Conversation\Activators\Attachment;
 
-class WithAttachmentTest extends TestCase
+class AttachmentTest extends TestCase
 {
     public function testMatchesWithoutType(): void
     {
-        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, Attachment::create('foo', 'bar'));
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, Template::create('foo', 'bar'));
 
-        $activator = new WithAttachment;
+        $activator = new Attachment;
 
         $this->assertTrue($activator->matches($message));
     }
@@ -24,7 +24,7 @@ class WithAttachmentTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, null);
 
-        $activator = new WithAttachment;
+        $activator = new Attachment;
 
         $this->assertFalse($activator->matches($message));
     }
@@ -36,8 +36,8 @@ class WithAttachmentTest extends TestCase
      */
     public function testMatchesWithType(string $type): void
     {
-        $activator = new WithAttachment($type);
-        $attachment = Attachment::create($type, 'bar');
+        $activator = new Attachment($type);
+        $attachment = Template::create($type, 'bar');
 
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, $attachment);
 
@@ -51,14 +51,14 @@ class WithAttachmentTest extends TestCase
      */
     public function testDoesNotMatchWithType(string $type): void
     {
-        $activator = new WithAttachment($type);
-        $otherType = collect(Attachment::possibleTypes())
+        $activator = new Attachment($type);
+        $otherType = collect(Template::possibleTypes())
             ->filter(function ($item) use ($type) {
                 return $item !== $type;
             })
             ->random();
 
-        $attachment = Attachment::create($otherType, 'bar');
+        $attachment = Template::create($otherType, 'bar');
 
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, $attachment);
 
@@ -67,7 +67,7 @@ class WithAttachmentTest extends TestCase
 
     public function types(): array
     {
-        return collect(Attachment::possibleTypes())
+        return collect(Template::possibleTypes())
             ->map(function ($item) {
                 return [$item];
             })

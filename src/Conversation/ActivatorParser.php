@@ -8,58 +8,75 @@ use InvalidArgumentException;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\Regex;
 use FondBot\Conversation\Activators\InArray;
+use FondBot\Conversation\Activators\Payload;
 use FondBot\Contracts\Conversation\Activator;
 use FondBot\Conversation\Activators\Contains;
-use FondBot\Conversation\Activators\WithPayload;
-use FondBot\Conversation\Activators\WithAttachment;
+use FondBot\Conversation\Activators\Attachment;
 
 class ActivatorParser
 {
-    private $data;
-    private $result = [];
-
-    private $activators = [
+    private static $activators = [
         'contains' => Contains::class,
         'exact' => Exact::class,
         'in_array' => InArray::class,
-        'pattern' => Regex::class,
-        'with_attachment' => WithAttachment::class,
-        'with_payload' => WithPayload::class,
+        'regex' => Regex::class,
+        'attachment' => Attachment::class,
+        'payload' => Payload::class,
     ];
 
-    public function __construct(array $data)
-    {
-        $this->data = $data;
-
-        $this->parse();
-    }
-
-    protected function parse(): void
-    {
-        foreach ($this->data as $key => $activator) {
-            if ($activator instanceof Activator) {
-                $this->result[] = $activator;
-
-                continue;
-            }
-
-            [$activator, $parameters] = explode(':', $activator, 2);
-
-            if (isset($this->activators[$activator])) {
-                $this->result[] = new $this->activators[$activator]($parameters);
-
-                continue;
-            }
-
-            throw new InvalidArgumentException('Activator `'.$activator.'` does not exist.');
-        }
-    }
+    private static $arrayActivators = [
+        'in_array',
+    ];
 
     /**
+     * @param array $data
+     *
      * @return Activator[]
      */
-    public function getResult(): array
+    public static function parse(array $data): array
     {
-        return $this->result;
+        $result = [];
+
+        foreach ($data as $key => $activator) {
+            if ($activator instanceof Activator) {
+                $result[] = $activator;
+
+                continue;
+            }
+
+            [$name, $parameters] = explode(':', $activator, 2);
+
+            $parameters = collect(str_getcsv($parameters));
+
+            if (in_array($name, static::$arrayActivators, true)) {
+                $value = $parameters;
+            } else {
+                $value = $parameters->first();
+                $parameters = $parameters->slice(1)->values()->transform(function ($item) {
+                    if ($item === 'true') {
+                        return true;
+                    }
+
+                    if ($item === 'false') {
+                        return false;
+                    }
+
+                    return $item;
+                });
+            }
+
+            if (isset(static::$activators[$name])) {
+                /** @var Activator $activator */
+                $activator = new static::$activators[$name]($value, ...$parameters);
+
+                $result[] = $activator;
+
+                continue;
+            }
+
+            throw new InvalidArgumentException('Activator `'.$name.'` does not exist.');
+        }
+
+        return $result;
     }
 }

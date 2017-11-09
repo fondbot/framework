@@ -15,7 +15,6 @@ class InArrayTest extends TestCase
         $activator = new InArray(['foo', 'bar'], false);
 
         $this->assertAttributeEquals(['foo', 'bar'], 'values', $activator);
-        $this->assertAttributeEquals(false, 'strict', $activator);
     }
 
     public function testArrayMatches(): void

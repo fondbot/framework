@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Activators;
 
-use FondBot\Templates\Attachment;
 use FondBot\Events\MessageReceived;
 use FondBot\Contracts\Conversation\Activator;
+use FondBot\Templates\Attachment as Template;
 
-class WithAttachment implements Activator
+class Attachment implements Activator
 {
     protected $type;
 
@@ -19,28 +19,28 @@ class WithAttachment implements Activator
 
     public function file(): self
     {
-        $this->type = Attachment::TYPE_FILE;
+        $this->type = Template::TYPE_FILE;
 
         return $this;
     }
 
     public function image(): self
     {
-        $this->type = Attachment::TYPE_IMAGE;
+        $this->type = Template::TYPE_IMAGE;
 
         return $this;
     }
 
     public function audio(): self
     {
-        $this->type = Attachment::TYPE_AUDIO;
+        $this->type = Template::TYPE_AUDIO;
 
         return $this;
     }
 
     public function video(): self
     {
-        $this->type = Attachment::TYPE_VIDEO;
+        $this->type = Template::TYPE_VIDEO;
 
         return $this;
     }

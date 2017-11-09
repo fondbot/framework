@@ -8,9 +8,9 @@ use Illuminate\Support\Collection;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\Regex;
 use FondBot\Conversation\Activators\InArray;
+use FondBot\Conversation\Activators\Payload;
 use FondBot\Conversation\Activators\Contains;
-use FondBot\Conversation\Activators\WithPayload;
-use FondBot\Conversation\Activators\WithAttachment;
+use FondBot\Conversation\Activators\Attachment;
 
 class Activator
 {
@@ -64,26 +64,26 @@ class Activator
     }
 
     /**
-     * Create "WithAttachment" activator.
+     * Create "Attachment" activator.
      *
      * @param string|null $type
      *
-     * @return WithAttachment
+     * @return Attachment
      */
-    public static function withAttachment(string $type = null): WithAttachment
+    public static function attachment(string $type = null): Attachment
     {
-        return new WithAttachment($type);
+        return new Attachment($type);
     }
 
     /**
-     * Create "WithPayload" activator.
+     * Create "Payload" activator.
      *
      * @param string $value
      *
-     * @return WithPayload
+     * @return Payload
      */
-    public static function withPayload(string $value): WithPayload
+    public static function payload(string $value): Payload
     {
-        return new WithPayload($value);
+        return new Payload($value);
     }
 }

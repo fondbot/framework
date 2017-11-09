@@ -6,15 +6,15 @@ namespace FondBot\Tests\Unit\Conversation\Activators;
 
 use FondBot\Tests\TestCase;
 use FondBot\Events\MessageReceived;
-use FondBot\Conversation\Activators\WithPayload;
+use FondBot\Conversation\Activators\Payload;
 
-class WithPayloadTest extends TestCase
+class PayloadTest extends TestCase
 {
     public function testMatches(): void
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, null, 'foo');
 
-        $activator = new WithPayload('foo');
+        $activator = new Payload('foo');
 
         $this->assertTrue($activator->matches($message));
     }
@@ -23,7 +23,7 @@ class WithPayloadTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, null, 'foo');
 
-        $activator = new WithPayload('bar');
+        $activator = new Payload('bar');
 
         $this->assertFalse($activator->matches($message));
     }

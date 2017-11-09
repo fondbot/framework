@@ -14,20 +14,24 @@ class ActivatorParserTest extends TestCase
 {
     public function testCanParseStringsAndObjects(): void
     {
-        $parser = new ActivatorParser([
-            'exact:foo',
+        $result = ActivatorParser::parse([
+            'exact:foo,true',
             'in_array:foo,bar',
-            Activator::exact('bar', true),
+            Activator::exact('bar'),
         ]);
-
-        $result = $parser->getResult();
 
         $this->assertCount(3, $result);
 
         $this->assertInstanceOf(Exact::class, $result[0]);
+        $this->assertAttributeEquals('foo', 'value', $result[0]);
+        $this->assertAttributeEquals(true, 'caseSensitive', $result[0]);
+
         $this->assertInstanceOf(InArray::class, $result[1]);
         $this->assertAttributeEquals(['foo', 'bar'], 'values', $result[1]);
+
         $this->assertInstanceOf(Exact::class, $result[2]);
+        $this->assertAttributeEquals('bar', 'value', $result[2]);
+        $this->assertAttributeEquals(false, 'caseSensitive', $result[2]);
     }
 
     /**
@@ -36,10 +40,8 @@ class ActivatorParserTest extends TestCase
      */
     public function testThrowsInvalidArgumentExceptionIfActivatorCouldNotBeResolved(): void
     {
-        $parser = new ActivatorParser([
+        ActivatorParser::parse([
             'foo:bar',
         ]);
-
-        $parser->getResult();
     }
 }
