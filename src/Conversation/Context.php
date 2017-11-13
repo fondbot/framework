@@ -8,7 +8,6 @@ use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Channels\Channel;
 use Illuminate\Contracts\Support\Arrayable;
-use FondBot\Contracts\Conversation\Conversable;
 
 class Context implements Arrayable
 {
@@ -27,53 +26,26 @@ class Context implements Arrayable
         $this->items = collect($items);
     }
 
-    /**
-     * Get channel.
-     *
-     * @return Channel
-     */
     public function getChannel(): Channel
     {
         return $this->channel;
     }
 
-    /**
-     * Get chat.
-     *
-     * @return Chat
-     */
     public function getChat(): Chat
     {
         return $this->chat;
     }
 
-    /**
-     * Get user.
-     *
-     * @return User
-     */
     public function getUser(): User
     {
         return $this->user;
     }
 
-    /**
-     * Get current intent.
-     *
-     * @return Intent|Conversable|null
-     */
     public function getIntent(): ?Intent
     {
         return $this->intent;
     }
 
-    /**
-     * Set intent.
-     *
-     * @param Intent $intent
-     *
-     * @return Context
-     */
     public function setIntent(Intent $intent): Context
     {
         $this->intent = $intent;
@@ -81,23 +53,11 @@ class Context implements Arrayable
         return $this;
     }
 
-    /**
-     * Get interaction.
-     *
-     * @return Interaction|Conversable|null
-     */
     public function getInteraction(): ?Interaction
     {
         return $this->interaction;
     }
 
-    /**
-     * Set interaction.
-     *
-     * @param Interaction|null $interaction
-     *
-     * @return Context
-     */
     public function setInteraction(?Interaction $interaction): Context
     {
         $this->interaction = $interaction;
@@ -105,27 +65,11 @@ class Context implements Arrayable
         return $this;
     }
 
-    /**
-     * Get item.
-     *
-     * @param string $key
-     * @param null   $default
-     *
-     * @return mixed
-     */
     public function get(string $key, $default = null)
     {
         return $this->items->get($key, $default);
     }
 
-    /**
-     * Set item.
-     *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return Context
-     */
     public function set(string $key, $value): Context
     {
         $this->items->put($key, $value);
@@ -133,11 +77,6 @@ class Context implements Arrayable
         return $this;
     }
 
-    /**
-     * Get the instance as an array.
-     *
-     * @return array
-     */
     public function toArray(): array
     {
         return [
