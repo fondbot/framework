@@ -2,7 +2,7 @@ language: php
 
 php:
   - 7.1
-  - nightly
+  - 7.2
 
 sudo: false
 
