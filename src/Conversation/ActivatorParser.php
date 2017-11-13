@@ -25,6 +25,7 @@ class ActivatorParser
     ];
 
     private static $arrayActivators = [
+        'contains',
         'in',
     ];
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Activators;
 
+use Illuminate\Support\Collection;
 use FondBot\Events\MessageReceived;
 use FondBot\Contracts\Conversation\Activator;
 
@@ -16,8 +17,8 @@ class Contains implements Activator
      */
     public function __construct($needles)
     {
-        if (is_string($needles)) {
-            $needles = str_getcsv($needles);
+        if ($needles instanceof Collection) {
+            $needles = $needles->toArray();
         }
 
         $this->needles = $needles;

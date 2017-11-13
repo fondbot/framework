@@ -14,9 +14,6 @@ class ContainsTest extends TestCase
     {
         $activator = new Contains(['foo', 'bar']);
         $this->assertAttributeEquals(['foo', 'bar'], 'needles', $activator);
-
-        $activator = new Contains('foo,bar');
-        $this->assertAttributeEquals(['foo', 'bar'], 'needles', $activator);
     }
 
     public function testMatches(): void
