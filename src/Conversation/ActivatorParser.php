@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use InvalidArgumentException;
+use FondBot\Conversation\Activators\In;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\Regex;
-use FondBot\Conversation\Activators\InArray;
 use FondBot\Conversation\Activators\Payload;
 use FondBot\Contracts\Conversation\Activator;
 use FondBot\Conversation\Activators\Contains;
@@ -18,14 +18,14 @@ class ActivatorParser
     private static $activators = [
         'contains' => Contains::class,
         'exact' => Exact::class,
-        'in_array' => InArray::class,
+        'in' => In::class,
         'regex' => Regex::class,
         'attachment' => Attachment::class,
         'payload' => Payload::class,
     ];
 
     private static $arrayActivators = [
-        'in_array',
+        'in',
     ];
 
     /**

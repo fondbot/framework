@@ -6,9 +6,9 @@ namespace FondBot\Tests\Unit\Conversation;
 
 use FondBot\Tests\TestCase;
 use FondBot\Conversation\Activator;
+use FondBot\Conversation\Activators\In;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\Regex;
-use FondBot\Conversation\Activators\InArray;
 use FondBot\Conversation\Activators\Payload;
 use FondBot\Conversation\Activators\Contains;
 use FondBot\Conversation\Activators\Attachment;
@@ -32,7 +32,7 @@ class ActivatorTest extends TestCase
 
     public function testInArray(): void
     {
-        $this->assertInstanceOf(InArray::class, Activator::inArray([1, 2, 3]));
+        $this->assertInstanceOf(In::class, Activator::in([1, 2, 3]));
     }
 
     public function testAttachment(): void

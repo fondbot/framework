@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use Illuminate\Support\Collection;
+use FondBot\Conversation\Activators\In;
 use FondBot\Conversation\Activators\Exact;
 use FondBot\Conversation\Activators\Regex;
-use FondBot\Conversation\Activators\InArray;
 use FondBot\Conversation\Activators\Payload;
 use FondBot\Conversation\Activators\Contains;
 use FondBot\Conversation\Activators\Attachment;
@@ -51,16 +51,16 @@ class Activator
     }
 
     /**
-     * Create "InArray" activator.
+     * Create "In" activator.
      *
      * @param array|Collection $values
      * @param bool $strict
      *
-     * @return InArray
+     * @return In
      */
-    public static function inArray($values, bool $strict = true): InArray
+    public static function in($values, bool $strict = true): In
     {
-        return new InArray($values, $strict);
+        return new In($values, $strict);
     }
 
     /**

@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use FondBot\Events\MessageReceived;
 use FondBot\Contracts\Conversation\Activator;
 
-class InArray implements Activator
+class In implements Activator
 {
     protected $values;
 

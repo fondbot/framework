@@ -6,9 +6,9 @@ namespace FondBot\Tests\Unit\Conversation;
 
 use FondBot\Tests\TestCase;
 use FondBot\Conversation\Activator;
+use FondBot\Conversation\Activators\In;
 use FondBot\Conversation\ActivatorParser;
 use FondBot\Conversation\Activators\Exact;
-use FondBot\Conversation\Activators\InArray;
 
 class ActivatorParserTest extends TestCase
 {
@@ -16,7 +16,7 @@ class ActivatorParserTest extends TestCase
     {
         $result = ActivatorParser::parse([
             'exact:foo,true',
-            'in_array:foo,bar',
+            'in:foo,bar',
             Activator::exact('bar'),
         ]);
 
@@ -26,7 +26,7 @@ class ActivatorParserTest extends TestCase
         $this->assertAttributeEquals('foo', 'value', $result[0]);
         $this->assertAttributeEquals(true, 'caseSensitive', $result[0]);
 
-        $this->assertInstanceOf(InArray::class, $result[1]);
+        $this->assertInstanceOf(In::class, $result[1]);
         $this->assertAttributeEquals(['foo', 'bar'], 'values', $result[1]);
 
         $this->assertInstanceOf(Exact::class, $result[2]);
