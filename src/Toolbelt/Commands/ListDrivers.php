@@ -21,7 +21,7 @@ class ListDrivers extends Command
     {
         /** @var Client $http */
         $http = resolve(Client::class);
-        $response = $http->get('https://fondbot.com/api/drivers');
+        $response = $http->get('https://fondbot.io/api/drivers');
         $items = json_decode((string) $response->getBody(), true);
 
         $drivers = collect($items)
