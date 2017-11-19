@@ -23,7 +23,7 @@ class InstallDriver extends Command
     {
         /** @var Client $http */
         $http = resolve(Client::class);
-        $response = $http->get('https://fondbot.com/api/drivers');
+        $response = $http->get('https://fondbot.io/api/drivers');
         $items = json_decode($response->getBody()->getContents(), true);
 
         // Check if package is listed in store
