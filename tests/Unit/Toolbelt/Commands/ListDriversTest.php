@@ -30,7 +30,7 @@ class ListDriversTest extends TestCase
         rewind($stream);
 
         $guzzle->shouldReceive('get')
-            ->with('https://fondbot.com/api/drivers')
+            ->with('https://fondbot.io/api/drivers')
             ->andReturnSelf()
             ->once();
         $guzzle->shouldReceive('getBody')
