@@ -39,6 +39,16 @@ class FakeDriver extends Driver
     }
 
     /**
+     * Get API client.
+     *
+     * @return mixed
+     */
+    public function getClient()
+    {
+        // TODO: Implement getClient() method.
+    }
+
+    /**
      * Create event based on incoming request.
      *
      * @param Request $request

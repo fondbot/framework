@@ -78,15 +78,16 @@ class ConversationManager implements Manager
             'user' => $user,
             'intent' => null,
             'interaction' => null,
+            'items' => [],
         ]);
 
-        $context = new Context($channel, $chat, $user);
+        $context = new Context($channel, $chat, $user, $value['items'] ?? []);
 
-        if ($value['intent'] !== null) {
+        if (isset($value['intent'])) {
             $context->setIntent(resolve($value['intent']));
         }
 
-        if ($value['interaction'] !== null) {
+        if (isset($value['interaction'])) {
             $context->setInteraction(resolve($value['interaction']));
         }
 

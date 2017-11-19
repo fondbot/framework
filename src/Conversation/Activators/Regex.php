@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Activators;
 
+use Illuminate\Support\Collection;
 use FondBot\Events\MessageReceived;
-use Spatie\Regex\Regex as SpatieRegex;
 use FondBot\Contracts\Conversation\Activator;
 
 class Regex implements Activator
 {
-    protected $pattern;
+    /** @var array|string */
+    protected $patterns;
 
-    public function __construct(string $pattern)
+    public function __construct($patterns)
     {
-        $this->pattern = $pattern;
+        if ($patterns instanceof Collection) {
+            $patterns = $patterns->toArray();
+        }
+
+        $this->patterns = $patterns;
     }
 
     /**
@@ -26,8 +31,6 @@ class Regex implements Activator
      */
     public function matches(MessageReceived $message): bool
     {
-        $text = $message->getText();
-
-        return SpatieRegex::match($this->pattern, $text)->hasMatch();
+        return str_is($this->patterns, $message->getText());
     }
 }

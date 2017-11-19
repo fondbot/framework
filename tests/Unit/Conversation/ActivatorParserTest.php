@@ -9,6 +9,7 @@ use FondBot\Conversation\Activator;
 use FondBot\Conversation\Activators\In;
 use FondBot\Conversation\ActivatorParser;
 use FondBot\Conversation\Activators\Exact;
+use FondBot\Conversation\Activators\Regex;
 use FondBot\Conversation\Activators\Contains;
 
 class ActivatorParserTest extends TestCase
@@ -19,10 +20,11 @@ class ActivatorParserTest extends TestCase
             'exact:foo,true',
             'in:foo,bar',
             'contains:foo,bar',
+            'regex:foo,bar',
             Activator::exact('bar'),
         ]);
 
-        $this->assertCount(4, $result);
+        $this->assertCount(5, $result);
 
         $this->assertInstanceOf(Exact::class, $result[0]);
         $this->assertAttributeEquals('foo', 'value', $result[0]);
@@ -34,9 +36,12 @@ class ActivatorParserTest extends TestCase
         $this->assertInstanceOf(Contains::class, $result[2]);
         $this->assertAttributeEquals(['foo', 'bar'], 'needles', $result[2]);
 
-        $this->assertInstanceOf(Exact::class, $result[3]);
-        $this->assertAttributeEquals('bar', 'value', $result[3]);
-        $this->assertAttributeEquals(false, 'caseSensitive', $result[3]);
+        $this->assertInstanceOf(Regex::class, $result[3]);
+        $this->assertAttributeEquals(['foo', 'bar'], 'patterns', $result[3]);
+
+        $this->assertInstanceOf(Exact::class, $result[4]);
+        $this->assertAttributeEquals('bar', 'value', $result[4]);
+        $this->assertAttributeEquals(false, 'caseSensitive', $result[4]);
     }
 
     /**
