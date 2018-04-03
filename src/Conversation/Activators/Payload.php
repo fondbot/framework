@@ -25,6 +25,6 @@ class Payload implements Activator
      */
     public function matches(MessageReceived $message): bool
     {
-        return hash_equals($this->value, $message->getData());
+        return $message->getData() ? hash_equals($this->value, $message->getData()) : false;
     }
 }
