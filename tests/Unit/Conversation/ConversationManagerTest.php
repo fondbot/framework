@@ -8,7 +8,6 @@ use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
-use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
 use FondBot\Events\MessageReceived;
 use FondBot\Tests\Mocks\FakeDriver;
