@@ -19,7 +19,7 @@ You can find all installation instructions and other documentation at https://fo
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within FondBot, please send an e-mail to Vladimir Yuldashev at vladimir@fondbot.com. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within FondBot, please send an e-mail to Vladimir Yuldashev at vladimir@fondbot.io. All security vulnerabilities will be promptly addressed.
 
 ## Community
 
