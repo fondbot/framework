@@ -12,11 +12,11 @@
     "vk"
   ],
   "license": "MIT",
-  "homepage": "https://fondbot.com",
+  "homepage": "https://fondbot.io",
   "authors": [
     {
       "name": "Vladimir Yuldashev",
-      "email": "vladimir@fondbot.com"
+      "email": "vladimir@fondbot.io"
     }
   ],
   "require": {
