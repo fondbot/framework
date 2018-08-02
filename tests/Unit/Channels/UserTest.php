@@ -11,7 +11,7 @@ class UserTest extends TestCase
 {
     public function testFull()
     {
-        $user = new User(
+        $user = User::make(
             $id = $this->faker()->uuid,
             $name = $this->faker()->name,
             $username = $this->faker()->userName,
@@ -26,7 +26,7 @@ class UserTest extends TestCase
 
     public function testAcceptsNullsForNameAndUsername()
     {
-        $user = new User($id = $this->faker()->uuid, null, null);
+        $user = User::make($id = $this->faker()->uuid, null, null);
 
         $this->assertSame($id, $user->getId());
         $this->assertNull($user->getName());

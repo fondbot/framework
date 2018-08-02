@@ -50,13 +50,13 @@ class ConversationManagerTest extends TestCase
         $this->manager->registerIntent(FakeIntent::class);
         $this->manager->registerFallbackIntent(FallbackIntent::class);
 
-        $messageReceived = new MessageReceived(Chat::create('1'), User::create('2'), 'foo');
+        $messageReceived = new MessageReceived(Chat::make('1'), User::make('2'), 'foo');
 
         $result = $this->manager->matchIntent($messageReceived);
 
         $this->assertInstanceOf(FakeIntent::class, $result);
 
-        $messageReceived = new MessageReceived(Chat::create('1'), User::create('2'), 'bar');
+        $messageReceived = new MessageReceived(Chat::make('1'), User::make('2'), 'bar');
 
         $result = $this->manager->matchIntent($messageReceived);
 
@@ -75,8 +75,8 @@ class ConversationManagerTest extends TestCase
 
         $result = $this->manager->resolveContext(
             new Channel('foo-channel', new FakeDriver),
-            Chat::create('foo-chat'),
-            User::create('foo-user')
+            Chat::make('foo-chat'),
+            User::make('foo-user')
         );
 
         $this->assertSame('foo-channel', $result->getChannel()->getName());
@@ -95,8 +95,8 @@ class ConversationManagerTest extends TestCase
 
         $context = new Context(
             new Channel('foo-channel', new FakeDriver),
-            Chat::create('foo-chat'),
-            User::create('foo-user'),
+            Chat::make('foo-chat'),
+            User::make('foo-user'),
             ['foo' => 'bar']
         );
         $context->setIntent(new FakeIntent)->setInteraction(new FakeInteraction);

@@ -9,9 +9,9 @@ use FondBot\Tests\TestCase;
 
 class ChatTest extends TestCase
 {
-    public function testFull()
+    public function testFull(): void
     {
-        $user = new Chat(
+        $user = Chat::make(
             $id = $this->faker()->uuid,
             $title = $this->faker()->title,
             $type = collect(['private', 'group'])->random()

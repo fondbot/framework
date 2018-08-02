@@ -13,14 +13,14 @@ class Chat
     private $title;
     private $type;
 
-    public function __construct(string $id, string $title = null, string $type = self::TYPE_PRIVATE)
+    protected function __construct(string $id, string $title = null, string $type = self::TYPE_PRIVATE)
     {
         $this->id = $id;
         $this->title = $title;
         $this->type = $type;
     }
 
-    public static function create(string $id, string $title = null, string $type = self::TYPE_PRIVATE)
+    public static function make(string $id, string $title = null, string $type = self::TYPE_PRIVATE)
     {
         return new static($id, $title, $type);
     }

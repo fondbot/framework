@@ -70,11 +70,11 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function fakeChat(): Chat
     {
-        return new Chat($this->faker()->uuid, $this->faker()->word);
+        return Chat::make($this->faker()->uuid, $this->faker()->word);
     }
 
     protected function fakeUser(): User
     {
-        return new User($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
+        return User::make($this->faker()->uuid, $this->faker()->name, $this->faker()->userName);
     }
 }
