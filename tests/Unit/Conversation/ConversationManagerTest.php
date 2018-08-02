@@ -79,7 +79,6 @@ class ConversationManagerTest extends TestCase
             User::create('foo-user')
         );
 
-        $this->assertInstanceOf(Context::class, $result);
         $this->assertSame('foo-channel', $result->getChannel()->getName());
         $this->assertSame('foo-chat', $result->getChat()->getId());
         $this->assertSame('foo-user', $result->getUser()->getId());
@@ -90,7 +89,7 @@ class ConversationManagerTest extends TestCase
         $this->assertSame($result, resolve('fondbot.conversation.context'));
     }
 
-    public function testSaveContext()
+    public function testSaveContext(): void
     {
         $key = 'context.foo-channel.foo-chat.foo-user';
 

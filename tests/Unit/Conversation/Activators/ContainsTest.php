@@ -10,9 +10,9 @@ use FondBot\Conversation\Activators\Contains;
 
 class ContainsTest extends TestCase
 {
-    public function testConstructor(): void
+    public function testMake(): void
     {
-        $activator = new Contains(['foo', 'bar']);
+        $activator = Contains::make(['foo', 'bar']);
         $this->assertAttributeEquals(['foo', 'bar'], 'needles', $activator);
     }
 
@@ -20,7 +20,7 @@ class ContainsTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), 'this is foo');
 
-        $activator = new Contains('foo');
+        $activator = Contains::make('foo');
 
         $this->assertTrue($activator->matches($message));
     }
@@ -29,7 +29,7 @@ class ContainsTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), 'this is bar');
 
-        $activator = new Contains('foo');
+        $activator = Contains::make('foo');
 
         $this->assertFalse($activator->matches($message));
     }
@@ -38,7 +38,7 @@ class ContainsTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '');
 
-        $activator = new Contains('foo');
+        $activator = Contains::make('foo');
 
         $this->assertFalse($activator->matches($message));
     }

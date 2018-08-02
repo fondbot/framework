@@ -6,6 +6,7 @@ namespace FondBot\Tests\Mocks;
 
 use FondBot\Conversation\Intent;
 use FondBot\Events\MessageReceived;
+use FondBot\Conversation\Activators\Exact;
 
 class FakeIntent extends Intent
 {
@@ -17,7 +18,7 @@ class FakeIntent extends Intent
     public function activators(): array
     {
         return [
-            'exact:foo',
+            Exact::make('foo'),
         ];
     }
 

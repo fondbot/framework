@@ -11,9 +11,14 @@ class Payload implements Activator
 {
     protected $value;
 
-    public function __construct(string $value)
+    protected function __construct(string $value)
     {
         $this->value = $value;
+    }
+
+    public static function make(string $value)
+    {
+        return new static($value);
     }
 
     /**

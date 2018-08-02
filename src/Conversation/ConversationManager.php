@@ -57,9 +57,7 @@ class ConversationManager implements Manager
             /** @var Intent $intent */
             $intent = resolve($intent);
 
-            $activators = ActivatorParser::parse($intent->activators());
-
-            foreach ($activators as $activator) {
+            foreach ($intent->activators() as $activator) {
                 if ($activator->matches($messageReceived) && $intent->passesAuthorization($messageReceived)) {
                     return $intent;
                 }
@@ -162,7 +160,7 @@ class ConversationManager implements Manager
             throw new InvalidArgumentException('Invalid conversable `'.$conversable.'`');
         }
 
-        $this->converse($instance, $this->messageReceived);
+        $this->converse($instance);
         $this->markAsTransitioned();
     }
 

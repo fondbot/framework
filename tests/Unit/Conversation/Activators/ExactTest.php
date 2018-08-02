@@ -14,7 +14,7 @@ class ExactTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start');
 
-        $activator = new Exact('/start', true);
+        $activator = Exact::make('/start');
 
         $this->assertTrue($activator->matches($message));
     }
@@ -23,7 +23,7 @@ class ExactTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/Start');
 
-        $activator = new Exact('/start', true);
+        $activator = Exact::make('/start')->caseSensitive();
 
         $this->assertFalse($activator->matches($message));
     }
@@ -32,7 +32,7 @@ class ExactTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/Start');
 
-        $activator = new Exact('/start');
+        $activator = Exact::make('/start');
 
         $this->assertTrue($activator->matches($message));
     }
@@ -41,7 +41,7 @@ class ExactTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/Start');
 
-        $activator = new Exact('/stop');
+        $activator = Exact::make('/stop');
 
         $this->assertFalse($activator->matches($message));
     }
@@ -50,7 +50,7 @@ class ExactTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '');
 
-        $activator = new Exact('/start');
+        $activator = Exact::make('/start');
 
         $this->assertFalse($activator->matches($message));
     }

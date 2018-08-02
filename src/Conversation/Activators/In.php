@@ -17,13 +17,23 @@ class In implements Activator
      *
      * @param array|Collection $values
      */
-    public function __construct($values)
+    protected function __construct($values)
     {
         if ($values instanceof Collection) {
             $values = $values->toArray();
         }
 
         $this->values = $values;
+    }
+
+    /**
+     * @param array|Collection $values
+     *
+     * @return static
+     */
+    public static function make($values)
+    {
+        return new static($values);
     }
 
     /**

@@ -13,13 +13,18 @@ class Regex implements Activator
     /** @var array|string */
     protected $patterns;
 
-    public function __construct($patterns)
+    protected function __construct($patterns)
     {
         if ($patterns instanceof Collection) {
             $patterns = $patterns->toArray();
         }
 
         $this->patterns = $patterns;
+    }
+
+    public static function make($patterns)
+    {
+        return new static($patterns);
     }
 
     /**

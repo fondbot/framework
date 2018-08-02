@@ -13,15 +13,19 @@ class Exact implements Activator
     protected $value;
     protected $caseSensitive;
 
-    public function __construct(string $value, bool $caseSensitive = false)
+    protected function __construct(string $value)
     {
         $this->value = $value;
-        $this->caseSensitive = $caseSensitive;
     }
 
-    public function caseSensitive(bool $caseSensitive): self
+    public static function make(string $value)
     {
-        $this->caseSensitive = $caseSensitive;
+        return new static($value);
+    }
+
+    public function caseSensitive(): self
+    {
+        $this->caseSensitive = true;
 
         return $this;
     }
@@ -36,6 +40,7 @@ class Exact implements Activator
     public function matches(MessageReceived $message): bool
     {
         $text = $message->getText();
+
         if ($text === null) {
             return false;
         }

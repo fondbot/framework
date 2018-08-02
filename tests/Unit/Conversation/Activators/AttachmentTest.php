@@ -15,7 +15,7 @@ class AttachmentTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, Template::create('foo', 'bar'));
 
-        $activator = new Attachment;
+        $activator = Attachment::make();
 
         $this->assertTrue($activator->matches($message));
     }
@@ -24,7 +24,7 @@ class AttachmentTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, null);
 
-        $activator = new Attachment;
+        $activator = Attachment::make();
 
         $this->assertFalse($activator->matches($message));
     }
@@ -36,7 +36,7 @@ class AttachmentTest extends TestCase
      */
     public function testMatchesWithType(string $type): void
     {
-        $activator = new Attachment($type);
+        $activator = Attachment::make($type);
         $attachment = Template::create($type, 'bar');
 
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, $attachment);
@@ -51,7 +51,9 @@ class AttachmentTest extends TestCase
      */
     public function testDoesNotMatchWithType(string $type): void
     {
-        $activator = new Attachment($type);
+        $activator = Attachment::make($type);
+
+        /** @var string $otherType */
         $otherType = collect(Template::possibleTypes())
             ->filter(function ($item) use ($type) {
                 return $item !== $type;

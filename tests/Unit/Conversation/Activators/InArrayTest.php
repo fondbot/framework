@@ -10,9 +10,9 @@ use FondBot\Conversation\Activators\In;
 
 class InArrayTest extends TestCase
 {
-    public function testConstructor(): void
+    public function testMake(): void
     {
-        $activator = new In(['foo', 'bar'], false);
+        $activator = In::make(['foo', 'bar']);
 
         $this->assertAttributeEquals(['foo', 'bar'], 'values', $activator);
     }
@@ -21,7 +21,7 @@ class InArrayTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start');
 
-        $activator = new In(['/bye', '/start', '/test']);
+        $activator = In::make(['/bye', '/start', '/test']);
         $this->assertTrue(
             $activator->matches($message)
         );
@@ -31,7 +31,7 @@ class InArrayTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/stop');
 
-        $activator = new In(['/bye', '/start', '/test']);
+        $activator = In::make(['/bye', '/start', '/test']);
 
         $this->assertFalse($activator->matches($message));
     }
@@ -40,7 +40,7 @@ class InArrayTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start');
 
-        $activator = new In(collect(['/bye', '/start', '/test']));
+        $activator = In::make(collect(['/bye', '/start', '/test']));
 
         $this->assertTrue($activator->matches($message));
     }
@@ -49,7 +49,7 @@ class InArrayTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/stop');
 
-        $activator = new In(collect(['/bye', '/start', '/test']));
+        $activator = In::make(collect(['/bye', '/start', '/test']));
 
         $this->assertFalse($activator->matches($message));
     }

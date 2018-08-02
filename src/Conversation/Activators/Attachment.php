@@ -12,9 +12,14 @@ class Attachment implements Activator
 {
     protected $type;
 
-    public function __construct(string $type = null)
+    protected function __construct(string $type = null)
     {
         $this->type = $type;
+    }
+
+    public static function make(string $type = null)
+    {
+        return new static($type);
     }
 
     public function file(): self

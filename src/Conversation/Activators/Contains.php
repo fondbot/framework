@@ -15,13 +15,23 @@ class Contains implements Activator
     /**
      * @param array|string $needles
      */
-    public function __construct($needles)
+    protected function __construct($needles)
     {
         if ($needles instanceof Collection) {
             $needles = $needles->toArray();
         }
 
         $this->needles = $needles;
+    }
+
+    /**
+     * @param array|string $needles
+     *
+     * @return static
+     */
+    public static function make($needles)
+    {
+        return new static($needles);
     }
 
     /**

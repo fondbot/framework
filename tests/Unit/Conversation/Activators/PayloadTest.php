@@ -14,7 +14,7 @@ class PayloadTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, null, 'foo');
 
-        $activator = new Payload('foo');
+        $activator = Payload::make('foo');
 
         $this->assertTrue($activator->matches($message));
     }
@@ -23,7 +23,7 @@ class PayloadTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, null, 'foo');
 
-        $activator = new Payload('bar');
+        $activator = Payload::make('bar');
 
         $this->assertFalse($activator->matches($message));
     }

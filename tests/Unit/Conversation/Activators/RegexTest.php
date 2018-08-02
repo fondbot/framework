@@ -14,7 +14,7 @@ class RegexTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), 'abc');
 
-        $activator = new Regex('abc');
+        $activator = Regex::make('abc');
 
         $this->assertTrue($activator->matches($message));
     }
@@ -23,7 +23,7 @@ class RegexTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), 'ab');
 
-        $activator = new Regex('abc');
+        $activator = Regex::make('abc');
 
         $this->assertFalse($activator->matches($message));
     }
