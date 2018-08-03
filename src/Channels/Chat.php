@@ -11,18 +11,38 @@ class Chat
 
     private $id;
     private $title;
-    private $type;
+    private $type = self::TYPE_PRIVATE;
+    private $data = [];
 
-    protected function __construct(string $id, string $title = null, string $type = self::TYPE_PRIVATE)
+    protected function __construct(string $id)
     {
         $this->id = $id;
-        $this->title = $title;
-        $this->type = $type;
     }
 
-    public static function make(string $id, string $title = null, string $type = self::TYPE_PRIVATE)
+    public static function make(string $id)
     {
-        return new static($id, $title, $type);
+        return new static($id);
+    }
+
+    public function title(string $title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function type(string $type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function data(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
     }
 
     public function getId(): string
@@ -38,5 +58,10 @@ class Chat
     public function getType(): string
     {
         return $this->type;
+    }
+
+    public function getData(string $key = null): array
+    {
+        return $key === null ? $this->data : array_get($this->data, $key);
     }
 }
