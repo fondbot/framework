@@ -11,7 +11,7 @@ use FondBot\Contracts\Channels\Driver as DriverContract;
 abstract class Driver implements DriverContract
 {
     /** @var Collection */
-    protected $parameters;
+    private $parameters;
 
     /**
      * Get driver short name.
