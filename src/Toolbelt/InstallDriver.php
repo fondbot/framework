@@ -11,7 +11,7 @@ use FondBot\Foundation\Composer;
 
 class InstallDriver extends Command
 {
-    protected $signature = 'driver:install 
+    protected $signature = 'fondbot:driver:install 
                             {name : Driver name to be installed}';
 
     protected $description = 'Install driver';

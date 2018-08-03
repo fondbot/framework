@@ -10,6 +10,6 @@ class Unknown implements Event
 {
     public function toResponse($request)
     {
-        // TODO: Implement toResponse() method.
+        return [];
     }
 }

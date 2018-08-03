@@ -11,6 +11,11 @@ use Illuminate\Foundation\Exceptions\Handler as BaseHandler;
 
 class Handler extends BaseHandler
 {
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param Exception $e
+     * @return \Illuminate\Http\Response|string|Response
+     */
     public function render($request, Exception $e)
     {
         // Catch all exceptions if route is webhook

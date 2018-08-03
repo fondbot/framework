@@ -8,7 +8,7 @@ use Illuminate\Console\GeneratorCommand;
 
 class MakeIntent extends GeneratorCommand
 {
-    protected $name = 'make:intent';
+    protected $name = 'fondbot:make:intent';
     protected $description = 'Create a new intent class';
     protected $type = 'Intent';
 

@@ -11,7 +11,7 @@ use GuzzleHttp\Exception\ClientException;
 
 class ListDrivers extends Command
 {
-    protected $signature = 'driver:list';
+    protected $signature = 'fondbot:driver:list';
     protected $description = 'List add installed drivers';
 
     public function handle(API $api, ChannelManager $manager): void

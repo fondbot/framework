@@ -9,7 +9,7 @@ use FondBot\Contracts\Conversation\Manager;
 
 class ListIntents extends Command
 {
-    protected $signature = 'intent:list';
+    protected $signature = 'fondbot:intent:list';
     protected $description = 'List all registered intents';
 
     public function handle(Manager $manager): void

@@ -9,7 +9,7 @@ use FondBot\Channels\ChannelManager;
 
 class ListChannels extends Command
 {
-    protected $signature = 'channel:list';
+    protected $signature = 'fondbot:channel:list';
     protected $description = 'List all registered channels';
 
     public function handle(ChannelManager $manager): void
