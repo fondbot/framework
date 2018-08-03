@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Foundation;
 
-use FondBot\Contracts\Event;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Events\Dispatcher;
 use FondBot\Contracts\Channels\WebhookVerification;
@@ -16,7 +15,7 @@ class Controller
         return 'FondBot v'.Kernel::VERSION;
     }
 
-    public function webhook(Kernel $kernel, Dispatcher $events, Request $request): Event
+    public function webhook(Kernel $kernel, Dispatcher $events, Request $request)
     {
         $driver = $kernel->getChannel()->getDriver();
 
