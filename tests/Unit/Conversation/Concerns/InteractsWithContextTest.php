@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Conversation\Traits;
+namespace FondBot\Tests\Unit\Conversation\Concerns;
 
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Tests\TestCase;
 use FondBot\Channels\Channel;
 use FondBot\Conversation\Context;
-use FondBot\Conversation\Traits\InteractsWithContext;
+use FondBot\Conversation\Concerns\InteractsWithContext;
 
 class InteractsWithContextTest extends TestCase
 {

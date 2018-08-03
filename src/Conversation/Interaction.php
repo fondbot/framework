@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Events\MessageReceived;
-use FondBot\Conversation\Traits\Transitions;
-use FondBot\Conversation\Traits\SendsMessages;
+use FondBot\Contracts\Conversation\Manager;
 use FondBot\Contracts\Conversation\Conversable;
-use FondBot\Conversation\Traits\InteractsWithContext;
+use FondBot\Conversation\Concerns\SendsMessages;
+use FondBot\Conversation\Concerns\InteractsWithContext;
 
 abstract class Interaction implements Conversable
 {
-    use InteractsWithContext,
-        SendsMessages,
-        Transitions;
+    use InteractsWithContext;
+    use SendsMessages;
 
     /**
      * Run interaction.
@@ -29,6 +28,30 @@ abstract class Interaction implements Conversable
      * @param MessageReceived $reply
      */
     abstract public function process(MessageReceived $reply): void;
+
+    /**
+     * Jump to interaction.
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function jump(): void
+    {
+        /** @var Manager $conversation */
+        $conversation = resolve(Manager::class);
+        $conversation->converse(resolve(static::class));
+        $conversation->markAsTransitioned();
+    }
+
+    /**
+     * Restart current interaction.
+     */
+    protected function restart(): void
+    {
+        /** @var Manager $conversation */
+        $conversation = resolve(Manager::class);
+        $conversation->converse($this);
+        $conversation->markAsTransitioned();
+    }
 
     /**
      * Handle interaction.

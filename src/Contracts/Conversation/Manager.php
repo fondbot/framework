@@ -100,18 +100,4 @@ interface Manager
      * @param Conversable     $conversable
      */
     public function converse(Conversable $conversable): void;
-
-    /**
-     * Transition to intent or interaction.
-     *
-     * @param string $conversable
-     */
-    public function transition(string $conversable): void;
-
-    /**
-     * Restart current dialog.
-     *
-     * @param Conversable $conversable
-     */
-    public function restart(Conversable $conversable): void;
 }

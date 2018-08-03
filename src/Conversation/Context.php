@@ -17,6 +17,7 @@ class Context implements Arrayable
     private $intent;
     private $interaction;
     private $items;
+    private $attempts = 0;
 
     public function __construct(Channel $channel, Chat $chat, User $user, array $items = [])
     {
@@ -65,16 +66,28 @@ class Context implements Arrayable
         return $this;
     }
 
-    public function get(string $key, $default = null)
+    public function getItem(string $key, $default = null)
     {
         return $this->items->get($key, $default);
     }
 
-    public function set(string $key, $value): Context
+    public function setItem(string $key, $value): Context
     {
         $this->items->put($key, $value);
 
         return $this;
+    }
+
+    public function incrementAttempts(): Context
+    {
+        ++$this->attempts;
+
+        return $this;
+    }
+
+    public function attempts(): int
+    {
+        return $this->attempts;
     }
 
     public function toArray(): array
@@ -83,6 +96,7 @@ class Context implements Arrayable
             'intent' => $this->intent ? get_class($this->intent) : null,
             'interaction' => $this->interaction ? get_class($this->interaction) : null,
             'items' => $this->items->toArray(),
+            'attempts' => $this->attempts,
         ];
     }
 }

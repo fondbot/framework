@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Conversation\Traits;
+namespace FondBot\Tests\Unit\Conversation\Concerns;
 
 use FondBot\Tests\TestCase;
 use FondBot\Events\MessageReceived;
-use FondBot\Conversation\Traits\Authorization;
+use FondBot\Conversation\Concerns\Authorization;
 
 class AuthorizationTest extends TestCase
 {

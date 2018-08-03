@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Events\MessageReceived;
-use FondBot\Conversation\Traits\Transitions;
-use FondBot\Conversation\Traits\Authorization;
-use FondBot\Conversation\Traits\SendsMessages;
 use FondBot\Contracts\Conversation\Conversable;
-use FondBot\Conversation\Traits\InteractsWithContext;
+use FondBot\Conversation\Concerns\Authorization;
+use FondBot\Conversation\Concerns\SendsMessages;
+use FondBot\Conversation\Concerns\InteractsWithContext;
 
 abstract class Intent implements Conversable
 {
-    use InteractsWithContext,
-        SendsMessages,
-        Authorization,
-        Transitions;
+    use InteractsWithContext;
+    use SendsMessages;
+    use Authorization;
 
     /**
      * Intent activators.

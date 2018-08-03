@@ -7,7 +7,6 @@ namespace FondBot\Conversation;
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Channels\Channel;
-use InvalidArgumentException;
 use Illuminate\Cache\Repository;
 use FondBot\Events\MessageReceived;
 use FondBot\Contracts\Conversation\Manager;
@@ -143,39 +142,13 @@ class ConversationManager implements Manager
     /** {@inheritdoc} */
     public function converse(Conversable $conversable): void
     {
+        context()->incrementAttempts();
+
         if ($conversable instanceof Intent) {
             context()->setIntent($conversable)->setInteraction(null);
         }
 
         $conversable->handle($this->messageReceived);
-    }
-
-    /** {@inheritdoc} */
-    public function transition(string $conversable): void
-    {
-        /** @var Interaction $instance */
-        $instance = resolve($conversable);
-
-        if (!$instance instanceof Conversable) {
-            throw new InvalidArgumentException('Invalid conversable `'.$conversable.'`');
-        }
-
-        $this->converse($instance);
-        $this->markAsTransitioned();
-    }
-
-    /** {@inheritdoc} */
-    public function restart(Conversable $conversable): void
-    {
-        if ($conversable instanceof Intent) {
-            $this->markAsTransitioned();
-        }
-
-        $this->converse($conversable);
-
-        if ($conversable instanceof Interaction) {
-            $this->markAsTransitioned();
-        }
     }
 
     public function __destruct()

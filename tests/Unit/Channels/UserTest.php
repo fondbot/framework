@@ -9,9 +9,9 @@ use FondBot\Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    public function testFull()
+    public function testFull(): void
     {
-        $user = User::make(
+        $user = new User(
             $id = $this->faker()->uuid,
             $name = $this->faker()->name,
             $username = $this->faker()->userName,
@@ -24,9 +24,9 @@ class UserTest extends TestCase
         $this->assertSame($data, $user->getData()->toArray());
     }
 
-    public function testAcceptsNullsForNameAndUsername()
+    public function testAcceptsNullsForNameAndUsername(): void
     {
-        $user = User::make($id = $this->faker()->uuid, null, null);
+        $user = new User($id = $this->faker()->uuid, null, null);
 
         $this->assertSame($id, $user->getId());
         $this->assertNull($user->getName());

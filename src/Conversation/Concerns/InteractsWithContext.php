@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Conversation\Traits;
+namespace FondBot\Conversation\Concerns;
 
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
@@ -62,6 +62,6 @@ trait InteractsWithContext
      */
     protected function remember(string $key, $value): void
     {
-        context()->set($key, $value);
+        context()->setItem($key, $value);
     }
 }

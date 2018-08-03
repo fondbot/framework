@@ -37,6 +37,6 @@ if (!function_exists('context')) {
             return $context;
         }
 
-        return $context->get($key, $default);
+        return optional($context)->getItem($key, $default);
     }
 }

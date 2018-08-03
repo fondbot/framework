@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Conversation\Traits;
+namespace FondBot\Tests\Unit\Conversation\Concerns;
 
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Template;
@@ -11,8 +11,8 @@ use FondBot\Templates\Attachment;
 use Illuminate\Support\Facades\Bus;
 use FondBot\Foundation\Commands\SendMessage;
 use FondBot\Foundation\Commands\SendRequest;
-use FondBot\Conversation\Traits\SendsMessages;
 use FondBot\Foundation\Commands\SendAttachment;
+use FondBot\Conversation\Concerns\SendsMessages;
 
 class SendsMessagesTest extends TestCase
 {

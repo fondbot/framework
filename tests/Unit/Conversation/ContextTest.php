@@ -27,11 +27,11 @@ class ContextTest extends TestCase
         $this->assertNull($context->getIntent());
         $this->assertNull($context->getInteraction());
 
-        $this->assertSame('bar', $context->get('foo'));
-        $this->assertNull($context->get('bar'));
+        $this->assertSame('bar', $context->getItem('foo'));
+        $this->assertNull($context->getItem('bar'));
 
-        $context->set('bar', 'foo');
-        $this->assertSame('foo', $context->get('bar'));
+        $context->setItem('bar', 'foo');
+        $this->assertSame('foo', $context->getItem('bar'));
 
         $payload = [
             'intent' => null,
@@ -40,6 +40,7 @@ class ContextTest extends TestCase
                 'foo' => 'bar',
                 'bar' => 'foo',
             ],
+            'attempts' => 0,
         ];
 
         $this->assertSame($payload, $context->toArray());

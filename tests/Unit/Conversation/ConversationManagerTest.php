@@ -50,13 +50,13 @@ class ConversationManagerTest extends TestCase
         $this->manager->registerIntent(FakeIntent::class);
         $this->manager->registerFallbackIntent(FallbackIntent::class);
 
-        $messageReceived = new MessageReceived(Chat::make('1'), User::make('2'), 'foo');
+        $messageReceived = new MessageReceived(new Chat('1'), new User('2'), 'foo');
 
         $result = $this->manager->matchIntent($messageReceived);
 
         $this->assertInstanceOf(FakeIntent::class, $result);
 
-        $messageReceived = new MessageReceived(Chat::make('1'), User::make('2'), 'bar');
+        $messageReceived = new MessageReceived(new Chat('1'), new User('2'), 'bar');
 
         $result = $this->manager->matchIntent($messageReceived);
 
@@ -75,8 +75,8 @@ class ConversationManagerTest extends TestCase
 
         $result = $this->manager->resolveContext(
             new Channel('foo-channel', new FakeDriver),
-            Chat::make('foo-chat'),
-            User::make('foo-user')
+            new Chat('foo-chat'),
+            new User('foo-user')
         );
 
         $this->assertSame('foo-channel', $result->getChannel()->getName());
@@ -84,7 +84,7 @@ class ConversationManagerTest extends TestCase
         $this->assertSame('foo-user', $result->getUser()->getId());
         $this->assertInstanceOf(FakeIntent::class, $result->getIntent());
         $this->assertInstanceOf(FakeInteraction::class, $result->getInteraction());
-        $this->assertSame('bar', $result->get('foo'));
+        $this->assertSame('bar', $result->getItem('foo'));
         $this->assertTrue($this->app->has('fondbot.conversation.context'));
         $this->assertSame($result, resolve('fondbot.conversation.context'));
     }
@@ -95,8 +95,8 @@ class ConversationManagerTest extends TestCase
 
         $context = new Context(
             new Channel('foo-channel', new FakeDriver),
-            Chat::make('foo-chat'),
-            User::make('foo-user'),
+            new Chat('foo-chat'),
+            new User('foo-user'),
             ['foo' => 'bar']
         );
         $context->setIntent(new FakeIntent)->setInteraction(new FakeInteraction);

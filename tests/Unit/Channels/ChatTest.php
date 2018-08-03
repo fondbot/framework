@@ -11,14 +11,10 @@ class ChatTest extends TestCase
 {
     public function testFull(): void
     {
-        $user = Chat::make(
-            $id = $this->faker()->uuid,
-            $title = $this->faker()->title,
-            $type = collect(['private', 'group'])->random()
-        );
+        $chat = new Chat($id = $this->faker()->uuid, $title = $this->faker()->title, 'foo');
 
-        $this->assertSame($id, $user->getId());
-        $this->assertSame($title, $user->getTitle());
-        $this->assertSame($type, $user->getType());
+        $this->assertSame($id, $chat->getId());
+        $this->assertSame($title, $chat->getTitle());
+        $this->assertSame('foo', $chat->getType());
     }
 }

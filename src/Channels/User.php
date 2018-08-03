@@ -13,17 +13,12 @@ class User
     private $username;
     private $data;
 
-    protected function __construct(string $id, string $name = null, string $username = null, array $data = [])
+    public function __construct(string $id, string $name = null, string $username = null, array $data = [])
     {
         $this->id = $id;
         $this->name = $name;
         $this->username = $username;
         $this->data = collect($data);
-    }
-
-    public static function make(string $id, string $name = null, string $username = null, array $data = [])
-    {
-        return new static($id, $name, $username, $data);
     }
 
     public function getId(): string
