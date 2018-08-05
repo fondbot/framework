@@ -27,18 +27,6 @@ class FakeDriver extends Driver
     }
 
     /**
-     * Define driver default parameters.
-     *
-     * Example: ['token' => '', 'apiVersion' => '1.0']
-     *
-     * @return array
-     */
-    public function getDefaultParameters(): array
-    {
-        return ['foo' => '', 'token' => str_random()];
-    }
-
-    /**
      * Get API client.
      *
      * @return mixed

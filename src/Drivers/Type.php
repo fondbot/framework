@@ -37,9 +37,10 @@ abstract class Type
      * Create type from json.
      *
      * @param stdClass|array|Arrayable $value
-     * @param bool                     $array
+     * @param bool $array
      *
      * @return Type|static|stdClass|array
+     * @throws \JsonMapper_Exception
      */
     public static function createFromJson($value, bool $array = false)
     {

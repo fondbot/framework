@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use FondBot\Contracts\Template;
 use FondBot\Templates\Attachment;
 use Illuminate\Support\Collection;
-use FondBot\Drivers\TemplateCompiler;
+use FondBot\Drivers\TemplateRenderer;
 
 interface Driver
 {
@@ -34,15 +34,6 @@ interface Driver
     public function getShortName(): string;
 
     /**
-     * Define driver default parameters.
-     *
-     * Example: ['token' => '', 'apiVersion' => '1.0']
-     *
-     * @return array
-     */
-    public function getDefaultParameters(): array;
-
-    /**
      * Initialize driver.
      *
      * @param Collection $parameters
@@ -52,18 +43,11 @@ interface Driver
     public function initialize(Collection $parameters): Driver;
 
     /**
-     * Get driver parameters.
-     *
-     * @return Collection
-     */
-    public function getParameters(): Collection;
-
-    /**
      * Get template compiler instance.
      *
-     * @return TemplateCompiler|null
+     * @return TemplateRenderer|null
      */
-    public function getTemplateCompiler(): ?TemplateCompiler;
+    public function getTemplateRenderer(): ?TemplateRenderer;
 
     /**
      * Get API client.

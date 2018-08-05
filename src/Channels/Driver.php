@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace FondBot\Channels;
 
 use Illuminate\Support\Collection;
-use FondBot\Drivers\TemplateCompiler;
+use FondBot\Drivers\TemplateRenderer;
 use FondBot\Contracts\Channels\Driver as DriverContract;
 
 abstract class Driver implements DriverContract
 {
-    /** @var Collection */
-    private $parameters;
-
     /**
      * Get driver short name.
      *
@@ -34,33 +31,19 @@ abstract class Driver implements DriverContract
      */
     public function initialize(Collection $parameters): DriverContract
     {
-        foreach ($this->getDefaultParameters() as $key => $value) {
-            $value = $parameters->get($key, $value);
-
-            $parameters->put($key, $value);
-        }
-
-        $this->parameters = collect($parameters);
+        $parameters->each(function ($value, $key) {
+            $this->$key = $value;
+        });
 
         return $this;
     }
 
     /**
-     * Get driver parameters.
-     *
-     * @return Collection
-     */
-    public function getParameters(): Collection
-    {
-        return $this->parameters ?? collect($this->getDefaultParameters());
-    }
-
-    /**
      * Get template compiler instance.
      *
-     * @return TemplateCompiler|null
+     * @return TemplateRenderer|null
      */
-    public function getTemplateCompiler(): ?TemplateCompiler
+    public function getTemplateRenderer(): ?TemplateRenderer
     {
         return null;
     }

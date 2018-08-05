@@ -24,13 +24,13 @@ class DriverTest extends TestCase
     public function testInitialize(): void
     {
         $driver = new FakeDriver;
-        $parameters = collect(['foo' => 'bar']);
-
-        $this->assertSame('', $driver->getParameters()->get('foo'));
+        $parameters = collect([
+            'token' => str_random(),
+        ]);
 
         $driver = $driver->initialize($parameters);
 
-        $this->assertSame('bar', $driver->getParameters()->get('foo'));
+        $this->assertAttributeSame($parameters->get('token'), 'token', $driver);
     }
 
     public function testGetShortName() : void
