@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use FondBot\Events\MessageReceived;
 use FondBot\Contracts\Conversation\Activator;
 
-class Is implements Activator
+class Regex implements Activator
 {
     /** @var array|string */
     protected $patterns;

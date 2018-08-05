@@ -6,15 +6,15 @@ namespace FondBot\Tests\Unit\Conversation\Activators;
 
 use FondBot\Tests\TestCase;
 use FondBot\Events\MessageReceived;
-use FondBot\Conversation\Activators\Is;
+use FondBot\Conversation\Activators\Regex;
 
-class IsTest extends TestCase
+class RegexTest extends TestCase
 {
     public function testStringMatches(): void
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), 'abc');
 
-        $activator = Is::make('abc');
+        $activator = Regex::make('abc');
 
         $this->assertTrue($activator->matches($message));
     }
@@ -23,7 +23,7 @@ class IsTest extends TestCase
     {
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), 'ab');
 
-        $activator = Is::make('abc');
+        $activator = Regex::make('abc');
 
         $this->assertFalse($activator->matches($message));
     }
