@@ -80,7 +80,7 @@ class Context implements Arrayable
 
     public function incrementAttempts(): Context
     {
-        ++$this->attempts;
+        $this->attempts++;
 
         return $this;
     }
