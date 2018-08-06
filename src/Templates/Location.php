@@ -19,7 +19,7 @@ class Location
         $this->parameters = collect($parameters);
     }
 
-    public static function create(float $latitude, float $longitude, array $parameters = [])
+    public static function make(float $latitude, float $longitude, array $parameters = [])
     {
         return new static($latitude, $longitude, $parameters);
     }

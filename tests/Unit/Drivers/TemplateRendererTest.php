@@ -15,7 +15,7 @@ class TemplateRendererTest extends TestCase
 {
     public function testRender(): void
     {
-        $template = Keyboard::create();
+        $template = Keyboard::make();
         $type = $this->mock(Type::class);
 
         $type->shouldReceive('toNative')->andReturn(null);

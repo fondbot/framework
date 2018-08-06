@@ -16,7 +16,7 @@ class PayloadButton extends Button
     }
 
     /**
-     * Create a new payload button instance.
+     * Make a new payload button instance.
      *
      * @param string $label
      * @param mixed  $payload
@@ -24,7 +24,7 @@ class PayloadButton extends Button
      *
      * @return static
      */
-    public static function create(string $label, $payload, array $parameters = [])
+    public static function make(string $label, $payload, array $parameters = [])
     {
         return new static($label, $payload, $parameters);
     }

@@ -24,7 +24,7 @@ class Attachment
         $this->parameters = collect($parameters);
     }
 
-    public static function create(string $type, string $path, array $parameters = [])
+    public static function make(string $type, string $path, array $parameters = [])
     {
         return new static($type, $path, $parameters);
     }

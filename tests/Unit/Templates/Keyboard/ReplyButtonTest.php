@@ -13,7 +13,7 @@ class ReplyButtonTest extends TestCase
     {
         $label = $this->faker()->word;
 
-        $button = ReplyButton::create($label);
+        $button = ReplyButton::make($label);
 
         $this->assertSame('ReplyButton', $button->getName());
         $this->assertSame($label, $button->getLabel());

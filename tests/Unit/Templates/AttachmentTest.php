@@ -16,7 +16,7 @@ class AttachmentTest extends TestCase
      */
     public function test(string $type)
     {
-        $attachment = Attachment::create($type, $path = $this->faker()->url, $parameters = ['foo' => 'bar']);
+        $attachment = Attachment::make($type, $path = $this->faker()->url, $parameters = ['foo' => 'bar']);
 
         $this->assertSame($type, $attachment->getType());
         $this->assertSame($path, $attachment->getPath());

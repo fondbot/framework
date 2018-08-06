@@ -15,7 +15,7 @@ class UrlButton extends Button
         $this->url = $url;
     }
 
-    public static function create(string $label, string $url, array $parameters = [])
+    public static function make(string $label, string $url, array $parameters = [])
     {
         return new static($label, $url, $parameters);
     }

@@ -30,7 +30,7 @@ class Keyboard implements Template
      *
      * @return static
      */
-    public static function create(array $buttons = [], array $parameters = [])
+    public static function make(array $buttons = [], array $parameters = [])
     {
         return new static($buttons, $parameters);
     }

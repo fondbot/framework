@@ -13,7 +13,7 @@ class AttachmentTest extends TestCase
 {
     public function testMatchesWithoutType(): void
     {
-        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, Template::create('foo', 'bar'));
+        $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, Template::make('foo', 'bar'));
 
         $activator = Attachment::make();
 
@@ -37,7 +37,7 @@ class AttachmentTest extends TestCase
     public function testMatchesWithType(string $type): void
     {
         $activator = Attachment::make($type);
-        $attachment = Template::create($type, 'bar');
+        $attachment = Template::make($type, 'bar');
 
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, $attachment);
 
@@ -60,7 +60,7 @@ class AttachmentTest extends TestCase
             })
             ->random();
 
-        $attachment = Template::create($otherType, 'bar');
+        $attachment = Template::make($otherType, 'bar');
 
         $message = new MessageReceived($this->fakeChat(), $this->fakeUser(), '/start', null, $attachment);
 

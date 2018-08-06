@@ -14,7 +14,7 @@ class PayloadButtonTest extends TestCase
         $label = $this->faker()->word;
         $payload = $this->faker()->text;
 
-        $button = PayloadButton::create($label, $payload);
+        $button = PayloadButton::make($label, $payload);
 
         $this->assertSame('PayloadButton', $button->getName());
         $this->assertSame($label, $button->getLabel());

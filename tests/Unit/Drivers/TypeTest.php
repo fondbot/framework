@@ -12,8 +12,8 @@ class TypeTest extends TestCase
 {
     public function testCreateFromTemplate(): void
     {
-        $template1 = Keyboard::create();
-        $template2 = Keyboard::create();
+        $template1 = Keyboard::make();
+        $template2 = Keyboard::make();
 
         // create one
         $result = FakeType::createFromTemplate($template1);
