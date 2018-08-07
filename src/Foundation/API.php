@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 
 class API
 {
-    public const URL = 'https://fondbot.io/api';
+    public const URL = 'https://api.fondbot.io';
 
     private $client;
 
