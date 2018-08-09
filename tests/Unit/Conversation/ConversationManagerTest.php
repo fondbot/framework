@@ -15,6 +15,7 @@ use FondBot\Tests\Mocks\FakeIntent;
 use FondBot\Conversation\FallbackIntent;
 use FondBot\Tests\Mocks\FakeInteraction;
 use FondBot\Conversation\ConversationManager;
+use FondBot\Tests\Mocks\FakeIntentWithClosureActivator;
 
 class ConversationManagerTest extends TestCase
 {
@@ -55,6 +56,24 @@ class ConversationManagerTest extends TestCase
         $result = $this->manager->matchIntent($messageReceived);
 
         $this->assertInstanceOf(FakeIntent::class, $result);
+
+        $messageReceived = new MessageReceived(new Chat('1'), new User('2'), 'bar');
+
+        $result = $this->manager->matchIntent($messageReceived);
+
+        $this->assertInstanceOf(FallbackIntent::class, $result);
+    }
+
+    public function testMatchIntentWithClosureActivator(): void
+    {
+        $this->manager->registerIntent(FakeIntentWithClosureActivator::class);
+        $this->manager->registerFallbackIntent(FallbackIntent::class);
+
+        $messageReceived = new MessageReceived(new Chat('1'), new User('2'), 'foo');
+
+        $result = $this->manager->matchIntent($messageReceived);
+
+        $this->assertInstanceOf(FakeIntentWithClosureActivator::class, $result);
 
         $messageReceived = new MessageReceived(new Chat('1'), new User('2'), 'bar');
 

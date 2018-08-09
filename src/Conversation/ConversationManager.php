@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use Closure;
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Channels\Channel;
 use Illuminate\Cache\Repository;
 use FondBot\Events\MessageReceived;
 use FondBot\Contracts\Conversation\Manager;
+use FondBot\Contracts\Conversation\Activator;
 use FondBot\Contracts\Conversation\Conversable;
 use Illuminate\Contracts\Foundation\Application;
 
@@ -57,7 +59,15 @@ class ConversationManager implements Manager
             $intent = resolve($intent);
 
             foreach ($intent->activators() as $activator) {
-                if ($activator->matches($messageReceived) && $intent->passesAuthorization($messageReceived)) {
+                if (!$intent->passesAuthorization($messageReceived)) {
+                    continue;
+                }
+
+                if ($activator instanceof Closure && value($activator($messageReceived)) === true) {
+                    return $intent;
+                }
+
+                if ($activator instanceof Activator && $activator->matches($messageReceived)) {
                     return $intent;
                 }
             }
