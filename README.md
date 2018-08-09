@@ -4,7 +4,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/fondbot/framework/v/unstable?format=flat-square)](https://packagist.org/packages/fondbot/framework)
 [![Quality Score](https://img.shields.io/scrutinizer/g/fondbot/framework.svg?style=flat-square)](https://scrutinizer-ci.com/g/fondbot/framework)
 [![License](https://poser.pugx.org/fondbot/framework/license?format=flat-square)](https://packagist.org/packages/fondbot/framework)
-[![Slack Invite](https://img.shields.io/badge/slack-invite-red.svg?style=flat-square)](https://fondbot.signup.team/)
+[![Slack Invite](https://img.shields.io/badge/slack-invite-red.svg?style=flat-square)](https://slack.fondbot.io/)
 
 > **Note:** This repository contains the core code of the FondBot framework. If you want to to build chatbot using FondBot framework, visit the main [FondBot repository](https://github.com/fondbot/fondbot).
 
@@ -24,4 +24,4 @@ If you discover a security vulnerability within FondBot, please send an e-mail t
 ## Community
 
 If you have questions or suggestions you are welcome to our Slack channel:
-[https://fondbot.signup.team](https://fondbot.signup.team)
+[https://slack.fondbot.io](https://slack.fondbot.io)
