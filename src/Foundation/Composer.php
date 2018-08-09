@@ -29,6 +29,7 @@ class Composer extends BaseComposer
      * @param string $package
      *
      * @return bool
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function installed(string $package): bool
     {

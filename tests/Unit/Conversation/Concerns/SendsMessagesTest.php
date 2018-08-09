@@ -34,7 +34,7 @@ class SendsMessagesTest extends TestCase
     {
         Bus::fake();
 
-        $this->reply($this->faker()->text, $this->mock(Template::class));
+        $this->reply($this->faker()->text)->template($this->mock(Template::class));
 
         Bus::assertDispatched(SendMessage::class);
     }
@@ -43,9 +43,13 @@ class SendsMessagesTest extends TestCase
     {
         Bus::fake();
 
-        $this->reply($this->faker()->text, $this->mock(Template::class), random_int(1, 10));
+        $this->reply($this->faker()->text)
+            ->template($this->mock(Template::class))
+            ->delay(5);
 
-        Bus::assertDispatched(SendMessage::class);
+        Bus::assertDispatched(SendMessage::class, function (SendMessage $job) {
+            return $job->delay === 5;
+        });
     }
 
     public function testSendAttachment(): void
@@ -61,9 +65,11 @@ class SendsMessagesTest extends TestCase
     {
         Bus::fake();
 
-        $this->sendAttachment($this->mock(Attachment::class), random_int(1, 10));
+        $this->sendAttachment($this->mock(Attachment::class))->delay(7);
 
-        Bus::assertDispatched(SendAttachment::class);
+        Bus::assertDispatched(SendAttachment::class, function (SendAttachment $job) {
+            return $job->delay === 7;
+        });
     }
 
     public function testSendRequest(): void
@@ -73,5 +79,16 @@ class SendsMessagesTest extends TestCase
         $this->sendRequest('endpoint', ['foo' => 'bar']);
 
         Bus::assertDispatched(SendRequest::class);
+    }
+
+    public function testSendRequestWithDelay(): void
+    {
+        Bus::fake();
+
+        $this->sendRequest('endpoint', ['foo' => 'bar'])->delay(3);
+
+        Bus::assertDispatched(SendRequest::class, function (SendRequest $job) {
+            return $job->delay === 3;
+        });
     }
 }

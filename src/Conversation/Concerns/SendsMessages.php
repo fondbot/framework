@@ -4,63 +4,58 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Concerns;
 
-use FondBot\Contracts\Template;
+use FondBot\Drivers\PendingReply;
 use FondBot\Templates\Attachment;
-use FondBot\Foundation\Commands\SendMessage;
-use FondBot\Foundation\Commands\SendRequest;
-use FondBot\Foundation\Commands\SendAttachment;
+use FondBot\Drivers\PendingRequest;
 
 trait SendsMessages
 {
     /**
-     * Reply to user.
+     * Send reply to user.
      *
-     * @param string|null   $text
-     * @param Template|null $template
-     * @param int           $delay
+     * @param string|null $text
+     *
+     * @return PendingReply
      */
-    protected function reply(string $text = null, Template $template = null, int $delay = 0): void
+    protected function reply(string $text = null): PendingReply
     {
-        SendMessage::dispatch(
+        return (new PendingReply(
             context()->getChannel(),
             context()->getChat(),
-            context()->getUser(),
-            $text,
-            $template
-        )->delay($delay);
+            context()->getUser()
+        ))->text($text);
     }
 
     /**
      * Send attachment to user.
      *
      * @param Attachment $attachment
-     * @param int        $delay
+     *
+     * @return PendingReply
      */
-    protected function sendAttachment(Attachment $attachment, int $delay = 0): void
+    protected function sendAttachment(Attachment $attachment): PendingReply
     {
-        SendAttachment::dispatch(
+        return (new PendingReply(
             context()->getChannel(),
             context()->getChat(),
-            context()->getUser(),
-            $attachment
-        )->delay($delay);
+            context()->getUser()
+        ))->attachment($attachment);
     }
 
     /**
      * Send request to the messaging service.
      *
      * @param string $endpoint
-     * @param array  $parameters
-     * @param int    $delay
+     * @param array $parameters
+     *
+     * @return PendingRequest
      */
-    protected function sendRequest(string $endpoint, array $parameters = [], int $delay = 0): void
+    protected function sendRequest(string $endpoint, array $parameters = []): PendingRequest
     {
-        SendRequest::dispatch(
+        return (new PendingRequest(
             context()->getChannel(),
             context()->getChat(),
-            context()->getUser(),
-            $endpoint,
-            $parameters
-        )->delay($delay);
+            context()->getUser()
+        ))->endpoint($endpoint)->parameters($parameters);
     }
 }
