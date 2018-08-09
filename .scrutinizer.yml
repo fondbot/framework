@@ -4,13 +4,6 @@ build:
       tests:
         override:
         - php-scrutinizer-run
-    tests:
-      override:
-        -
-          command: "vendor/bin/phpunit"
-          coverage:
-            file: build/clover.xml
-            format: clover
-filter: 
+filter:
   excluded_paths: 
     - tests/*
