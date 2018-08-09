@@ -15,7 +15,7 @@ The main goal of this project is to provide elegant and flexible architecture to
 
 ## Installation And Usage
 
-You can find all installation instructions and other documentation at https://fondbot.io/docs
+You can find all installation instructions and other documentation at https://fondbot.io
 
 ## Security Vulnerabilities
 
