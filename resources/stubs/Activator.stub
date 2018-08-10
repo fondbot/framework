@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DummyRootNamespaceDummyNamespace;
+
+use FondBot\Contracts\Conversation\Activator;
+use FondBot\Events\MessageReceived;
+
+class DummyClass implements Activator
+{
+    /**
+     * Result of matching activator.
+     *
+     * @param MessageReceived $message
+     *
+     * @return bool
+     */
+    public function matches(MessageReceived $message): bool
+    {
+        // TODO: Implement matches() method.
+    }
+}

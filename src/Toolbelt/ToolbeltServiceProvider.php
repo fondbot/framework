@@ -17,6 +17,7 @@ class ToolbeltServiceProvider extends ServiceProvider
             $this->commands([
                 MakeIntentCommand::class,
                 MakeInteractionCommand::class,
+                MakeActivatorCommand::class,
                 ListDriversCommand::class,
                 InstallDriverCommand::class,
                 ListChannelsCommand::class,
