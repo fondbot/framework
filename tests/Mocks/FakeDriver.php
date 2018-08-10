@@ -27,13 +27,13 @@ class FakeDriver extends Driver
     }
 
     /**
-     * Get API client.
+     * Create API client.
      *
      * @return mixed
      */
-    public function getClient()
+    public function createClient()
     {
-        // TODO: Implement getClient() method.
+        // TODO: Implement createClient() method.
     }
 
     /**

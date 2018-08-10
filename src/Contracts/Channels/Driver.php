@@ -50,11 +50,11 @@ interface Driver
     public function getTemplateRenderer(): ?TemplateRenderer;
 
     /**
-     * Get API client.
+     * Create API client.
      *
      * @return mixed
      */
-    public function getClient();
+    public function createClient();
 
     /**
      * Create event based on incoming request.

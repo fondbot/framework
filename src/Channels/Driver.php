@@ -10,6 +10,8 @@ use FondBot\Contracts\Channels\Driver as DriverContract;
 
 abstract class Driver implements DriverContract
 {
+    protected $client;
+
     /**
      * Get driver short name.
      *
@@ -34,6 +36,8 @@ abstract class Driver implements DriverContract
         $parameters->each(function ($value, $key) {
             $this->$key = $value;
         });
+
+        $this->client = $this->createClient();
 
         return $this;
     }
