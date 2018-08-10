@@ -7,7 +7,7 @@ namespace FondBot\Toolbelt;
 use Illuminate\Console\Command;
 use FondBot\Contracts\Conversation\Manager;
 
-class ListIntents extends Command
+class ListIntentsCommand extends Command
 {
     protected $signature = 'fondbot:intent:list';
     protected $description = 'List all registered intents';

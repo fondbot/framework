@@ -9,7 +9,7 @@ use FondBot\Foundation\Kernel;
 use Illuminate\Console\Command;
 use FondBot\Foundation\Composer;
 
-class InstallDriver extends Command
+class InstallDriverCommand extends Command
 {
     protected $signature = 'fondbot:driver:install 
                             {name : Driver name to be installed}';

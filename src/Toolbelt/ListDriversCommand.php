@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 use FondBot\Channels\ChannelManager;
 use GuzzleHttp\Exception\ClientException;
 
-class ListDrivers extends Command
+class ListDriversCommand extends Command
 {
     protected $signature = 'fondbot:driver:list';
     protected $description = 'List add installed drivers';

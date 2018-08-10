@@ -7,7 +7,7 @@ namespace FondBot\Toolbelt;
 use Illuminate\Console\Command;
 use FondBot\Channels\ChannelManager;
 
-class ListChannels extends Command
+class ListChannelsCommand extends Command
 {
     protected $signature = 'fondbot:channel:list';
     protected $description = 'List all registered channels';

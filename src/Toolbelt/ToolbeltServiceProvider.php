@@ -15,12 +15,12 @@ class ToolbeltServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                MakeIntent::class,
-                MakeInteraction::class,
-                ListDrivers::class,
-                InstallDriver::class,
-                ListChannels::class,
-                ListIntents::class,
+                MakeIntentCommand::class,
+                MakeInteractionCommand::class,
+                ListDriversCommand::class,
+                InstallDriverCommand::class,
+                ListChannelsCommand::class,
+                ListIntentsCommand::class,
             ]);
         }
     }

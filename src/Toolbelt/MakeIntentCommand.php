@@ -6,16 +6,16 @@ namespace FondBot\Toolbelt;
 
 use Illuminate\Console\GeneratorCommand;
 
-class MakeInteraction extends GeneratorCommand
+class MakeIntentCommand extends GeneratorCommand
 {
-    protected $name = 'fondbot:make:interaction';
-    protected $description = 'Create a new interaction class';
-    protected $type = 'Interaction';
+    protected $name = 'fondbot:make:intent';
+    protected $description = 'Create a new intent class';
+    protected $type = 'Intent';
 
     /** {@inheritdoc} */
     protected function getStub(): string
     {
-        return __DIR__.'/../../resources/stubs/Interaction.stub';
+        return __DIR__.'/../../resources/stubs/Intent.stub';
     }
 
     /** {@inheritdoc} */
@@ -27,12 +27,12 @@ class MakeInteraction extends GeneratorCommand
     /** {@inheritdoc} */
     protected function getPath($name): string
     {
-        return $this->laravel['path'].'/Interactions/'.$name.'.php';
+        return $this->laravel['path'].'/Intents/'.$name.'.php';
     }
 
     /** {@inheritdoc} */
     protected function getNamespace($name): string
     {
-        return 'Interactions';
+        return 'Intents';
     }
 }
