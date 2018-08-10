@@ -57,6 +57,13 @@ interface Driver
     public function createClient();
 
     /**
+     * Get API client.
+     *
+     * @return mixed
+     */
+    public function getClient();
+
+    /**
      * Create event based on incoming request.
      *
      * @param Request $request

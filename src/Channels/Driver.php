@@ -43,6 +43,16 @@ abstract class Driver implements DriverContract
     }
 
     /**
+     * Get API client.
+     *
+     * @return mixed
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
      * Get template compiler instance.
      *
      * @return TemplateRenderer|null
