@@ -8,7 +8,7 @@ use FondBot\Channels\Channel;
 
 class Kernel
 {
-    public const VERSION = '3.0.6';
+    public const VERSION = '3.0.13';
 
     /** @var Channel|null */
     private $channel;
