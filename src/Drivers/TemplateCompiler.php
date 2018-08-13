@@ -7,7 +7,7 @@ namespace FondBot\Drivers;
 use FondBot\Contracts\Template;
 use FondBot\Templates\Keyboard;
 
-abstract class TemplateRenderer
+abstract class TemplateCompiler
 {
     /**
      * Render keyboard.
@@ -16,7 +16,7 @@ abstract class TemplateRenderer
      *
      * @return Type|null
      */
-    abstract protected function renderKeyboard(Keyboard $keyboard): ?Type;
+    abstract protected function compileKeyboard(Keyboard $keyboard): ?Type;
 
     /**
      * Compile template.
@@ -25,10 +25,10 @@ abstract class TemplateRenderer
      *
      * @return Type|mixed|null
      */
-    public function render(Template $template)
+    public function compile(Template $template)
     {
         // Otherwise, we look for a compile method
-        $method = 'render'.ucfirst($template->getName());
+        $method = 'compile'.ucfirst($template->getName());
         if (!method_exists($this, $method)) {
             return null;
         }

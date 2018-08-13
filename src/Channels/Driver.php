@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FondBot\Channels;
 
 use Illuminate\Support\Collection;
-use FondBot\Drivers\TemplateRenderer;
+use FondBot\Drivers\TemplateCompiler;
 use FondBot\Contracts\Channels\Driver as DriverContract;
 
 abstract class Driver implements DriverContract
@@ -55,9 +55,9 @@ abstract class Driver implements DriverContract
     /**
      * Get template compiler instance.
      *
-     * @return TemplateRenderer|null
+     * @return TemplateCompiler|null
      */
-    public function getTemplateRenderer(): ?TemplateRenderer
+    public function getTemplateCompiler(): ?TemplateCompiler
     {
         return null;
     }
