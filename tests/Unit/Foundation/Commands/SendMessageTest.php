@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Channels\Commands;
+namespace FondBot\Tests\Unit\Foundation\Commands;
 
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
@@ -22,14 +22,14 @@ class SendMessageTest extends TestCase
         $text = $this->faker()->text;
         $template = $this->mock(Template::class);
 
-        $command = new SendMessage($channel, $chat, $recipient, $text, $template);
+        new SendMessage($channel, $chat, $recipient, $text, $template);
     }
 
     /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Either text or template should be set.
      */
-    public function testTextAndTemplateNull()
+    public function testTextAndTemplateNull(): void
     {
         new SendMessage(
             $this->mock(Channel::class),

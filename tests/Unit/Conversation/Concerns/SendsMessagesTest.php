@@ -10,7 +10,6 @@ use FondBot\Conversation\Context;
 use FondBot\Templates\Attachment;
 use Illuminate\Support\Facades\Bus;
 use FondBot\Foundation\Commands\SendMessage;
-use FondBot\Foundation\Commands\SendRequest;
 use FondBot\Foundation\Commands\SendAttachment;
 use FondBot\Conversation\Concerns\SendsMessages;
 
@@ -69,26 +68,6 @@ class SendsMessagesTest extends TestCase
 
         Bus::assertDispatched(SendAttachment::class, function (SendAttachment $job) {
             return $job->delay === 7;
-        });
-    }
-
-    public function testSendRequest(): void
-    {
-        Bus::fake();
-
-        $this->sendRequest('endpoint', ['foo' => 'bar']);
-
-        Bus::assertDispatched(SendRequest::class);
-    }
-
-    public function testSendRequestWithDelay(): void
-    {
-        Bus::fake();
-
-        $this->sendRequest('endpoint', ['foo' => 'bar'])->delay(3);
-
-        Bus::assertDispatched(SendRequest::class, function (SendRequest $job) {
-            return $job->delay === 3;
         });
     }
 }

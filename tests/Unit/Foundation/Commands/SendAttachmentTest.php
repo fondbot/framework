@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Tests\Unit\Channels\Commands;
+namespace FondBot\Tests\Unit\Foundation\Commands;
 
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
@@ -20,6 +20,6 @@ class SendAttachmentTest extends TestCase
         $recipient = $this->mock(User::class);
         $attachment = $this->mock(Attachment::class);
 
-        $command = new SendAttachment($channel, $chat, $recipient, $attachment);
+        new SendAttachment($channel, $chat, $recipient, $attachment);
     }
 }

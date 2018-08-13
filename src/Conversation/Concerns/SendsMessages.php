@@ -6,7 +6,6 @@ namespace FondBot\Conversation\Concerns;
 
 use FondBot\Drivers\PendingReply;
 use FondBot\Templates\Attachment;
-use FondBot\Drivers\PendingRequest;
 
 trait SendsMessages
 {
@@ -40,22 +39,5 @@ trait SendsMessages
             context()->getChat(),
             context()->getUser()
         ))->attachment($attachment);
-    }
-
-    /**
-     * Send request to the messaging service.
-     *
-     * @param string $endpoint
-     * @param array $parameters
-     *
-     * @return PendingRequest
-     */
-    protected function sendRequest(string $endpoint, array $parameters = []): PendingRequest
-    {
-        return (new PendingRequest(
-            context()->getChannel(),
-            context()->getChat(),
-            context()->getUser()
-        ))->endpoint($endpoint)->parameters($parameters);
     }
 }
