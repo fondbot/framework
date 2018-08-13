@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Channels;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use FondBot\Drivers\TemplateCompiler;
 use FondBot\Contracts\Channels\Driver as DriverContract;
@@ -34,6 +35,7 @@ abstract class Driver implements DriverContract
     public function initialize(Collection $parameters): DriverContract
     {
         $parameters->each(function ($value, $key) {
+            $key = Str::camel($key);
             $this->$key = $value;
         });
 
