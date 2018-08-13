@@ -90,14 +90,4 @@ interface Driver
      * @param Attachment $attachment
      */
     public function sendAttachment(Chat $chat, User $recipient, Attachment $attachment): void;
-
-    /**
-     * Send low-level request.
-     *
-     * @param Chat $chat
-     * @param User $recipient
-     * @param string $endpoint
-     * @param array $parameters
-     */
-    public function sendRequest(Chat $chat, User $recipient, string $endpoint, array $parameters = []): void;
 }

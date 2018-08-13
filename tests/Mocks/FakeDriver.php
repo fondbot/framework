@@ -72,17 +72,4 @@ class FakeDriver extends Driver
     {
         // TODO: Implement sendAttachment() method.
     }
-
-    /**
-     * Send low-level request.
-     *
-     * @param Chat   $chat
-     * @param User   $recipient
-     * @param string $endpoint
-     * @param array  $parameters
-     */
-    public function sendRequest(Chat $chat, User $recipient, string $endpoint, array $parameters = []): void
-    {
-        // TODO: Implement sendRequest() method.
-    }
 }
