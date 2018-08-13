@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace FondBot\Tests\Unit\Drivers;
 
 use Mockery\Mock;
-use FondBot\Drivers\Type;
 use FondBot\Tests\TestCase;
 use FondBot\Contracts\Template;
 use FondBot\Templates\Keyboard;
@@ -16,17 +15,14 @@ class TemplateCompilerTest extends TestCase
     public function testCompile(): void
     {
         $template = Keyboard::make();
-        $type = $this->mock(Type::class);
-
-        $type->shouldReceive('toNative')->andReturn(null);
 
         /** @var TemplateCompiler|Mock $compiler */
         $compiler = $this->mock(TemplateCompiler::class)->shouldAllowMockingProtectedMethods()->makePartial();
 
-        $compiler->shouldReceive('compileKeyboard')->with($template)->andReturn($type)->once();
+        $compiler->shouldReceive('compileKeyboard')->with($template)->andReturn(['buttons' => ['foo', 'bar']])->once();
 
         $result = $compiler->compile($template);
-        $this->assertSame($type, $result);
+        $this->assertSame(['buttons' => ['foo', 'bar']], $result);
     }
 
     public function testCompileUsingMethodButMethodDoesNotExist(): void

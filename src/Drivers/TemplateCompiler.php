@@ -14,16 +14,16 @@ abstract class TemplateCompiler
      *
      * @param Keyboard $keyboard
      *
-     * @return Type|null
+     * @return mixed
      */
-    abstract protected function compileKeyboard(Keyboard $keyboard): ?Type;
+    abstract protected function compileKeyboard(Keyboard $keyboard);
 
     /**
      * Compile template.
      *
      * @param Template $template
      *
-     * @return Type|mixed|null
+     * @return mixed
      */
     public function compile(Template $template)
     {
@@ -33,9 +33,6 @@ abstract class TemplateCompiler
             return null;
         }
 
-        /** @var Type $type */
-        $type = $this->$method($template);
-
-        return $type->toNative() ?? $type;
+        return $this->$method($template);
     }
 }
