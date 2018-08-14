@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Channels;
 
 use Illuminate\Support\Str;
+use FondBot\Contracts\Event;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use FondBot\Drivers\TemplateCompiler;
 use FondBot\Contracts\Channels\Driver as DriverContract;
@@ -62,5 +64,18 @@ abstract class Driver implements DriverContract
     public function getTemplateCompiler(): ?TemplateCompiler
     {
         return null;
+    }
+
+    /**
+     * Create HTTP response.
+     *
+     * @param Request $request
+     * @param Event $event
+     *
+     * @return mixed
+     */
+    public function createResponse(Request $request, Event $event)
+    {
+        return [];
     }
 }

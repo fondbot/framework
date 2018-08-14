@@ -30,6 +30,6 @@ class Controller
             $event = $driver->createEvent($request)
         );
 
-        return $event;
+        return $driver->createResponse($request, $event);
     }
 }

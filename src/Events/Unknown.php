@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace FondBot\Events;
 
-use FondBot\Contracts\Event;
-
-class Unknown implements Event
+class Unknown extends Event
 {
-    public function toResponse($request)
-    {
-        return [];
-    }
 }

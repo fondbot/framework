@@ -73,6 +73,16 @@ interface Driver
     public function createEvent(Request $request): Event;
 
     /**
+     * Create HTTP response.
+     *
+     * @param Request $request
+     * @param Event $event
+     *
+     * @return mixed
+     */
+    public function createResponse(Request $request, Event $event);
+
+    /**
      * Send message.
      *
      * @param Chat $chat

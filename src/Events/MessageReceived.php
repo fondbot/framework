@@ -6,12 +6,11 @@ namespace FondBot\Events;
 
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
-use FondBot\Contracts\Event;
 use FondBot\Templates\Location;
 use FondBot\Templates\Attachment;
 use Illuminate\Support\Collection;
 
-class MessageReceived implements Event
+class MessageReceived extends Event
 {
     private $chat;
     private $from;
@@ -21,8 +20,15 @@ class MessageReceived implements Event
     private $data;
     private $additional;
 
-    public function __construct(Chat $chat, User $from, string $text, Location $location = null, Attachment $attachment = null, string $data = null, array $additional = [])
-    {
+    public function __construct(
+        Chat $chat,
+        User $from,
+        string $text,
+        Location $location = null,
+        Attachment $attachment = null,
+        string $data = null,
+        array $additional = []
+    ) {
         $this->chat = $chat;
         $this->from = $from;
         $this->text = $text;
@@ -65,10 +71,5 @@ class MessageReceived implements Event
     public function getAdditional(): Collection
     {
         return $this->additional;
-    }
-
-    public function toResponse($request)
-    {
-        // TODO: Implement toResponse() method.
     }
 }
