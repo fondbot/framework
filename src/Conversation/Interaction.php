@@ -49,8 +49,7 @@ abstract class Interaction implements Conversable
     {
         /** @var Manager $conversation */
         $conversation = resolve(Manager::class);
-        $conversation->converse($this);
-        $conversation->markAsTransitioned();
+        $conversation->restartInteraction($this);
     }
 
     /**

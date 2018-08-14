@@ -10,6 +10,7 @@ use FondBot\Channels\Channel;
 use FondBot\Conversation\Intent;
 use FondBot\Conversation\Context;
 use FondBot\Events\MessageReceived;
+use FondBot\Conversation\Interaction;
 
 interface Manager
 {
@@ -100,4 +101,11 @@ interface Manager
      * @param Conversable     $conversable
      */
     public function converse(Conversable $conversable): void;
+
+    /**
+     * Restart interaction.
+     *
+     * @param Interaction $interaction
+     */
+    public function restartInteraction(Interaction $interaction): void;
 }

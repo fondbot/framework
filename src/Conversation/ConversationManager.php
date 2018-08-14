@@ -161,6 +161,14 @@ class ConversationManager implements Manager
         $conversable->handle($this->messageReceived);
     }
 
+    /** {@inheritdoc} */
+    public function restartInteraction(Interaction $interaction): void
+    {
+        context()->setInteraction(null);
+
+        $this->converse($interaction);
+    }
+
     public function __destruct()
     {
         $context = $this->getContext();
