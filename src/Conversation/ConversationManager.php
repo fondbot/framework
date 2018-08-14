@@ -167,6 +167,8 @@ class ConversationManager implements Manager
         context()->setInteraction(null);
 
         $this->converse($interaction);
+
+        $this->markAsTransitioned();
     }
 
     public function __destruct()
