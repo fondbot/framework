@@ -14,6 +14,12 @@ use FondBot\Contracts\Channels\Driver as DriverContract;
 abstract class Driver implements DriverContract
 {
     protected $client;
+    protected $templateCompiler;
+
+    public function __construct(TemplateCompiler $templateCompiler = null)
+    {
+        $this->templateCompiler = $templateCompiler;
+    }
 
     /**
      * Get driver short name.
@@ -54,16 +60,6 @@ abstract class Driver implements DriverContract
     public function getClient()
     {
         return $this->client;
-    }
-
-    /**
-     * Get template compiler instance.
-     *
-     * @return TemplateCompiler|null
-     */
-    public function getTemplateCompiler(): ?TemplateCompiler
-    {
-        return null;
     }
 
     /**

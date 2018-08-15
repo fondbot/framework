@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use FondBot\Contracts\Template;
 use FondBot\Templates\Attachment;
 use Illuminate\Support\Collection;
-use FondBot\Drivers\TemplateCompiler;
 
 interface Driver
 {
@@ -41,13 +40,6 @@ interface Driver
      * @return Driver|static
      */
     public function initialize(Collection $parameters): Driver;
-
-    /**
-     * Get template compiler instance.
-     *
-     * @return TemplateCompiler|null
-     */
-    public function getTemplateCompiler(): ?TemplateCompiler;
 
     /**
      * Create API client.
