@@ -32,6 +32,16 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         ];
     }
 
+    protected function getEnvironmentSetUp($app): void
+    {
+        $app['config']->set('fondbot', [
+            'channels' => [],
+            'intents_path' => [__DIR__.'/Mocks'],
+            'fallback_intent' => \FondBot\Conversation\FallbackIntent::class,
+            'context_ttl' => 10,
+        ]);
+    }
+
     protected function setContext(Context $context)
     {
         $this->app->instance('fondbot.conversation.context', $context);
@@ -42,7 +52,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * @param string $class
      *
-     * @param array  $args
+     * @param array $args
      *
      * @return mixed|Mockery\Mock
      */

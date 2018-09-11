@@ -37,6 +37,15 @@ class FondBotServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
+            $this->mergeConfigFrom(
+                __DIR__.'/../config/fondbot.php',
+                'fondbot'
+            );
+
+            $this->publishes([
+                __DIR__.'/../config/fondbot.php' => config_path('fondbot.php'),
+            ], 'fondbot-config');
+
             $this->commands([
                 MakeIntentCommand::class,
                 MakeInteractionCommand::class,
