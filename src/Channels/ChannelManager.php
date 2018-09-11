@@ -7,7 +7,6 @@ namespace FondBot\Channels;
 use Illuminate\Support\Manager;
 use Illuminate\Support\Collection;
 use FondBot\Channels\Exceptions\ChannelNotFound;
-use FondBot\Contracts\Channels\Manager as ManagerContract;
 
 /**
  * Class ChannelManager.
@@ -15,7 +14,7 @@ use FondBot\Contracts\Channels\Manager as ManagerContract;
  * @method Driver driver($driver = null)
  * @method Driver createDriver($driver)
  */
-class ChannelManager extends Manager implements ManagerContract
+class ChannelManager extends Manager
 {
     /** @var Collection */
     private $channels;

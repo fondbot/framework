@@ -21,7 +21,6 @@ use FondBot\Toolbelt\InstallDriverCommand;
 use FondBot\Toolbelt\MakeActivatorCommand;
 use FondBot\Toolbelt\MakeInteractionCommand;
 use FondBot\Conversation\ConversationManager;
-use FondBot\Contracts\Channels\Manager as ChannelManagerContract;
 
 class FondBotServiceProvider extends ServiceProvider
 {
@@ -60,7 +59,7 @@ class FondBotServiceProvider extends ServiceProvider
 
     private function registerChannelManager(): void
     {
-        $this->app->singleton(ChannelManagerContract::class, function () {
+        $this->app->singleton(ChannelManager::class, function () {
             $manager = new ChannelManager($this->app);
 
             $manager->register(
@@ -77,13 +76,13 @@ class FondBotServiceProvider extends ServiceProvider
 
     private function registerConversationManager(): void
     {
-        $this->app->singleton('conversation', function () {
+        $this->app->singleton(ConversationManager::class, function () {
             $manager = new ConversationManager($this->app, $this->app[Cache::class]);
 
             $namespace = $this->app->getNamespace();
 
             /** @var SplFileInfo[] $files */
-            $files = (new Finder())->in(config('fondbot.intents_path'))->files();
+            $files = (new Finder())->in(config('fondbot.intents_path', []))->files();
 
             foreach ($files as $file) {
                 $file = $namespace.str_replace(
