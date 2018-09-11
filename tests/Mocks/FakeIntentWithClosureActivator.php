@@ -12,7 +12,7 @@ class FakeIntentWithClosureActivator extends Intent
     /**
      * Intent activators.
      *
-     * @return \FondBot\Contracts\Conversation\Activator[]
+     * @return \FondBot\Contracts\Activator[]
      */
     public function activators(): array
     {

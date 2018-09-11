@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Activators;
 
+use FondBot\Contracts\Activator;
 use FondBot\Events\MessageReceived;
-use FondBot\Contracts\Conversation\Activator;
 
 class Payload implements Activator
 {

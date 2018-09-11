@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Contracts\Conversable;
 use FondBot\Events\MessageReceived;
-use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Conversation\Concerns\SendsMessages;
 use FondBot\Conversation\Concerns\InteractsWithContext;
 

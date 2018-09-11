@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FondBot\Conversation\Activators;
 
 use Illuminate\Support\Str;
+use FondBot\Contracts\Activator;
 use FondBot\Events\MessageReceived;
-use FondBot\Contracts\Conversation\Activator;
 
 class Exact implements Activator
 {

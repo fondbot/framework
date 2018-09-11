@@ -8,10 +8,10 @@ use Closure;
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
 use FondBot\Channels\Channel;
+use FondBot\Contracts\Activator;
 use Illuminate\Cache\Repository;
+use FondBot\Contracts\Conversable;
 use FondBot\Events\MessageReceived;
-use FondBot\Contracts\Conversation\Activator;
-use FondBot\Contracts\Conversation\Conversable;
 use Illuminate\Contracts\Foundation\Application;
 
 class ConversationManager

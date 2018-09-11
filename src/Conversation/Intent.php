@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation;
 
+use FondBot\Contracts\Conversable;
 use FondBot\Events\MessageReceived;
-use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Conversation\Concerns\Authorization;
 use FondBot\Conversation\Concerns\SendsMessages;
 use FondBot\Conversation\Concerns\InteractsWithContext;
@@ -19,7 +19,7 @@ abstract class Intent implements Conversable
     /**
      * Intent activators.
      *
-     * @return \FondBot\Contracts\Conversation\Activator[]
+     * @return \FondBot\Contracts\Activator[]
      */
     abstract public function activators(): array;
 

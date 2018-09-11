@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FondBot\Conversation\Activators;
 
+use FondBot\Contracts\Activator;
 use Illuminate\Support\Collection;
 use FondBot\Events\MessageReceived;
-use FondBot\Contracts\Conversation\Activator;
 
 class Regex implements Activator
 {

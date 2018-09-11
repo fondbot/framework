@@ -9,7 +9,7 @@ use FondBot\Contracts\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use FondBot\Drivers\TemplateCompiler;
-use FondBot\Contracts\Channels\Driver as DriverContract;
+use FondBot\Contracts\Driver as DriverContract;
 
 abstract class Driver implements DriverContract
 {
