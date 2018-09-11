@@ -11,15 +11,15 @@ use FondBot\Conversation\Intent;
 use FondBot\Channels\ChannelManager;
 use Symfony\Component\Finder\Finder;
 use Illuminate\Support\Facades\Route;
-use FondBot\Toolbelt\MakeIntentCommand;
+use FondBot\Console\MakeIntentCommand;
+use FondBot\Console\ListDriversCommand;
+use FondBot\Console\ListIntentsCommand;
 use Illuminate\Support\ServiceProvider;
-use FondBot\Toolbelt\ListDriversCommand;
-use FondBot\Toolbelt\ListIntentsCommand;
-use FondBot\Toolbelt\ListChannelsCommand;
+use FondBot\Console\ListChannelsCommand;
+use FondBot\Console\InstallDriverCommand;
+use FondBot\Console\MakeActivatorCommand;
 use Illuminate\Cache\Repository as Cache;
-use FondBot\Toolbelt\InstallDriverCommand;
-use FondBot\Toolbelt\MakeActivatorCommand;
-use FondBot\Toolbelt\MakeInteractionCommand;
+use FondBot\Console\MakeInteractionCommand;
 use FondBot\Conversation\ConversationManager;
 
 class FondBotServiceProvider extends ServiceProvider

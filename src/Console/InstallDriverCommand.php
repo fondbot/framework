@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Toolbelt;
+namespace FondBot\Console;
 
 use FondBot\FondBot;
 use FondBot\Foundation\Api;
