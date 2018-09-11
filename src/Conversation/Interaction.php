@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace FondBot\Conversation;
 
 use FondBot\Events\MessageReceived;
-use FondBot\Contracts\Conversation\Manager;
 use FondBot\Contracts\Conversation\Conversable;
 use FondBot\Conversation\Concerns\SendsMessages;
 use FondBot\Conversation\Concerns\InteractsWithContext;
@@ -36,8 +35,8 @@ abstract class Interaction implements Conversable
      */
     public static function jump(): void
     {
-        /** @var Manager $conversation */
-        $conversation = resolve(Manager::class);
+        /** @var ConversationManager $conversation */
+        $conversation = resolve(ConversationManager::class);
         $conversation->converse(resolve(static::class));
         $conversation->markAsTransitioned();
     }
@@ -47,8 +46,8 @@ abstract class Interaction implements Conversable
      */
     protected function restart(): void
     {
-        /** @var Manager $conversation */
-        $conversation = resolve(Manager::class);
+        /** @var ConversationManager $conversation */
+        $conversation = resolve(ConversationManager::class);
         $conversation->restartInteraction($this);
     }
 

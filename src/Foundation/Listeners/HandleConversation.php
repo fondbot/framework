@@ -7,7 +7,7 @@ namespace FondBot\Foundation\Listeners;
 use FondBot\FondBot;
 use FondBot\Conversation\Context;
 use FondBot\Events\MessageReceived;
-use FondBot\Contracts\Conversation\Manager;
+use FondBot\Conversation\ConversationManager;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class HandleConversation
@@ -15,18 +15,18 @@ class HandleConversation
     use DispatchesJobs;
 
     private $kernel;
-    private $conversation;
+    private $conversationManager;
 
-    public function __construct(FondBot $kernel, Manager $conversation)
+    public function __construct(FondBot $kernel, ConversationManager $conversationManager)
     {
         $this->kernel = $kernel;
-        $this->conversation = $conversation;
+        $this->conversationManager = $conversationManager;
     }
 
     public function handle(MessageReceived $messageReceived): void
     {
         /** @var Context $context */
-        $context = $this->conversation->resolveContext(
+        $context = $this->conversationManager->resolveContext(
             $this->kernel->getChannel(),
             $messageReceived->getChat(),
             $messageReceived->getFrom()
@@ -36,13 +36,13 @@ class HandleConversation
         // Try to match intent and run it
         // Otherwise, run interaction
         if (!$this->isInConversation($context)) {
-            $conversable = $this->conversation->matchIntent($messageReceived);
+            $conversable = $this->conversationManager->matchIntent($messageReceived);
         } else {
             $conversable = $context->getInteraction();
         }
 
-        $this->conversation->setReceivedMessage($messageReceived);
-        $this->conversation->converse($conversable);
+        $this->conversationManager->setReceivedMessage($messageReceived);
+        $this->conversationManager->converse($conversable);
     }
 
     /**

@@ -10,12 +10,11 @@ use FondBot\Channels\User;
 use FondBot\Channels\Channel;
 use Illuminate\Cache\Repository;
 use FondBot\Events\MessageReceived;
-use FondBot\Contracts\Conversation\Manager;
 use FondBot\Contracts\Conversation\Activator;
 use FondBot\Contracts\Conversation\Conversable;
 use Illuminate\Contracts\Foundation\Application;
 
-class ConversationManager implements Manager
+class ConversationManager
 {
     private $intents = [];
     private $fallbackIntent;
@@ -33,25 +32,43 @@ class ConversationManager implements Manager
         $this->cache = $cache;
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Register intent.
+     *
+     * @param string $class
+     */
     public function registerIntent(string $class): void
     {
         $this->intents[] = $class;
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Register fallback intent.
+     *
+     * @param string $class
+     */
     public function registerFallbackIntent(string $class): void
     {
         $this->fallbackIntent = $class;
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Get all registered intents.
+     *
+     * @return array
+     */
     public function getIntents(): array
     {
         return $this->intents;
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Match intent by received message.
+     *
+     * @param MessageReceived $messageReceived
+     *
+     * @return Intent|null
+     */
     public function matchIntent(MessageReceived $messageReceived): ?Intent
     {
         foreach ($this->intents as $intent) {
@@ -77,7 +94,15 @@ class ConversationManager implements Manager
         return resolve($this->fallbackIntent);
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Resolve conversation context.
+     *
+     * @param Channel $channel
+     * @param Chat    $chat
+     * @param User    $user
+     *
+     * @return Context
+     */
     public function resolveContext(Channel $channel, Chat $chat, User $user): Context
     {
         $value = $this->cache->get($this->getCacheKeyForContext($channel, $chat, $user), [
@@ -104,7 +129,11 @@ class ConversationManager implements Manager
         return $context;
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Save context.
+     *
+     * @param Context $context
+     */
     public function saveContext(Context $context): void
     {
         $this->cache->forever(
@@ -113,7 +142,11 @@ class ConversationManager implements Manager
         );
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Flush context.
+     *
+     * @param Context $context
+     */
     public function flushContext(Context $context): void
     {
         $this->cache->forget(
@@ -121,7 +154,11 @@ class ConversationManager implements Manager
         );
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Get current context.
+     *
+     * @return Context|null
+     */
     public function getContext(): ?Context
     {
         if (!$this->application->has('fondbot.conversation.context')) {
@@ -131,25 +168,39 @@ class ConversationManager implements Manager
         return $this->application->get('fondbot.conversation.context');
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Define received message.
+     *
+     * @param MessageReceived $messageReceived
+     */
     public function setReceivedMessage(MessageReceived $messageReceived): void
     {
         $this->messageReceived = $messageReceived;
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Mark conversation as transitioned.
+     */
     public function markAsTransitioned(): void
     {
         $this->transitioned = true;
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Determine if conversation has been transitioned.
+     *
+     * @return bool
+     */
     public function transitioned(): bool
     {
         return $this->transitioned;
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Start conversation.
+     *
+     * @param Conversable     $conversable
+     */
     public function converse(Conversable $conversable): void
     {
         context()->incrementAttempts();
@@ -161,7 +212,11 @@ class ConversationManager implements Manager
         $conversable->handle($this->messageReceived);
     }
 
-    /** {@inheritdoc} */
+    /**
+     * Restart interaction.
+     *
+     * @param Interaction $interaction
+     */
     public function restartInteraction(Interaction $interaction): void
     {
         context()->setInteraction(null);
