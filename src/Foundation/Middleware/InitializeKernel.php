@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FondBot\Foundation\Middleware;
 
 use Closure;
+use FondBot\FondBot;
 use Illuminate\Http\Request;
 use FondBot\Channels\Channel;
-use FondBot\Foundation\Kernel;
 use FondBot\Contracts\Channels\Manager;
 
 class InitializeKernel
@@ -15,7 +15,7 @@ class InitializeKernel
     private $kernel;
     private $channelManager;
 
-    public function __construct(Kernel $kernel, Manager $channelManager)
+    public function __construct(FondBot $kernel, Manager $channelManager)
     {
         $this->kernel = $kernel;
         $this->channelManager = $channelManager;

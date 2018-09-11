@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FondBot\Foundation\Listeners;
 
-use FondBot\Foundation\Kernel;
+use FondBot\FondBot;
 use FondBot\Conversation\Context;
 use FondBot\Events\MessageReceived;
 use FondBot\Contracts\Conversation\Manager;
@@ -17,7 +17,7 @@ class HandleConversation
     private $kernel;
     private $conversation;
 
-    public function __construct(Kernel $kernel, Manager $conversation)
+    public function __construct(FondBot $kernel, Manager $conversation)
     {
         $this->kernel = $kernel;
         $this->conversation = $conversation;

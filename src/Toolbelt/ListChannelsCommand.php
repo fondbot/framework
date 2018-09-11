@@ -12,11 +12,24 @@ class ListChannelsCommand extends Command
     protected $signature = 'fondbot:channel:list';
     protected $description = 'List all registered channels';
 
-    public function handle(ChannelManager $manager): void
+    private $channelManager;
+
+    public function __construct(ChannelManager $channelManager)
     {
-        $rows = collect($manager->all())
-            ->transform(function ($item, $name) use ($manager) {
-                return [$name, $manager->driver($item['driver'])->getName(), $manager->create($name)->getWebhookUrl()];
+        parent::__construct();
+
+        $this->channelManager = $channelManager;
+    }
+
+    public function handle(): void
+    {
+        $rows = collect($this->channelManager->all())
+            ->transform(function ($item, $name) {
+                return [
+                    $name,
+                    $this->channelManager->driver($item['driver'])->getName(),
+                    $this->channelManager->create($name)->getWebhookUrl(),
+                ];
             })
             ->toArray();
 

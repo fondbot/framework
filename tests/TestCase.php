@@ -7,13 +7,11 @@ namespace FondBot\Tests;
 use Mockery;
 use Faker\Factory;
 use Faker\Generator;
+use FondBot\FondBot;
 use FondBot\Channels\Chat;
 use FondBot\Channels\User;
-use FondBot\Foundation\Kernel;
 use FondBot\Conversation\Context;
-use FondBot\Foundation\ServiceProvider;
-use FondBot\Foundation\Providers\ChannelServiceProvider;
-use FondBot\Foundation\Providers\ConversationServiceProvider;
+use FondBot\FondBotServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -24,15 +22,13 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         parent::setUp();
 
-        $this->kernel = $this->mock(Kernel::class);
+        $this->kernel = $this->mock(FondBot::class);
     }
 
     protected function getPackageProviders($app): array
     {
         return [
-            ServiceProvider::class,
-            ChannelServiceProvider::class,
-            ConversationServiceProvider::class,
+            FondBotServiceProvider::class,
         ];
     }
 

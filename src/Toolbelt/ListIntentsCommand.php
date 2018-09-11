@@ -5,16 +5,25 @@ declare(strict_types=1);
 namespace FondBot\Toolbelt;
 
 use Illuminate\Console\Command;
-use FondBot\Contracts\Conversation\Manager;
+use FondBot\Conversation\ConversationManager;
 
 class ListIntentsCommand extends Command
 {
     protected $signature = 'fondbot:intent:list';
     protected $description = 'List all registered intents';
 
-    public function handle(Manager $manager): void
+    private $conversationManager;
+
+    public function __construct(ConversationManager $conversationManager)
     {
-        $rows = collect($manager->getIntents())
+        parent::__construct();
+
+        $this->conversationManager = $conversationManager;
+    }
+
+    public function handle(): void
+    {
+        $rows = collect($this->conversationManager->getIntents())
             ->transform(function ($item) {
                 return [$item];
             })

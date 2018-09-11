@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace FondBot\Foundation;
+namespace FondBot;
 
 use FondBot\Channels\Channel;
 
-class Kernel
+class FondBot
 {
-    public const VERSION = '3.0.23';
+    public const VERSION = '4.0.0';
 
     /** @var Channel|null */
     private $channel;
